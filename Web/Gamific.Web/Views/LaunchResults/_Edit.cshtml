@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Vlast.Gamific.Web.Services.Engine.DTO.MetricEngineDTO>
+
+<form action="#" id="formNewResult" enctype="multipart/form-data">
+
+    <input type="hidden" value="@ViewBag.Player.Id" id="PlayerId" name="PlayerId"/>
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="launchResultsLabel"><br class="Apple-interchange-newline" />@ViewBag.Player.Nick</h4>
+                </div>
+                <div class="modal-body" id="edit-modal-body">
+                    @if(Model != null)
+                    {
+                        <input class="form-control" type="datetime" value="@ViewBag.Now" id="Date" name="Date"/>
+                        <input type="hidden" id="RunId" name="RunId"  value="@ViewBag.Run.Id"/>
+
+                        int i = 0;
+                        foreach (var item in Model)
+                        {
+                            <input type="hidden" value="@item.Id" id="ResultList[@i].Id" name="ResultList[@i].MetricId" />
+                            <input type="hidden" value="@item.Ceiling" id="ResultList[@i].Ceiling" name="ResultList[@i].Ceiling"/>
+                            <input type="hidden" value="@item.GameId" id="ResultList[@i].GameId" name="ResultList[@i].GameId" />
+                            <input type="hidden" value="@item.Description" id="ResultList[@i].Description" name="ResultList[@i].Description" />
+                            <input type="hidden" value="@item.Floor" id="ResultList[@i].Floor" name="ResultList[@i].Floor" />
+                            <input type="hidden" value="@item.Multiplier" id="ResultList[@i].Multiplier" name="ResultList[@i].Multiplier" />
+                            <input type="hidden" value="@item.Xp" id="ResultList[@i].Xp" name="ResultList[@i].Xp" />
+                            <input type="hidden" value="@ViewBag.Player.Id" id="ResultList[@i].PlayerId" name="ResultList[@i].PlayerId" />
+                            <input type="hidden" value="@ViewBag.RunId" id="ResultList[@i].RunId" name="ResultList[@i].RunId" />
+                            <input type="hidden" value="@item.Name" id="ResultList[@i].Name" name="ResultList[@i].Name" />
+                            <label class="col-sm-12 col-md-12 col-xs-6" style="font-size:100%">@item.Name</label>
+                            <input type="number" min="0" value="0" class="form-control col-sm-3" id="ResultList[@i].Points" name="ResultList[@i].Points" />
+                            i++;
+                        }
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" onclick="submitNewResult();" data-dismiss="modal">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $('#Date').prop('readonly', true);
+
+    $('#Date').datepicker({
+        language: 'pt-BR',
+        changeMonth: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        selectOtherYears: true,
+        changeYear: true,
+        dateformat: 'dd/MM/yyyy'
+    }).on('change', function () {
+        $('.datepicker').hide();
+    });
+</script>

@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Vlast.Gamific.Web.Controllers
+@using Vlast.Gamific.Model.Firm.Domain
+@using Vlast.Gamific.Model.Firm.DTO
+
+<script type="text/javascript">
+    $("#Corrida").addClass("active");
+</script>
+
+<script src="~/Content/Unity/TemplateData/UnityProgress.js"></script>
+
+<div class="pageheader">
+    <h2><i class="fa fa-flag-checkered"></i> Corrida</h2>
+    <br />
+
+    @if (BaseController.CurrentWorkerType.ProfileName != Profiles.JOGADOR)
+    {
+        <small>
+            <a href="/public/corrida">
+                <i class="fa fa-arrow-left"></i> Voltar
+            </a>
+        </small>
+    }
+
+</div>
+<div class="main">
+    <div class="row">
+        <div class="col-lg-12 col-md-12" style="min-height:150px">
+            
+            <div id="userStatus">
+                <div id="userStatusPhoto" style="background-image: url('https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-@ViewBag.TargetLogoId');"></div>
+                <div id="userStatusProgress">
+                    <div class="details">
+                        <div class="title">
+                            <h4>
+                                @ViewBag.TargetName
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="progress progress-little">
+                        <div class="progress-bar text-center progress-bar-green animate-progress-bar" data-percentage="@ViewBag.TotalReached%" style="width: 0%; max-width:100%">
+                            <div class="status">
+                                <strong>
+                                    <span class="animate-number text-center" data-value="@ViewBag.TotalReached" data-animation-duration="600">@ViewBag.TotalReached</span>%
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <small>
+                            Atingidos da Meta de <strong> @ViewBag.TotalGoal </strong>
+                        </small>
+                    </div>
+                </div>
+                <div id="userStats">
+                    <ul class="inline">
+                        <li>
+                            @if (BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.JOGADOR) || BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.LIDER))
+                            {
+                                <a href="/public/resultadosIndividuais">
+                                    <i class="fa fa-bar-chart"></i>
+                                    Resultados
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="/public/dashboard">
+                                    <i class="fa fa-bar-chart"></i>
+                                    Resultados
+                                </a>
+                            }
+
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-cubes"></i>
+                                Ranking
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/ajuda/public">
+                                <i class="fa fa-question-circle"></i>
+                                Ajuda
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+                
+            <div id="raceOptions" hidden>
+                <i class="fa fa-video-camera race-button" onclick="ChangeCamera();"></i>
+                <i class="fa fa-clock-o race-button" onclick="SetTimer();"></i>
+                <i class="fa fa-stop race-button" id="stop" onclick="StopRace(); $('#stop').hide(); $('#start').show();"></i>
+                <i class="fa fa-play race-button" hidden id="start" onclick="StopRace(); $('#stop').show(); $('#start').hide();"></i>
+                <i class="fa fa-arrows-alt race-button" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);"></i>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="unityPlay" hidden>
+        <div class="col-lg-12 col-md-12">
+            <div style="height:620px;">
+                <input type="hidden" id="Result" name="Result" value="@ViewBag.Result" />
+                <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" style="height:100%; width:100%"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<img id="Loading" style="display: block; position: relative; margin: 0 auto; top: 30%" src="~/Content/Images/public/loading.gif" width="50" />
+
+<script src="~/Content/Js/app/race.js" charset="iso-8859-1"></script>
+
+<script type='text/javascript'>
+    var Module = {
+        TOTAL_MEMORY: 268435456,
+        errorhandler: null,
+        compatibilitycheck: null,
+        dataUrl: "/Content/Unity/Release/Build.data",
+        codeUrl: "/Content/Unity/Release/Build.js",
+        memUrl: "/Content/Unity/Release/Build.mem"
+    };
+</script>
+
+<script src="~/Content/Unity/Release/UnityLoader.js"></script>

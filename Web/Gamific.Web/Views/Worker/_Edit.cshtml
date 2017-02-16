@@ -1,0 +1,103 @@
+﻿@model  Vlast.Gamific.Model.Firm.DTO.WorkerDTO
+
+@using (Ajax.BeginForm("Save", "Worker", new AjaxOptions { OnSuccess = "onSuccessSaveWorker", OnFailure = "onFailureSaveWorker", UpdateTargetId = "modal-panel" }, new { enctype = "multipart/form-data" }))
+{
+    <span style="display:none">
+        @Html.HiddenFor(model => model.IdWorker);
+        @Html.HiddenFor(model => model.IdUser);
+        @Html.HiddenFor(model => model.LogoId);
+        @Html.HiddenFor(model => model.ExternalId);
+    </span>
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" title="Fechar" id="btn_close_modal" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="criarFuncionarioLabel">Criar Funcionário</h4>
+                </div>
+                <div class="modal-body" id="edit-modal-body">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.Name, "Nome*:", new { @class = "col-sm-2 control-label" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                            @Html.ValidationMessageFor(model => model.Name, "O campo Nome é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.Email, "Email*:", new { @class = "col-sm-2 control-label" })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
+                            @Html.ValidationMessageFor(model => model.Email, "O campo Email é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.Phone, "Telefone*:", new { @class = "col-sm-2 control-label" })
+                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+                            @Html.ValidationMessageFor(model => model.Phone, "O campo Telefone é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.Cpf, "CPF*:", new { @class = "col-sm-2 control-label" })
+                            @Html.EditorFor(model => model.Cpf, new { htmlAttributes = new { @class = "form-control", @tabindex = "5" } })
+                            @Html.ValidationMessageFor(model => model.Cpf, "O campo CPF é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.WorkerTypeId, "Função*:", new { @class = "col-sm-2 control-label" })
+                            @Html.DropDownListFor(model => model.WorkerTypeId, (IEnumerable<SelectListItem>)ViewBag.Types, "Informe a função", new { @class = "form-control", @tabindex = "6" })
+                            @Html.ValidationMessageFor(model => model.WorkerTypeId, "O campo Função é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.TotalXp, "Quantidade de XP*:", new { @class = "col-sm-12 control-label" })
+                            @Html.EditorFor(model => model.TotalXp, new { htmlAttributes = new { @class = "form-control", @tabindex = "7" } })
+                            @Html.ValidationMessageFor(model => model.TotalXp, "O campo Xp é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Avatar*:</label>
+                            <div class="col-sm-12 col-md-12">
+                                <input tabindex="7" class="form-control" type="file" id="logoUpload" name="logoUpload" onchange="loadLogo(this);" onclick="loadLogo(this);" />
+                                <div style="cursor:pointer;width:100%; background:url('');background-repeat:no-repeat;background-size:cover" onclick="document.getElementById('logoUpload').click();">
+                                    <img id="img" name="img" src="/api/media/@Model.LogoId?cache=@Html.Raw(DateTime.Now.Millisecond)" style="max-width:100%;max-height:160px" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    VMasker(document.getElementById('Phone')).maskPattern('(99) 99999 - 9999');
+    VMasker(document.getElementById('Cpf')).maskPattern('999.999.999-99');
+</script>
+
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+        if (form.getAttribute("enctype") === "multipart/form-data") {
+            if (form.dataset.ajax) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action, false);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (form.dataset.ajaxUpdate) {
+                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                            if (updateTarget) {
+                                updateTarget.innerHTML = xhr.responseText;
+                            }
+                        }
+                    }
+                };
+                xhr.send(new FormData(form));
+            }
+            onSuccessSaveWorker();
+        }
+    }, true);
+</script>

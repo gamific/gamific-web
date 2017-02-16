@@ -1,0 +1,201 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $("#Ranking").addClass("active");
+</script>
+<div>
+    <input type="hidden" value="@ViewBag.Profile" id="userProfile"/>
+    <div class="pageheader">
+        <!--<h2><i class="fa fa-cubes"></i> Ranking</h2>-->
+        <div class="row">
+            <div class="col-xs-6">
+                <h2><i class="fa fa-cubes"></i> Ranking</h2>
+            </div>
+            <div class="col-xs-6">
+                <div class="text-right tile-header" id="buttonFilters">
+                    <a id="FilterButton" class="" onclick="hideAndShowFilters()" style="text-decoration:none">Filtro<i class="fa fa-filter fa-2x" aria-hidden="true" style="margin-top:20px;"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <section class="tile transparent" id="Filters">
+                        <div class="tile-header color transparent-black textured rounded-corners">
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                        <div>
+                                            <div class="col-xs-12">
+                                                Campanha
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <select class="chosen-select chosen-transparent form-control" id="dropDownEpisodes"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                        <div>
+                                            <div class="col-xs-12">
+                                                Equipe
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <select class="chosen-select chosen-transparent form-control" id="dropDownTeams"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                        <div>
+                                            <div class="col-xs-12">
+                                                Metrica
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <select class="chosen-select chosen-transparent form-control" id="dropDownMetrics">
+                                                    <option value="empty">Todas</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <div class="tile-header transparent">
+                        <h1>Ranking</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div class="podiumContainer" id="podiumContainer" style="min-width: 100%; height: 100%; min-height:445px; margin: 0 auto"></div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div class="">
+                            <table id="rankingDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nome</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <div class="tile-header transparent">
+                        <h1>Ranking Jogador</h1>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+
+        <!--<div class="row">
+            <div class="col-md-6">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div class="podiumContainer" id="podiumContainer" style="min-width: 100%; height: 100%; min-height:445px; margin: 0 auto"></div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div class="">
+                            <table id="rankingDataTablePlayer" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nome</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+
+    </div>
+    <script type="text/javascript">
+    
+        $(document).ready(function () {
+            $(window).resize(function () {
+                if ($(window).width() > 768) {
+                    showFilters()
+                } else {
+                    hideFilters()
+                }
+            });
+        });
+
+        function hideAndShowFilters() {
+            if ($('#Filters').is(":visible")) {
+                $('#Filters').hide();
+            }
+            else {
+                $('#Filters').show();
+            }
+        }
+
+        function showFilters() {
+            if ($('#Filters').is(":hidden")) {
+                $('#Filters').show();
+            }
+        }
+        function hideFilters() {
+            if ($('#Filters').is(":visible")) {
+                $('#Filters').hide();
+            }
+        }
+    </script>
+</div>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="/Content/Js/app/ranking.js" charset="iso-8859-1"></script>
+<script type="text/javascript">
+
+    //var homePageRefreshTimerHash = window.setTimeout(function () {
+    //    window.location.reload();
+    //}, 300000);
+</script>

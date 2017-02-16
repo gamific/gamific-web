@@ -1,0 +1,252 @@
+[
+  {
+    "outputFileName": "Content/Js/app/about.min.js",
+    "inputFiles": [
+      "Content/Js/app/about.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/campaign.min.js",
+    "inputFiles": [
+      "Content/Js/app/campaign.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/chat.min.js",
+    "inputFiles": [
+      "Content/Js/app/chat.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/dashboard.min.js",
+    "inputFiles": [
+      "Content/Js/app/dashboard.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/firm.min.js",
+    "inputFiles": [
+      "Content/Js/app/firm.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/gamific.min.js",
+    "inputFiles": [
+      "Content/Js/app/gamific.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/goal.min.js",
+    "inputFiles": [
+      "Content/Js/app/goal.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/help.min.js",
+    "inputFiles": [
+      "Content/Js/app/help.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/individualResults.min.js",
+    "inputFiles": [
+      "Content/Js/app/individualResults.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/launchResults.min.js",
+    "inputFiles": [
+      "Content/Js/app/launchResults.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/Metric.min.js",
+    "inputFiles": [
+      "Content/Js/app/Metric.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/race.min.js",
+    "inputFiles": [
+      "Content/Js/app/race.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/ranking.min.js",
+    "inputFiles": [
+      "Content/Js/app/ranking.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/team.min.js",
+    "inputFiles": [
+      "Content/Js/app/team.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/topicHelp.min.js",
+    "inputFiles": [
+      "Content/Js/app/topicHelp.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/userProfile.min.js",
+    "inputFiles": [
+      "Content/Js/app/userProfile.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/video.min.js",
+    "inputFiles": [
+      "Content/Js/app/video.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/worker.min.js",
+    "inputFiles": [
+      "Content/Js/app/worker.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/workerType.min.js",
+    "inputFiles": [
+      "Content/Js/app/workerType.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/workerTypeMetric.min.js",
+    "inputFiles": [
+      "Content/Js/app/workerTypeMetric.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/lib/core.js",
+    "inputFiles": [
+      "Content/Js/lib/jquery.animateNumbers.js",
+      "Content/Js/lib/jquery.blockUI.js",
+      "Content/Js/lib/jquery.bootstrap.wizard.min.js",
+      "Content/Js/lib/jquery.dataTables.js",
+      "Content/Js/lib/jquery.easypiechart.min.js",
+      "Content/Js/lib/jquery.flot.animator.min.js",
+      "Content/Js/lib/jquery.flot.min.js",
+      "Content/Js/lib/jquery.flot.orderBars.js",
+      "Content/Js/lib/jquery.flot.selection.min.js",
+      "Content/Js/lib/jquery.flot.time.min.js",
+      "Content/Js/lib/jquery.mmenu.min.js",
+      "Content/Js/lib/jquery.nicescroll.min.js",
+      "Content/Js/lib/jquery.sparkline.min.js",
+      "Content/Js/lib/jquery.unobtrusive-ajax.js",
+      "Content/Js/lib/jquery.videobackground.js",
+      "Content/Js/lib/minimal.min.js",
+      "Content/Js/lib/moment.js",
+      "Content/Js/lib/morris.min.js",
+      "Content/Js/lib/parsley.min.js",
+      "Content/Js/lib/plugin.js",
+      "Content/Js/lib/raphael-min.js",
+      "Content/Js/lib/rickshaw.min.js",
+      "Content/Js/lib/summernote.min.js",
+      "Content/Js/lib/tiny-mce.js",
+      "Content/Js/lib/Treant.js",
+      "Content/Js/lib/vanilla-masker.min.js",
+      "Content/Js/lib/dataTables.responsive.min.js",
+      "Content/Js/lib/d3.v2.js",
+      "Content/Js/lib/dataTables.bootstrap.js",
+      "Content/Js/lib/custom-colored.js",
+      "Content/Js/lib/chosen.jquery.min.js",
+      "Content/Js/lib/bootstrap.min.js",
+      "Content/Js/lib/bootstrap-tabdrop.min.js",
+      "Content/Js/lib/bootstrap-dropdown-multilevel.js",
+      "Content/Js/lib/bootstrap-datepicker.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/bootstrap-datepicker.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/bootstrap-datepicker.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/bootstrap-dropdown-multilevel.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/bootstrap-dropdown-multilevel.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/custom-colored.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/custom-colored.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/d3.v2.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/d3.v2.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/dataTables.bootstrap.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/dataTables.bootstrap.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/jquery.animateNumbers.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/jquery.animateNumbers.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/jquery.blockUI.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/jquery.blockUI.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/jquery.dataTables.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/jquery.dataTables.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/jquery.flot.orderBars.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/jquery.flot.orderBars.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/jquery.unobtrusive-ajax.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/jquery.unobtrusive-ajax.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/jquery.videobackground.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/jquery.videobackground.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/moment.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/moment.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/plugin.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/plugin.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/tiny-mce.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/tiny-mce.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/BKP/Treant.min.js",
+    "inputFiles": [
+      "Content/Js/app/BKP/Treant.js"
+    ]
+  }
+]

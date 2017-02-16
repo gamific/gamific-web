@@ -1,0 +1,46 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Web;
+
+
+namespace Vlast.Gamific.Web.Services.Engine.DTO
+{
+    public class EpisodeEngineDTO
+    {
+        public EpisodeEngineDTO() { }
+
+        public EpisodeEngineDTO(string name, string skin)
+        {
+            this.Skin = skin;
+            this.Name = name;
+        }
+
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [Required(ErrorMessage = "O nome é obrigatório.")] //
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        //[Required(ErrorMessage = "O nome da Skin é obrigatório.")] 
+        [JsonProperty("skin")]
+        public string Skin { get; set; }
+
+        [Required] //(ErrorMessage = "O Xp é obrigatório.")
+        [JsonProperty("xpReward")]
+        public int? XpReward { get; set; }
+
+        [JsonProperty("active")]
+        public bool Active { get; set; }
+
+        [JsonProperty("gameId")]
+        public string GameId { get; set; }
+
+        [JsonProperty("_links")]
+        public Link Links { get; set; }
+    }
+}

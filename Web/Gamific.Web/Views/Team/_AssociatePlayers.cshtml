@@ -1,0 +1,45 @@
+﻿<input id="TeamId" name="TeamId" value="@ViewBag.CurrentTeam" type="hidden" />
+<input id="WorkersId" name="WorkersId" type="hidden" />
+<input id="Count" name="Count" type="hidden" value="0"/>
+
+<div id="modal-panel">
+    <div class="modal-dialog modal-xlg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="associatePlayersLabel"><br class="Apple-interchange-newline">Adicionar Membros da Equipe</h4>
+            </div>
+            <div class="modal-body" id="edit-modal-body">
+                    
+                <div>
+                    <select id="dropDownWorkerTypes" class="form-control" onchange="dropDownChange()">
+                        <option value="0">Selecione uma função</option>
+                        @foreach (SelectListItem workerType in ViewBag.WorkerTypes)
+                        {
+                            <option value="@workerType.Value">@workerType.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <table id="associatePlayersDataTable" class="table table-striped" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="saveAssociations(); " data-dismiss="modal">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    loadAssociatePlayersDataTable();
+</script>

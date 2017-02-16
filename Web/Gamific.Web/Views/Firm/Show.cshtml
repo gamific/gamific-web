@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model  Vlast.Gamific.Model.Firm.Domain.DataEntity
+
+@using Vlast.Gamific.Web.Controllers
+
+<script type="text/javascript">
+    $("#Dados-Empresa").addClass("active");
+</script>
+
+@using GridMvc.Html
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-building"></i> Dados da Empresa</h2>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="tile color transparent-black">
+                    <div class="tile-body">
+                        <div class="user-card">
+                            <ul class="profile-controls inline">
+                                <li class="avatar"><img src="/api/media/@Model.LogoId" alt="" class="img-circle profile-photo"></li>
+                            </ul>
+                            <h3>@Model.FirmName</h3>
+                        </div>
+
+                        <br />
+                        <br />
+                        <form action="/admin/empresas/atualizar" class="form-horizontal" role="form" method="post">
+                            @Html.HiddenFor(model => model.ExternalId)
+                            @Html.HiddenFor(model => model.Id )
+                            @Html.HiddenFor(model => model.LogoId )
+                            @Html.HiddenFor(model => model.Status )
+                            @Html.HiddenFor(model => model.LastUpdate )
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FirmName, "Nome da Empresa*:", new { @class = "col-sm-4 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.FirmName, new { id = "nome", htmlAttributes = new {@class = "form-control", @tabindex = "1" } })
+                                    @Html.ValidationMessageFor(model => model.FirmName, "O campo Nome da empresa é obrigatório.", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CompanyName, "Razão Social*:", new { @class = "col-sm-4 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.CompanyName, new { id = "social", htmlAttributes = new {@class = "form-control", @tabindex = "2" } })
+                                    @Html.ValidationMessageFor(model => model.CompanyName, "O campo Razão Social é obrigatório.", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Cnpj, "CNPJ*:", new { @class = "col-sm-4 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.Cnpj, new { id = "cnpj", htmlAttributes = new {@class = "form-control", @tabindex = "3" } })
+                                    @Html.ValidationMessageFor(model => model.Cnpj, "O campo CNPJ é obrigatório.", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <br />
+                            <br />
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Adress, "Endereço*:", new { @class = "col-sm-4 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.Adress, new { id = "endereco", htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+                                    @Html.ValidationMessageFor(model => model.Adress, "O campo Endereço é obrigatório.", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Neighborhood, "Bairro*:", new { @class = "col-sm-4 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.Neighborhood, new { id = "bairro", htmlAttributes = new { @class = "form-control", @tabindex = "5" } })
+                                    @Html.ValidationMessageFor(model => model.Neighborhood, "O campo Bairro é obrigatório.", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.City, "Cidade*:", new { @class = "col-sm-4 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.City, new { id = "cidade", htmlAttributes = new { @class = "form-control", @tabindex = "6" } })
+                                    @Html.ValidationMessageFor(model => model.City, "O campo Cidade é obrigatório.", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Phone, "Telefone*:", new { @class = "col-sm-4 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.Phone, new { id = "telefone", htmlAttributes = new { @class = "form-control", @tabindex = "7" } })
+                                    @Html.ValidationMessageFor(model => model.Phone, "O campo Telefone é obrigatório.", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button id="submitFormButton" type="submit"><span style="color:#000000">Salvar alterações</span></button>
+                            </div>
+
+                            <br />
+
+                            <br /><br />
+
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

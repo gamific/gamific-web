@@ -1,0 +1,255 @@
+﻿@using Microsoft.AspNet.Identity
+@using Vlast.Gamific.Web.Controllers
+@using Vlast.Gamific.Model.Firm.Domain
+@using Vlast.Gamific.Model.Firm.DTO
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Gamific</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="keywords" content="Gamific">
+    <meta name="description" content="Gamific">
+
+
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- /#wrapper -->
+    <!-- Core Scripts - Include with every page -->
+    @Scripts.Render("~/bundles/LayoutScripts")
+    @Styles.Render("~/Content/LayoutStyle")
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body class="bg-1">
+    <!-- Preloader -->
+    <div class="mask"><div id="loader"></div></div>
+    <!--/Preloader -->
+    <div id="wrap">
+        <div class="row">
+            <div class="navbar navbar-default navbar-fixed-top navbar-transparent-black mm-fixed-top collapsed" role="navigation" id="navbar">
+                <!-- Marca -->
+                <div class="navbar-header col-md-2">
+                    <a class="navbar-brand" href="/">
+                    </a>
+                    <div class="sidebar-collapse">
+                        <a href="#">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav refresh">
+                        <li class="divided">
+                            <a href="@Html.Raw(BaseController.CurrentURL)" class="page-refresh"><i class="fa fa-refresh"></i></a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav quick-actions">
+                        <li class="dropdown divided user" id="current-user">
+                            @if (@BaseController.CurrentWorker != null)
+                            {
+                                <div class="profile-photo">
+                                    <img src="https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-@BaseController.CurrentWorker.LogoId" alt />
+                                </div>
+                            }
+                            <a class="dropdown-toggle options" data-toggle="dropdown" href="#">
+                                @Html.Raw(BaseController.CurrentUserProfile.Name) <i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul class="dropdown-menu arrow settings">
+                                <li>
+                                    <a href="/admin/usuario/perfil/editar"><i class="fa fa-user"></i> Editar Perfil</a>
+                                </li>
+                                <li>
+                                    <a href="/admin/usuario/perfil/editarSenha"><i class="fa fa-lock"></i> Alterar Senha</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="/public/sobre"><i class="fa fa-question"></i> Sobre o Gamific</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="/acesso/logoff"><i class="fa fa-power-off"></i> Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav side-nav" id="sidebar">
+                        <li class="collapsed-content">
+                            <ul>
+                                <li class="search"><!-- Se tiver --></li>
+                            </ul>
+                        </li>
+                        @if (BaseController.CurrentFirm != null)
+                        {
+                            <li class="navigation" id="menu">
+                                <a href="#" class="sidebar-toggle" data-toggle="#menu">Menu <i class="fa fa-angle-up"></i></a>
+                                <ul class="menu">
+
+                                    <li id="Corrida" class="hidden-xs">
+                                        <a href="/public/corrida">
+                                            <i class="fa fa-flag-checkered"></i> Corrida
+                                        </a>
+                                    </li>
+
+                                    @if (BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.ADMINISTRADOR) || BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.LIDER)  )
+                                    {
+                                        <li id="Dashboard">
+                                            <a href="/public/dashboard">
+                                                <i class="fa fa-dashboard"></i> Dashboard
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.JOGADOR))
+                                    {
+                                        <li id="IndividualResults">
+                                            <a href="/public/resultadosIndividuais">
+                                                <i class="fa fa-line-chart"></i> Resultados Individuais
+                                            </a>
+                                        </li>
+                                    }
+
+                                    <!--  <li id="Hierarquia">
+                                        <a href="/public/hierarchy">
+                                            <i class="fa fa-sitemap"></i> Resultados Hierarquia
+                                        </a>
+                                    </li> -->
+
+                                    <li id="Ranking">
+                                        <a href="/public/ranking">
+                                            <i class="fa fa-cubes"></i> Ranking
+                                        </a>
+                                    </li>
+
+                                    <li id="Chat">
+                                        <a href="/public/chat/">
+                                            <i class="fa fa-comments"></i> Mensagens
+                                        </a>
+                                    </li>
+
+                                    <li id="Ajuda">
+                                        <a href="/admin/ajuda/public">
+                                            <i class="fa fa-question-circle"></i> Ajuda
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="navigation" id="adm-empresa">
+                                <a href="#" class="sidebar-toggle" data-toggle="#adm-empresa">Empresa <i class="fa fa-angle-up"></i></a>
+
+                                <ul class="menu">
+                                    @if(BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.ADMINISTRADOR))
+                                    {
+                                        <li id="Funcionarios" class="hidden-xs">
+                                            <a href="/admin/funcionarios/">
+                                                <i class="fa fa-users"></i> Funcionários
+                                            </a>
+                                        </li>
+
+                                        <li id="Funcao" class="hidden-xs">
+                                            <a href="/admin/funcoes/">
+                                                <i class="fa fa-tags"></i> Gerenciar Funções
+                                            </a>
+                                        </li>
+
+                                            <li id="Metricas" class="hidden-xs">
+                                                <a href="/admin/metricas/">
+                                                    <i class="fa fa-object-group"></i> Metricas
+                                                </a>
+                                            </li>
+
+                                            <li id="episode" class="hidden-xs">
+                                                <a href="/admin/episode/">
+                                                    <i class="fa fa-hdd-o"></i> Campanhas
+                                                </a>
+                                            </li>
+
+                                            <li id="param" class="hidden-xs">
+                                                <a href="/admin/param/">
+                                                    <i class="fa fa-rss-square"></i> Parametros
+                                                </a>
+                                            </li>
+
+                                            <li id="Metas" class="hidden-xs">
+                                                <a href="/admin/metas/">
+                                                    <i class="fa fa-bar-chart-o"></i> Metas
+                                                </a>
+                                            </li>
+
+                                            <li id="LancarResultados" class="hidden-xs">
+                                                <a href="/admin/lancarResultados/">
+                                                    <i class="fa fa-rocket"></i> Lançar Resultados
+                                                </a>
+                                            </li>
+
+                                            <li id="Equipes" class="hidden-xs">
+                                                <a href="/admin/equipes/">
+                                                    <i class="fa fa-flag"></i> Equipes
+                                                </a>
+                                            </li>
+
+                                            <li id="CadastrarAjuda" class="hidden-xs">
+                                                <a href="/admin/topicoAjuda">
+                                                    <i class="fa fa-question-circle"></i> Cadastrar Ajuda
+                                                </a>
+                                            </li>
+                                    }
+
+                                    @if (BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.ADMINISTRADOR))
+                                    {
+                                    <li id="Dados-Empresa">
+                                        <a href="/admin/empresas/visualizar/@BaseController.CurrentFirm.Id">
+                                            <i class="fa fa-building"></i> Dados da Empresa
+                                        </a>
+                                    </li>
+                                    }
+
+                                    <li id="Suporte">
+                                        <a href="/admin/suporte">
+                                            <i class="fa fa-life-ring"></i> Suporte
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (BaseController.IsSystemAdmin)
+                        {
+                            <li class="navigation" id="adm-gamific">
+                                <a href="#" class="sidebar-toggle" data-toggle="#adm-gamific">ADM Gamific <i class="fa fa-angle-up"></i></a>
+                                <ul class="menu">
+                                    <li id="Cadastrar-Empresa">
+                                        <a href="/admin/empresas/cadastrar">
+                                            <i class="fa fa-building"></i> Cadastrar Empresa
+                                        </a>
+                                    </li>
+                                    <li id="Empresas">
+                                        <a href="/admin/empresas/">
+                                            <i class="fa fa-building"></i> Empresas Cadastradas
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
+                    </ul>
+                    <!-- Sidebar end -->
+                </div>
+            </div>
+            <!-- Conteúdo -->
+            <div id="content" class="col-md-12">
+
+                @Html.Partial("_Messages")
+
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+
+</body>
+
+</html>

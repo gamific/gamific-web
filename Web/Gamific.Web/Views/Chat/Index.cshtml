@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model  List<Vlast.Gamific.Web.Services.Engine.DTO.TeamEngineDTO>
+
+<script type="text/javascript">
+    $("#Chat").addClass("active");
+</script>
+
+@using Vlast.Gamific.Web.Services.Engine.DTO
+@using Vlast.Gamific.Model.Firm.DTO
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-comments"></i> Mensagens</h2>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-lg-4 col-md-5 col-sm-6">
+                <section class="tile transparent">
+                    <div class="tile-header color bg-transparent-black-5 rounded-top-corners">
+                        <ul class="chat-nav main-nav inline">
+                            <li><h3><strong>Caixa de Entrada</strong></h3></li>
+                        </ul>
+                    </div>
+                    <div class="tile-body color transparent-black rounded-corners nopadding">
+                        <ul class="chat-inbox" id="chat-inbox">
+                            <li style="min-height:60px">
+                                <div>
+                                    
+                                    
+                                </div>
+                            </li>
+                            @foreach (TeamEngineDTO team in Model)
+                            {
+                                <li>
+                                    <a href="#" onclick="loadMessages('@team.Id');">
+                                        <div class="media">
+                                            <div class="pull-left">
+                                                <img class="media-object img-circle" src="/api/media/@team.LogoId">
+                                            </div>
+                                            <div class="media-body">
+                                                <p class="media-heading">@team.Nick</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </section>
+            </div>
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <section class="tile transparent">
+                    <div id="messagesPartialView">
+                        @{
+                            //Html.RenderPartial("_ChatMessages", new List<MessageDTO>());
+                        }
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+    <form hidden action="/public/chat" method="post" enctype="multipart/form-data">
+        <input id="filter" name="filter" hidden />
+        <button id="submitButton" type="submit" hidden></button>
+    </form>
+</div>
+
+<script src="~/Content/Js/app/chat.js" charset="iso-8859-1"></script>
+
+<script type="text/javascript">
+
+</script>

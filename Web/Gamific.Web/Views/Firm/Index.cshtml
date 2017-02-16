@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#Empresas").addClass("active");
+</script>
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-building"></i> Empresas Cadastradas</h2>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div id="gerenciarempresas" class="table-toolbar-left">
+                            <button id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" onclick="window.location.href='/admin/empresas/cadastrar'"><i class="fa fa-building"></i> Adicionar Empresa</button>
+                        </div>
+                        <div class="">
+                            <table id="empresasDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/Content/Js/app/firm.js" charset="iso-8859-1"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        loadFirmsDataTable();
+    });
+</script>

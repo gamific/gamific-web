@@ -1,0 +1,42 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+<body id="error-page">
+    <div class="container">
+        <div class="row">
+            <div class="error-box">
+                <a href="/">
+                    <img style="max-width:200px" src="~/Content/images/logo.png">
+                </a>
+                @if(Response.StatusCode != (int)HttpStatusCode.NotFound){
+                     <h2 class="error-label">Ops! Ocorreu um erro inesperado!</h2>
+                }
+                else
+                {
+                    <h2 class="error-label">Página não encontrada!</h2>
+                }
+                <br/>
+              
+            </div>
+        </div>
+    </div>
+
+    <span style="display:none">
+        @{
+            try
+            {
+                if (Model != null && Model.Exception != null)
+                {
+                    <span>@Model.Exception.ToString() </span>
+                }
+            }
+            catch
+            {
+
+            }
+        }
+    </span>
+</body>

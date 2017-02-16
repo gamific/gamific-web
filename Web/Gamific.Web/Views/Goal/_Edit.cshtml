@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Vlast.Gamific.Model.Firm.DTO.GoalDTO>
+
+<form action="/admin/metas/salvar" method="post" enctype="multipart/form-data">
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="editGoalsLabel"><br class="Apple-interchange-newline" />@ViewBag.WorkerName</h4>
+                </div>
+                <div class="modal-body" id="edit-modal-body">
+                    @if (Model != null)
+                    {
+                        int i = 0;
+                        foreach (var item in Model)
+                        {
+                            <label class="col-sm-12 col-md-12 col-xs-6" style="font-size:100%">@item.MetricName</label>
+                            <input type="hidden" value="@item.RunId" id="GoalList[@i].RunId" name="GoalList[@i].RunId"/>
+                            <input type="hidden" value="@item.GoalId" id="GoalList[@i].Id" name="GoalList[@i].Id" />
+                            <input type="hidden" value="@item.ExternalMetricId" id="GoalList[@i].ExternalMetricId" name="GoalList[@i].ExternalMetricId"/>
+                            <input type="hidden" value="@item.EpisodeId" id="GoalList[@i].EpisodeId" name="GoalList[@i].EpisodeId"/>
+                            <input type="number" min="0" value="@item.Goal" class="form-control col-xs-6" id="GoalList[@i].Goal" name="GoalList[@i].Goal"/>
+                            i++;
+                        }
+                    } 
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

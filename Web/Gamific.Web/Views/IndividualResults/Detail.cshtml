@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#Resultados-Individuais").addClass("active");
+</script>
+
+<div class="pageheader">
+    <h2><i class="@ViewBag.MetricIcon"></i> Detalhes da métrica: @ViewBag.MetricName</h2>
+    <br />
+    <small>
+        <a href="/public/resultadosIndividuais"><i class="fa fa-arrow-left"></i> Voltar</a>
+    </small>
+</div>
+<div class="main">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile transparent">
+                <div class="tile-body color transparent-black rounded-corners">
+                    <div class="">
+                        <table id="MetricResultsDataTable" class="table table-striped" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Resultado</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--div class="row">
+        <div class="col-lg-12 col-md-12">
+            <section class="tile transparent">
+                <div class="tile-header color transparent-black textured rounded-top-corners">
+                    <h1>Evolução</h1>
+                    <br />
+                    <h4 class="underline text-left">Comparativo interno</h4>
+                </div>
+                <div class="tile-widget color transparent-black textured">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 pull-right">
+                        </div>
+                        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 pull-left">
+                            <div id="statistics-chart" class="chart statistics" style="height: 250px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div-->
+
+</div>
+
+<script src="/Content/Js/app/individualResults.js" charset="iso-8859-1"></script>
+<script>
+    LoadMetricResultsDataTable(@ViewBag.MetricId);
+</script>

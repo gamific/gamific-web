@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#Param").addClass("active");
+</script>
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-object-group"></i> Cadastro de parametro</h2>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div id="registermetrics" class="table-toolbar-left">
+                            <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/param/cadastrar" title="Cadastrar novo parametro" onclick="showEntityModal(this); return false;"><i class="fa fa-plus"></i> Cadastrar nova parametro</a>
+                        </div>
+                        <div class="">
+                            <table id="paramDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Valor</th>
+                                        <th>Descrição</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
+
+<script src="~/Content/Js/app/param.js"></script>

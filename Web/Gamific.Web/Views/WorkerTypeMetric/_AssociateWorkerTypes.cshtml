@@ -1,0 +1,33 @@
+﻿<form action="/admin/funcaoMetrica/salvarAssociacoes" method="post" enctype="multipart/form-data">
+    <input id="workerTypesId" name="workerTypesId" type="hidden"/>
+    <input id="metricId" name="metricId" type="hidden" value="@ViewBag.MetricId"/>
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="associateWorkerTypesLabel"><br class="Apple-interchange-newline"/>Adicionar associações a uma metrica</h4>
+                </div>
+                <div class="modal-body" id="edit-modal-body">
+                    <table id="associateWorkerTypesDataTable" class="table table-striped" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Selecionar</th>
+                                <th>Função</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" onclick="getWorkerTypesSelected();">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    loadWorkerTypesDataTable();
+</script>

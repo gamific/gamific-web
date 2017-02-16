@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#Corrida").addClass("active");
+</script>
+
+<div class="pageheader">
+    <h2><i class="fa fa-flag-checkered"></i> Corrida</h2>
+</div>
+<div class="main">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <section class="tile transparent">
+                <div class="tile-header color transparent-black textured rounded-corners">
+
+                    <div class="row">
+                        <div class="form-group" style="height:auto;">
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="">
+                                    <div class="col-xs-12">
+                                        Campanha
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <select class="chosen-select chosen-transparent form-control" id="dropDownEpisodes"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="">
+                                    <div class="col-xs-12">
+                                        Equipe
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <select class="chosen-select chosen-transparent form-control" id="dropDownTeams"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div>
+                                    <div class="col-xs-12">
+                                        Metrica
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <select class="chosen-select chosen-transparent form-control" id="dropDownMetrics">
+                                            <option value="empty">Todas</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> 
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="row" id="unityPlay" hidden>
+        <div class="col-lg-12 col-md-12">
+            <i class="fa fa-video-camera race-button" onclick="ChangeCamera();"></i>
+            <i class="fa fa-clock-o race-button" onclick="SetTimer();"></i>
+            <i class="fa fa-stop race-button" id="stop" onclick="StopRace(); $('#stop').hide(); $('#start').show();"></i>
+            <i class="fa fa-play race-button" hidden id="start" onclick="StopRace(); $('#stop').show(); $('#start').hide();"></i>
+            <i class="fa fa-arrows-alt race-button" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);"></i>
+
+            <div style="height:520px;">
+                <input type="hidden" id="Result" name="Result" value="@ViewBag.Result" />
+                <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" style="height:100%; width:100%"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<img id="Loading" style="display: block; position: relative; margin: 0 auto; top: 30%" src="~/Content/Images/public/loading.gif" width="50" />
+
+<script src="~/Content/Js/app/race.js"  charset="iso-8859-1"></script>
+
+<script type='text/javascript'>
+    var Module = {
+        TOTAL_MEMORY: 600435456,
+        errorhandler: null,
+        compatibilitycheck: null,
+        backgroundColor: "#222C36",
+        splashStyle: "Light",
+        dataUrl: "/Content/Unity/Release/WebGL3.data",
+        codeUrl: "/Content/Unity/Release/WebGL3.js",
+        asmUrl: "/Content/Unity/Release/WebGL3.asm.js",
+        memUrl: "/Content/Unity/Release/WebGL3.mem"
+    };
+</script>
+
+<script src="~/Content/Unity/Release/UnityLoader.js"></script>

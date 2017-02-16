@@ -1,0 +1,9 @@
+﻿#load-login {
+    z-index:999; 
+    position:absolute; 
+    top: 48%; 
+    left: 48%;
+}
+#color-w{
+    color:white;
+}

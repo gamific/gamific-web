@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Vlast.Gamific.Model.Public.Domain
+
+<script type="text/javascript">
+    $("#Ajuda").addClass("active");
+</script>
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-question-circle"></i> Ajuda</h2>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="cd-faq">
+                    <div class="cd-faq-items">
+                        @foreach (TopicHelpEntity topic in ViewBag.TopicHelps)
+                        {
+                            <ul id="basics" class="cd-faq-group">
+                                <li class="cd-faq-title">
+                                    <h2>@topic.TopicName</h2>
+                                </li>
+                                @foreach (HelpEntity help in ViewBag.Helps)
+                                {
+
+                                if (topic.Id == help.TopicId)
+                                {
+                                    <li>
+                                        <a class="cd-faq-trigger" href="#0">@help.HelpTitle</a>
+                                        <div class="cd-faq-content">
+                                            <p>@help.HelpContent</p>
+                                        </div>
+                                    </li>
+                                }
+
+                                }
+                            </ul>
+                        }
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/Content/Js/app/help.js" charset="iso-8859-1"></script>

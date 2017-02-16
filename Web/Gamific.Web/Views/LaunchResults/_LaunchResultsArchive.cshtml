@@ -1,0 +1,58 @@
+﻿@using (Ajax.BeginForm("SaveResultArchive", "LaunchResults", new AjaxOptions { OnSuccess = "onSuccessSaveWorkerArchive", OnFailure = "onFailureSaveWorkerArchive", UpdateTargetId = "modal-panel" }, new { enctype = "multipart/form-data" }))
+{
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="cadastrarFuncionariosLabel"><br class="Apple-interchange-newline">Lançar Resultados</h4>
+                </div>
+                <div class="modal-body" id="edit-modal-body">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
+                    </div>
+                    <div class="form-group" id="sendArchive" style="display:none;">
+                        <div class="col-xs-12 modal-div">
+                            <input class="btn btn-default sing-up-button" type="file" id="resultsArchive" name="resultsArchive" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 modal-div">
+                            <a id="downloadArchive" class="btn btn-default sing-up-button" href="/admin/funcionarios/baixarPlanilha" onclick="$('#downloadArchive').hide(); $('#sendArchive').show();" title="Baixar planilha de Resultados"><i class="fa fa-download"></i> Baixar Planilha</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+        if (form.getAttribute("enctype") === "multipart/form-data") {
+            if (form.dataset.ajax) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (form.dataset.ajaxUpdate) {
+                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                            if (updateTarget) {
+                                updateTarget.innerHTML = xhr.responseText;
+                            }
+                        }
+                    }
+                };
+                xhr.send(new FormData(form));
+            }
+            onSuccessSaveWorkerArchive();
+        }
+    }, true);
+</script>

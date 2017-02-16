@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#Suporte").addClass("active");
+</script>
+
+@model  Vlast.Gamific.Web.Controllers.Management.Model.EmailSupportDTO
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-life-ring"></i> Suporte</h2>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="tile color transparent-black">
+                    <div class="tile-body">
+                        <form action="/admin/suporte/enviar" class="form-horizontal" role="form" enctype="multipart/form-data" method="post">
+                            <br />
+                            <br />
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Category, "Categoria*:", new { @class = "col-sm-4 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(model => model.Category, (IEnumerable<SelectListItem>)ViewBag.Categories, "Selecione a categoria", new { @class = "chosen-select chosen-transparent form-control", @tabindex = "1" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Subject, "Assunto*:", new { @class = "col-sm-4 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control", @tabindex = "2" } })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Msg, "Mensagem*:", new { @class = "col-sm-4 control-label" })
+                                <div class="col-sm-4">
+                                    @Html.TextAreaFor(model => model.Msg, new { @class = "form-control", @tabindex = "3" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-8">
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

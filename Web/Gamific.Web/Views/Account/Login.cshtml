@@ -1,0 +1,74 @@
+﻿@using Vlast.Gamific.Web.Controllers.Account
+@model LoginViewModel
+
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+<body class="bg-1">
+    <div id="wrap">
+        <div class="row">
+            <div id="content" class="col-md-12 full-page login">
+                <a id="load-login" hidden >
+                    <img id="Loading" src="~/Content/Images/public/loading.gif" style="display: block;" width="50" />
+                </a>
+                <div class="inside-block">
+                    <a href="/">
+                        <img src="~/Content/img/logo.png" style="width: 100%;" alt="" class="logo" />
+                    </a>
+                    <h1><strong>Bem-vindo</strong></h1>
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="row" id="error-summary-id">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger-summary" })
+                        </div>
+
+                        <fieldset>
+                            <div class="input-group for-block">
+                                @Html.TextBoxFor(m => m.Email, new { @maxlength = "100", @class = "form-control", @placeholder = "Login" })
+                                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                            </div>
+                            <div class="input-group for-block">
+                                @Html.PasswordFor(m => m.Password, new { @maxlength = "30", @class = "form-control", @placeholder = "Senha" })
+                                <div class="input-group-addon"><i class="fa fa-key"></i></div>
+                            </div>
+
+                            <input id="tokenMobile"  name="TokenMobile"  
+                                   value=""
+                                    type="hidden" />
+                            <input id="tipoDispositivo" name="TipoDispositivo"  value="" type="hidden" />
+
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+                            <div class="controls">
+                                <div class="checkbox check-transparent">
+                                    <a id="color-w" href="/acesso/resetarSenha">Esqueceu a Senha?</a>
+                                </div>
+                            </div>
+
+                            <div class="log-in">
+                                <input id="button"  type="submit" value="Entrar" onclick="document.getElementById('error-summary-id').style.display = 'none';" class="btn btn-greensea" />
+                            </div>
+                        </fieldset>
+                    }
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+        $('#button').click(function () {
+            $('#load-login').show();
+            //$("input").prop('disabled', true);
+        });   
+
+        
+
+    </script>
+</body>
+

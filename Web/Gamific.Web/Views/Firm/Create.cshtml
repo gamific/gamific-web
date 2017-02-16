@@ -1,0 +1,228 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model  Vlast.Gamific.Model.Firm.DTO.FirmDTO
+
+<script type="text/javascript">
+    $("#Cadastrar-Empresa").addClass("active");
+</script>
+
+@using GridMvc.Html
+
+<div>
+    <!-- header -->
+    <div class="pageheader">
+        <h2><i class="fa fa-building"></i> Cadastrar Empresa </h2>
+    </div>
+    <!-- /header -->
+    <!-- content -->
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="rootwizard" class="panel">
+                    <div class="panel-body nopadding color rounded-top-corners">
+                        <ul>
+                            <li><a href="#tab1" data-toggle="tab">Dados da Empresa</a></li>
+                            <li><a href="#tab2" data-toggle="tab">Dados do Administrador</a></li>
+                            <li><a href="#tab3" data-toggle="tab">Dados de Acesso</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div id="bar" class="progress progress-striped active">
+                            <div class="progress-bar progress-bar-cyan animate-progress-bar"></div>
+                        </div>
+                        <form action="/admin/empresas/salvar" class="form-horizontal" enctype="multipart/form-data" method="post">
+                            <div class="tab-content">
+                                <div class="tab-pane" id="tab1">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.DataInfo.FirmName, "Nome da Empresa*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.DataInfo.FirmName, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                                            @Html.ValidationMessageFor(model => model.DataInfo.FirmName, "O campo Nome da empresa é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.DataInfo.CompanyName, "Razão Social*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.DataInfo.CompanyName, new { htmlAttributes = new { @class = "form-control", @tabindex = "2" } })
+                                            @Html.ValidationMessageFor(model => model.DataInfo.CompanyName, "O campo Razão Social é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.DataInfo.Cnpj, "CNPJ*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.DataInfo.Cnpj, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
+                                            @Html.ValidationMessageFor(model => model.DataInfo.Cnpj, "O campo CNPJ é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Logo*:</label>
+                                        <div class="col-sm-10 col-md-6">
+                                            <input tabindex="4" class="form-control" type="file" id="logoUpload" name="logoUpload" onchange="loadLogo(this);" onclick="loadLogo(this);" />
+                                            <div style="cursor:pointer;width:100%; background:url('');background-repeat:no-repeat;background-size:cover" onclick="document.getElementById('logoUpload').click();">
+                                                <img id="img" name="img" src="/api/media/@Model.DataInfo.LogoId?cache=@Html.Raw(DateTime.Now.Millisecond)" style="max-width:100%;max-height:160px" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.DataInfo.Adress, "Endereço*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.DataInfo.Adress, new { htmlAttributes = new { @class = "form-control", @tabindex = "5" } })
+                                            @Html.ValidationMessageFor(model => model.DataInfo.Adress, "O campo Endereço é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.DataInfo.Neighborhood, "Bairro*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.DataInfo.Neighborhood, new { htmlAttributes = new { @class = "form-control", @tabindex = "6" } })
+                                            @Html.ValidationMessageFor(model => model.DataInfo.Neighborhood, "O campo Bairro é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.DataInfo.City, "Cidade*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.DataInfo.City, new { htmlAttributes = new { @class = "form-control", @tabindex = "7" } })
+                                            @Html.ValidationMessageFor(model => model.DataInfo.City, "O campo Cidade é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.DataInfo.Phone, "Telefone*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.DataInfo.Phone, new { htmlAttributes = new { @class = "form-control", @tabindex = "8" } })
+                                            @Html.ValidationMessageFor(model => model.DataInfo.Phone, "O campo Telefone é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab2">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.ProfileInfo.Name, "Nome do Admnistrador*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.ProfileInfo.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "9" } })
+                                            @Html.ValidationMessageFor(model => model.ProfileInfo.Name, "O campo Nome do Admnistrado é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.ProfileInfo.Email, "Email*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.ProfileInfo.Email, new { htmlAttributes = new { @class = "form-control", @tabindex = "11" } })
+                                            @Html.ValidationMessageFor(model => model.ProfileInfo.Email, "O campo Telefone é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.ProfileInfo.Phone, "Telefone*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.ProfileInfo.Phone, new { htmlAttributes = new { @class = "form-control", @tabindex = "12" } })
+                                            @Html.ValidationMessageFor(model => model.ProfileInfo.Phone, "O campo Telefone é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.ProfileInfo.CPF, "CPF*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.ProfileInfo.CPF, new { htmlAttributes = new { @class = "form-control", @tabindex = "13" } })
+                                            @Html.ValidationMessageFor(model => model.ProfileInfo.CPF, "O campo CPF é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab3">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Username, "Usuário*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @tabindex = "14" } })
+                                            @Html.ValidationMessageFor(model => model.Username, "O campo Usuário é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Password, "Senha*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", @tabindex = "15" })
+                                            @Html.ValidationMessageFor(model => model.Password, "O campo Senha é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-offset-3">
+                                        @Html.LabelFor(model => model.PasswordConfirmation, "Confirmar Senha*:", new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.PasswordFor(model => model.PasswordConfirmation, new { @class = "form-control", @tabindex = "16" })
+                                            @Html.ValidationMessageFor(model => model.PasswordConfirmation, "O campo Confirmar Senha é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div style="display:none;">
+                                        <button id="submitFormButton" type="submit"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-footer border-top color white rounded-bottom-corners nopadding">
+                        <ul class="pager pager-full wizard">
+                            <li class="previous"><a href="javascript:;"><i class="fa fa-arrow-left fa-lg"></i> Voltar</a></li>
+                            <li class="next"><a href="javascript:;">Avançar <i class="fa fa-arrow-right fa-lg"></i></a></li>
+                            <li class="next finish" style="display:none; cursor:pointer" onclick="$('#submitFormButton').click()">
+                                <a>
+                                    <i class="fa fa-check fa-lg"></i> Cadastrar
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        //initialize form wizard
+        $('#rootwizard').bootstrapWizard({
+
+            'tabClass': 'nav nav-tabs tabdrop',
+            onTabShow: function (tab, navigation, index) {
+                var $total = navigation.find('li').not('.tabdrop').length;
+                var $current = index + 1;
+                var $percent = ($current / $total) * 100;
+                $('#rootwizard').find('#bar .progress-bar').css({ width: $percent + '%' });
+
+                // If it's the last tab then hide the last button and show the finish instead
+                if ($current >= $total) {
+                    $('#rootwizard').find('.pager .next').hide();
+                    $('#rootwizard').find('.pager .finish').show();
+                    $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                } else {
+                    $('#rootwizard').find('.pager .next').show();
+                    $('#rootwizard').find('.pager .finish').hide();
+                }
+            },
+            onNext: function (tab, navigation, index) {
+
+                var form = $('.form' + index)
+
+                form.parsley('validate');
+
+                tab.addClass('success');
+
+            },
+
+            onTabClick: function (tab, navigation, index) {
+
+                var form = $('.form' + (index + 1))
+
+                form.parsley('validate');
+
+                tab.addClass('success');
+
+            }
+
+        });
+        // Initialize tabDrop
+        $('.tabdrop').tabdrop({ text: '<i class="fa fa-th-list"></i>' });
+
+
+    })
+</script>
+
+<script src="/Content/Js/app/firm.js" charset="iso-8859-1"></script>

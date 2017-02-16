@@ -1,0 +1,135 @@
+﻿@model  List<Vlast.Gamific.Model.Firm.DTO.MessageDTO>
+@using Vlast.Gamific.Model.Firm.DTO
+@using Vlast.Gamific.Web.Services.Engine.DTO
+
+<div class="tile-header color bg-transparent-black-5 rounded-corners">
+    <ul class="chat-nav side-nav inline">
+        <li><h3>@ViewBag.Team.Nick</h3></li>
+    </ul>
+</div>
+<div class="tile-body transparent nopadding">
+    <div class="chat-content" id="chat-content">
+        @foreach (MessageDTO message in Model)
+        {
+            if (@message.Sender == @ViewBag.WorkerId)
+            {
+                <ul class="chat-list">
+                    <li class="message receive">
+                        <div class="media">
+                            <div class="pull-left user-avatar">
+                                <img class="media-object img-circle" src="https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-@message.SenderLogoId">
+                            </div>
+                            <div class="media-body">
+                                <p class="media-heading"> <span>@message.SenderName</span> <span class="time">@message.SendDateTime</span></p>
+                                @message.Message
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <ul class="chat-list">
+                    <li class="message sent">
+                        <div class="media">
+                            <div class="pull-left user-avatar">
+                                <img class="media-object img-circle" src="https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-@message.SenderLogoId">
+                            </div>
+                            <div class="media-body">
+                                <p class="media-heading"> <span>@message.SenderName</span> <span class="time">@message.SendDateTime</span></p>
+                                @message.Message
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            }
+
+        }
+    </div>
+    <!--<form action="/public/chat/enviarMensagem" method="post" enctype="multipart/form-data">-->
+    <div class="tile-footer transparent nopadding">
+        <div class="chat-reply" id="chat-reply">
+            <input type="hidden" name="TeamId" id="teamId" value="@ViewBag.Team.Id" />
+            <textarea placeholder="Mensagem..." name="message" id="message" class="form-control"></textarea>
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-transparent-white last pull-right" onclick="SendMessage();">Enviar</button>
+            </div>
+        </div>
+    </div>
+    <!--</form>-->
+</div>
+<script type="text/javascript">
+
+    var homePageRefreshTimerHash = window.setTimeout(function () {
+        if ($('#message').val().length <= 0) {
+            window.location.reload();
+        }
+        }, 60000);
+</script>
+<script>
+    $(function(){
+
+      var contentHeight = $('#content').height();
+      var chatInboxHeight = contentHeight - 178;
+      var chatContentHeight = contentHeight - 178 - 200;
+
+      var setChatHeight = function() {
+        $('#chat-inbox').css('height', chatInboxHeight);
+        $('#chat-content').css('height', chatContentHeight);
+      };
+
+      setChatHeight();
+
+      $(window).resize(function() {
+        contentHeight = $('#content').height();
+        chatInboxHeight = contentHeight - 178;
+        chatContentHeight = contentHeight - 178 - 200;
+
+        setChatHeight();
+      });
+
+      $("#chat-inbox").niceScroll({
+        cursorcolor: '#000000',
+        zindex: 999999,
+        bouncescroll: true,
+        cursoropacitymax: 0.4,
+        cursorborder: '',
+        cursorborderradius: 0,
+        cursorwidth: '5px'
+      });
+
+      $("#chat-content").niceScroll({
+        cursorcolor: '#000000',
+        zindex: 999999,
+        bouncescroll: true,
+        cursoropacitymax: 0.4,
+        cursorborder: '',
+        cursorborderradius: 0,
+        cursorwidth: '5px'
+      });
+
+      $('#chat-inbox .chat-actions > span').tooltip({
+        placement: 'top',
+        trigger: 'hover',
+        html : true,
+        container: 'body'
+      });
+
+      $('#initialize-search').click(function(){
+        $('#chat-search').toggleClass('active').focus();
+      });
+
+      $(document).click(function(e) {
+        if (($(e.target).closest("#initialize-search").attr("id") != "initialize-search") && $(e.target).closest("#chat-search").attr("id") != "chat-search") {
+          $('#chat-search').removeClass('active');
+        }
+      });
+
+      $(window).mouseover(function() {
+        $("#chat-inbox").getNiceScroll().resize();
+        $("#chat-content").getNiceScroll().resize();
+      });
+
+    })
+
+</script>

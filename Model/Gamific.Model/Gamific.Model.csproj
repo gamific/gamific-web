@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{951BF9BC-CE2C-476D-A16E-DEB4A2EA483A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Vlast.Gamific.Model</RootNamespace>
+    <AssemblyName>Vlast.Gamific.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AWSSDK">
+      <HintPath>..\..\packages\AWSSDK.2.3.37.0\lib\net45\AWSSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MySql.Data.6.9.6\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MySql.Data.Entity.6.9.6\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\Domain\UserProfileEntity.cs" />
+    <Compile Include="Account\Domain\UserRoleEntity.cs" />
+    <Compile Include="Account\Domain\UserAccountEntity.cs" />
+    <Compile Include="Account\DTO\Enums.cs" />
+    <Compile Include="Account\DTO\PasswordDTO.cs" />
+    <Compile Include="Account\Repository\AccountRepository.cs" />
+    <Compile Include="Account\Repository\UserProfileRepository.cs" />
+    <Compile Include="Firm\Domain\ParamEntity.cs" />
+    <Compile Include="Firm\Domain\GoalEntity.cs" />
+    <Compile Include="Firm\Domain\MetricEntity.cs" />
+    <Compile Include="Firm\Domain\DataEntity.cs" />
+    <Compile Include="Firm\Domain\SponsorTeamEntity.cs" />
+    <Compile Include="Firm\Domain\TeamWorkerEntity.cs" />
+    <Compile Include="Firm\Domain\ResultEntity.cs" />
+    <Compile Include="Firm\DTO\CarDTO.cs" />
+    <Compile Include="Firm\DTO\Enums.cs" />
+    <Compile Include="Firm\Domain\MessageEntity.cs" />
+    <Compile Include="Firm\Domain\VideoQuestionEntity.cs" />
+    <Compile Include="Firm\Domain\VideoQuestionAnsweredEntity.cs" />
+    <Compile Include="Firm\Domain\VideoEntity.cs" />
+    <Compile Include="Firm\Domain\WorkerTypeMetricEntity.cs" />
+    <Compile Include="Firm\DTO\GoalDTO.cs" />
+    <Compile Include="Firm\DTO\MetricDTO.cs" />
+    <Compile Include="Firm\DTO\EngineTeamDTO.cs" />
+    <Compile Include="Firm\DTO\WorkerTypeMetricDTO.cs" />
+    <Compile Include="Firm\Repository\GoalRepository.cs" />
+    <Compile Include="Firm\Repository\ParamRepository.cs" />
+    <Compile Include="Firm\Repository\VideoQuestionAnsweredRepository.cs" />
+    <Compile Include="Firm\Repository\VideoQuestionRepository.cs" />
+    <Compile Include="Firm\Repository\VideoRepository.cs" />
+    <Compile Include="Firm\DTO\RankingDTO.cs" />
+    <Compile Include="Firm\Repository\MessageRepository.cs" />
+    <Compile Include="Firm\DTO\WorkerCarDTO.cs" />
+    <Compile Include="Firm\Repository\ResultRepository.cs" />
+    <Compile Include="Firm\Repository\MetricRepository.cs" />
+    <Compile Include="Firm\Repository\CampaignRepository.cs" />
+    <Compile Include="Firm\Domain\TeamEntity.cs" />
+    <Compile Include="Firm\Domain\WorkerTypeEntity.cs" />
+    <Compile Include="Firm\Domain\WorkerEntity.cs" />
+    <Compile Include="Firm\DTO\FirmDTO.cs" />
+    <Compile Include="Firm\DTO\WorkerDTO.cs" />
+    <Compile Include="Firm\Repository\DataRepository.cs" />
+    <Compile Include="Firm\Domain\CampaignEntity.cs" />
+    <Compile Include="Firm\Repository\WorkerTypeMetricRepository.cs" />
+    <Compile Include="Firm\Repository\WorkerTypeRepository.cs" />
+    <Compile Include="Firm\Repository\TeamRepository.cs" />
+    <Compile Include="Firm\DTO\TeamDTO.cs" />
+    <Compile Include="Firm\Repository\TeamWorkerRepository.cs" />
+    <Compile Include="Firm\DTO\MessageDTO.cs" />
+    <Compile Include="Firm\Repository\WorkerRepository.cs" />
+    <Compile Include="Media\Domain\ImageEntity.cs" />
+    <Compile Include="Media\Repository\ImageRepository.cs" />
+    <Compile Include="ModelContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Public\Domain\HelpEntity.cs" />
+    <Compile Include="Public\Domain\TopicHelpEntity.cs" />
+    <Compile Include="Public\DTO\ResultMetricDTO.cs" />
+    <Compile Include="Public\Repository\HelpRepository.cs" />
+    <Compile Include="Public\Repository\TopicHelpRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Global\Vlast.Broker\Vlast.Broker.csproj">
+      <Project>{bfccb8f7-af0f-4691-a437-2857d1fc0e5e}</Project>
+      <Name>Vlast.Broker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Global\Vlast.Util\Vlast.Util.csproj">
+      <Project>{be0db0b5-f80e-4173-9a2f-1be242f238fb}</Project>
+      <Name>Vlast.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Media\DTO\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

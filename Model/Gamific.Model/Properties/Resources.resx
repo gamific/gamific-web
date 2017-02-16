@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SQL_MESSAGES_BY_TEAM" xml:space="preserve">
+    <value>select profile.Name as SenderName,
+worker.LogoId as SenderLogoId,
+message.Id as Id,
+message.FirmId as FirmId,
+message.Sender as Sender,
+message.TeamId as TeamId,
+message.Message as Message,
+message.SendDateTime as SendDateTime
+from Firm_Message message,
+Account_UserProfile profile,
+Firm_Worker worker
+where message.TeamId = {1}
+and message.Sender = profile.Id
+and message.FirmId = {0}
+and worker.UserId = profile.Id 
+order by message.SendDateTime;</value>
+  </data>
+  <data name="SQL_TEAMS" xml:space="preserve">
+    <value>select team.id as IdTeam,
+team.logoId as LogoId,
+team.TeamName as TeamName,
+teamWorkerType.TypeName as ProfileName,
+sponsorProfile.Name as SponsorName,
+teamWorkerType.TypeName as TypeName
+from Firm_Team team,
+Firm_Worker sponsor,
+Account_UserProfile sponsorProfile,
+Firm_Worker_Type teamWorkerType
+where team.FirmId = {0}
+and sponsor.id = team.sponsorId
+and sponsorProfile.id = sponsor.UserId
+and teamWorkerType.Id = team.WorkerTypeId
+and team.status = 1
+and sponsor.status = 1
+limit {1}, {2};</value>
+  </data>
+  <data name="SQL_TEAMS_DTOS_BY_TEAMS_ID" xml:space="preserve">
+    <value>SELECT
+team.Id as IdTeam,
+team.TeamName as TeamName,
+user.Name as SponsorName
+FROM Firm_Team as team,
+Firm_Worker as worker,
+Account_UserProfile as user
+WHERE team.SponsorId = worker.Id
+AND worker.UserId = user.Id
+AND team.id in ({1})
+and worker.firmId = {0}
+and team.firmId = {0}
+and team.status = 1
+and worker.status = 1</value>
+  </data>
+  <data name="SQL_TEAMS_FROM_WORKER" xml:space="preserve">
+    <value>select team.*
+from Firm_Team team,
+Firm_Team_Worker teamWorker
+where team.FirmId = {1}
+and teamWorker.FirmId = {1}
+and teamWorker.WorkerId = {0}
+and team.Id = teamWorker.TeamId
+and team.status = 1
+and teamWorker.status = 1;</value>
+  </data>
+  <data name="SQL_WORKER" xml:space="preserve">
+    <value>select worker.id as idWorker,
+worker.logoId as LogoId,
+systemProfile.Name,
+worker.IdExterno as IdExterno,
+systemProfile.id as IdProfile,
+userProfile.Email,
+userProfile.id as idUser,
+userProfile.Name,
+userProfile.cpf,
+userProfile.Phone,
+worker.WorkerTypeId as WorkerTypeId
+from Firm_Worker worker, 
+Account_UserProfile systemProfile, 
+Account_UserProfile userProfile
+where worker.FirmId = {0}
+and worker.id = {1}
+and systemProfile.Id = worker.UserId
+and userProfile.Id = worker.UserId
+and worker.status = 1;</value>
+  </data>
+  <data name="SQL_WORKERS" xml:space="preserve">
+    <value>select worker.id as IdWorker,
+worker.logoId as LogoId,
+workerType.TypeName as WorkerTypeName,
+workerType.id as WorkerTypeId,
+userProfile.Email,
+userProfile.Name,
+userProfile.cpf,
+userProfile.Phone,
+userProfile.Id as IdUser
+from Firm_Worker worker, 
+Firm_Worker_Type workerType, 
+Account_UserProfile userProfile
+where worker.FirmId = {0}
+and workerType.Id = worker.WorkerTypeId 
+and userProfile.Id = worker.UserId
+and worker.status = 1
+and workerType.status = 1
+limit {1}, {2};</value>
+  </data>
+  <data name="SQL_WORKERS_BY_PROFILE" xml:space="preserve">
+    <value>select worker.id as IdWorker,
+userProfile.Email,
+userProfile.Name,
+userProfile.cpf,
+userProfile.Phone,
+systemProfile.TypeName,
+systemProfile.id as IdProfile
+from Firm_Worker worker,
+Firm_Worker_Type systemProfile, 
+Account_UserProfile userProfile
+where worker.FirmId = {0}
+and systemProfile.ProfileName = {1}
+and userProfile.Id = worker.UserId
+and systemProfile.Id = worker.WorkerTypeId
+and worker.status = 1
+and 0 = (select count(1) from Firm_Team team1 where team1.SponsorId = worker.id)
+limit {2}, {3};</value>
+  </data>
+  <data name="SQL_WORKERS_FROM_TEAM" xml:space="preserve">
+    <value>select worker.id as IdWorker,
+worker.logoId as LogoId,
+workerProfile.Email,
+workerProfile.Name,
+workerProfile.cpf,
+workerProfile.Phone,
+teamWorker.Id as IdAssociation
+from Firm_Worker worker,
+Account_UserProfile workerProfile,
+Firm_Team team,
+Firm_Team_Worker teamWorker
+where team.Id = {0}
+and worker.FirmId = {1}
+and workerProfile.Id = worker.UserId
+and teamWorker.WorkerId = worker.Id
+and team.Id = teamWorker.TeamId
+and team.status = 1
+and teamWorker.status = 1
+and worker.status = 1
+limit {2}, {3};</value>
+  </data>
+  <data name="SQL_WORKERS_TO_ASSOCIATE" xml:space="preserve">
+    <value>select worker.id as IdWorker,
+workerProfile.Email,
+workerProfile.Name,
+workerProfile.cpf,
+workerProfile.Phone
+from Firm_Worker worker,
+Account_UserProfile workerProfile,
+Firm_Team team
+where team.FirmId = {0}
+and worker.FirmId = {0}
+and team.Id = {1}
+and worker.WorkerTypeId = {2}
+and workerProfile.Id = worker.UserId
+and worker.Id != team.SponsorId
+and worker.id not in (select teamWorker.WorkerId 
+from Firm_Team as team, Firm_Team_Worker as teamWorker 
+where teamWorker.FirmId = {0}
+and teamWorker.status = 1)
+and worker.status = 1
+and team.status = 1 
+limit {3}, {4};</value>
+  </data>
+</root>

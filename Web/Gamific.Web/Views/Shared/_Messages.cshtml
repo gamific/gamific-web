@@ -1,0 +1,46 @@
+﻿@using Vlast.Gamific.Web.Controllers;
+
+@{
+    var alerts = TempData.ContainsKey(Alert.TempDataKey)
+                ? (List<Alert>)TempData[Alert.TempDataKey]
+                : new List<Alert>();
+
+    if (alerts.Any())
+    {
+        <br />
+    }
+
+    foreach (var alert in alerts)
+    {
+        var dismissableClass = alert.Dismissable ? "alert-dismissable" : null;
+        <div class="alert alert-@alert.AlertStyle @dismissableClass" style="width:88%">
+            @if (alert.Dismissable)
+            {
+                <button type="button" class="close" onclick="this.parentElement.style.display='none'" data-dismiss="alert" aria-hidden="true">&times;</button>
+            }
+            @Html.Raw(alert.Message)
+        </div>
+
+        if (alert.ExceptionError != null)
+        {
+            <span style="display:none">
+                @Html.Raw(alert.ExceptionError.ToString())
+            </span>
+        }
+    }
+
+    <div id="messagesAlert"></div>
+}
+
+<script type="text/javascript">
+    flag = true;
+
+    function alertMessage(message, style) {
+        if (flag) {
+            $('#messagesAlert').append("<br id='brId'/>");
+            flag = false;
+        }
+        
+        $('#messagesAlert').append("<div class='alert alert-" + style + " alert-dismissable' style='width:88%' id='messagesAlert'><button type='button' class='close'  data-dismiss='alert' aria-hidden='true'>&times</button>" + message + "</div>");
+    }
+</script>

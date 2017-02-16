@@ -1,0 +1,64 @@
+﻿@model Vlast.Gamific.Web.Services.Engine.DTO.MetricEngineDTO
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <script type="text/javascript">
+        $("#Dashboard").addClass("active");
+    </script>
+
+    <input type="hidden" value="@ViewBag.EpisodeId" id="EpisodeId" />
+    <input type="hidden" value="@ViewBag.TeamId" id="TeamId" />
+    <input type="hidden" value="@ViewBag.PlayerId" id="PlayerId" />
+    <input type="hidden" value="@Model.Id" id="MetricId" />
+
+    <div class="pageheader">
+        <h2>@ViewBag.Name</h2>
+        <br />
+        <h2><i class="fa @Model.Icon"></i> Detalhes da métrica: @Model.Name</h2>
+        <br />
+        <small>
+            <a href="/public/dashboard/@ViewBag.EpisodeId/@ViewBag.TeamId/@ViewBag.PlayerId"><i class="fa fa-arrow-left"></i> Voltar</a>
+        </small>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div class="">
+                            <table id="MetricResultsDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Nome</th>
+                                        <th>CPF</th>
+                                        <th>Resultado</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
+
+    <script src="~/Content/Js/app/dashboard.js" charset="iso-8859-1"></script>
+
+    <script>
+        $(document).ready(function() {
+            LoadMetricResultsDataTable();
+        });
+    </script>
+</body>

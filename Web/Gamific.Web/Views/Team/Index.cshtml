@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#Equipes").addClass("active");
+</script>
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-flag"></i> Equipes</h2>
+    </div>
+    <div class="main">
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+
+                <section class="tile transparent" id="Filters">
+                    <div class="tile-header color transparent-black textured rounded-corners ">
+                        Campanha
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <select class="chosen-select chosen-transparent form-control" id="dropDownEpisodes"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+
+                        <div id="gerenciarperfis" class="table-toolbar-left">
+                            <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/equipes/cadastrar" title="Cadastrar Equipe" onclick="showEntityModal(this); return false;"><i class="fa fa-flag"></i> Cadastrar Equipe</a>
+                        </div>
+                        
+
+                        <div class="">
+                            <table id="teamDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Responsável</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
+
+<script src="/Content/Js/app/team.js" charset="iso-8859-1"></script>

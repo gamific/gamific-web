@@ -1,0 +1,88 @@
+﻿@model  Vlast.Gamific.Web.Services.Engine.DTO.TeamEngineDTO
+
+<form id="formCreateTeam" action="#">
+    <span style="display:none">
+        @Html.HiddenFor(model => model.Id);
+        @Html.HiddenFor(model => model.LogoId);
+        @Html.HiddenFor(model => model.GameId);
+    </span>
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" title="Fechar" id="btn_close_modal" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="criarperfilLabel">Criar Equipe</h4>
+                </div>
+                <div class="modal-body" id="edit-modal-body">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
+                    </div>
+
+                    <div class="col-xs-12" style="top:7px;">
+                        @Html.Label("Selecione uma Campanha*")
+                        <div class="form-group">
+                            <select class="form-control" name="episodeId">
+                                @foreach (SelectListItem Episode in ViewBag.Episodes)                                {
+                                    if (Episode.Value == ViewBag.EpisodeId && ViewBag.EpisodeId != null)
+                                    {
+                                        <option value="@Episode.Value" selected="selected">@Episode.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Episode.Value">@Episode.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12" style="top:7px;">
+                        @Html.Label("Nome da Equipe*")
+                        <div class="form-group">
+                            <div class="modal-div">
+                                @Html.EditorFor(model => model.Nick, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                                @Html.ValidationMessageFor(model => model.Nick, "O campo Nome da Equipe é obrigatório.", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12" style="top:7px;">
+                        @Html.Label("Selecione um Responsavel*")
+                        <div class="form-group">
+                            <select class="form-control" name="masterPlayerId">
+                                @foreach (SelectListItem Sponsor in ViewBag.Sponsors)
+                                {
+                                    if (Sponsor.Value == ViewBag.SponsorId && ViewBag.SponsorId != null)
+                                    {
+                                        <option value="@Sponsor.Value" selected="selected">@Sponsor.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Sponsor.Value">@Sponsor.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-12" style="top:7px;">
+                            @Html.Label("Avatar*")
+                            <input tabindex="4" class="form-control" type="file" id="logoUpload" name="logoUpload" onchange="loadLogo(this);" onclick="loadLogo(this);" />
+                            <div style="cursor:pointer;width:100%; background:url('');background-repeat:no-repeat;background-size:cover" onclick="document.getElementById('logoUpload').click();">
+                                <img id="img" name="img" src="/api/media/@Model.LogoId?cache=@Html.Raw(DateTime.Now.Millisecond)" style="max-width:100%;max-height:160px" />
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="submitCreateTeam();" data-dismiss="modal">Concluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
