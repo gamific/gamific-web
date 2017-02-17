@@ -225,6 +225,16 @@ function loadRankingDataTablePlayer() {
 
 function loadCharts() {
 
+    var logoPath = "";
+    $.ajax({
+        url: window.location.origin + "/apiMedia/imagePath",
+        async: false,
+        type: "GET",
+        success: function (data) {
+            logoPath = data;
+        }
+    });
+
     var firstInput = $("#posicao1").val();
     var secondInputs = $("#posicao2").val();
     var thirdInput = $("#posicao3").val();
@@ -332,13 +342,13 @@ function loadCharts() {
                 crop: false,
                 formatter: function () {
                     if (4 - this.y == 1 && firstInput != undefined) {
-                        return '<div class="podiumChart" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-' + firstLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span style="font-family: \'Segoe UI\', Arial, sans-serif; font-size: 14px; color: #FFF; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
+                        return '<div class="podiumChart" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'' + logoPath + firstLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span style="font-family: \'Segoe UI\', Arial, sans-serif; font-size: 14px; color: #FFF; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
                     }
                     if (4 - this.y == 2 && secondInputs != undefined) {
-                        return '<div class="podiumChart" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-' + secondLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span style="font-family: \'Segoe UI\', Arial, sans-serif; font-size: 14px; color: #FFF; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
+                        return '<div class="podiumChart" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'' + logoPath + secondLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span style="font-family: \'Segoe UI\', Arial, sans-serif; font-size: 14px; color: #FFF; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
                     }
                     if (4 - this.y == 3 && thirdInput != undefined) {
-                        return '<div class="podiumChart" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-' + thirdLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span style="font-family: \'Segoe UI\', Arial, sans-serif; font-size: 14px; color: #FFF; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
+                        return '<div class="podiumChart" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'' + logoPath + thirdLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span style="font-family: \'Segoe UI\', Arial, sans-serif; font-size: 14px; color: #FFF; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
                     }
                 },
                 style: {

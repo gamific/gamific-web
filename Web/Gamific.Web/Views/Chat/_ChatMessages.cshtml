@@ -1,5 +1,6 @@
 ﻿@model  List<Vlast.Gamific.Model.Firm.DTO.MessageDTO>
 @using Vlast.Gamific.Model.Firm.DTO
+@using Vlast.Gamific.Web.Controllers
 @using Vlast.Gamific.Web.Services.Engine.DTO
 
 <div class="tile-header color bg-transparent-black-5 rounded-corners">
@@ -17,7 +18,7 @@
                     <li class="message receive">
                         <div class="media">
                             <div class="pull-left user-avatar">
-                                <img class="media-object img-circle" src="https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-@message.SenderLogoId">
+                                <img class="media-object img-circle" src="@BaseController.CurrentURL@message.SenderLogoId">
                             </div>
                             <div class="media-body">
                                 <p class="media-heading"> <span>@message.SenderName</span> <span class="time">@message.SendDateTime</span></p>
@@ -33,7 +34,7 @@
                     <li class="message sent">
                         <div class="media">
                             <div class="pull-left user-avatar">
-                                <img class="media-object img-circle" src="https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-@message.SenderLogoId">
+                                <img class="media-object img-circle" src="@BaseController.CurrentURL@message.SenderLogoId">
                             </div>
                             <div class="media-body">
                                 <p class="media-heading"> <span>@message.SenderName</span> <span class="time">@message.SendDateTime</span></p>
