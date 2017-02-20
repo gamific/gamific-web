@@ -429,8 +429,7 @@ function initializeChart(metricId, checked) {
         async: false,
         dataType: 'json',
         success: function (d) {
-            var z = [d];
-            campaignsNames = z;
+            campaignsNames = d;
         }
     });
 
@@ -442,7 +441,7 @@ function initializeChart(metricId, checked) {
         dataType: 'json',
         success: function (d) {
             for (var i = 0; i < d.length; i++) {
-                var z = [d[i].id, d[i].name];
+                var z = [i, d[i].name.substr(0, 7) + "..." ];
                 y.push(z);
             }
 
@@ -455,7 +454,7 @@ function initializeChart(metricId, checked) {
 
             tickLength: 0,
             tickDecimals: 0,
-            min: 1,
+            min: 0,
             ticks: y,
 
             font: {
@@ -519,7 +518,7 @@ function initializeChart(metricId, checked) {
                         var x = item.datapoint[0],
                             y = item.datapoint[1];
 
-                        $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x - 1] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
+                        $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
                           .css({ top: item.pageY - 30, left: item.pageX + 5 })
                           .fadeIn(200);
                     } else {
@@ -559,6 +558,7 @@ function initializeChart(metricId, checked) {
                 );
 
                 window.setTimeout(function () {
+                    hideLoading();
                 }, 2000);
             }
         });

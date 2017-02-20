@@ -32,7 +32,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                 };
 
 
-            ViewBag.Metrics = MetricEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 1000).List.metric;
+            ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
             ViewBag.State = state;
 
@@ -44,8 +44,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ContentResult GetCampaignsWithIds()
         {
-            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 1000).List.episode;
-
+            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
+            
             return Content(JsonConvert.SerializeObject(episodes), "application/json");
         }
 
@@ -53,7 +53,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ContentResult GetCampaigns()
         {
-            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 1000).List.episode;
+            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
 
             List<string> rtn = new List<string>();
 
@@ -71,15 +71,17 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             ChartResultDTO chartDTO = new ChartResultDTO();
 
-            chartDTO.Positions = new List<List<string>>();
+            chartDTO.Positions = new List<List<int>>();
 
             MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
 
-            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 1000).List.episode;
+            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
+
+            int i = 0;
 
             foreach (EpisodeEngineDTO episode in episodes)
             {
-                List<string> point = new List<string>();
+                List<int> point = new List<int>();
 
                 GetAllDTO dto = EpisodeEngineService.Instance.resultsByEpisodeIdAndMetricId(episode.Id, metric.Id, 0, 1000);
 
@@ -94,9 +96,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
                     }
                 }
 
-                point.Add(episode.Id);
-                point.Add(resultInt.ToString());
+                point.Add(i);
+                point.Add(resultInt);
                 chartDTO.Positions.Add(point);
+                i++;
             }
 
             chartDTO.MetricName = metric.Name;
