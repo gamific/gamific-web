@@ -1,5 +1,4 @@
-﻿@using (Ajax.BeginForm("SaveResultArchive", "LaunchResults", new AjaxOptions { OnSuccess = "onSuccessSaveResultArchive", OnFailure = "onFailureSaveResultArchive", UpdateTargetId = "modal-panel" }, new { enctype = "multipart/form-data" }))
-{
+﻿<form action="salvarResultadoArquivo" id="ArchiveForm">
     <div id="modal-panel">
         <div class="modal-dialog modal-xlg">
             <div class="modal-content">
@@ -9,6 +8,7 @@
                 <div class="modal-body" id="edit-modal-body">
                     <input type="hidden" name="teamId" id="teamId" value="@ViewBag.TeamId" />
                     <input type="hidden" name="episodeId" id="episodeId" value="@ViewBag.EpisodeId" />
+                    <input type="hidden" name="teste_12_14" id="teste_12_14" value="17-02-2017" />
                     @Html.AntiForgeryToken()
                     <div class="row">
                         @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
@@ -20,41 +20,44 @@
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12 modal-div">
-                            <a id="downloadArchive" class="btn btn-default sing-up-button" href="/admin/lancarResultados/baixarPlanilha/@ViewBag.EpisodeId" onclick="" title="Baixar planilha de resultados" ><i class="fa fa-download"></i> Baixar Modelo</a>
+                            <a id="downloadArchive" class="btn btn-default sing-up-button" href="/admin/lancarResultados/baixarPlanilha/@ViewBag.EpisodeId" onclick="" title="Baixar planilha de resultados"><i class="fa fa-download"></i> Baixar Modelo</a>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                    <button type="button" onclick="SubmitArchive()" data-dismiss="modal" class="btn btn-primary">Adicionar</button>
                 </div>
             </div>
         </div>
     </div>
-}
+</form>
 
 <script>
+    /*
     window.addEventListener("submit", function (e) {
-        var form = e.target;
-        if (form.getAttribute("enctype") === "multipart/form-data") {
-            if (form.dataset.ajax) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                var xhr = new XMLHttpRequest();
-                xhr.open(form.method, form.action);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        if (form.dataset.ajaxUpdate) {
-                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
-                            if (updateTarget) {
-                                updateTarget.innerHTML = xhr.responseText;
-                            }
+    var form = e.target;
+    if (form.getAttribute("enctype") === "multipart/form-data") {
+        if (form.dataset.ajax) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    if (form.dataset.ajaxUpdate) {
+                        var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                        if (updateTarget) {
+                            updateTarget.innerHTML = xhr.responseText;
                         }
                     }
-                };
-                xhr.send(new FormData(form));
-            }
-            onSuccessSaveResultArchive();
+                }
+            };
+            xhr.send(new FormData(form));
         }
-    }, true);
+        onSuccessSaveResultArchive();
+    }
+
+}, true);
+    */
 </script>

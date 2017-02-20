@@ -338,7 +338,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("salvarResultadoArquivo")]
         [HttpPost]
         [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
-        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive)
+        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string teste_12_14)
         {
             try
             {
@@ -346,7 +346,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 resultsArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), resultsArchive.FileName));
 
-                string path = Path.Combine(Server.MapPath("~/App_Data"), resultsArchive.FileName);
+                string path = Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(resultsArchive.FileName));
 
                 var archive = new ExcelQueryFactory(path);
 
@@ -415,18 +415,16 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     }
                 }
 
-                Success("Resultados lançados com sucesso.");
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
 
-                ModelState.AddModelError("", "Ocorreu um erro ao tentar salvar os resultados.");
+                //ModelState.AddModelError("", "Ocorreu um erro ao tentar salvar os resultados.");
 
-                return PartialView("_ResultsArchive");
+                return Json(new { Success = false, Exception = ex.Message }, JsonRequestBehavior.DenyGet);
             }
-
-            return new EmptyResult();
         }
 
     }

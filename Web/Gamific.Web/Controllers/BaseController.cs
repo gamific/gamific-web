@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Json;
 using System.Security.Claims;
 using System.Threading;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using Vlast.Gamific.Model.Account.Domain;
 using Vlast.Gamific.Model.Account.DTO;
@@ -68,6 +69,17 @@ namespace Vlast.Gamific.Web.Controllers
         }
 
         /// <summary>
+        /// Retorna o URL para o servidor
+        /// </summary>
+        public static string CurrentURL
+        {
+            get
+            {
+                return WebConfigurationManager.AppSettings["S3_URL"];
+            }
+        }
+
+        /// <summary>
         /// Email do usuário logado
         /// </summary>
         public static string CurrentUserEmail
@@ -113,12 +125,7 @@ namespace Vlast.Gamific.Web.Controllers
                         System.Web.HttpContext.Current.Session.Add(key, firm);
                     }
                 }
-
-                DataEntity teste = (DataEntity)System.Web.HttpContext.Current.Session[key];
                 
-                //teste.ExternalId = "587ccf6ab3084b0ad0d070d5";
-                //return teste;
-
                 return (DataEntity)System.Web.HttpContext.Current.Session[key];
             }
         }
@@ -174,7 +181,7 @@ namespace Vlast.Gamific.Web.Controllers
                 return (WorkerTypeEntity)System.Web.HttpContext.Current.Session[key];
             }
         }
-
+        /*
         public static string CurrentURL
         {
             get
@@ -182,7 +189,7 @@ namespace Vlast.Gamific.Web.Controllers
                 return System.Web.HttpContext.Current.Request.Url.ToString();
             }
         }
-
+        */
         public static bool IsSystemAdmin
         {
             get

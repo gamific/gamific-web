@@ -288,6 +288,7 @@
     <Compile Include="Controllers\Management\WorkerTypeController.cs" />
     <Compile Include="Controllers\Management\GoalController.cs" />
     <Compile Include="Controllers\Management\WorkerTypeMetricController.cs" />
+    <Compile Include="Controllers\Media\MediaAPIController.cs" />
     <Compile Include="Controllers\Public\AboutController.cs" />
     <Compile Include="Controllers\Public\DashboardController.cs" />
     <Compile Include="Controllers\Public\Model\ChartResultDTO.cs" />

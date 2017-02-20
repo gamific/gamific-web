@@ -128,12 +128,12 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 dto.cars = new List<WorkerCarDTO>();
                 dto.CompanyLogo = CurrentFirm.LogoId;
                 dto.Target = Target3D.PLAYER;
-                dto.LogoPathOutdoor1 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor2 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor3 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor4 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-                dto.LogoPathBanner1 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-                dto.LogoPathBanner2 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
+                dto.LogoPathOutdoor1 = CurrentURL + CurrentFirm.LogoId;
+                dto.LogoPathOutdoor2 = CurrentURL + CurrentFirm.LogoId;
+                dto.LogoPathOutdoor3 = CurrentURL + CurrentFirm.LogoId;
+                dto.LogoPathOutdoor4 = CurrentURL + CurrentFirm.LogoId;
+                dto.LogoPathBanner1 =  CurrentURL + CurrentFirm.LogoId;
+                dto.LogoPathBanner2 =  CurrentURL  + CurrentFirm.LogoId;
 
                 GetAllDTO all = TeamEngineService.Instance.GetAllTeamScoreByEpisodeId(episodeId, metricId);
 
@@ -149,7 +149,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         HelmetColor = GenerateColorHexadecimal(3 * i),
                         LogoId = team.LogoId,
                         Points = (int)team.Score,
-                        AvatarPath = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + team.LogoId
+                        AvatarPath = CurrentURL + team.LogoId
                     });
                     i++;
                 }
@@ -169,12 +169,12 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 dto.cars = new List<WorkerCarDTO>();
                 dto.CompanyLogo = CurrentFirm.LogoId;
                 dto.Target = Target3D.PLAYER;
-                dto.LogoPathOutdoor1 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor2 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor3 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor4 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-                dto.LogoPathBanner1 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-                dto.LogoPathBanner2 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
+                dto.LogoPathOutdoor1 = CurrentURL+ CurrentFirm.LogoId;
+                dto.LogoPathOutdoor2 = CurrentURL + CurrentFirm.LogoId;
+                dto.LogoPathOutdoor3 = CurrentURL + CurrentFirm.LogoId;
+                dto.LogoPathOutdoor4 = CurrentURL + CurrentFirm.LogoId;
+                dto.LogoPathBanner1 =  CurrentURL + CurrentFirm.LogoId;
+                dto.LogoPathBanner2 =  CurrentURL + CurrentFirm.LogoId;
 
                 GetAllDTO all = RunEngineService.Instance.GetAllRunScore(teamId, metricId);
                 List<PlayerEngineDTO> players = (from run in all.List.run select PlayerEngineService.Instance.GetById(run.PlayerId)).ToList();
@@ -200,7 +200,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                 HelmetColor = GenerateColorHexadecimal(3),
                                 LogoId = player.LogoId,
                                 Points = (int)run.Score,
-                                AvatarPath = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + player.LogoId
+                                AvatarPath = CurrentURL + player.LogoId
                             }).ToList();
 
                 return dto;
@@ -221,13 +221,12 @@ namespace Vlast.Gamific.Web.Controllers.Public
             dto.cars = new List<WorkerCarDTO>();
             dto.CompanyLogo = CurrentFirm.LogoId;
             dto.Target = Target3D.PLAYER;
-            dto.LogoPathOutdoor1 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-            dto.LogoPathOutdoor2 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-            dto.LogoPathOutdoor3 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-            dto.LogoPathOutdoor4 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-            dto.LogoPathBanner1= "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-            dto.LogoPathBanner2 = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + CurrentFirm.LogoId;
-
+            dto.LogoPathOutdoor1 = CurrentURL + CurrentFirm.LogoId;
+            dto.LogoPathOutdoor2 = CurrentURL + CurrentFirm.LogoId;
+            dto.LogoPathOutdoor3 = CurrentURL + CurrentFirm.LogoId;
+            dto.LogoPathOutdoor4 = CurrentURL + CurrentFirm.LogoId;
+            dto.LogoPathBanner1=   CurrentURL + CurrentFirm.LogoId;
+            dto.LogoPathBanner2 =  CurrentURL + CurrentFirm.LogoId;
 
             if (CurrentWorkerType.ProfileName == Profiles.JOGADOR)
             {
@@ -255,7 +254,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         HelmetColor = GenerateColorHexadecimal(3),
                         LogoId = worker.LogoId,
                         Points = totalPoints,
-                        AvatarPath = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + worker.LogoId
+                        AvatarPath = CurrentURL + worker.LogoId
                     };
 
                     if (worker.IdWorker == CurrentWorker.Id)
@@ -294,7 +293,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         HelmetColor = GenerateColorHexadecimal(3),
                         LogoId = worker.LogoId,
                         Points = totalPoints,
-                        AvatarPath = "https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + worker.LogoId
+                        AvatarPath = CurrentURL + worker.LogoId
                     };
 
                     car.isFirstPerson = false;

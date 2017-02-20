@@ -193,6 +193,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             player.Role = worker.WorkerTypeId.ToString();
                             player.LogoId = worker.LogoId;
                             player.Xp = entity.TotalXp;
+                            player.Email = entity.Email;
+                            player.Cpf = entity.Cpf;
 
                             PlayerEngineService.Instance.CreateOrUpdate(player);
 
@@ -548,7 +550,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Nick = request.Name,
                                 Role = row[4].ToString().Split('-')[0],
                                 GameId = worker.ExternalFirmId,
-                                LogoId = worker.LogoId
+                                LogoId = worker.LogoId,
+                                Cpf = request.Cpf,
+                                Email = request.Email
                             };
 
 
