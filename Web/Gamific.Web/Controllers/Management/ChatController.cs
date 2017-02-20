@@ -80,6 +80,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             }
 
             ViewBag.WorkerId = CurrentWorker.Id;
+            ViewBag.LogoPath = CurrentURL;
 
             return View(teams);
         }

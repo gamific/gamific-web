@@ -1,4 +1,14 @@
 ﻿function loadLaunchResultsDataTable() {
+    var logoPath = "";
+    $.ajax({
+        url: window.location.origin + "/apiMedia/imagePath",
+        async: false,
+        type: "GET",
+        success: function (data) {
+            logoPath = data;
+        }
+    });
+
     $('#launchResultsDataTable').dataTable({
         "serverSide": true,
         "ajax": "/admin/lancarResultados/search/",
@@ -25,7 +35,7 @@
                 "searchable": true,
                 "render": function (data, type, row) {
 
-                    var render = data.split(";")[0] + "<img src='https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + data.split(";")[1] + "?cache=@Html.Raw(DateTime.Now.Millisecond)' style='width: 48px !important; height: 48px !important; border-radius:100%; float: left; margin-right: 10px;' />";
+                    var render = data.split(";")[0] + "<img src='" + logoPath + data.split(";")[1] + "?cache=@Html.Raw(DateTime.Now.Millisecond)' style='width: 48px !important; height: 48px !important; border-radius:100%; float: left; margin-right: 10px;' />";
 
                     return render;
                 }
@@ -155,10 +165,10 @@ function submitNewResult() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            alertMessage("Equipe adicionada com sucesso.", "success");
+            alertMessage("Resultado adicionado com sucesso.", "success");
         },
         error: function () {
-            alertMessage("Não foi possivel adicionar esta equipe.", "danger");
+            alertMessage("Não foi possivel adicionar esse resultado.", "danger");
         }
     });
 }
@@ -174,6 +184,34 @@ $(document).ready(function () {
         }
     });
 });
+
+
+function SubmitArchive() {
+    var formData = new FormData($('#ArchiveForm')[0]);
+    alertMessage("Resultados lançados, aguarde...", "success");
+    $.ajax({
+        url: "/admin/lancarResultados/salvarResultadoArquivo",
+        type: "POST",
+        data: formData,
+        async: true,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+            if (data.Success == true) {
+                alertMessage("Resultados adicionados com sucesso.", "success");
+            }
+            else {
+                alertMessage("Não foi possivel adicionar todos os resultados.", "danger");
+            }
+        },
+        error: function () {
+            alertMessage("Não foi possivel adicionar os resultados.", "danger");
+        }
+    });
+};
+
 
 function onSuccessSaveResultArchive(data) {
     verifyErrors();

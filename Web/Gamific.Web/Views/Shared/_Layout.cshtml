@@ -52,7 +52,7 @@
                             @if (@BaseController.CurrentWorker != null)
                             {
                                 <div class="profile-photo">
-                                    <img src="https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-@BaseController.CurrentWorker.LogoId" alt />
+                                    <img src="@BaseController.CurrentURL@BaseController.CurrentWorker.LogoId" alt />
                                 </div>
                             }
                             <a class="dropdown-toggle options" data-toggle="dropdown" href="#">

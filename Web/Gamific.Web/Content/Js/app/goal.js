@@ -1,4 +1,14 @@
 ﻿function loadGoalDataTable() {
+    var logoPath = "";
+    $.ajax({
+        url: window.location.origin + "/apiMedia/imagePath",
+        async: false,
+        type: "GET",
+        success: function (data) {
+            logoPath = data;
+        }
+    });
+
     $('#goalDataTable').dataTable({
         "serverSide": true,
         "ajax": "/admin/metas/search/" + $('#dropDownTeams').val(),
@@ -23,8 +33,8 @@
                 "orderable": true,
                 "searchable": true,
                 "render": function (data, type, row) {
-
-                    var render = data.split(";")[0] + "<img src='https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + data.split(";")[1] + "?cache=@Html.Raw(DateTime.Now.Millisecond)' style='width: 48px !important; height: 48px !important; border-radius:100%; float: left; margin-right: 10px;' />";
+                    
+                    var render = data.split(";")[0] + "<img src='" + logoPath + data.split(";")[1] + "?cache=@Html.Raw(DateTime.Now.Millisecond)' style='width: 48px !important; height: 48px !important; border-radius:100%; float: left; margin-right: 10px;' />";
 
                     return render;
                 }

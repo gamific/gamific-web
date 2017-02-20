@@ -55,6 +55,16 @@ function loadAssociatePlayersDataTable() {
 };
 
 function loadPlayersDataTable() {
+    var logoPath = "";
+    $.ajax({
+        url: window.location.origin + "/apiMedia/imagePath",
+        async: false,
+        type: "GET",
+        success: function (data) {
+            logoPath = data;
+        }
+    });
+
     $('#playersDataTable').dataTable({
         "serverSide": true,
         "ajax": "/admin/equipes/jogadores/" + $('#CurrentTeam').val(),
@@ -82,7 +92,7 @@ function loadPlayersDataTable() {
                     "orderable": true,
                     "searchable": true,
                     "render": function (data, type, row) {
-                        var render = data.split(";")[0] + "<img src='https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + data.split(";")[1] + "?cache=@Html.Raw(DateTime.Now.Millisecond)' style='width: 48px !important; height: 48px !important; border-radius:100%; float: left; margin-right: 10px;' />";
+                        var render = data.split(";")[0] + "<img src='" + logoPath + data.split(";")[1] + "?cache=@Html.Raw(DateTime.Now.Millisecond)' style='width: 48px !important; height: 48px !important; border-radius:100%; float: left; margin-right: 10px;' />";
                         return render;
                     }
                 },
@@ -113,6 +123,17 @@ function loadPlayersDataTable() {
 loadPlayersDataTable();
 
 function loadTeamsDataTable() {
+    var logoPath = "";
+
+    $.ajax({
+        url: window.location.origin + "/apiMedia/imagePath",
+        async: false,
+        type: "GET",
+        success: function (data) {
+            logoPath = data;
+        }
+    });
+
         $('#teamDataTable').dataTable({
         "serverSide": true,
         "ajax": "/admin/equipes/search/" + $('#dropDownEpisodes').val(),
@@ -136,7 +157,7 @@ function loadTeamsDataTable() {
                     "width": "45%",
                     "orderable": false,
                     "render": function (data, type, row) {
-                        var render = data.split(";")[0] + "<img src='https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + data.split(";")[1] + "?cache=@Html.Raw(DateTime.Now.Millisecond)' style='width: 48px !important; height: 48px !important; border-radius:100%; float: left; margin-right: 10px;' />";
+                        var render = data.split(";")[0] + "<img src='" + logoPath + data.split(";")[1] + "?cache=@Html.Raw(DateTime.Now.Millisecond)' style='width: 48px !important; height: 48px !important; border-radius:100%; float: left; margin-right: 10px;' />";
                         return render;
                     }
                 },
