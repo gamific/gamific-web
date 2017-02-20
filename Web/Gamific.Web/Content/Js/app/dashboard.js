@@ -416,3 +416,231 @@ function onSucessSaveResult() {
     //$('#MetricResultsDataTable').dataTable().fnDestroy();
     //LoadMetricResultsDataTable();
 }
+
+var values = [];
+var plot;
+function initializeChart(metricId, checked) {
+    showLoading();
+
+    var campaignsNames;
+
+    $.ajax({
+        url: "/public/dashboard/getCampaigns",
+        async: false,
+        dataType: 'json',
+        success: function (d) {
+            var z = [d];
+            campaignsNames = z;
+        }
+    });
+
+    var y = [];
+
+    $.ajax({
+        url: "/public/dashboard/getCampaignsWithIds",
+        async: false,
+        dataType: 'json',
+        success: function (d) {
+            for (var i = 0; i < d.length; i++) {
+                var z = [d[i].id, d[i].name];
+                y.push(z);
+            }
+
+        }
+    });
+
+    var properties = {
+
+        xaxis: {
+
+            tickLength: 0,
+            tickDecimals: 0,
+            min: 1,
+            ticks: y,
+
+            font: {
+                lineHeight: 24,
+                weight: "300",
+                color: "#ffffff",
+                size: 14
+            }
+        },
+
+        yaxis: {
+            ticks: 4,
+            tickDecimals: 0,
+            tickColor: "rgba(255,255,255,.3)",
+
+            font: {
+                lineHeight: 13,
+                weight: "300",
+                color: "#ffffff"
+            }
+        },
+
+        grid: {
+            borderWidth: {
+                top: 0,
+                right: 0,
+                bottom: 1,
+                left: 1
+            },
+            borderColor: 'rgba(255,255,255,.3)',
+            margin: 0,
+            minBorderMargin: 0,
+            labelMargin: 20,
+            hoverable: true,
+            clickable: true,
+            mouseActiveRadius: 6
+        },
+
+        legend: { show: false }
+    };
+
+    if (checked) {
+        $.ajax({
+            url: "/public/dashboard/loadChart/" + metricId,
+            async: true,
+            dataType: 'json',
+            success: function (d) {
+                values.push({
+                    metricId: metricId,
+                    label: d.MetricName,
+                    data: d.Positions,
+                    lines: { lineWidth: 3 },
+                    shadowSize: 0,
+                    color: generateColor()
+                })
+
+                plot = $.plotAnimator($("#statistics-chart"), values, properties);
+
+                $("#statistics-chart").bind("plothover", function (event, pos, item) {
+                    if (item) {
+                        var x = item.datapoint[0],
+                            y = item.datapoint[1];
+
+                        $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x - 1] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
+                          .css({ top: item.pageY - 30, left: item.pageX + 5 })
+                          .fadeIn(200);
+                    } else {
+                        $("#tooltip").hide();
+                    }
+                });
+
+                $("<div id='tooltip'></div>").css({
+                    position: "absolute",
+                    padding: "10px 20px",
+                    "background-color": "#ffffff",
+                    "z-index": "99999"
+                }).appendTo("body");
+
+                $(window).resize(function () {
+                    plot.resize();
+                    plot.setupGrid();
+                    plot.draw();
+                });
+
+                $('#mmenu').on(
+                  "opened.mm",
+                  function () {
+                      plot.resize();
+                      plot.setupGrid();
+                      plot.draw();
+                  }
+                );
+
+                $('#mmenu').on(
+                  "closed.mm",
+                  function () {
+                      plot.resize();
+                      plot.setupGrid();
+                      plot.draw();
+                  }
+                );
+
+                window.setTimeout(function () {
+                }, 2000);
+            }
+        });
+    } else {
+        var i;
+
+        for (i = 0; i < values.length; i++) {
+            if (values[i].metricId == metricId) {
+                values.splice(i, 1);
+            }
+        }
+
+        if (values.length == 0) {
+            plot.destroy();
+        } else {
+            plot = $.plotAnimator($("#statistics-chart"), values, properties);
+
+            $("#statistics-chart").bind("plothover", function (event, pos, item) {
+                if (item) {
+                    var x = item.datapoint[0],
+                        y = item.datapoint[1];
+
+                    $("#tooltip").html('<h1 style="color: #418bca">' + months[x - 1] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
+                      .css({ top: item.pageY - 30, left: item.pageX + 5 })
+                      .fadeIn(200);
+                } else {
+                    $("#tooltip").hide();
+                }
+            });
+
+            $("<div id='tooltip'></div>").css({
+                position: "absolute",
+                padding: "10px 20px",
+                "background-color": "#ffffff",
+                "z-index": "99999"
+            }).appendTo("body");
+
+            $(window).resize(function () {
+                plot.resize();
+                plot.setupGrid();
+                plot.draw();
+            });
+
+            $('#mmenu').on(
+              "opened.mm",
+              function () {
+                  plot.resize();
+                  plot.setupGrid();
+                  plot.draw();
+              }
+            );
+
+            $('#mmenu').on(
+              "closed.mm",
+              function () {
+                  plot.resize();
+                  plot.setupGrid();
+                  plot.draw();
+              }
+            );
+
+        }
+        window.setTimeout(function () {
+            hideLoading();
+        }, 2000);
+    }
+
+}
+
+function generateRandomNumber(inferior, superior) {
+    numPossibilidades = superior - inferior
+    aleat = Math.random() * numPossibilidades
+    aleat = Math.floor(aleat)
+    return parseInt(inferior) + aleat
+}
+
+function generateColor() {
+    hexadecimal = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
+    cor_aleatoria = "#";
+    for (i = 0; i < 6; i++) {
+        posarray = generateRandomNumber(0, hexadecimal.length)
+        cor_aleatoria += hexadecimal[posarray]
+    }
+    return cor_aleatoria
+}

@@ -810,3 +810,14 @@ a.node.tree {
 }   
 
 
+.metric-menu li {
+    font-size: 1em;
+    padding: .25em 1em;
+    line-height: 1em;
+}
+
+.metric-menu {
+    height: 200px;
+    padding: 0;
+    overflow-y: auto;
+}

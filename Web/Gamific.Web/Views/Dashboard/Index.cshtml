@@ -2,6 +2,8 @@
 @using Vlast.Gamific.Model.Firm.Domain
 @model  Vlast.Gamific.Web.Controllers.Public.Model.FilterResultDTO
 
+@using Vlast.Gamific.Web.Services.Engine.DTO
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -139,6 +141,49 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <section class="tile transparent">
+                        <div class="tile-header color transparent-black textured rounded-top-corners">
+                            <h1>Evolução</h1>
+                            <br />
+                            <h4 class="underline text-left">Comparativo interno</h4>
+                        </div>
+                        <div class="tile-widget color transparent-black textured">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 pull-right">
+                                    <div style="width: 100%; text-align: center;">
+                                        <img id="chartLoading" style="display:none" src="~/Content/Images/public/loading.gif" width="50" />
+                                    </div>
+                                    <div id="metrics">
+                                        <ul class="list-unstyled metric-menu">
+                                            <li class="title">
+                                                <h5>Comparativo:</h5>
+                                            </li>
+                                            @foreach (MetricEngineDTO metric in ViewBag.Metrics)
+                                            {
+                                                <li>
+                                                    <div>
+                                                        <label>
+                                                            <input type="checkbox" value="@metric.Id" class="checkbox-div" onclick="initializeChart(this.value, this.checked);" />
+                                                            <span style="color:white">
+                                                                @metric.Name
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 pull-left">
+                                    <div id="statistics-chart" class="chart statistics" style="height: 250px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
 
 

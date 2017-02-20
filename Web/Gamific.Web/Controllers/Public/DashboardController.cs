@@ -31,10 +31,77 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                     Text = episode.Name
                                 };
 
+
+            ViewBag.Metrics = MetricEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 1000).List.metric;
+
             ViewBag.State = state;
 
 
             return View("Index");
+        }
+
+        [Route("getCampaignsWithIds")]
+        [HttpGet]
+        public ContentResult GetCampaignsWithIds()
+        {
+            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 1000).List.episode;
+
+            return Content(JsonConvert.SerializeObject(episodes), "application/json");
+        }
+
+        [Route("getCampaigns")]
+        [HttpGet]
+        public ContentResult GetCampaigns()
+        {
+            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 1000).List.episode;
+
+            List<string> rtn = new List<string>();
+
+            foreach (EpisodeEngineDTO episode in episodes)
+            {
+                rtn.Add(episode.Name);
+            }
+
+            return Content(JsonConvert.SerializeObject(rtn), "application/json");
+        }
+
+        [Route("loadChart/{metricId}")]
+        [HttpGet]
+        public ContentResult GetChartResults(string metricId)
+        {
+            ChartResultDTO chartDTO = new ChartResultDTO();
+
+            chartDTO.Positions = new List<List<string>>();
+
+            MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
+
+            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 1000).List.episode;
+
+            foreach (EpisodeEngineDTO episode in episodes)
+            {
+                List<string> point = new List<string>();
+
+                GetAllDTO dto = EpisodeEngineService.Instance.resultsByEpisodeIdAndMetricId(episode.Id, metric.Id, 0, 1000);
+
+                int resultInt = 0;
+
+                if (dto != null && dto.List != null && dto.List.result != null)
+                {
+                    List<ResultEngineDTO> results = dto.List.result;
+                    foreach (ResultEngineDTO result in results)
+                    {
+                        resultInt += result.TotalPoints;
+                    }
+                }
+
+                point.Add(episode.Id);
+                point.Add(resultInt.ToString());
+                chartDTO.Positions.Add(point);
+            }
+
+            chartDTO.MetricName = metric.Name;
+
+            return Content(JsonConvert.SerializeObject(chartDTO), "application/json");
         }
 
         // GET: Dashboard

@@ -7,7 +7,7 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
     /// </summary>
     public class ChartResultDTO
     {
-        public List<List<int>> Positions { get; set; }
+        public List<List<string>> Positions { get; set; }
 
         public string MetricName { get; set; }
     }
