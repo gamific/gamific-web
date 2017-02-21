@@ -13,6 +13,10 @@ namespace Vlast.Gamific.Web.Controllers.Account
 
     public class LoginViewModel
     {
+        [DataType(DataType.Text)]
+        [Display(Name = "name")]
+        public string Name { get; set; }
+
         [Required(ErrorMessage = "O campo Login é obrigatório.")]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -29,6 +33,10 @@ namespace Vlast.Gamific.Web.Controllers.Account
         [DataType(DataType.Text)]
         [Display(Name = "tipoDispositivo")]
         public string tipoDispositivo { get; set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "role")]
+        public string role { get; set; }
 
     }
 

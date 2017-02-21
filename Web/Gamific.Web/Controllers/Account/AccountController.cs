@@ -14,6 +14,9 @@ using Vlast.Gamific.Model.School.DTO;
 using Vlast.Gamific.Model.Account.DTO;
 using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.Repository;
+using Vlast.Gamific.Web.Services.Engine.DTO;
+using Vlast.Gamific.Web.Services.Engine;
+using System;
 
 namespace Vlast.Gamific.Web.Controllers.Account
 {
@@ -70,62 +73,56 @@ namespace Vlast.Gamific.Web.Controllers.Account
             }
         }
 
+
+        [Route("loginmobile")]
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult LoginMobile(LoginViewModel model)
+        {
+            AuthResult result = new AuthResult();
+            PlayerEngineDTO player = null;
+            
+            
+            result = AccountHandler.Login(new LoginRequest()
+            {
+                UserName = model.Email,
+                Password = model.Password,
+                TokenMobile = model.tokenMobile,
+                Device = model.tipoDispositivo
+            });
+
+            if(result.AuthStatus == AuthStatus.OK)
+            {
+                try
+                {
+                    player = PlayerEngineService.Instance.GetByEmail(model.Email);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+
+                return Json(player, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(result.AuthStatus.ToString(), JsonRequestBehavior.DenyGet);
+        }
+
+
+
         [Route("login")]
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = "/admin/empresas")
         {
-            AuthResult result = new AuthResult();
 
-            if (!ModelState.IsValid)
+            AuthStatus result = LoginGeral(model);
+
+            switch (result)
             {
-                return View(model);
-            }
-
-            result = AccountHandler.Login(new LoginRequest() { UserName = model.Email, Password = model.Password,
-                TokenMobile = model.tokenMobile, Device = model.tipoDispositivo });
-
-            if (result.AuthStatus == AuthStatus.OK)
-            {
-                var claims = new List<Claim>();
-                claims.Add(new Claim(ClaimTypes.Sid, result.UserId.ToString()));
-                claims.Add(new Claim(ClaimTypes.Name, result.UserId.ToString()));
-                claims.Add(new Claim(ClaimTypes.Email, model.Email));
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, result.UserId.ToString()));
-                claims.Add(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "http://vlast.com.br"));
-
-                
-                bool isSystemAdmin = false;
-                foreach (var role in result.UserRoles)
-                {
-                    if (role == Roles.ADMINISTRATOR)
-                    {
-                        isSystemAdmin = true;
-                    }
-
-                    claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
-                }
-
-                
-                if (!isSystemAdmin)
-                {
-                    WorkerEntity worker = WorkerRepository.Instance.GetByUserId(result.UserId);
-                    WorkerTypeEntity profile = WorkerTypeRepository.Instance.GetById(worker.WorkerTypeId);
-                    claims.Add(new Claim(ClaimTypes.Role, profile.ProfileName.ToString()));
-                }
-
-                var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-
-                var ctx = Request.GetOwinContext();
-                var authenticationManager = ctx.Authentication;
-                authenticationManager.SignIn(identity);
-
-                return Redirect(returnUrl);
-            }
-
-            switch (result.AuthStatus)
-            {
+                case AuthStatus.OK:
+                    return Redirect(returnUrl);
                 case AuthStatus.USER_BLOQUED:
                     ModelState.AddModelError("", "Este usuário está bloqueado. Contate o suporte técnico.");
                     return View(model);
@@ -141,7 +138,68 @@ namespace Vlast.Gamific.Web.Controllers.Account
                     ModelState.AddModelError("", "Erro ao efetuar o login. Contate o suporte técnico.");
                     return View(model);
             }
+
         }
+
+        [ValidateAntiForgeryToken]
+        private AuthStatus LoginGeral(LoginViewModel model)
+        {
+            AuthResult result = new AuthResult();
+
+            if (!ModelState.IsValid)
+            {
+                return AuthStatus.ERROR;
+            }
+
+            result = AccountHandler.Login(new LoginRequest()
+            {
+                UserName = model.Email,
+                Password = model.Password,
+                TokenMobile = model.tokenMobile,
+                Device = model.tipoDispositivo
+            });
+
+            if (result.AuthStatus == AuthStatus.OK)
+            {
+                var claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.Sid, result.UserId.ToString()));
+                claims.Add(new Claim(ClaimTypes.Name, result.UserId.ToString()));
+                claims.Add(new Claim(ClaimTypes.Email, model.Email));
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, result.UserId.ToString()));
+                claims.Add(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "http://vlast.com.br"));
+
+
+                bool isSystemAdmin = false;
+                foreach (var role in result.UserRoles)
+                {
+                    if (role == Roles.ADMINISTRATOR)
+                    {
+                        isSystemAdmin = true;
+                    }
+
+                    claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
+                }
+
+
+                if (!isSystemAdmin)
+                {
+                    WorkerEntity worker = WorkerRepository.Instance.GetByUserId(result.UserId);
+                    WorkerTypeEntity profile = WorkerTypeRepository.Instance.GetById(worker.WorkerTypeId);
+                    claims.Add(new Claim(ClaimTypes.Role, profile.ProfileName.ToString()));
+                }
+
+                var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+
+                var ctx = Request.GetOwinContext();
+                var authenticationManager = ctx.Authentication;
+                authenticationManager.SignIn(identity);
+
+                return AuthStatus.OK;
+            }
+
+            return AuthStatus.ERROR;
+        }
+
 
         #region Helpers
 
@@ -196,6 +254,10 @@ namespace Vlast.Gamific.Web.Controllers.Account
         #endregion
     }
 
+
+
+
+    
     /// <summary>
     /// Classe para tratamento de eventos ocorridos no login e criação de usuários
     /// </summary>

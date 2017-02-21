@@ -190,7 +190,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             AccountRepository.Instance.Update(acc);
 
                             player.Nick = userProfile.Name;
-                            player.Role = worker.WorkerTypeId.ToString();
+                            player.Role = entity.ProfileName.ToString();
                             player.LogoId = worker.LogoId;
                             player.Xp = entity.TotalXp;
                             player.Email = entity.Email;
@@ -239,7 +239,18 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                             ValidateModel(worker);
 
-                            PlayerEngineDTO player = PlayerEngineService.Instance.CreateOrUpdate(new PlayerEngineDTO(worker.ExternalFirmId ,request.Name, worker.WorkerTypeId.ToString(), 1, worker.LogoId));
+                            PlayerEngineDTO player = PlayerEngineService.Instance.CreateOrUpdate(
+                                new PlayerEngineDTO
+                                {
+                                    GameId = worker.ExternalFirmId,
+                                    Nick = request.Name,
+                                    Role = entity.ProfileName.ToString(),
+                                    Level = 1,
+                                    LogoId = worker.LogoId,
+                                    Cpf = entity.Cpf,
+                                    Email = entity.Email,
+                                    Xp = 1
+                                });
 
                             worker.ExternalId = player.Id;
 
