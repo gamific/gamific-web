@@ -83,14 +83,32 @@ namespace Vlast.Gamific.Web.Controllers.Public
             {
                 List<int> point = new List<int>();
 
-                GetAllDTO dto = EpisodeEngineService.Instance.resultsByEpisodeIdAndMetricId(episode.Id, metric.Id, 0, 1000);
+                List<CardEngineDTO> results = new List<CardEngineDTO>();
+                List<GoalDTO> goals = new List<GoalDTO>();
+                results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episode.Id);
+                goals = GoalRepository.Instance.GetByEpisodeId(episode.Id);
+                long playersCount = EpisodeEngineService.Instance.GetCountPlayersByEpisodeId(episode.Id);
+
+                results   = (from result in results
+                        join goal in goals
+                        on result.MetricId equals goal.ExternalMetricId into rg
+                        from resultGoal in rg.DefaultIfEmpty()
+                        select new CardEngineDTO
+                        {
+                            IconMetric = result.IconMetric.Replace("_", "-"),
+                            MetricId = result.MetricId,
+                            MetricName = result.MetricName,
+                            TotalPoints = result.TotalPoints,
+                            Goal = (resultGoal != null ? CalculatesGoal(resultGoal.Goal, playersCount, result.IsAverage) : 0),
+                            PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0),
+                            IsAverage = result.IsAverage
+                        }).ToList();
 
                 int resultInt = 0;
 
-                if (dto != null && dto.List != null && dto.List.result != null)
+                if (results != null)
                 {
-                    List<ResultEngineDTO> results = dto.List.result;
-                    foreach (ResultEngineDTO result in results)
+                    foreach (CardEngineDTO result in results)
                     {
                         resultInt += result.TotalPoints;
                     }
