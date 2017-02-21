@@ -31,10 +31,98 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                     Text = episode.Name
                                 };
 
+
+            ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+
             ViewBag.State = state;
 
 
             return View("Index");
+        }
+
+        [Route("getCampaignsWithIds")]
+        [HttpGet]
+        public ContentResult GetCampaignsWithIds()
+        {
+            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
+            
+            return Content(JsonConvert.SerializeObject(episodes), "application/json");
+        }
+
+        [Route("getCampaigns")]
+        [HttpGet]
+        public ContentResult GetCampaigns()
+        {
+            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
+
+            List<string> rtn = new List<string>();
+
+            foreach (EpisodeEngineDTO episode in episodes)
+            {
+                rtn.Add(episode.Name);
+            }
+
+            return Content(JsonConvert.SerializeObject(rtn), "application/json");
+        }
+
+        [Route("loadChart/{metricId}")]
+        [HttpGet]
+        public ContentResult GetChartResults(string metricId)
+        {
+            ChartResultDTO chartDTO = new ChartResultDTO();
+
+            chartDTO.Positions = new List<List<int>>();
+
+            MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
+
+            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
+
+            int i = 0;
+
+            foreach (EpisodeEngineDTO episode in episodes)
+            {
+                List<int> point = new List<int>();
+
+                List<CardEngineDTO> results = new List<CardEngineDTO>();
+                List<GoalDTO> goals = new List<GoalDTO>();
+                results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episode.Id);
+                goals = GoalRepository.Instance.GetByEpisodeId(episode.Id);
+                long playersCount = EpisodeEngineService.Instance.GetCountPlayersByEpisodeId(episode.Id);
+
+                results   = (from result in results
+                        join goal in goals
+                        on result.MetricId equals goal.ExternalMetricId into rg
+                        from resultGoal in rg.DefaultIfEmpty()
+                        select new CardEngineDTO
+                        {
+                            IconMetric = result.IconMetric.Replace("_", "-"),
+                            MetricId = result.MetricId,
+                            MetricName = result.MetricName,
+                            TotalPoints = result.TotalPoints,
+                            Goal = (resultGoal != null ? CalculatesGoal(resultGoal.Goal, playersCount, result.IsAverage) : 0),
+                            PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0),
+                            IsAverage = result.IsAverage
+                        }).ToList();
+
+                int resultInt = 0;
+
+                if (results != null)
+                {
+                    foreach (CardEngineDTO result in results)
+                    {
+                        resultInt += result.TotalPoints;
+                    }
+                }
+
+                point.Add(i);
+                point.Add(resultInt);
+                chartDTO.Positions.Add(point);
+                i++;
+            }
+
+            chartDTO.MetricName = metric.Name;
+
+            return Content(JsonConvert.SerializeObject(chartDTO), "application/json");
         }
 
         // GET: Dashboard

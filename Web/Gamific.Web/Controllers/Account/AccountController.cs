@@ -52,7 +52,7 @@ namespace Vlast.Gamific.Web.Controllers.Account
         [Route("resetarSenha")]
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(LoginViewModel model)
         {
             AuthResult result = new AuthResult();

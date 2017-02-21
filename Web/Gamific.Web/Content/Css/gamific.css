@@ -810,3 +810,62 @@ a.node.tree {
 }   
 
 
+.metric-menu li {
+    font-size: 1em;
+    padding: .25em 1em;
+    line-height: 1em;
+}
+
+.metric-menu {
+    height: 200px;
+    padding: 0;
+    overflow-y: auto;
+}
+
+
+.colore-name{
+         color: #FFF;
+     }
+@media (max-width: 367px) {
+    .podiumPosition1 {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto -25px;
+    border: 2px solid #ffd700;
+    }
+    .podiumPosition2 {
+        width: 50px;
+        height: 50px;
+        margin: 0 auto -25px;
+        border: 2px solid #c0c0c0;
+    }
+    .podiumPosition3 {
+        width: 50px;
+        height: 50px;
+        margin: 0 auto -25px;
+        border: 2px solid #cd7f32;
+    }
+     .podiumLabel:after {
+        top: 45px;
+        padding: 5px 15px 5px 0px;
+    }
+     .dimencionament{
+        font-size:30px;
+    }
+     .colore-name{
+         color: #000;
+     }
+
+     .podiumPosition1:after {
+        top: -5px;
+        width: 85px !important;
+    }
+     .podiumPosition2:after {
+        top: -5px;
+        width: 85px !important;
+    }
+     .podiumPosition3:after {
+        top: -5px;
+        width: 85px !important;
+    }
+}  
