@@ -76,3 +76,44 @@ namespace Vlast.Gamific.Web.Services.Engine
         #endregion
     }
 }
+
+/*
+        [Route("createGoal")]
+        [HttpPost]
+        [AllowAnonymous]
+        public string CreateGoal(GoalEngineDTO goalDTO)
+        {
+            goalDTO = GoalEngineService.Instance.CreateOrUpdate(goalDTO);
+
+            return JsonConvert.SerializeObject(
+                    goalDTO,
+                    Formatting.Indented,
+                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
+                  );
+        }
+
+        [Route("getGoalById")]
+        [HttpGet]
+        [AllowAnonymous]
+        public string GetGoalById(string id)
+        {
+            GoalEngineDTO goal = GoalEngineService.Instance.GetById(id);
+
+            return JsonConvert.SerializeObject(
+                    goal,
+                    Formatting.Indented,
+                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
+                  );
+        }
+
+        [Route("deleteGoalById")]
+        [HttpPost]
+        [AllowAnonymous]
+        public string DeleteGoalById(string id)
+        {
+            GoalEngineService.Instance.DeleteById(id);
+
+            return "ok";
+        } 
+     
+*/

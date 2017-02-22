@@ -129,33 +129,6 @@ namespace Vlast.Gamific.Web.Controllers.Account
             return json;
         }
 
-        [Route("createGoal")]
-        [HttpPost]
-        [AllowAnonymous]
-        public string CreateGoal(GoalEngineDTO goalDTO)
-        {
-            goalDTO = GoalEngineService.Instance.CreateOrUpdate(goalDTO);
-
-            return JsonConvert.SerializeObject(
-                    goalDTO,
-                    Formatting.Indented,
-                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
-                  );
-        }
-
-        [Route("getGoalById")]
-        [HttpGet]
-        public string GetGoalById(string id)
-        {
-            GoalEngineDTO goal = GoalEngineService.Instance.GetById(id);
-
-            return JsonConvert.SerializeObject(
-                    goal,
-                    Formatting.Indented,
-                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
-                  );
-        }
-
         [Route("login")]
         [HttpPost]
         [AllowAnonymous]
