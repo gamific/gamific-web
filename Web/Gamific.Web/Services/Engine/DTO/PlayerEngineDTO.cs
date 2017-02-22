@@ -46,7 +46,8 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("cpf")]
         public string Cpf { get; set; }
     
-        [JsonProperty("_links")]
+        //[JsonProperty("_links")]
+        [JsonIgnore]
         public Link Links { get; set; }
     }
 }

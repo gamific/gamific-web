@@ -6,7 +6,6 @@ using System.Net.Mime;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Vlast.Gamific.Model.Media.Repository;
-using Vlast.Gamific.Web.Controllers;
 using Vlast.Util.Instrumentation;
 
 namespace Vlast.Gamific.Api.Media
@@ -14,11 +13,11 @@ namespace Vlast.Gamific.Api.Media
     /// <summary>
     /// Serviço de midia
     /// </summary>
-
+    [RoutePrefix("api/media")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class ImageAPIController : BaseController
+    public class ImageAPIController : ApiController
     {
-        /*
+
         /// <summary>
         /// Recupera uma logo
         /// </summary>
@@ -52,9 +51,6 @@ namespace Vlast.Gamific.Api.Media
 
             return result;
         }
-        */
-
-
 
     }
 }
