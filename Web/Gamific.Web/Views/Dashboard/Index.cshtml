@@ -160,8 +160,11 @@
                                             <li class="title">
                                                 <h5>Comparativo:</h5>
                                             </li>
-                                            @foreach (MetricEngineDTO metric in ViewBag.Metrics)
+
+                                            @if (ViewBag.Metrics.Count > 0)
                                             {
+                                                foreach (MetricEngineDTO metric in ViewBag.Metrics)
+                                                {
                                                 <li>
                                                     <div>
                                                         <label>
@@ -173,10 +176,11 @@
                                                         </label>
                                                     </div>
                                                 </li>
+                                                }
                                             }
 
                                         </ul>
-                                        <input type="checkbox" value="@ViewBag.Metrics[0].Id" hidden checked id="metricToInitialize" />
+                                        <input type="checkbox" value="@ViewBag.Metrics[0]" hidden checked id="metricToInitialize" />
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 pull-left">
