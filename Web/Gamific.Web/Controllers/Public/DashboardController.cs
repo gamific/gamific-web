@@ -85,7 +85,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
                 List<CardEngineDTO> results = new List<CardEngineDTO>();
                 List<GoalDTO> goals = new List<GoalDTO>();
-                results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episode.Id);
+                results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
                 goals = GoalRepository.Instance.GetByEpisodeId(episode.Id);
                 long playersCount = EpisodeEngineService.Instance.GetCountPlayersByEpisodeId(episode.Id);
 
