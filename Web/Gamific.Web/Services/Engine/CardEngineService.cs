@@ -36,6 +36,27 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
 
         #region Services
 
+        public CardEngineDTO EpisodeAndMetric(string episodeId, string metricId)
+        {
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    client.Headers[HttpRequestHeader.Accept] = "application/json";
+                    client.Encoding = System.Text.Encoding.UTF8;
+
+                    string responce = "";
+                    responce = client.DownloadString(path + "episodeCardByMetricId?episodeId=" + episodeId + "&metricId=" + metricId);
+
+                    return JsonConvert.DeserializeObject<CardEngineDTO>(responce);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<CardEngineDTO> Episode(string gameId, string episodeId)
         {
             try
