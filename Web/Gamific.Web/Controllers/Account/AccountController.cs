@@ -17,6 +17,8 @@ using Vlast.Gamific.Model.Firm.Repository;
 using Vlast.Gamific.Web.Services.Engine.DTO;
 using Vlast.Gamific.Web.Services.Engine;
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Vlast.Gamific.Web.Controllers.Account
 {
@@ -73,16 +75,21 @@ namespace Vlast.Gamific.Web.Controllers.Account
             }
         }
 
+        class Error
+        {
+            public string error { get; set; }
+        }
 
         [Route("loginmobile")]
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult LoginMobile(LoginViewModel model)
+        public string LoginMobile(LoginViewModel model)
         {
             AuthResult result = new AuthResult();
             PlayerEngineDTO player = null;
-            
-            
+            string json = "";
+
+
             result = AccountHandler.Login(new LoginRequest()
             {
                 UserName = model.Email,
@@ -102,14 +109,52 @@ namespace Vlast.Gamific.Web.Controllers.Account
 
                 }
 
+                json = JsonConvert.SerializeObject(
+                    player,
+                    Formatting.Indented,
+                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
+                  );
 
-                return Json(player, JsonRequestBehavior.AllowGet);
+                return json;
             }
 
-            return Json(result.AuthStatus.ToString(), JsonRequestBehavior.DenyGet);
+            json = JsonConvert.SerializeObject(
+                    new Error {
+                        error = result.AuthStatus.ToString()
+                    },
+                    Formatting.Indented,
+                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
+                  );
+
+            return json;
         }
 
+        [Route("createGoal")]
+        [HttpPost]
+        [AllowAnonymous]
+        public string CreateGoal(GoalEngineDTO goalDTO)
+        {
+            goalDTO = GoalEngineService.Instance.CreateOrUpdate(goalDTO);
 
+            return JsonConvert.SerializeObject(
+                    goalDTO,
+                    Formatting.Indented,
+                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
+                  );
+        }
+
+        [Route("getGoalById")]
+        [HttpGet]
+        public string GetGoalById(string id)
+        {
+            GoalEngineDTO goal = GoalEngineService.Instance.GetById(id);
+
+            return JsonConvert.SerializeObject(
+                    goal,
+                    Formatting.Indented,
+                    new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
+                  );
+        }
 
         [Route("login")]
         [HttpPost]
