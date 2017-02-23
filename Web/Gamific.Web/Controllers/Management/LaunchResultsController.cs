@@ -62,8 +62,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = allExternalWorkerIds.Count(),
-                        RecordsFiltered = allExternalWorkerIds.Count(),
+                        RecordsTotal = allExternalWorkerIds.Count() - 1,
+                        RecordsFiltered = allExternalWorkerIds.Count() - 1,
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderBy(item => item[index]).ToArray()
 
                     };
@@ -73,8 +73,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = allExternalWorkerIds.Count(),
-                        RecordsFiltered = allExternalWorkerIds.Count(),
+                        RecordsTotal = allExternalWorkerIds.Count() - 1,
+                        RecordsFiltered = allExternalWorkerIds.Count() - 1,
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderByDescending(item => item[index]).ToArray()
 
                     };
@@ -166,11 +166,12 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             HttpRuntime.Cache.Remove("WorkerExternalIdsOnTeam");
 
+            TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
             GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId);
 
             if (all != null)
             {
-                List<string> externalWorkerIds = (from r in all.List.run select r.PlayerId).ToList();
+                List<string> externalWorkerIds = (from r in all.List.run select r.PlayerId).Where(q => q != team.MasterPlayerId).ToList();
                 HttpRuntime.Cache.Insert("WorkerExternalIdOnTeam", externalWorkerIds);
             }
             else
