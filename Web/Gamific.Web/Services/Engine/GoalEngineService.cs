@@ -73,6 +73,27 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public GoalEngineDTO GetByRunIdAndMetricId(string runId, string metricId)
+        {
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    client.Headers[HttpRequestHeader.Accept] = "application/json";
+                    client.Encoding = System.Text.Encoding.UTF8;
+
+                    string responce = "";
+                    responce = client.DownloadString(path + "/search/findByMetricIdAndRunId?runId=" + runId + "&metricId=" + metricId);
+
+                    return JsonConvert.DeserializeObject<GoalEngineDTO>(responce);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         #endregion
     }
 }
