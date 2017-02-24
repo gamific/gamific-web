@@ -307,7 +307,7 @@
     <Compile Include="Controllers\Management\TeamController.cs" />
     <Compile Include="Controllers\Public\IndividualResultsController.cs" />
     <Compile Include="Controllers\Management\VideoQuestionController.cs" />
-    <Compile Include="Controllers\Util\Scripts.cs" />
+    <Compile Include="Controllers\Util\ScriptsMigration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -131,7 +131,26 @@ namespace Vlast.Gamific.Model.Firm.Repository
                                  EpisodeId = g.FirstOrDefault().EpisodeId,
                                  RunId = g.FirstOrDefault().RunId,
                                  Goal = g.Sum(s => s.Goal),
-                                 GoalId = g.FirstOrDefault().Id
+                                 GoalId = g.FirstOrDefault().Id,
+                             });
+
+                return goals.ToList();
+            }
+        }
+
+        public List<GoalDTO> GetAllByEpisodeId(string episodeId)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var goals = (from goal in context.Goals
+                             where goal.EpisodeId == episodeId
+                             select new GoalDTO
+                             {
+                                 ExternalMetricId = goal.ExternalMetricId,
+                                 EpisodeId = goal.EpisodeId,
+                                 RunId = goal.RunId,
+                                 Goal = goal.Goal,
+                                 GoalId = goal.Id
                              });
 
                 return goals.ToList();

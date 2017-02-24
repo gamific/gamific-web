@@ -11,21 +11,39 @@ using Vlast.Gamific.Web.Services.Engine.DTO;
 
 namespace Vlast.Gamific.Web.Controllers.Util
 {
-    public class Scripts
+    public class ScriptsMigration
     {
-        public void MySqlGoalToEngineByEpisodeId(string episodeId)
+        public void MigrationGoalToEngine()
         {
-            List<GoalDTO> goalsMySql = GoalRepository.Instance.GetByEpisodeId(episodeId);
+            List<GameEngineDTO> games = GameEngineService.Instance.GetAll(0,10000).List.game;
+
+            foreach(GameEngineDTO game in games)
+            {
+                List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetAllByGameId(game.Id, 0, 10000).List.episode;
+
+                List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetAllByGameId(game.Id, 0, 10000).List.metric;
+
+                foreach(EpisodeEngineDTO episode in episodes)
+                {
+                    MySqlGoalToEngineByEpisodeId(episode.Id, metrics);
+                }
+            }
+        }
+
+        public void MySqlGoalToEngineByEpisodeId(string episodeId, List<MetricEngineDTO> metrics)
+        {
+            List<GoalDTO> goalsMySql = GoalRepository.Instance.GetAllByEpisodeId(episodeId);
 
             List<GoalEngineDTO> goalsEngine = (from goal in goalsMySql
                                                select new GoalEngineDTO
                                                {
                                                    Goal = goal.Goal,
-                                                   MetricIcon = goal.Icon,
+                                                   MetricIcon = (from metric in metrics where metric.Id == goal.ExternalMetricId select metric.Icon).FirstOrDefault(),
                                                    MetricId = goal.ExternalMetricId,
-                                                   MetricName = goal.MetricName,
+                                                   MetricName = (from metric in metrics where metric.Id == goal.ExternalMetricId select metric.Name).FirstOrDefault(),
                                                    RunId = goal.RunId,
-                                                   Percentage = 0
+                                                   Percentage = 0,
+                                                   ItemId = ""
                                                }).ToList();
 
             foreach (GoalEngineDTO goal in goalsEngine)

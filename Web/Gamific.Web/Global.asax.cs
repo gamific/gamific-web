@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Vlast.Gamific.Web.Jobs;
+using Vlast.Gamific.Web.Controllers.Util;
 
 namespace Vlast.Gamific.Web
 {
@@ -30,6 +31,7 @@ namespace Vlast.Gamific.Web
             {
                 BundleTable.EnableOptimizations = true;
             }
+
 
 //            rankingJob.Init(new TimeSpan(7, 0, 0));
 
