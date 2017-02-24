@@ -213,7 +213,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             var worksheetResults = workbook.Worksheets[0];
 
-            rowsCount = 500;
+            rowsCount = 5000;
 
             worksheetResults.Cells.HideColumns(5, 16384);
             worksheetResults.Cells.HideRows(rowsCount, 1048576);
@@ -343,6 +343,103 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             try
             {
+
+
+                string episodeId = Request["episodeId"];
+
+                resultsArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), resultsArchive.FileName));
+
+                string path = Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(resultsArchive.FileName));
+
+                var archive = new ExcelQueryFactory(path);
+
+                var rows = from x in archive.WorksheetRange("A1", "N" + rowsCount, "Plan1")
+                           select x;
+
+                foreach (var row in rows)
+                {
+                    if(row[1] == null || row[0].ToString().Equals("") || row[6].ToString().Equals("0") || row[7].ToString().Equals("0") || row[8].ToString().Equals("0") || row[9].ToString().Equals("0") || row[10].ToString().Equals("0") || row[11].ToString().Equals("0") || row[12].ToString().Equals("0") || row[13].ToString().Equals("0")) {
+                        continue;
+                    }
+
+                    RunMetricEngineDTO result = new RunMetricEngineDTO();
+
+
+                    PlayerEngineDTO player = PlayerEngineService.Instance.GetByGameIdAndNick(CurrentFirm.ExternalId, row[2].ToString());
+
+                    if (player == null)
+                    {
+                        continue;
+                    }
+
+                    /*TeamEngineDTO team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId,row[4]);
+         
+                    RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);*/
+
+                    MetricEngineDTO metricFat = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, "Faturamento");
+                    MetricEngineDTO metricVol = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, "Volume");
+
+                    if (!string.IsNullOrWhiteSpace(row[0].ToString()) && !string.IsNullOrWhiteSpace(row[1].ToString()) && !string.IsNullOrWhiteSpace(row[2].ToString()) && !string.IsNullOrWhiteSpace(row[3].ToString()))
+                    {
+
+                        //Faturamento
+                        result.Ceiling = metricFat.Ceiling;
+                        result.Date = Convert.ToDateTime(row[2].ToString()).Ticks;
+                        result.Description = metricFat.Description;
+                        result.Floor = metricFat.Floor;
+                        result.MetricId = metricFat.Id;
+                        result.Multiplier = metricFat.Multiplier;
+                        result.Name = metricFat.Name;
+                        result.Points = int.Parse(row[3].ToString());
+                        result.Score = 0;
+                        result.Xp = metricFat.Xp;
+                        //result.RunId = run.Id;
+                        //result.PlayerId = worker.ExternalId;
+
+
+                        //volume
+                        result.Ceiling = metricVol.Ceiling;
+                        result.Date = Convert.ToDateTime(row[2].ToString()).Ticks;
+                        result.Description = metricVol.Description;
+                        result.Floor = metricVol.Floor;
+                        result.MetricId = metricVol.Id;
+                        result.Multiplier = metricVol.Multiplier;
+                        result.Name = metricVol.Name;
+                        result.Points = int.Parse(row[3].ToString());
+                        result.Score = 0;
+                        result.Xp = metricVol.Xp;
+                        //result.RunId = run.Id;
+                       // result.PlayerId = worker.ExternalId;
+
+                        //RunMetricEngineService.Instance.CreateOrUpdate(result);
+                    }
+                }
+
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+
+                //ModelState.AddModelError("", "Ocorreu um erro ao tentar salvar os resultados.");
+
+                return Json(new { Success = false, Exception = ex.Message }, JsonRequestBehavior.DenyGet);
+            }
+        }
+
+/*
+        /// <summary>
+        /// Salva as informações do resultado via arquivo
+        /// </summary>
+        /// <param name="resultsArchive"></param>
+        /// <returns></returns>
+        [Route("salvarResultadoArquivo")]
+        [HttpPost]
+        [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
+        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string teste_12_14)
+        {
+            try
+            {
                 string episodeId = Request["episodeId"];
 
                 resultsArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), resultsArchive.FileName));
@@ -356,7 +453,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 foreach (var row in rows)
                 {
-                    if(row[0] == null || row[0].ToString().Equals("") || row[3].ToString().Equals("0")) {
+                    if (row[0] == null || row[0].ToString().Equals("") || row[3].ToString().Equals("0"))
+                    {
                         continue;
                     }
 
@@ -383,7 +481,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         continue;
                     }
 
-                    TeamEngineDTO team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId,row[4]);
+                    TeamEngineDTO team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId, row[4]);
 
                     if (team == null)
                     {
@@ -392,7 +490,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);
 
-                    if(run == null)
+                    if (run == null)
                     {
                         continue;
                     }
@@ -426,7 +524,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 return Json(new { Success = false, Exception = ex.Message }, JsonRequestBehavior.DenyGet);
             }
-        }
-
+        }*/
     }
 }
