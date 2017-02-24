@@ -28,5 +28,8 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
 
         [JsonProperty("metricIcon")]
         public string MetricIcon { get; set; }
+
+        [JsonProperty("itemId")]
+        public string ItemId { get; set; }
     }
 }

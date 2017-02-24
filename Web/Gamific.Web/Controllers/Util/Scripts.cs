@@ -43,5 +43,7 @@ namespace Vlast.Gamific.Web.Controllers.Util
                 GoalEngineService.Instance.CreateOrUpdate(goal);
             }
         }
+
+
     }
 }
