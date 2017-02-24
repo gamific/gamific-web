@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using Vlast.Gamific.Web.Services.Engine.DTO;
 
@@ -48,6 +50,27 @@ namespace Vlast.Gamific.Web.Services.Engine
         public void DeleteById(string id)
         {
             Delete(id);
+        }
+
+        public ItemEngineDTO FindByNameAndGameId(string name, string gameId)
+        {
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    client.Headers[HttpRequestHeader.Accept] = "application/json";
+                    client.Encoding = System.Text.Encoding.UTF8;
+
+                    string responce = "";
+                    responce = client.DownloadString(path + "/search/findByNameAndGameId?gameId=" + gameId + "&name=" + name);
+
+                    return JsonConvert.DeserializeObject<ItemEngineDTO>(responce);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         #endregion

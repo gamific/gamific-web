@@ -299,17 +299,7 @@ function LoadMetricResultsDataTable() {
                 "width": "30%",
                 "targets": 2,
                 "orderable": false,
-                "serchable": false,
-                "render": function (data, type, row) {
-                    var render = "";
-
-                    if (data) {
-                        render = data.substr(0, 3) + "." + data.substr(3, 3) + "." + data.substr(6, 3) + "-" + data.substr(9, 2);
-                    }
-
-
-                    return render;
-                }
+                "serchable": false
             },
             {
                 "width": "15%",

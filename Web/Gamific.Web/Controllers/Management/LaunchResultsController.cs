@@ -20,6 +20,7 @@ using Aspose.Cells;
 using System.IO;
 using LinqToExcel;
 using Vlast.Gamific.Model.Account.Domain;
+using System.Diagnostics;
 
 namespace Vlast.Gamific.Web.Controllers.Management
 {
@@ -62,8 +63,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = allExternalWorkerIds.Count() - 1,
-                        RecordsFiltered = allExternalWorkerIds.Count() - 1,
+                        RecordsTotal = allExternalWorkerIds.Count(),
+                        RecordsFiltered = allExternalWorkerIds.Count(),
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderBy(item => item[index]).ToArray()
 
                     };
@@ -73,8 +74,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = allExternalWorkerIds.Count() - 1,
-                        RecordsFiltered = allExternalWorkerIds.Count() - 1,
+                        RecordsTotal = allExternalWorkerIds.Count(),
+                        RecordsFiltered = allExternalWorkerIds.Count(),
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderByDescending(item => item[index]).ToArray()
 
                     };
@@ -330,7 +331,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             return File(ms.ToArray(), "application/vnd.ms-excel");
         }
-
+        /*
         /// <summary>
         /// Salva as informações do resultado via arquivo
         /// </summary>
@@ -339,95 +340,210 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("salvarResultadoArquivo")]
         [HttpPost]
         [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
-        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string teste_12_14)
+        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string episodeId)
         {
+            int ANO = 0;
+            int MES = 1;
+            int REPRESENTANTE = 2;
+            int CLIENTE = 3;
+            int COD_PRODUTO = 4;
+            int PRODUTO = 5;
+            int QTDE_OBJ = 6;
+            int QTDE_REAL = 7;
+            int PERCENT_QTDE = 8;
+            int VLR_OBJ = 9;
+            int VLR_BRUTO_REAL = 10;
+            int PERCENT_VALOR = 11;
+            int VLR_MEDIO_OBJETIVO = 12;
+            int VLR_MEDIO_REAL = 13;
+
+            string runId = "58b0223f3001c1541c832ed5";
+            string errors = "Erros: {0}<br/>";
+
             try
             {
-
-
-                string episodeId = Request["episodeId"];
-
                 resultsArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), resultsArchive.FileName));
 
-                string path = Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(resultsArchive.FileName));
+                var archive = new ExcelQueryFactory(Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(resultsArchive.FileName)));
 
-                var archive = new ExcelQueryFactory(path);
+                var rows = from x in archive.WorksheetRange("A1", "N" + rowsCount, "Plan1") select x;
 
-                var rows = from x in archive.WorksheetRange("A1", "N" + rowsCount, "Plan1")
-                           select x;
+                string gameId = CurrentFirm.ExternalId;
+
+                int line = 0;
+                int errorsCount = 0;
+                float points;
 
                 foreach (var row in rows)
                 {
-                    if(row[1] == null || row[0].ToString().Equals("") || row[6].ToString().Equals("0") || row[7].ToString().Equals("0") || row[8].ToString().Equals("0") || row[9].ToString().Equals("0") || row[10].ToString().Equals("0") || row[11].ToString().Equals("0") || row[12].ToString().Equals("0") || row[13].ToString().Equals("0")) {
+                    line++;
+
+                    MetricEngineDTO metricFat;
+                    MetricEngineDTO metricVol;
+                    PlayerEngineDTO player;
+
+                    try
+                    {
+                        player = PlayerEngineService.Instance.GetByGameIdAndNick(gameId, row[REPRESENTANTE].ToString().Trim());
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.Print("Error player: " + e.Message);
+                        errors += "(Linha -> " + line + "°, Coluna -> " + REPRESENTANTE + ") " + "Jogador: " + row[REPRESENTANTE].ToString().Trim() + " não encontrado.<br/>";
+                        errorsCount++;
                         continue;
                     }
 
-                    RunMetricEngineDTO result = new RunMetricEngineDTO();
-
-
-                    PlayerEngineDTO player = PlayerEngineService.Instance.GetByGameIdAndNick(CurrentFirm.ExternalId, row[2].ToString());
-
-                    if (player == null)
+                    try
                     {
+                        metricFat = MetricEngineService.Instance.GetDTOByGameAndName(gameId, "Faturamento");
+                    }
+                    catch(Exception e)
+                    {
+                        errors += "Metrica (Faturamento) não encontrado.<br/>";
+                        errorsCount++;
+                        Debug.Print("Error metric: " + e.Message);
                         continue;
                     }
 
-                    /*TeamEngineDTO team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId,row[4]);
-         
-                    RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);*/
-
-                    MetricEngineDTO metricFat = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, "Faturamento");
-                    MetricEngineDTO metricVol = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, "Volume");
-
-                    if (!string.IsNullOrWhiteSpace(row[0].ToString()) && !string.IsNullOrWhiteSpace(row[1].ToString()) && !string.IsNullOrWhiteSpace(row[2].ToString()) && !string.IsNullOrWhiteSpace(row[3].ToString()))
+                    try
                     {
-
-                        //Faturamento
-                        result.Ceiling = metricFat.Ceiling;
-                        result.Date = Convert.ToDateTime(row[2].ToString()).Ticks;
-                        result.Description = metricFat.Description;
-                        result.Floor = metricFat.Floor;
-                        result.MetricId = metricFat.Id;
-                        result.Multiplier = metricFat.Multiplier;
-                        result.Name = metricFat.Name;
-                        result.Points = int.Parse(row[3].ToString());
-                        result.Score = 0;
-                        result.Xp = metricFat.Xp;
-                        //result.RunId = run.Id;
-                        //result.PlayerId = worker.ExternalId;
-
-
-                        //volume
-                        result.Ceiling = metricVol.Ceiling;
-                        result.Date = Convert.ToDateTime(row[2].ToString()).Ticks;
-                        result.Description = metricVol.Description;
-                        result.Floor = metricVol.Floor;
-                        result.MetricId = metricVol.Id;
-                        result.Multiplier = metricVol.Multiplier;
-                        result.Name = metricVol.Name;
-                        result.Points = int.Parse(row[3].ToString());
-                        result.Score = 0;
-                        result.Xp = metricVol.Xp;
-                        //result.RunId = run.Id;
-                       // result.PlayerId = worker.ExternalId;
-
-                        //RunMetricEngineService.Instance.CreateOrUpdate(result);
+                        metricVol = MetricEngineService.Instance.GetDTOByGameAndName(gameId, "Volume");
                     }
+                    catch (Exception e)
+                    {
+                        errors += "Metrica (Volume) não encontrado.<br/>";
+                        errorsCount++;
+                        Debug.Print("Error metric: " + e.Message);
+                        continue;
+                    }
+
+                    ItemEngineDTO item = new ItemEngineDTO
+                    {
+                        GameId = gameId,
+                        Name = row[PRODUTO].ToString().Trim()
+                    };
+
+                    try
+                    {
+                        item = ItemEngineService.Instance.FindByNameAndGameId(item.Name, item.GameId);
+                    }
+                    catch(Exception e)
+                    {
+                        item = ItemEngineService.Instance.CreateOrUpdate(item);
+                        Debug.Print("Error metric: " + e.Message);
+                    }
+
+                    if (item.Name.ToLower().Contains("vulcano"))
+                    {
+                        string teste = "É da vulcano!";
+                    }
+                    else if(item.Name.ToLower().Contains("alegria"))
+                    {
+                        string teste = "É da alegria!";
+                    }
+
+                    float.TryParse(row[VLR_BRUTO_REAL].ToString(), out points);
+                    RunMetricEngineDTO resultFaturamento = new RunMetricEngineDTO
+                    {
+                        Ceiling = metricFat.Ceiling,
+                        Description = metricFat.Description,
+                        Floor = metricFat.Floor, 
+                        MetricId = metricFat.Id,
+                        Multiplier = metricFat.Multiplier,
+                        Name = metricFat.Name,
+                        Xp = 0,
+                        Score = 0,
+                        Points = (int)points,
+                        Date = DateTime.Now.Ticks,
+                        PlayerId = player.Id,
+                        ItemId = item.Id,
+                        RunId = runId
+                    };
+
+                    float.TryParse(row[QTDE_REAL].ToString(), out points);
+                    RunMetricEngineDTO resultVolume = new RunMetricEngineDTO
+                    {
+                        Ceiling = metricVol.Ceiling,
+                        Description = metricVol.Description,
+                        Floor = metricVol.Floor,
+                        MetricId = metricVol.Id,
+                        Multiplier = metricVol.Multiplier,
+                        Name = metricVol.Name,
+                        Xp = 0,
+                        Score = 0,
+                        Points = (int)points,
+                        Date = DateTime.Now.Ticks,
+                        PlayerId = player.Id,
+                        ItemId = item.Id,
+                        RunId = runId
+                    };
+
+                    float.TryParse(row[QTDE_OBJ].ToString(), out points);
+                    GoalEngineDTO goalVol;
+                    try
+                    {
+                        goalVol = GoalEngineService.Instance.GetByRunIdAndMetricId(runId, metricVol.Id);
+                        goalVol.Goal = points;
+                    }
+                    catch(Exception e)
+                    {
+                        goalVol = new GoalEngineDTO
+                        {
+                            Goal = points,
+                            ItemId = item.Id,
+                            MetricIcon = metricVol.Icon,
+                            MetricId = metricVol.Id,
+                            MetricName = metricVol.Name,
+                            Percentage = 0, 
+                            RunId = runId
+                        };
+                        
+                        Debug.Print("Goal volume: " + e.Message);
+                    }
+
+                    float.TryParse(row[VLR_OBJ].ToString(), out points);
+                    GoalEngineDTO goalFat;
+                    try
+                    {
+                        goalFat = GoalEngineService.Instance.GetByRunIdAndMetricId(runId, metricFat.Id);
+                        goalFat.Goal = points;
+                    }
+                    catch (Exception e)
+                    {
+                        goalFat = new GoalEngineDTO
+                        {
+                            Goal = points,
+                            ItemId = item.Id,
+                            MetricIcon = metricFat.Icon,
+                            MetricId = metricFat.Id,
+                            MetricName = metricFat.Name,
+                            Percentage = 0,
+                            RunId = runId
+                        };
+
+                        Debug.Print("Goal volume: " + e.Message);
+                    }
+
+                    GoalEngineService.Instance.CreateOrUpdate(goalFat);
+                    GoalEngineService.Instance.CreateOrUpdate(goalVol);
+                    //RunMetricEngineService.Instance.CreateOrUpdate(resultFaturamento);
+                    //RunMetricEngineService.Instance.CreateOrUpdate(resultVolume);
                 }
+
+                errors = string.Format(errors, errorsCount);
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Logger.LogException(ex);
+                Debug.Print("Geral Error: " + e.Message);
 
-                //ModelState.AddModelError("", "Ocorreu um erro ao tentar salvar os resultados.");
-
-                return Json(new { Success = false, Exception = ex.Message }, JsonRequestBehavior.DenyGet);
+                return Json(new { Success = false, Exception = e.Message }, JsonRequestBehavior.DenyGet);
             }
         }
+        */
 
-/*
         /// <summary>
         /// Salva as informações do resultado via arquivo
         /// </summary>
@@ -524,6 +640,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 return Json(new { Success = false, Exception = ex.Message }, JsonRequestBehavior.DenyGet);
             }
-        }*/
+        }
     }
 }
