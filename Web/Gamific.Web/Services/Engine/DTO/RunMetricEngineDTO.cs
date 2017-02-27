@@ -68,6 +68,9 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("score")]
         public int? Score { get; set; }
 
+        [JsonProperty("itemId")]
+        public string ItemId { get; set; }
+
         //[JsonProperty("_links")]
         [JsonIgnore]
         public Link Links { get; set; }

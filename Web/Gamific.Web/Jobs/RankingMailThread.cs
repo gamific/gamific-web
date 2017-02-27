@@ -92,7 +92,7 @@ namespace Vlast.Gamific.Web.Jobs
 
                 if (result.Id == id)
                 {
-                    emailBody += "<tr style='font-family: Arial, sans-serif;'>";
+                    emailBody += "<tr style='font-family: Roboto, sans-serif;'>";
                     emailBody += "<td><img src = 'https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + result.LogoId + "' style='width: 48px !important; height: 48px !important; border-radius:100%; float: left; margin-right: 10px;' /></td>";
                     emailBody += "<td><strong>" + i + "°</strong></td>";
                     emailBody += "<td><strong>" + result.Nick + "</strong></td>";
@@ -101,7 +101,7 @@ namespace Vlast.Gamific.Web.Jobs
                 }
                 else
                 {
-                    emailBody += "<tr style='font-family: Arial, sans-serif;'>";
+                    emailBody += "<tr style='font-family: Roboto, sans-serif;'>";
                     emailBody += "<td><img src = 'https://s3.amazonaws.com/gamific-prd/images/logos/empresas/logo-" + result.LogoId + "' style='width: 48px !important; height: 48px !important; border-radius:100%; float: left; margin-right: 10px;' /></td>";
                     emailBody += "<td>" + i + "°</td>";
                     emailBody += "<td>" + result.Nick + "</td>";
@@ -332,7 +332,7 @@ namespace Vlast.Gamific.Web.Jobs
                                      }).ToList();
             }
 
-            string emailBody = "<!DOCTYPE html><html xmlns = 'http://www.w3.org/1999/xhtml'><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8;'/><style>body{color: #000000; font-family: Arial, sans-serif;} h1{font-size: 30px;} h2{font-size: 24px;}h3{font-size: 18px;} strong{color: #1cb29b;} a{text-decoration: none; color: #153643; font-weight: 700;} td{text-align: center;} .image-icon{width:48px;height:48px !important;border-radius:100%;margin-right: 10px;} .score{text-align: right !important; padding-left:15px;} .name{text-align:left !important;} .sucess-goal{color: #1cb29b !important; font-weight: bold;} .alert-goal{color: firebrick;font-weight: bold;} .normal-goal{color: orange; font-weight:bold;}</style></head>";
+            string emailBody = "<!DOCTYPE html><html xmlns = 'http://www.w3.org/1999/xhtml'><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8;'/><style>body{color: #000000; font-family: Roboto, sans-serif;} h1{font-size: 30px;} h2{font-size: 24px;}h3{font-size: 18px;} strong{color: #1cb29b;} a{text-decoration: none; color: #153643; font-weight: 700;} td{text-align: center;} .image-icon{width:48px;height:48px !important;border-radius:100%;margin-right: 10px;} .score{text-align: right !important; padding-left:15px;} .name{text-align:left !important;} .sucess-goal{color: #1cb29b !important; font-weight: bold;} .alert-goal{color: firebrick;font-weight: bold;} .normal-goal{color: orange; font-weight:bold;}</style></head>";
             emailBody += "<body style = 'margin: 0; padding: 0;'><table align = 'center' border = '0' cellpadding = '0' cellspacing = '0' width = '1000'>";
             emailBody += "</td></tr><tr><td style='padding: 0 0 0 0;' align='center'>";
             emailBody += "</td></tr><tr><td>";

@@ -43,9 +43,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             if (jqueryTableRequest != null)
             {
+                TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
                 GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId, jqueryTableRequest.Page);
 
-                List<string> externalIds = all.List.run.Select(x => x.PlayerId).ToList();
+                List<string> externalIds = all.List.run.Select(x => x.PlayerId).Where(q => q != team.MasterPlayerId).ToList();
 
                 List<WorkerDTO> workers = WorkerRepository.Instance.GetDTOFromListExternalId(externalIds);
 
@@ -61,8 +62,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = all.List.run.Count(),
-                        RecordsFiltered = all.List.run.Count(),
+                        RecordsTotal = all.List.run.Count() - 1, //Não contamos o lider da equipe
+                        RecordsFiltered = all.List.run.Count() - 1,
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderBy(item => item[index]).ToArray()
                     };
                 }
@@ -158,10 +159,24 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         goal.UpdatedBy = CurrentUserId;
                         if(goal.Id == 0 && goal.Goal > 0)
                         {
+                            MetricEngineDTO metric = MetricEngineService.Instance.GetById(goal.ExternalMetricId);
+                            GoalEngineDTO goalEngine = new GoalEngineDTO
+                            {
+                                Goal = goal.Goal,
+                                MetricIcon = metric.Icon,
+                                MetricId = metric.Id,
+                                MetricName = metric.Name,
+                                RunId = goal.RunId
+                            };
+                            GoalEngineService.Instance.CreateOrUpdate(goalEngine);
                             GoalRepository.Instance.CreateGoal(goal);
                         }
                         else if(goal.Goal >= 0 && goal.Id > 0)
                         {
+                            GoalEngineDTO goalEngine = GoalEngineService.Instance.GetByRunIdAndMetricId(goal.RunId, goal.ExternalMetricId);
+                            goalEngine.Goal = goal.Goal;
+                            GoalEngineService.Instance.CreateOrUpdate(goalEngine);
+
                             GoalRepository.Instance.UpdateGoal(goal);
                         }
                                
@@ -395,11 +410,15 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     if (!string.IsNullOrWhiteSpace(row[0].ToString()) && !string.IsNullOrWhiteSpace(row[1].ToString()) && !string.IsNullOrWhiteSpace(row[2].ToString()) && !string.IsNullOrWhiteSpace(row[3].ToString()))
                     {
                         GoalDTO goalDTO;
+                        GoalEngineDTO goalEngineDTO;
 
                         goalDTO = GoalRepository.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
+                        goalEngineDTO = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
 
                         if (goalDTO != null)
                         {
+                            goalEngineDTO = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
+
                             GoalEntity goal = new GoalEntity
                             {
                                 RunId = run.Id,
@@ -409,7 +428,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Goal = Int32.Parse(row[3].Value.ToString())
                             };
 
+                            goalEngineDTO.Goal = Int32.Parse(row[3].Value.ToString());
+
                             GoalRepository.Instance.UpdateGoal(goal);
+                            GoalEngineService.Instance.CreateOrUpdate(goalEngineDTO);
                         }
                         else
                         {
@@ -421,7 +443,18 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Goal = Int32.Parse(row[3].Value.ToString())
                             };
 
+                            goalEngineDTO = new GoalEngineDTO
+                            {
+                                Goal = goal.Goal,
+                                RunId = run.Id,
+                                MetricId = metric.Id,
+                                MetricName = metric.Name,
+                                MetricIcon = metric.Icon
+                            };
+
                             GoalRepository.Instance.CreateGoal(goal);
+                            GoalEngineService.Instance.CreateOrUpdate(goalEngineDTO);
+
                         }
                         
                     }

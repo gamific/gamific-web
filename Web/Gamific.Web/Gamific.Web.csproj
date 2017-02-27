@@ -307,6 +307,7 @@
     <Compile Include="Controllers\Management\TeamController.cs" />
     <Compile Include="Controllers\Public\IndividualResultsController.cs" />
     <Compile Include="Controllers\Management\VideoQuestionController.cs" />
+    <Compile Include="Controllers\Util\ScriptsMigration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -326,6 +327,8 @@
     <Compile Include="Services\Engine\DTO\GameEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\GetAllDTO.cs" />
     <Compile Include="Services\Engine\DTO\EpisodeEngineDTO.cs" />
+    <Compile Include="Services\Engine\DTO\GoalEngineDTO.cs" />
+    <Compile Include="Services\Engine\DTO\ItemEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\Link.cs" />
     <Compile Include="Services\Engine\DTO\MetricEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\PlayerEngineDTO.cs" />
@@ -337,6 +340,8 @@
     <Compile Include="Services\Engine\EngineServiceBase.cs" />
     <Compile Include="Services\Engine\EpisodeEngineService.cs" />
     <Compile Include="Services\Engine\GameEngineService.cs" />
+    <Compile Include="Services\Engine\GoalEngineService.cs" />
+    <Compile Include="Services\Engine\ItemEngineService.cs" />
     <Compile Include="Services\Engine\MetricEngineService.cs" />
     <Compile Include="Services\Engine\PlayerEngineService.cs" />
     <Compile Include="Services\Engine\RunEngineService.cs" />

@@ -60,7 +60,7 @@ namespace Vlast.Gamific.Model.Public.Repository
         {
             ModelContext context = new ModelContext();
             var query = from sc in context.TopicHelps
-                        where sc.Status == GenericStatus.ACTIVE && sc.FirmId == firmId
+                        where sc.Status == GenericStatus.ACTIVE //&& sc.FirmId == firmId
                         orderby sc.Id ascending
                         select sc;
 

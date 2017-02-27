@@ -69,6 +69,66 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ContentResult GetChartResults(string metricId)
         {
+            ChartResultDTO chartDTO = new ChartResultDTO {
+                Positions = new List<List<int>>()
+            };
+
+            MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
+            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
+
+            int i = 0;
+            foreach (EpisodeEngineDTO episode in episodes)
+            {
+                List<int> point = new List<int>();
+
+                List<CardEngineDTO> results = new List<CardEngineDTO>();
+                List<GoalDTO> goals = new List<GoalDTO>();
+                results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
+                goals = GoalRepository.Instance.GetByEpisodeId(episode.Id);
+                long playersCount = EpisodeEngineService.Instance.GetCountPlayersByEpisodeId(episode.Id);
+
+                //GoalEngineDTO goal = GoalEngineService.Instance.
+
+                if (results[0] != null)
+                {
+                    results = (from result in results
+                               join goal in goals
+                               on result.MetricId equals goal.ExternalMetricId into rg
+                               from resultGoal in rg.DefaultIfEmpty()
+                               select new CardEngineDTO
+                               {
+                                   TotalPoints = result != null ? result.TotalPoints : 0,
+                                   Goal = (resultGoal != null ? CalculatesGoal(resultGoal.Goal, playersCount, result.IsAverage) : 0),
+                                   PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0)
+                               }).ToList();
+                }
+
+                int resultInt = 0;
+
+                if (results[0] != null)
+                {
+                    foreach (CardEngineDTO result in results)
+                    {
+                        resultInt += result.TotalPoints;
+                    }
+                }
+
+                point.Add(i);
+                point.Add(resultInt);
+                chartDTO.Positions.Add(point);
+                i++;
+            }
+
+            chartDTO.MetricName = metric.Name;
+
+            return Content(JsonConvert.SerializeObject(chartDTO), "application/json");
+        }
+
+        /*
+        [Route("loadChart/{metricId}")]
+        [HttpGet]
+        public ContentResult GetChartResults(string metricId)
+        {
             ChartResultDTO chartDTO = new ChartResultDTO();
 
             chartDTO.Positions = new List<List<int>>();
@@ -82,7 +142,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             foreach (EpisodeEngineDTO episode in episodes)
             {
                 List<int> point = new List<int>();
-
+                
                 List<CardEngineDTO> results = new List<CardEngineDTO>();
                 List<GoalDTO> goals = new List<GoalDTO>();
                 results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
@@ -124,6 +184,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             return Content(JsonConvert.SerializeObject(chartDTO), "application/json");
         }
+        */
 
         // GET: Dashboard
         [Route("{episodeId}/{teamId}/{playerId}")]
@@ -139,6 +200,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
 
+            ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
             ViewBag.State = episode.Active == true ? 1 : 0;
             ViewBag.EpisodeId = episodeId;
             ViewBag.TeamId = teamId;
@@ -277,44 +339,19 @@ namespace Vlast.Gamific.Web.Controllers.Public
         public ActionResult SearchResults(string episodeId, string teamId, string playerId)
         {
             List<CardEngineDTO> results = new List<CardEngineDTO>();
-            List<GoalDTO> goals = new List<GoalDTO>();
-            long playersCount = 1;
 
             if (playerId != "empty" && playerId != "")
             {   
                 results = CardEngineService.Instance.Player(CurrentFirm.ExternalId, teamId, playerId);
-                RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(playerId, teamId);
-                goals = GoalRepository.Instance.GetByRunId(run.Id);
             }
             else if(teamId != "empty" && teamId != "")
             {
-                playersCount = RunEngineService.Instance.GetCountByTeamIdAndPlayerParentIsNotNull(teamId);
                 results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId);
-                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId);
-                List<string> runIds = all.List.run.Select(x => x.Id).ToList();
-                goals = GoalRepository.Instance.GetByRunId(runIds);
             }
             else
             {
-                playersCount = EpisodeEngineService.Instance.GetCountPlayersByEpisodeId(episodeId);
                 results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episodeId);
-                goals = GoalRepository.Instance.GetByEpisodeId(episodeId);
             }
-
-            results   = (from result in results
-                        join goal in goals
-                        on result.MetricId equals goal.ExternalMetricId into rg
-                        from resultGoal in rg.DefaultIfEmpty()
-                        select new CardEngineDTO
-                        {
-                            IconMetric = result.IconMetric.Replace("_", "-"),
-                            MetricId = result.MetricId,
-                            MetricName = result.MetricName,
-                            TotalPoints = result.TotalPoints,
-                            Goal = (resultGoal != null ? CalculatesGoal(resultGoal.Goal, playersCount, result.IsAverage) : 0),
-                            PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0),
-                            IsAverage = result.IsAverage
-                        }).ToList();
 
             return Json(JsonConvert.SerializeObject(results), JsonRequestBehavior.AllowGet);
         }
@@ -406,8 +443,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                     Data = (from runMetric in all.List.runMetric
                             join worker in workers on runMetric.PlayerId equals worker.ExternalId into runMetricWorker
                             from rmw in runMetricWorker.DefaultIfEmpty()
-                            select new { Date = new DateTime(runMetric.Date), WorkerName = rmw != null ?  rmw.Name : "Jogador excluído", CPF = rmw != null ? rmw.Cpf : "", Result = runMetric.Points, RunMetricId = runMetric.Id }).
-                            Select(r => new string[] { r.Date.ToString("dd/MM/yyyy"), r.WorkerName, r.CPF, r.Result.ToString(), r.RunMetricId}).ToArray()
+                            select new { Date = new DateTime(runMetric.Date), WorkerName = rmw != null ?  rmw.Name : "Jogador excluído", Email = rmw != null ? rmw.Email : "", Result = runMetric.Points, RunMetricId = runMetric.Id }).
+                            Select(r => new string[] { r.Date.ToString("dd/MM/yyyy"), r.WorkerName, r.Email, r.Result.ToString(), r.RunMetricId}).ToArray()
                 };
 
                 return new DataContractResult() { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };

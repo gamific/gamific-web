@@ -795,10 +795,10 @@ a.node.tree {
     display:block;
 }
 #Filters{
-    visibility:visible;
-    display:block;
+    visibility:hidden;
+    display:none;;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
     #buttonFilters{
         visibility:hidden;
         display:none;

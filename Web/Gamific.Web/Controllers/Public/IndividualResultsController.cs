@@ -71,36 +71,15 @@ namespace Vlast.Gamific.Web.Controllers.Public
         public ActionResult SearchResults(string episodeId, string teamId)
         {
             List<CardEngineDTO> results = new List<CardEngineDTO>();
-            List<GoalDTO> goals = new List<GoalDTO>();
-            long playersCount = 1;
 
             if (teamId != "empty" && teamId != "")
             {
                 results = CardEngineService.Instance.Player(CurrentFirm.ExternalId, teamId, CurrentWorker.ExternalId);
-                RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(CurrentWorker.ExternalId, teamId);
-                goals = GoalRepository.Instance.GetByRunId(run.Id);
             }
             else
             {
-                playersCount = EpisodeEngineService.Instance.GetCountPlayersByEpisodeId(episodeId);
                 results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episodeId);
-                goals = GoalRepository.Instance.GetByEpisodeId(episodeId);
             }
-
-            results = (from result in results
-                       join goal in goals
-                       on result.MetricId equals goal.ExternalMetricId into rg
-                       from resultGoal in rg.DefaultIfEmpty()
-                       select new CardEngineDTO
-                       {
-                           IconMetric = result.IconMetric.Replace("_", "-"),
-                           MetricId = result.MetricId,
-                           MetricName = result.MetricName,
-                           TotalPoints = result.TotalPoints,
-                           Goal = (resultGoal != null ? CalculatesGoal(resultGoal.Goal, playersCount, result.IsAverage) : 0),
-                           PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0),
-                           IsAverage = result.IsAverage
-                       }).ToList();
 
             return Json(JsonConvert.SerializeObject(results), JsonRequestBehavior.AllowGet);
         }

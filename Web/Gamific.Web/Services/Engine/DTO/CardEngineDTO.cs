@@ -30,6 +30,6 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         public float PercentGoal { get; set; }
 
         [JsonProperty("goal")]
-        public int Goal { get; set; }
+        public float Goal { get; set; }
     }
 }
