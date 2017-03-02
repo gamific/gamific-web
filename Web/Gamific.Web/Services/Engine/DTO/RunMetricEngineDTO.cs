@@ -60,7 +60,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
 
         [Required]
         [JsonProperty("points")]
-        public int? Points { get; set; }
+        public float Points { get; set; }
 
         [JsonProperty("date")]
         public long Date { get; set; }

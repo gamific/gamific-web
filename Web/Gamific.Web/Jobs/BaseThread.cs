@@ -23,10 +23,7 @@ namespace Vlast.Gamific.Web.Jobs
                     (new TimeSpan(24,0,0).TotalMilliseconds - now.TimeOfDay.TotalMilliseconds) + timeToRun.TotalMilliseconds :
                     timeToRun.TotalMilliseconds - now.TimeOfDay.TotalMilliseconds);
 
-                TimeSpan teste = new TimeSpan(0, 0, 0, 0, miliseconds);
-
-                Thread.Sleep(miliseconds);
-
+               Thread.Sleep(miliseconds);
                 Run();
             }
         }

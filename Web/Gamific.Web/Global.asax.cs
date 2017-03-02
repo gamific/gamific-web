@@ -33,7 +33,7 @@ namespace Vlast.Gamific.Web
             }
 
 
-//            rankingJob.Init(new TimeSpan(7, 0, 0));
+            //rankingJob.Init(new TimeSpan(8, 30, 0));
 
 
             /*
