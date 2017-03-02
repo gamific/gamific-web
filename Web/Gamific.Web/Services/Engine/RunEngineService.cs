@@ -63,6 +63,11 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public RunEngineDTO GetById(string runId)
+        {
+            return GetDTO<RunEngineDTO>(runId);
+        }
+
         public RunEngineDTO GetRunByPlayerAndTeamId(string playerId, string teamId)
         {
             try

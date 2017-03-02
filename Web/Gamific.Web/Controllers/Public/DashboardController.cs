@@ -427,12 +427,17 @@ namespace Vlast.Gamific.Web.Controllers.Public
                     all = EpisodeEngineService.Instance.resultsByEpisodeIdAndMetricId(episodeId, metricId, jqueryTableRequest.Page);
                 }
 
-                List<WorkerDTO> workers = WorkerRepository.Instance.GetWorkerDTOByListExternalId(all.List.runMetric.Select(i => i.PlayerId).ToList());
+                List<WorkerDTO> workers = all.List == null ? new List<WorkerDTO>() : WorkerRepository.Instance.GetWorkerDTOByListExternalId(all.List.runMetric.Select(i => i.PlayerId).ToList());
+                GetAllDTO itens = ItemEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 10000);
 
-                foreach(RunMetricEngineDTO rm in all.List.runMetric)
+
+                if(all.List != null)
                 {
-                    DateTime dat = new DateTime(rm.Date);
-                    string ds = dat.ToString("dd/MM/yyyy");
+                    foreach (RunMetricEngineDTO rm in all.List.runMetric)
+                    {
+                        DateTime dat = new DateTime(rm.Date);
+                        string ds = dat.ToString("dd/MM/yyyy");
+                    }
                 }
 
                 JQueryDataTableResponse response = new JQueryDataTableResponse()
@@ -443,8 +448,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                     Data = (from runMetric in all.List.runMetric
                             join worker in workers on runMetric.PlayerId equals worker.ExternalId into runMetricWorker
                             from rmw in runMetricWorker.DefaultIfEmpty()
-                            select new { Date = new DateTime(runMetric.Date), WorkerName = rmw != null ?  rmw.Name : "Jogador excluído", Email = rmw != null ? rmw.Email : "", Result = runMetric.Points, RunMetricId = runMetric.Id }).
-                            Select(r => new string[] { r.Date.ToString("dd/MM/yyyy"), r.WorkerName, r.Email, r.Result.ToString(), r.RunMetricId}).ToArray()
+                            select new { Date = new DateTime(runMetric.Date), WorkerName = rmw != null ?  rmw.Name : "Jogador excluído", Email = rmw != null ? rmw.Email : "", Result = runMetric.Points, RunMetricId = runMetric.Id, ItemName = itens.List == null ? "" : (itens.List.item.Where(q => q.Id == runMetric.ItemId).Select(x => x.Name)).FirstOrDefault()}).
+                            Select(r => new string[] { r.Date.ToString("dd/MM/yyyy"), r.WorkerName, r.Email, r.ItemName, r.Result.ToString(), r.RunMetricId}).ToArray()
                 };
 
                 return new DataContractResult() { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
