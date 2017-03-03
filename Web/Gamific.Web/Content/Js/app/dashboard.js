@@ -427,6 +427,11 @@ var values1 = [];
 var plot;
 var metricToInitialize = $('#metricToInitialize').val();
 if (metricToInitialize) {
+
+    var id = '#chart-' + metricToInitialize;
+
+    $(id).attr("checked", true);
+
     var campaignsNames;
 
     $.ajax({
