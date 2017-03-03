@@ -20,6 +20,8 @@ using System.Text;
 using Vlast.Gamific.Model.Account.Domain;
 using LinqToExcel;
 using System.Web;
+using Vlast.Broker.EMAIL;
+using Vlast.Util.Parameter;
 
 namespace Vlast.Gamific.Web.Controllers.Management
 {
@@ -62,8 +64,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = all.List.run.Count() - 1, //Não contamos o lider da equipe
-                        RecordsFiltered = all.List.run.Count() - 1,
+                        RecordsTotal = all.List.run.Count(), //Não contamos o lider da equipe
+                        RecordsFiltered = all.List.run.Count(),
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderBy(item => item[index]).ToArray()
                     };
                 }
@@ -348,12 +350,18 @@ namespace Vlast.Gamific.Web.Controllers.Management
         /// Salva as informações do resultado via arquivo
         /// </summary>
         /// <param name="goalArchive"></param>
+        /// <param name="episodeId"></param>
         /// <returns></returns>
         [Route("salvarArquivoMeta")]
         [HttpPost]
         [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
         public ActionResult SaveGoalArchive(HttpPostedFileBase goalArchive, string episodeId)
         {
+            string errors = "Quantidade de erros: {0}<br/>Última linha lida: {1}<br/>";
+            int line = 1;
+            int countErrors = 0;
+            int countEmptyLines = 0;
+
             try
             {
                 goalArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), goalArchive.FileName));
@@ -367,15 +375,40 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 foreach (var row in rows)
                 {
-                    if (row[0] == null || row[0].ToString().Equals("") || row[3].ToString().Equals("0"))
+                    line++;
+
+                    if (countEmptyLines >= 3)
+                    {
+                        break;
+                    }
+
+                    if (row[0] == null || row[0].ToString().Equals("") || row[1] == null || row[1].ToString().Equals(""))
+                    {
+                        countEmptyLines++;
+                        continue;
+                    }
+
+                    countEmptyLines = 0;
+
+                    if (row[3].ToString().Equals("0"))
                     {
                         continue;
                     }
 
-                    MetricEngineDTO metric = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, row[1].ToString());
+                    MetricEngineDTO metric = new MetricEngineDTO();
+                    TeamEngineDTO team = new TeamEngineDTO();
+                    RunEngineDTO run = new RunEngineDTO();
 
-                    if (metric == null)
+                    
+
+                    try
                     {
+                        metric = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, row[1].ToString());
+                    }
+                    catch(Exception e)
+                    {
+                        errors += "Erro na coluna 2 da linha " + line + "<br/>";
+                        countErrors++;
                         continue;
                     }
 
@@ -383,6 +416,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     if (user == null)
                     {
+                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        countErrors++;
                         continue;
                     }
 
@@ -390,22 +425,33 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     if (worker == null)
                     {
+                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        countErrors++;
                         continue;
                     }
 
-                    TeamEngineDTO team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId, row[2].Value.ToString());
-
-                    if (team == null)
+                    try
                     {
-                        continue;
+                        team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId, row[2].Value.ToString());
                     }
-
-                    RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);
-
-                    if (run == null)
+                    catch(Exception e)
                     {
+                        errors += "Erro na coluna 3 da linha " + line + "<br/>";
+                        countErrors++;
                         continue;
                     }
+
+                    try
+                    {
+                        run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);
+                    }
+                    catch(Exception e)
+                    {
+                        errors += "Jogador " + user.Name + " não está cadastrado no time " + team.Nick + ". Linha: " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+                    
 
                     if (!string.IsNullOrWhiteSpace(row[0].ToString()) && !string.IsNullOrWhiteSpace(row[1].ToString()) && !string.IsNullOrWhiteSpace(row[2].ToString()) && !string.IsNullOrWhiteSpace(row[3].ToString()))
                     {
@@ -413,11 +459,28 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         GoalEngineDTO goalEngineDTO;
 
                         goalDTO = GoalRepository.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
-                        goalEngineDTO = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
 
                         if (goalDTO != null)
                         {
-                            goalEngineDTO = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
+                            try
+                            {
+                                goalEngineDTO = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
+                                goalEngineDTO.Goal = Int32.Parse(row[3].Value.ToString());
+                            }
+                            catch(Exception e)
+                            {
+                                goalEngineDTO = new GoalEngineDTO
+                                {
+                                    RunId = run.Id,
+                                    MetricId = metric.Id,
+                                    MetricIcon = metric.Icon,
+                                    MetricName = metric.Name,
+                                    Goal = Int32.Parse(row[3].Value.ToString()),
+                                    ItemId = "",
+                                    Percentage = 0
+                                };
+                            }
+                            
 
                             GoalEntity goal = new GoalEntity
                             {
@@ -445,11 +508,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                             goalEngineDTO = new GoalEngineDTO
                             {
-                                Goal = goal.Goal,
                                 RunId = run.Id,
                                 MetricId = metric.Id,
+                                MetricIcon = metric.Icon,
                                 MetricName = metric.Name,
-                                MetricIcon = metric.Icon
+                                Goal = Int32.Parse(row[3].Value.ToString()),
+                                ItemId = "",
+                                Percentage = 0
                             };
 
                             GoalRepository.Instance.CreateGoal(goal);
@@ -461,6 +526,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     
                 }
+
+                errors = string.Format(errors, countErrors, line);
+
+                string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
+                bool r = EmailDispatcher.SendEmail(emailFrom, "Erros ao subir planilha de metas", new List<string>() { emailFrom, CurrentUserProfile.Email }, errors);
 
                 Success("Metas cadastradas com sucesso.");
 

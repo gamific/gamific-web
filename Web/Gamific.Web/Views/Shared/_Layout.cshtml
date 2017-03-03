@@ -94,7 +94,7 @@
                                         </a>
                                     </li>
 
-                                    @if (BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.ADMINISTRADOR) || BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.LIDER)  )
+                                    @if (BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.ADMINISTRADOR) || BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.LIDER) || BaseController.CurrentFirm.ExternalId.Equals("5880a1743a87783b4f0ba709"))
                                     {
                                         <li id="Dashboard">
                                             <a href="/public/dashboard">

@@ -21,6 +21,8 @@ using System.IO;
 using LinqToExcel;
 using Vlast.Gamific.Model.Account.Domain;
 using System.Diagnostics;
+using Vlast.Broker.EMAIL;
+using Vlast.Util.Parameter;
 
 namespace Vlast.Gamific.Web.Controllers.Management
 {
@@ -331,6 +333,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             return File(ms.ToArray(), "application/vnd.ms-excel");
         }
+        
         /*
         /// <summary>
         /// Salva as informações do resultado via arquivo
@@ -357,8 +360,43 @@ namespace Vlast.Gamific.Web.Controllers.Management
             int VLR_MEDIO_OBJETIVO = 12;
             int VLR_MEDIO_REAL = 13;
 
-            string runId = "58b0223f3001c1541c832ed5";
+            EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
+            string gameId = CurrentFirm.ExternalId;
+
+            string runId = "58b5fc7a3a87782c725a9127";
             string errors = "Erros: {0}<br/>";
+
+
+            MetricEngineDTO metricFat;
+            MetricEngineDTO metricVol;
+
+
+            int line = 0;
+            int errorsCount = 0;
+
+            try
+            {
+                metricFat = MetricEngineService.Instance.GetDTOByGameAndName(gameId, "FATURAMENTO");
+            }
+            catch (Exception e)
+            {
+                errors += "Metrica (Faturamento) não encontrado.<br/>";
+                errorsCount++;
+                metricFat = new MetricEngineDTO();
+                Debug.Print("Error metric: " + e.Message);
+            }
+
+            try
+            {
+                metricVol = MetricEngineService.Instance.GetDTOByGameAndName(gameId, "VOLUME");
+            }
+            catch (Exception e)
+            {
+                errors += "Metrica (Volume) não encontrado.<br/>";
+                errorsCount++;
+                metricVol = new MetricEngineDTO();
+                Debug.Print("Error metric: " + e.Message);
+            }
 
             try
             {
@@ -368,18 +406,14 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 var rows = from x in archive.WorksheetRange("A1", "N" + rowsCount, "Plan1") select x;
 
-                string gameId = CurrentFirm.ExternalId;
 
-                int line = 0;
-                int errorsCount = 0;
+
                 float points;
 
                 foreach (var row in rows)
                 {
                     line++;
 
-                    MetricEngineDTO metricFat;
-                    MetricEngineDTO metricVol;
                     PlayerEngineDTO player;
 
                     try
@@ -391,30 +425,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Debug.Print("Error player: " + e.Message);
                         errors += "(Linha -> " + line + "°, Coluna -> " + REPRESENTANTE + ") " + "Jogador: " + row[REPRESENTANTE].ToString().Trim() + " não encontrado.<br/>";
                         errorsCount++;
-                        continue;
-                    }
-
-                    try
-                    {
-                        metricFat = MetricEngineService.Instance.GetDTOByGameAndName(gameId, "Faturamento");
-                    }
-                    catch(Exception e)
-                    {
-                        errors += "Metrica (Faturamento) não encontrado.<br/>";
-                        errorsCount++;
-                        Debug.Print("Error metric: " + e.Message);
-                        continue;
-                    }
-
-                    try
-                    {
-                        metricVol = MetricEngineService.Instance.GetDTOByGameAndName(gameId, "Volume");
-                    }
-                    catch (Exception e)
-                    {
-                        errors += "Metrica (Volume) não encontrado.<br/>";
-                        errorsCount++;
-                        Debug.Print("Error metric: " + e.Message);
                         continue;
                     }
 
@@ -432,15 +442,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     {
                         item = ItemEngineService.Instance.CreateOrUpdate(item);
                         Debug.Print("Error metric: " + e.Message);
-                    }
-
-                    if (item.Name.ToLower().Contains("vulcano"))
-                    {
-                        string teste = "É da vulcano!";
-                    }
-                    else if(item.Name.ToLower().Contains("alegria"))
-                    {
-                        string teste = "É da alegria!";
                     }
 
                     float.TryParse(row[VLR_BRUTO_REAL].ToString(), out points);
@@ -485,6 +486,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     {
                         goalVol = GoalEngineService.Instance.GetByRunIdAndMetricId(runId, metricVol.Id);
                         goalVol.Goal = points;
+                        goalVol.ItemId = item.Id;
                     }
                     catch(Exception e)
                     {
@@ -508,6 +510,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     {
                         goalFat = GoalEngineService.Instance.GetByRunIdAndMetricId(runId, metricFat.Id);
                         goalFat.Goal = points;
+                        goalFat.ItemId = item.Id;
                     }
                     catch (Exception e)
                     {
@@ -525,10 +528,20 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Debug.Print("Goal volume: " + e.Message);
                     }
 
-                    GoalEngineService.Instance.CreateOrUpdate(goalFat);
-                    GoalEngineService.Instance.CreateOrUpdate(goalVol);
-                    //RunMetricEngineService.Instance.CreateOrUpdate(resultFaturamento);
-                    //RunMetricEngineService.Instance.CreateOrUpdate(resultVolume);
+                    if (item.Name.ToLower().Contains("vulcano") && episode.Name.ToLower().Contains("vulcano"))
+                    {
+                        GoalEngineService.Instance.CreateOrUpdate(goalFat);
+                        GoalEngineService.Instance.CreateOrUpdate(goalVol);
+                        RunMetricEngineService.Instance.CreateOrUpdate(resultFaturamento);
+                        RunMetricEngineService.Instance.CreateOrUpdate(resultVolume);
+                    }
+                    else if (item.Name.ToLower().Contains("alegria") && episode.Name.ToLower().Contains("alegria"))
+                    {
+                        GoalEngineService.Instance.CreateOrUpdate(goalFat);
+                        GoalEngineService.Instance.CreateOrUpdate(goalVol);
+                        RunMetricEngineService.Instance.CreateOrUpdate(resultFaturamento);
+                        RunMetricEngineService.Instance.CreateOrUpdate(resultVolume);
+                    }
                 }
 
                 errors = string.Format(errors, errorsCount);
@@ -544,6 +557,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         }
         */
 
+        
         /// <summary>
         /// Salva as informações do resultado via arquivo
         /// </summary>
@@ -554,6 +568,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
         public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string teste_12_14)
         {
+            string errors = "Quantidade de erros: {0}<br/>Última linha lida: {1}<br/>";
+            int line = 1;
+            int countErrors = 0;
+            int countEmptyLines = 0;
+
             try
             {
                 string episodeId = Request["episodeId"];
@@ -569,17 +588,39 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 foreach (var row in rows)
                 {
-                    if (row[0] == null || row[0].ToString().Equals("") || row[3].ToString().Equals("0"))
+                    line++;
+
+                    if(countEmptyLines >= 3)
+                    {
+                        break;
+                    }
+
+                    if (row[0] == null || row[0].ToString().Equals("") || row[1] == null || row[1].ToString().Equals(""))
+                    {
+                        countEmptyLines++;
+                        continue;
+                    }
+
+                    countEmptyLines = 0;
+
+                    if (row[3].ToString().Equals("0"))
                     {
                         continue;
                     }
 
                     RunMetricEngineDTO result = new RunMetricEngineDTO();
+                    MetricEngineDTO metric = new MetricEngineDTO();
+                    TeamEngineDTO team = new TeamEngineDTO();
+                    RunEngineDTO run = new RunEngineDTO();
 
-                    MetricEngineDTO metric = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, row[1].ToString());
-
-                    if (metric == null)
+                    try
                     {
+                        metric = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, row[1].ToString());
+                    }
+                    catch(Exception e)
+                    {
+                        errors += "Erro na coluna 2 da linha " + line + "<br/>";
+                        countErrors++;
                         continue;
                     }
 
@@ -587,6 +628,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     if (user == null)
                     {
+                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        countErrors++;
                         continue;
                     }
 
@@ -594,22 +637,33 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     if (worker == null)
                     {
+                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        countErrors++;
                         continue;
                     }
 
-                    TeamEngineDTO team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId, row[4]);
-
-                    if (team == null)
+                    try
                     {
-                        continue;
+                        team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId, row[4]);
                     }
-
-                    RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);
-
-                    if (run == null)
+                    catch (Exception e)
                     {
+                        errors += "Erro na coluna 5 da linha " + line + "<br/>";
+                        countErrors++;
                         continue;
                     }
+
+                    try
+                    {
+                        run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);
+                    }
+                    catch (Exception e)
+                    {
+                        errors += "Jogador " + user.Name + " não está cadastrado no time " + team.Nick + ". Linha: " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
 
                     if (!string.IsNullOrWhiteSpace(row[0].ToString()) && !string.IsNullOrWhiteSpace(row[1].ToString()) && !string.IsNullOrWhiteSpace(row[2].ToString()) && !string.IsNullOrWhiteSpace(row[3].ToString()))
                     {
@@ -629,6 +683,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         RunMetricEngineService.Instance.CreateOrUpdate(result);
                     }
                 }
+
+                errors = string.Format(errors, countErrors, line);
+
+                string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
+                bool r = EmailDispatcher.SendEmail(emailFrom, "Erros ao subir planilha de metas", new List<string>() { emailFrom, CurrentUserProfile.Email }, errors);
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }

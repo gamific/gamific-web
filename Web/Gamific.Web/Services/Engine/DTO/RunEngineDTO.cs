@@ -29,6 +29,9 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("score")]
         public long Score { get; set; }
 
+        [JsonProperty("playerName")]
+        public string PlayerName { get; set; }
+
         [JsonProperty("_links")]
         public Link Links { get; set; }
     }

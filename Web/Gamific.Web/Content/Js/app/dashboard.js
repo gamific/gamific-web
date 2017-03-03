@@ -231,14 +231,23 @@ function refreshCardResults(episodeId, teamId, playerId) {
                     numberStep: comma_separator_number_step
                 }, 1500);
 
+
+
                 $('#' + cardResults[i].metricId + '-percent').animateNumber({
                     number: cardResults[i].percentGoal * 100,
-                    numberStep: comma_separator_number_step
+                    numberStep: function (now, tween) {
+                        var decimal_places = 2;
+                        var decimal_factor = decimal_places === 0 ? 1 : Math.pow(10, decimal_places);
+                        var floored_number = Math.floor(cardResults[i].percentGoal * decimal_factor * 100) / decimal_factor;
+                        floored_number = floored_number.toString().replace('.', ',');
+                        var target = $('#' + cardResults[i].metricId + '-percent');
+                        target.text(floored_number)
+                    }
                 }, 1500);
 
                 $('#' + cardResults[i].metricId + '-goal').animateNumber({
                     number: cardResults[i].goal,
-                    numberStep: comma_separator_number_step
+                    numberStep: comma_separator_number_step,
                 }, 1500);
 
                 var bar_id = 'a' + cardResults[i].metricId + "-bar";
@@ -290,13 +299,13 @@ function LoadMetricResultsDataTable() {
                 "searchable": true,
             },
             {
-                "width": "30%",
+                "width": "25%",
                 "targets": 1,
                 "orderable": false,
                 "serchable": false,
             },
             {
-                "width": "30%",
+                "width": "20%",
                 "targets": 2,
                 "orderable": false,
                 "serchable": false
@@ -310,6 +319,12 @@ function LoadMetricResultsDataTable() {
             {
                 "width": "10%",
                 "targets": 4,
+                "orderable": false,
+                "serchable": false,
+            },
+            {
+                "width": "10%",
+                "targets": 5,
                 "orderable": false,
                 "serchable": false,
                 "render": function (data, type, row) {

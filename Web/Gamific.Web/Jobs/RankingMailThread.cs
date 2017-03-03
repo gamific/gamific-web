@@ -31,7 +31,7 @@ namespace Vlast.Gamific.Web.Jobs
 
             foreach (GameEngineDTO game in games.List.game)
             {
-                if (game.Id == "5880a1743a87783b4f0ba709" /*|| game.Id == "5885fa373a87786bec6ca6ff"*/)
+                if (game.Id == "5880a1743a87783b4f0ba709"/* || game.Id == "5885fa373a87786bec6ca6ff"*/)
                 {
                     GetAllDTO players = PlayerEngineService.Instance.GetByGameId(game.Id);
 
@@ -39,24 +39,21 @@ namespace Vlast.Gamific.Web.Jobs
 
                     foreach(EpisodeEngineDTO episode in episodes.List.episode)
                     {
-                        //if(episode.Id == "589361133a87780f42c98aec")
+                        List<string> emails = new List<string>();
+                        GetAllDTO teams = TeamEngineService.Instance.FindByEpisodeId(episode.Id);
+
+                        foreach (TeamEngineDTO team in teams.List.team)
                         {
-                            List<string> emails = new List<string>();
-                            GetAllDTO teams = TeamEngineService.Instance.FindByEpisodeId(episode.Id);
+                            GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(team.Id);
 
-                            foreach (TeamEngineDTO team in teams.List.team)
+                            foreach (RunEngineDTO run in runs.List.run)
                             {
-                                GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(team.Id);
-
-                                foreach (RunEngineDTO run in runs.List.run)
+                                WorkerDTO worker = WorkerRepository.Instance.GetWorkerDTOByExternalId(run.PlayerId);
+                                if (worker != null && (worker.ProfileName == Profiles.LIDER || worker.ProfileName == Profiles.JOGADOR))
                                 {
-                                    WorkerDTO worker = WorkerRepository.Instance.GetWorkerDTOByExternalId(run.PlayerId);
-                                    if (worker != null && (worker.ProfileName == Profiles.LIDER || worker.ProfileName == Profiles.JOGADOR))
-                                    {
-                                        string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
-                                        Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
-                                        Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
-                                    }
+                                    string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
+                                    Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
+                                    Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
                                 }
                             }
                         }

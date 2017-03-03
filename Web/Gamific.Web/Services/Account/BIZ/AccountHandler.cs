@@ -48,7 +48,7 @@ namespace Vlast.Gamific.Web.Services.Account.BIZ
 
                 Random rnd = new Random();
 
-                string newPwd = "PWDCHANGE" + rnd.Next();
+                string newPwd = "PWD" + rnd.Next();
 
                 NewRequest request = new NewRequest();
 
@@ -363,10 +363,7 @@ namespace Vlast.Gamific.Web.Services.Account.BIZ
                         authResult.AuthStatus = AuthStatus.INVALID_CPF;
                     }
                 }
-                else if (string.IsNullOrWhiteSpace(newUserRequest.Name))
-                {
-                    authResult.AuthStatus = AuthStatus.INVALID_NAME;
-                }
+               
             }
 
             return authResult;

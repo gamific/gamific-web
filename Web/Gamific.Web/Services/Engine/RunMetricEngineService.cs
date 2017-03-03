@@ -65,7 +65,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         }
 
         public void CreateOrUpdate(RunMetricEngineDTO runMetric)
-        {
+         {
             PostDTO<RunMetricEngineDTO>(ref runMetric);
         }
 
