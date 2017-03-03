@@ -165,6 +165,70 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return Json(null, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// Carrega um datatable com todas as equipes do episodio ordenados por Score
+        /// </summary>
+        /// <param name="jqueryTableRequest"></param>
+        /// <param name="episodeId"></param>
+        /// <param name="metricId"></param>
+        /// <returns></returns>
+        [Route("searchPlayers")]
+        public ActionResult SearchPlayers(JQueryDataTableRequest jqueryTableRequest, string episodeId, string metricId)
+        {
+            GetAllDTO all;
+
+            if (jqueryTableRequest != null)
+            {
+                
+                all = RunEngineService.Instance.ScoreByEpisodeIdAndMetricId(episodeId, metricId == "empty" ? "" : metricId, jqueryTableRequest.Page);
+
+                foreach (RunEngineDTO run in all.List.run)
+                {
+                    try
+                    {
+                        run.LogoId = PlayerEngineService.Instance.GetById(run.PlayerId).LogoId;
+                    }
+                    catch(Exception e)
+                    {
+                        run.LogoId = 0;
+                    }
+                }
+                
+
+                int index = 0;
+                if (jqueryTableRequest.Order != null)
+                {
+                    index = Int32.Parse(jqueryTableRequest.Order);
+                }
+                JQueryDataTableResponse response = null;
+
+                if (jqueryTableRequest.Type == null || jqueryTableRequest.Type.Equals("asc"))
+                {
+                    response = new JQueryDataTableResponse()
+                    {
+                        Draw = jqueryTableRequest.Draw,
+                        RecordsTotal = all.PageInfo.totalElements,
+                        RecordsFiltered = all.PageInfo.totalElements,
+                        Data = all.List.run.Select(t => new string[] { jqueryTableRequest.Page.ToString(), t.PlayerName + ";" + t.LogoId, t.TeamName, t.Score.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
+                    };
+                }
+                else
+                {
+                    response = new JQueryDataTableResponse()
+                    {
+                        Draw = jqueryTableRequest.Draw,
+                        RecordsTotal = all.PageInfo.totalElements,
+                        RecordsFiltered = all.PageInfo.totalElements,
+                        Data = all.List.run.Select(t => new string[] { jqueryTableRequest.Page.ToString(), t.PlayerName + ";" + t.LogoId, t.TeamName, t.Score.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
+                    };
+                }
+
+                return new DataContractResult() { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
+
 
         /////////////////////////////////////////////////////////////////////////
 

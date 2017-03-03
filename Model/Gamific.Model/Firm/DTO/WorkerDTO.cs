@@ -27,6 +27,8 @@ namespace Vlast.Gamific.Model.Firm.DTO
 
         public string Phone { get; set; }
 
+        public string Role { get; set; }
+
         // id da associação entre funcionario e equipe
         public int IdAssociation { get; set; }
 

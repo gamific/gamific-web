@@ -32,6 +32,12 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("playerName")]
         public string PlayerName { get; set; }
 
+        [JsonProperty("teamName")]
+        public string TeamName { get; set; }
+
+        [JsonProperty("logoId")]
+        public int LogoId { get; set; }
+
         [JsonProperty("_links")]
         public Link Links { get; set; }
     }

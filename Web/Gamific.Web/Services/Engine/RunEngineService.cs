@@ -181,6 +181,33 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+
+        public GetAllDTO ScoreByEpisodeIdAndMetricId(string episodeId, string metricId, int pageIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    client.Headers[HttpRequestHeader.Accept] = "application/json";
+                    client.Encoding = System.Text.Encoding.UTF8;
+
+                    string response = "";
+                    string teste = (ENGINE_API + "⁠⁠⁠runnersScoreByEpisode" + "?episodeId=" + episodeId + "&metricId=" + metricId + "&page=" + pageIndex + "&size=" + pageSize);
+                    response = client.DownloadString(ENGINE_API + "runnersScoreByEpisode?episodeId=" + episodeId + "&metricId=" + metricId + "&page=" + pageIndex + "&size=" + pageSize);
+
+                    return JsonConvert.DeserializeObject<GetAllDTO>(response,
+                                                                    new JsonSerializerSettings
+                                                                    {
+                                                                        NullValueHandling = NullValueHandling.Ignore
+                                                                    });
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         #endregion
     }
 }

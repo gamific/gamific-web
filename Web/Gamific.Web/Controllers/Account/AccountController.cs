@@ -76,43 +76,6 @@ namespace Vlast.Gamific.Web.Controllers.Account
             }
         }
 
-        [Route("resetarSenhaMobile")]
-        [HttpPost]
-        [AllowAnonymous]
-        public string ResetPasswordMobile(LoginViewModel model)
-        {
-            AuthResult result = new AuthResult();
-
-            result = AccountHandler.ResetPassword(new LoginRequest() { Email = model.Email, UserName = model.Email });
-
-            string json = "";
-            if (result.AuthStatus == AuthStatus.OK)
-            {
-                json = JsonConvert.SerializeObject(
-                   "Nova senha gerada com sucesso ! Confirme seu e-mail para receber a nova senha.",
-                   Formatting.Indented,
-                   new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
-                 );
-
-                return json;
-            }
-
-            switch (result.AuthStatus)
-            {
-                default:
-                    json = JsonConvert.SerializeObject(
-                        new Error
-                        {
-                            error = "Erro ao resetar a sua senha. Contate o suporte técnico."
-                        },
-                        Formatting.Indented,
-                        new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
-                      );
-
-                    return json;
-            }
-        }
-
         class Error
         {
             public string error { get; set; }

@@ -62,6 +62,26 @@ namespace Vlast.Gamific.Web.Controllers.Util
             }
         }
 
+        public void MigrationEmailToEngine()
+        {
+            List<WorkerDTO> workers = WorkerRepository.Instance.GetAllDTO();
+            string errors = "";
 
+            foreach(WorkerDTO worker in workers)
+            {
+                try
+                {
+                    PlayerEngineDTO player = PlayerEngineService.Instance.GetById(worker.ExternalId);
+                    player.Email = worker.Email;
+                    player.Cpf = worker.Cpf;
+                    player.Role = worker.Role;
+                    PlayerEngineService.Instance.CreateOrUpdate(player);
+                }
+                catch(Exception e)
+                {
+                    errors += worker.Email + " -> " + e.Message + "<br/>";
+                }
+            }
+        }
     }
 }

@@ -437,6 +437,41 @@ namespace Vlast.Gamific.Model.Firm.Repository
         }
 
         /// <summary>
+        /// Busca todos funcionarios ativos de uma empresa pelo perfil
+        /// </summary>
+        /// <returns></returns>
+        public List<WorkerDTO> GetAllDTO()
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from worker in context.Workers
+                            from profile in context.Profiles
+                            //from wt in context.WorkerTypes
+                            where worker.Status == GenericStatus.ACTIVE
+                            //&& wt.Status == GenericStatus.ACTIVE
+                            && profile.Id == worker.UserId
+                            //&& wt.Id == worker.WorkerTypeId
+                            select new WorkerDTO
+                            {
+                                Cpf = profile.CPF,
+                                Name = profile.Name,
+                                Email = profile.Email,
+                                IdAssociation = 0,
+                                ExternalId = worker.ExternalId,
+                                IdUser = worker.UserId,
+                                IdWorker = worker.Id,
+                                LogoId = worker.LogoId,
+                                Phone = profile.Phone,
+                                TotalPoints = 0,
+                                WorkerTypeId = worker.WorkerTypeId
+                                //Role = Enum.GetName(typeof(Profiles), (int)wt.ProfileName)
+                            };
+
+                return query.ToList();
+            }
+        }
+
+        /// <summary>
         /// Recupera o funcionario pelo id
         /// </summary>
         /// <param name="workerId"></param>
