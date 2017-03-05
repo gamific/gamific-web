@@ -148,13 +148,13 @@
                         <div class="tile-header color transparent-black textured rounded-top-corners">
                             <h1>Evolução</h1>
                             <br />
-                            <h4 class="underline text-left">Comparativo interno</h4>
+                            <h4 class="underline text-left">Comparativo de Campanhas Geral</h4>
                         </div>
                         <div class="tile-widget color transparent-black textured">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 pull-right">
                                     <div style="width: 100%; text-align: center;">
-                                        <img id="chartLoading" style="display:none" src="~/Content/Images/public/loading.gif" width="50" />
+                                        <img id="chartLoading" width="50" />
                                     </div>
                                     <div id="metrics">
                                         <ul class="list-unstyled metric-menu">
@@ -181,7 +181,12 @@
                                             }
 
                                         </ul>
-                                        <input type="checkbox" value="@ViewBag.Metrics[0].Id" hidden checked id="metricToInitialize" />
+
+                                        @if (ViewBag.Metrics.Count > 0)
+                                        {
+                                            <input type="checkbox" value="@ViewBag.Metrics[0].Id" hidden checked id="metricToInitialize" />
+                                        }
+
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 pull-left">

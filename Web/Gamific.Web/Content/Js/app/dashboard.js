@@ -264,13 +264,13 @@ function refreshCardResults(episodeId, teamId, playerId) {
 }
 
 function showLoading() {
-    document.getElementById('chartLoading').style.display = 'block';
-    document.getElementById('metrics').style.display = 'none';
+    //document.getElementById('chartLoading').style.display = 'block';
+    //document.getElementById('metrics').style.display = 'none';
 }
 
 function hideLoading() {
-    document.getElementById('chartLoading').style.display = 'none';
-    document.getElementById('metrics').style.display = 'block';
+   // document.getElementById('chartLoading').style.display = 'none';
+    //document.getElementById('metrics').style.display = 'block';
 }
 
 function LoadMetricResultsDataTable() {
@@ -573,7 +573,7 @@ if (metricToInitialize) {
 }
 
 function initializeChart(metricId, checked) {
-    showLoading();
+    // showLoading();
 
     var campaignsNames;
 
@@ -712,8 +712,8 @@ function initializeChart(metricId, checked) {
                 );
 
                 window.setTimeout(function () {
-                    hideLoading();
-                }, 2000);
+                    //hideLoading();
+                }, 1000);
             }
         });
     } else {
@@ -776,8 +776,8 @@ function initializeChart(metricId, checked) {
 
         }
         window.setTimeout(function () {
-            hideLoading();
-        }, 2000);
+            //hideLoading();
+        }, 1000);
     }
 
 }

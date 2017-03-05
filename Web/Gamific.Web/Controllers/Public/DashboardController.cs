@@ -84,39 +84,13 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 List<CardEngineDTO> results = new List<CardEngineDTO>();
                 List<GoalDTO> goals = new List<GoalDTO>();
                 results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
-                goals = GoalRepository.Instance.GetByEpisodeId(episode.Id);
-                long playersCount = EpisodeEngineService.Instance.GetCountPlayersByEpisodeId(episode.Id);
 
-                //GoalEngineDTO goal = GoalEngineService.Instance.
-
-                if (results[0] != null)
-                {
-                    results = (from result in results
-                               join goal in goals
-                               on result.MetricId equals goal.ExternalMetricId into rg
-                               from resultGoal in rg.DefaultIfEmpty()
-                               select new CardEngineDTO
-                               {
-                                   TotalPoints = result != null ? result.TotalPoints : 0,
-                                   Goal = (resultGoal != null ? CalculatesGoal(resultGoal.Goal, playersCount, result.IsAverage) : 0),
-                                   PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0)
-                               }).ToList();
+                if (results[0] != null) { 
+                    point.Add(i);
+                    point.Add(results[0].TotalPoints);
+                    chartDTO.Positions.Add(point);
+                    i++;
                 }
-
-                int resultInt = 0;
-
-                if (results[0] != null)
-                {
-                    foreach (CardEngineDTO result in results)
-                    {
-                        resultInt += result.TotalPoints;
-                    }
-                }
-
-                point.Add(i);
-                point.Add(resultInt);
-                chartDTO.Positions.Add(point);
-                i++;
             }
 
             chartDTO.MetricName = metric.Name;
