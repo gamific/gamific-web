@@ -8,6 +8,16 @@ using Vlast.Gamific.Web.Controllers.Account;
 using System;
 using Vlast.Gamific.Web.Services.Engine;
 using Vlast.Gamific.Web.Services.Engine.DTO;
+using System.IO;
+using System.Transactions;
+using Vlast.Gamific.Model.Media.Domain;
+using System.Web;
+using Vlast.Util.Data;
+using System.Collections.Generic;
+using System.Drawing;
+using Vlast.Gamific.Model.Media.Repository;
+
+
 
 namespace Vlast.Gamific.Web.Controllers.Mobile
 {
@@ -36,10 +46,13 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
             if (result.AuthStatus == AuthStatus.OK)
             {
                 json = JsonConvert.SerializeObject(
-                   "Nova senha gerada com sucesso ! Confirme seu e-mail para receber a nova senha.",
-                   Formatting.Indented,
-                   new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
-                 );
+                        new
+                        {
+                            message = "Nova senha gerada com sucesso ! Confirme seu e-mail para receber a nova senha."
+                        },
+                        Formatting.Indented,
+                        new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
+                      );
 
                 return json;
             }
@@ -110,5 +123,43 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
             return json;
         }
 
+
+        [Route("uploadImage/{logoId:int}")]
+        [HttpPost]
+        [AllowAnonymous]
+        public string UploadImage(int logoId, byte[] image)
+        {
+            try
+            {
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
+                {
+                    ImageRepository.Instance.SaveOrReplaceLogo(logoId, image);
+
+                    scope.Complete();
+                }
+
+                string json = JsonConvert.SerializeObject(
+                                new {
+                                    message = "Sucess"
+                                },
+                                Formatting.Indented,
+                                new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+                return json;
+            }
+            catch(Exception e)
+            {
+                string json = JsonConvert.SerializeObject(
+                new
+                {
+                    message = "Error: " + e.Message
+                },
+                Formatting.Indented,
+                new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+                return json;
+            }
+
+        }
     }
 }
