@@ -355,8 +355,17 @@ function loadRankingDataTablePlayer() {
                     "orderable": true,
                     "searchable": true,
                     "render": function (data, type, row, meta) {
+                        var ref;
+                        if ($('#userProfile').val() == "JOGADOR") {
+                            ref = "#";
+                        }
+                        else {
+                            ref = "/public/dashboard/" + $('#dropDownEpisodes').val() + "/" + data.split(";")[3] + "/" + data.split(";")[2];
+                        }
 
-                        var links = data.split(";")[0] + " <input id='posicaoPlayers" + (meta.row + 1) + "' value='" + data + "' hidden/>"
+                        var links = "<a href='" + ref + "'>" + data.split(";")[0] + "</a>";
+
+                        links += " <input id='posicaoPlayers" + (meta.row + 1) + "' value='" + data + "' hidden/>"
 
                         return links;
                     }

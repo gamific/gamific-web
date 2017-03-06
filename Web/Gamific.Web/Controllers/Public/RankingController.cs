@@ -209,7 +209,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = all.PageInfo.totalElements,
                         RecordsFiltered = all.PageInfo.totalElements,
-                        Data = all.List.run.Select(t => new string[] { jqueryTableRequest.Page.ToString(), t.PlayerName + ";" + t.LogoId, t.TeamName, t.Score.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
+                        Data = all.List.run.Select(t => new string[] { jqueryTableRequest.Page.ToString(), t.PlayerName + ";" + t.LogoId + ";" + t.PlayerId + ";" + t.TeamId, t.TeamName, t.Score.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
                     };
                 }
                 else
@@ -219,7 +219,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = all.PageInfo.totalElements,
                         RecordsFiltered = all.PageInfo.totalElements,
-                        Data = all.List.run.Select(t => new string[] { jqueryTableRequest.Page.ToString(), t.PlayerName + ";" + t.LogoId, t.TeamName, t.Score.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
+                        Data = all.List.run.Select(t => new string[] { jqueryTableRequest.Page.ToString(), t.PlayerName + ";" + t.LogoId + ";" + t.PlayerId + ";" + t.TeamId, t.TeamName, t.Score.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
                     };
                 }
 
