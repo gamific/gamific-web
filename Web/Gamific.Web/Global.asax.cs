@@ -35,6 +35,7 @@ namespace Vlast.Gamific.Web
 
             //rankingJob.Init(new TimeSpan(8, 30, 0));
 
+            //ScriptsMigration.MigrationEmailToEngine();
 
             /*
             BannerEntity entity = BannerRepository.Instance.GetBannerById(3);

@@ -78,7 +78,7 @@ namespace Vlast.Gamific.Web.Controllers
                 return WebConfigurationManager.AppSettings["S3_URL"];
             }
         }
-
+        
         /// <summary>
         /// Email do usuário logado
         /// </summary>

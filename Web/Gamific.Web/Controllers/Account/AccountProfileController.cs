@@ -178,13 +178,13 @@ namespace Vlast.Gamific.Web.Controllers.Account
                                 }
                             }
 
-                            if (currentWorker.LogoId <= 0)
+                            //if (currentWorker.LogoId <= 0)
                             {
                                 imageSaving = ImageRepository.Instance.CreateImage(imageSaving);
                             }
-                            else
+                            //else
                             {
-                                imageSaving.Id = currentWorker.LogoId;
+                                //imageSaving.Id = currentWorker.LogoId;
                             }
 
                             ImageRepository.Instance.SaveOrReplaceLogo(imageSaving.Id, cover);
@@ -198,11 +198,14 @@ namespace Vlast.Gamific.Web.Controllers.Account
 
                         ValidateModel(entity);
 
+                        entity.CPF = entity.CPF.Replace(".", "").Replace("/", "");
 
                         PlayerEngineDTO player = PlayerEngineService.Instance.GetById(currentWorker.ExternalId);
-
+                        
                         player.LogoId = currentWorker.LogoId;
+                        player.LogoPath = CurrentURL + player.LogoId;
                         player.Nick = entity.Name;
+                        player.Cpf = entity.CPF;
 
                         player = PlayerEngineService.Instance.CreateOrUpdate(player);
 

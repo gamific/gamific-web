@@ -9,7 +9,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
     public class CardEngineDTO
     {
         [JsonProperty("totalPoints")]
-        public int TotalPoints { get; set; }
+        public float TotalPoints { get; set; }
 
         [JsonProperty("metricName")]
         public string MetricName { get; set; }

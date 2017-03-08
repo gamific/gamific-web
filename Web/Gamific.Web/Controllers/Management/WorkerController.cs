@@ -137,11 +137,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 }
                             }
 
-                            if (entity.LogoId > 0)
+                            //if (entity.LogoId > 0)
                             {
-                                imageSaving.Id = entity.LogoId;
+                                //imageSaving.Id = entity.LogoId;
                             }
-                            else
+                            //else
                             {
                                 imageSaving = ImageRepository.Instance.CreateImage(imageSaving);
                             }
@@ -195,6 +195,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             player.Xp = entity.TotalXp;
                             player.Email = entity.Email;
                             player.Cpf = entity.Cpf;
+                            player.LogoPath = CurrentURL + player.LogoId;
 
                             PlayerEngineService.Instance.CreateOrUpdate(player);
 
@@ -247,9 +248,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                     Role = entity.ProfileName.ToString(),
                                     Level = 1,
                                     LogoId = worker.LogoId,
-                                    Cpf = entity.Cpf,
+                                    Cpf = entity.Cpf.Replace(".", "").Replace("-", ""),
                                     Email = entity.Email,
-                                    Xp = 1
+                                    Xp = 1,
+                                    LogoPath = CurrentURL + worker.LogoId
                                 });
 
                             worker.ExternalId = player.Id;
@@ -563,7 +565,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 GameId = worker.ExternalFirmId,
                                 LogoId = worker.LogoId,
                                 Cpf = request.Cpf,
-                                Email = request.Email
+                                Email = request.Email,
+                                LogoPath = CurrentURL + worker.LogoId
                             };
 
 

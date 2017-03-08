@@ -11,7 +11,7 @@ using Vlast.Gamific.Web.Services.Engine.DTO;
 
 namespace Vlast.Gamific.Web.Controllers.Util
 {
-    public class ScriptsMigration
+    public class ScriptsMigration : BaseController
     {
         public void MigrationGoalToEngine()
         {
@@ -62,7 +62,7 @@ namespace Vlast.Gamific.Web.Controllers.Util
             }
         }
 
-        public void MigrationEmailToEngine()
+        static public void MigrationEmailToEngine()
         {
             List<WorkerDTO> workers = WorkerRepository.Instance.GetAllDTO();
             string errors = "";
@@ -75,6 +75,7 @@ namespace Vlast.Gamific.Web.Controllers.Util
                     player.Email = worker.Email;
                     player.Cpf = worker.Cpf;
                     player.Role = worker.Role;
+                    player.LogoPath = CurrentURL + player.LogoId;
                     PlayerEngineService.Instance.CreateOrUpdate(player);
                 }
                 catch(Exception e)

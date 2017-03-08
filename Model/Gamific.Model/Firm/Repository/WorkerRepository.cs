@@ -190,6 +190,24 @@ namespace Vlast.Gamific.Model.Firm.Repository
         }
 
         /// <summary>
+        /// Busca um funcionario pelo Id externo
+        /// </summary>
+        /// <param name="workerTypeId"></param>
+        /// <returns></returns>
+        public WorkerEntity GetByExternalId(string externalId)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from worker in context.Workers
+                            where worker.Status == GenericStatus.ACTIVE
+                            && worker.ExternalId == externalId
+                            select worker;
+
+                return query.FirstOrDefault();
+            }
+        }
+
+        /// <summary>
         /// Busca todos os responsaveis de times na lista recebida
         /// </summary>
         /// <param name="teamIds"></param>
@@ -446,11 +464,11 @@ namespace Vlast.Gamific.Model.Firm.Repository
             {
                 var query = from worker in context.Workers
                             from profile in context.Profiles
-                            //from wt in context.WorkerTypes
+                            from wt in context.WorkerTypes
                             where worker.Status == GenericStatus.ACTIVE
-                            //&& wt.Status == GenericStatus.ACTIVE
+                            && wt.Status == GenericStatus.ACTIVE
                             && profile.Id == worker.UserId
-                            //&& wt.Id == worker.WorkerTypeId
+                            && wt.Id == worker.WorkerTypeId
                             select new WorkerDTO
                             {
                                 Cpf = profile.CPF,
@@ -463,8 +481,8 @@ namespace Vlast.Gamific.Model.Firm.Repository
                                 LogoId = worker.LogoId,
                                 Phone = profile.Phone,
                                 TotalPoints = 0,
-                                WorkerTypeId = worker.WorkerTypeId
-                                //Role = Enum.GetName(typeof(Profiles), (int)wt.ProfileName)
+                                WorkerTypeId = worker.WorkerTypeId,
+                                Role = wt.ProfileName.ToString()
                             };
 
                 return query.ToList();

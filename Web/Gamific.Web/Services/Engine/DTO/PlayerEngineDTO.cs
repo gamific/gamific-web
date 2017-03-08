@@ -43,6 +43,9 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("email")]
         public string Email { get; set; }
 
+        [JsonProperty("logoPath")]
+        public string LogoPath { get; set; }
+
         [JsonProperty("cpf")]
         public string Cpf { get; set; }
     

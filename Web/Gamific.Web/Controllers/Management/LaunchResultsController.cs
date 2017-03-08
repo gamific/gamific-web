@@ -687,7 +687,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 errors = string.Format(errors, countErrors, line);
 
                 string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
-                bool r = EmailDispatcher.SendEmail(emailFrom, "Erros ao subir planilha de metas", new List<string>() { emailFrom, CurrentUserProfile.Email }, errors);
+                string subject = countErrors >= 1 ? "Erros ao subir planilha de resultados" : "O lançamento de resultados foi um sucesso.";
+                subject = CurrentFirm.FirmName + ": " + subject;
+                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { emailFrom, CurrentUserProfile.Email }, errors);
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }

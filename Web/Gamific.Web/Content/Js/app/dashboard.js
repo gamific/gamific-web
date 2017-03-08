@@ -181,6 +181,9 @@ function refreshCardResults(episodeId, teamId, playerId) {
                 else if (cardResults[i].percentGoal < 1) {
                     color = "card-orange";
                 }
+                else if (cardResults[i].percentGoal > 1.2) {
+                    color = "card-blue";
+                }
 
                 if (i % 8 == 0 && i != 0) {
                     k++;

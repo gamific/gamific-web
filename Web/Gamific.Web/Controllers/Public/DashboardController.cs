@@ -87,7 +87,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
                 if (results[0] != null) { 
                     point.Add(i);
-                    point.Add(results[0].TotalPoints);
+                    point.Add((int)results[0].TotalPoints);
                     chartDTO.Positions.Add(point);
                     i++;
                 }

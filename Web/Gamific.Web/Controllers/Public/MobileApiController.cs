@@ -16,8 +16,8 @@ using Vlast.Util.Data;
 using System.Collections.Generic;
 using System.Drawing;
 using Vlast.Gamific.Model.Media.Repository;
-
-
+using Vlast.Gamific.Model.Firm.Repository;
+using Vlast.Gamific.Model.Firm.Domain;
 
 namespace Vlast.Gamific.Web.Controllers.Mobile
 {
@@ -39,7 +39,7 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
         public string ResetPasswordMobile(LoginViewModel model)
         {
             AuthResult result = new AuthResult();
-
+            result.AuthStatus = AuthStatus.OK;
             result = AccountHandler.ResetPassword(new LoginRequest() { Email = model.Email, UserName = model.Email });
 
             string json = "";
@@ -96,6 +96,7 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
                 try
                 {
                     player = PlayerEngineService.Instance.GetByEmail(model.Email);
+                    player.LogoPath = GetImagePath(player.LogoId);
                 }
                 catch (Exception e)
                 {
@@ -124,23 +125,50 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
         }
 
 
-        [Route("uploadImage/{logoId:int}")]
+        [Route("uploadImage/{playerId}")]
         [HttpPost]
         [AllowAnonymous]
-        public string UploadImage(int logoId, byte[] image)
+        public string UploadImage(string playerId, byte[] image)
         {
             try
             {
+                PlayerEngineDTO player = PlayerEngineService.Instance.GetById(playerId);
+
+                ImageEntity imageSaving = new ImageEntity
+                {
+                    Status = GenericStatus.ACTIVE,
+                    UpdatedBy = CurrentUserId
+                };
+
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
-                    ImageRepository.Instance.SaveOrReplaceLogo(logoId, image);
+                    //if (player.LogoId > 0)
+                    {
+                       // imageSaving.Id = player.LogoId;
+                    }
+                    //else
+                    {
+                        imageSaving = ImageRepository.Instance.CreateImage(imageSaving);
+                        player.LogoId = imageSaving.Id;
+                        player.LogoPath = GetImagePath(player.LogoId);
+
+                        WorkerEntity worker = WorkerRepository.Instance.GetByExternalId(player.Id);
+                        worker.LogoId = player.LogoId;
+                        WorkerRepository.Instance.UpdateWorker(worker);
+
+                        PlayerEngineService.Instance.CreateOrUpdate(player);
+                    }
+
+                    ImageRepository.Instance.SaveOrReplaceLogo(player.LogoId, image);
 
                     scope.Complete();
                 }
 
                 string json = JsonConvert.SerializeObject(
-                                new {
-                                    message = "Sucess"
+                                new
+                                {
+                                    message = "Sucess",
+                                    logoPath = GetImagePath(player.LogoId)
                                 },
                                 Formatting.Indented,
                                 new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
@@ -152,7 +180,7 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
                 string json = JsonConvert.SerializeObject(
                 new
                 {
-                    message = "Error: " + e.Message
+                    error = "Error: " + e.Message
                 },
                 Formatting.Indented,
                 new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });

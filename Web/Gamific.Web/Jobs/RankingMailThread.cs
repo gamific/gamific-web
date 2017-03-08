@@ -156,7 +156,7 @@ namespace Vlast.Gamific.Web.Jobs
                            MetricName = result.MetricName,
                            TotalPoints = result.TotalPoints,
                            Goal = (resultGoal != null ? CalculatesGoal(resultGoal.Goal, playersCount, result.IsAverage) : 0),
-                           PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0),
+                           PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, (int)result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0),
                            IsAverage = result.IsAverage
                        }).ToList();
 

@@ -64,7 +64,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = all.List.run.Count(), //Não contamos o lider da equipe
+                        RecordsTotal = all.List.run.Count(), 
                         RecordsFiltered = all.List.run.Count(),
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderBy(item => item[index]).ToArray()
                     };
@@ -530,10 +530,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 errors = string.Format(errors, countErrors, line);
 
                 string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
-                bool r = EmailDispatcher.SendEmail(emailFrom, "Erros ao subir planilha de metas", new List<string>() { emailFrom, CurrentUserProfile.Email }, errors);
+                string subject = countErrors >= 1 ? "Erros ao subir planilha de metas" : "O lançamento de metas foi um sucesso.";
+                subject = CurrentFirm.FirmName + ": " + subject;
+                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { emailFrom, CurrentUserProfile.Email }, errors);
 
                 Success("Metas cadastradas com sucesso.");
-
             }
             catch (Exception ex)
             {

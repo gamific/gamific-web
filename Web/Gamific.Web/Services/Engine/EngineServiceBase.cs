@@ -3,6 +3,7 @@ using Vlast.Gamific.Web.Services.Engine.DTO;
 using System.Net;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Web.Configuration;
 
 namespace Vlast.Gamific.Web.Services.Engine
 {
@@ -10,8 +11,7 @@ namespace Vlast.Gamific.Web.Services.Engine
     {
         #region API's URLs
 
-        //protected static string ENGINE_API { get; } = "http://ec2-54-87-167-123.compute-1.amazonaws.com:8080/"; //prd
-        protected static string ENGINE_API { get; } = "http://ec2-54-197-17-15.compute-1.amazonaws.com:8080/"; //dev
+        protected static string ENGINE_API { get; } = WebConfigurationManager.AppSettings["ENGINE_URL"];
         protected string path { get; }
 
         #endregion
