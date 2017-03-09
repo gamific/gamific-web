@@ -208,6 +208,30 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public RunEngineDTO GetByEpisodeIdAndPlayerId(string episodeId, string playerId)
+        {
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    client.Headers[HttpRequestHeader.Accept] = "application/json";
+
+                    string responce = "";
+                    responce = client.DownloadString(ENGINE_API + "findRunByEpisodeId?episodeId=" + episodeId + "&playerId=" + playerId);
+
+                    return JsonConvert.DeserializeObject<RunEngineDTO>(responce,
+                                                                new JsonSerializerSettings
+                                                                {
+                                                                    NullValueHandling = NullValueHandling.Ignore
+                                                                });
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         #endregion
     }
 }

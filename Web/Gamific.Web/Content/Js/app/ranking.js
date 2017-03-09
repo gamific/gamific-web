@@ -204,13 +204,13 @@ function loadCharts() {
 
     var dataPodium = [];
     if (secondInputs != undefined) {
-        dataPodium.push([second.length > 10 ? second.substring(0, 25) + "..." : second, 2]);
+        dataPodium.push([second.length > 10 ? second.substring(0, 10) + "..." : second, 2]);
     }
     if (firstInput != undefined) {
-        dataPodium.push([first.length > 10 ? first.substring(0, 25) + "..." : first, 3]);
+        dataPodium.push([first.length > 10 ? first.substring(0, 10) + "..." : first, 3]);
     }
     if (thirdInput != undefined) {
-        dataPodium.push([third.length > 10 ? third.substring(0, 25) + "..." : third, 1]);
+        dataPodium.push([third.length > 10 ? third.substring(0, 10) + "..." : third, 1]);
     }
 
     $('#podiumContainer').highcharts({

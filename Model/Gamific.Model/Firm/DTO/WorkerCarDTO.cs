@@ -23,5 +23,7 @@
 
         public string AvatarPath { get; set; }
 
+        public string CarLogo { get; set; }
+
     }
 }

@@ -151,6 +151,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
             DateTime dateTime = Convert.ToDateTime(date);
             long time = dateTime.Ticks;
 
+            float valorVendas = 0f;
+            if (CurrentFirm.ExternalId == "5880a1743a87783b4f0ba709")
+            {
+                valorVendas = resultList.Where(x => x.Name == "VENDAS").Select(y => y.Points).FirstOrDefault();
+            }
+            
+
             foreach (RunMetricEngineDTO result in resultList)
             {
                 if (result.Points > 0)
@@ -158,6 +165,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     result.Score = 0;
                     result.RunId = runId;
                     result.Date = time;
+                    result.ArithmeticMultiplier = valorVendas > 0 ? valorVendas : 1;
                     RunMetricEngineService.Instance.CreateOrUpdate(result);
                 }
             }
@@ -348,28 +356,29 @@ namespace Vlast.Gamific.Web.Controllers.Management
             int ANO = 0;
             int MES = 1;
             int REPRESENTANTE = 2;
-            int CLIENTE = 3;
-            int COD_PRODUTO = 4;
-            int PRODUTO = 5;
-            int QTDE_OBJ = 6;
-            int QTDE_REAL = 7;
-            int PERCENT_QTDE = 8;
-            int VLR_OBJ = 9;
-            int VLR_BRUTO_REAL = 10;
-            int PERCENT_VALOR = 11;
-            int VLR_MEDIO_OBJETIVO = 12;
-            int VLR_MEDIO_REAL = 13;
+            int EMAIL = 3;
+            int CLIENTE = 4;
+            int COD_PRODUTO = 5;
+            int PRODUTO = 6;
+            int QTDE_OBJ = 7;
+            int QTDE_REAL = 8;
+            int PERCENT_QTDE = 9;
+            int VLR_OBJ = 10;
+            int VLR_BRUTO_REAL = 11;
+            int PERCENT_VALOR = 12;
+            int VLR_MEDIO_OBJETIVO = 13;
+            int VLR_MEDIO_REAL = 14;
 
             EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
             string gameId = CurrentFirm.ExternalId;
 
-            string runId = "58b5fc7a3a87782c725a9127";
             string errors = "Erros: {0}<br/>";
 
+            List<GoalEngineDTO> goalsTotalFat = new List<GoalEngineDTO>();
+            List<GoalEngineDTO> goalsTotalVol = new List<GoalEngineDTO>();
 
             MetricEngineDTO metricFat;
             MetricEngineDTO metricVol;
-
 
             int line = 0;
             int errorsCount = 0;
@@ -406,8 +415,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 var rows = from x in archive.WorksheetRange("A1", "N" + rowsCount, "Plan1") select x;
 
-
-
                 float points;
 
                 foreach (var row in rows)
@@ -415,17 +422,99 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     line++;
 
                     PlayerEngineDTO player;
+                    RunEngineDTO run;
 
                     try
                     {
-                        player = PlayerEngineService.Instance.GetByGameIdAndNick(gameId, row[REPRESENTANTE].ToString().Trim());
+                        player = PlayerEngineService.Instance.GetByEmail(row[EMAIL].ToString().Trim().ToLower());
                     }
                     catch(Exception e)
                     {
                         Debug.Print("Error player: " + e.Message);
-                        errors += "(Linha -> " + line + "°, Coluna -> " + REPRESENTANTE + ") " + "Jogador: " + row[REPRESENTANTE].ToString().Trim() + " não encontrado.<br/>";
+                        errors += "(Linha -> " + line + "°, Coluna -> " + REPRESENTANTE + ") " + "Jogador: " + row[EMAIL].ToString().Trim() + " não encontrado.<br/>";
                         errorsCount++;
                         continue;
+                    }
+
+                    if(player.Role == Profiles.ADMINISTRADOR.ToString() || player.Role == Profiles.LIDER.ToString())
+                    {
+                        errors += "(Linha -> " + line + "°, Coluna -> " + REPRESENTANTE + ") " + "Usuário: " + row[EMAIL].ToString().Trim() + " não é um jogador, portanto não pode ter resultados.<br/>";
+                        errorsCount++;
+                        continue;
+                    }
+
+                    try
+                    {
+                        run = RunEngineService.Instance.GetByEpisodeIdAndPlayerId(episodeId, player.Id);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Print("Error run: " + e.Message);
+                        errors += "(Linha -> " + line + "°, Coluna -> " + EMAIL + ") " + "Jogador: " + row[EMAIL].ToString().Trim() + " não participa desta campanha.<br/>";
+                        errorsCount++;
+                        continue;
+                    }
+
+                    float.TryParse(row[VLR_OBJ].ToString(), out points);
+                    if (goalsTotalFat.Find(x => x.RunId == run.Id) != null)
+                    {                      
+                        goalsTotalFat.Find(x => x.RunId == run.Id).Goal += points;
+                    }
+                    else
+                    {
+                        GoalEngineDTO goalFat;
+                        try
+                        {
+                            goalFat = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metricFat.Id);
+                            goalFat.Goal = points;
+                        }
+                        catch (Exception e)
+                        {
+                            goalFat = new GoalEngineDTO
+                            {
+                                Goal = points,
+                                MetricIcon = metricFat.Icon,
+                                MetricId = metricFat.Id,
+                                MetricName = metricFat.Name,
+                                Percentage = 0,
+                                RunId = run.Id
+                            };
+
+                            Debug.Print("Goal faturamento: " + e.Message);
+                        }
+
+                        goalsTotalFat.Add(goalFat);
+                    }
+
+                    float.TryParse(row[QTDE_OBJ].ToString(), out points);
+                    if (goalsTotalVol.Find(x => x.RunId == run.Id) != null)
+                    {
+                        goalsTotalVol.Find(x => x.RunId == run.Id).Goal += points;
+                    }
+                    else
+                    {
+                        GoalEngineDTO goalVol;
+                        try
+                        {
+                            goalVol = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metricVol.Id);
+                            goalVol.Goal = points;
+                        }
+                        catch (Exception e)
+                        {
+                            goalVol = new GoalEngineDTO
+                            {
+                                Goal = points,
+                                MetricIcon = metricVol.Icon,
+                                MetricId = metricVol.Id,
+                                MetricName = metricVol.Name,
+                                Percentage = 0,
+                                RunId = run.Id
+                            };
+
+                            Debug.Print("Goal volume: " + e.Message);
+                        }
+
+                        goalsTotalVol.Add(goalVol);
                     }
 
                     ItemEngineDTO item = new ItemEngineDTO
@@ -459,7 +548,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Date = DateTime.Now.Ticks,
                         PlayerId = player.Id,
                         ItemId = item.Id,
-                        RunId = runId
+                        RunId = run.Id
                     };
 
                     float.TryParse(row[QTDE_REAL].ToString(), out points);
@@ -477,74 +566,28 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Date = DateTime.Now.Ticks,
                         PlayerId = player.Id,
                         ItemId = item.Id,
-                        RunId = runId
+                        RunId = run.Id
                     };
+                    
+                    //RunMetricEngineService.Instance.CreateOrUpdate(resultFaturamento);
+                    //RunMetricEngineService.Instance.CreateOrUpdate(resultVolume);
+                }
 
-                    float.TryParse(row[QTDE_OBJ].ToString(), out points);
-                    GoalEngineDTO goalVol;
-                    try
-                    {
-                        goalVol = GoalEngineService.Instance.GetByRunIdAndMetricId(runId, metricVol.Id);
-                        goalVol.Goal = points;
-                        goalVol.ItemId = item.Id;
-                    }
-                    catch(Exception e)
-                    {
-                        goalVol = new GoalEngineDTO
-                        {
-                            Goal = points,
-                            ItemId = item.Id,
-                            MetricIcon = metricVol.Icon,
-                            MetricId = metricVol.Id,
-                            MetricName = metricVol.Name,
-                            Percentage = 0, 
-                            RunId = runId
-                        };
-                        
-                        Debug.Print("Goal volume: " + e.Message);
-                    }
+                foreach(GoalEngineDTO goal in goalsTotalVol)
+                {
+                    GoalEngineService.Instance.CreateOrUpdate(goal);
+                }
 
-                    float.TryParse(row[VLR_OBJ].ToString(), out points);
-                    GoalEngineDTO goalFat;
-                    try
-                    {
-                        goalFat = GoalEngineService.Instance.GetByRunIdAndMetricId(runId, metricFat.Id);
-                        goalFat.Goal = points;
-                        goalFat.ItemId = item.Id;
-                    }
-                    catch (Exception e)
-                    {
-                        goalFat = new GoalEngineDTO
-                        {
-                            Goal = points,
-                            ItemId = item.Id,
-                            MetricIcon = metricFat.Icon,
-                            MetricId = metricFat.Id,
-                            MetricName = metricFat.Name,
-                            Percentage = 0,
-                            RunId = runId
-                        };
-
-                        Debug.Print("Goal volume: " + e.Message);
-                    }
-
-                    if (item.Name.ToLower().Contains("vulcano") && episode.Name.ToLower().Contains("vulcano"))
-                    {
-                        GoalEngineService.Instance.CreateOrUpdate(goalFat);
-                        GoalEngineService.Instance.CreateOrUpdate(goalVol);
-                        RunMetricEngineService.Instance.CreateOrUpdate(resultFaturamento);
-                        RunMetricEngineService.Instance.CreateOrUpdate(resultVolume);
-                    }
-                    else if (item.Name.ToLower().Contains("alegria") && episode.Name.ToLower().Contains("alegria"))
-                    {
-                        GoalEngineService.Instance.CreateOrUpdate(goalFat);
-                        GoalEngineService.Instance.CreateOrUpdate(goalVol);
-                        RunMetricEngineService.Instance.CreateOrUpdate(resultFaturamento);
-                        RunMetricEngineService.Instance.CreateOrUpdate(resultVolume);
-                    }
+                foreach (GoalEngineDTO goal in goalsTotalFat)
+                {
+                    GoalEngineService.Instance.CreateOrUpdate(goal);
                 }
 
                 errors = string.Format(errors, errorsCount);
+                string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
+                string subject = errorsCount >= 1 ? "Erros ao subir planilha de resultados" : "O lançamento de resultados foi um sucesso.";
+                subject = CurrentFirm.FirmName + ": " + subject;
+                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { //emailFrom, CurrentUserProfile.Email "igorgarantes@gmail.com" }, errors);
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }
@@ -702,5 +745,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 return Json(new { Success = false, Exception = ex.Message }, JsonRequestBehavior.DenyGet);
             }
         }
+        
     }
 }
