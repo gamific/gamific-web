@@ -60,15 +60,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "search/findByGameId?gameId=" + gameId + "&size=" + pageSize + "&page=" + pageIndex);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(responce);
+                    string response = client.DownloadString(path + "search/findByGameId?gameId=" + gameId + "&size=" + pageSize + "&page=" + pageIndex);
+                    return JsonDeserialize<GetAllDTO>(response);
                 }
             }
             catch (Exception e)
@@ -81,15 +76,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "search/findByGameIdAndName?gameId=" + gameId + "&name=" + name);
-
-                    return JsonConvert.DeserializeObject<MetricEngineDTO>(responce);
+                    string response = client.DownloadString(path + "search/findByGameIdAndName?gameId=" + gameId + "&name=" + name);
+                    return JsonDeserialize<MetricEngineDTO>(response);
                 }
             }
             catch (Exception e)
@@ -97,7 +87,6 @@ namespace Vlast.Gamific.Web.Services.Engine
                 throw e;
             }
         }
-
 
         #endregion
     }

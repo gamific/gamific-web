@@ -42,20 +42,14 @@ namespace Vlast.Gamific.Web.Services.Engine
             return GetDTO<RunMetricEngineDTO>(episodeId);
         }
 
-        public void AddRunsMetric(List<RunEngineDTO> runsId, string metricId)
+        public void AddRunsMetric(List<RunEngineDTO> runs, string metricId)
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string json = JsonConvert.SerializeObject(runsId);
-
-                    string response = "";
-                    response = client.UploadString(ENGINE_API + "addRunsMetric?" + "metricId=" + metricId, json);
+                    string json = JsonSerialize<List<RunEngineDTO>>(ref runs);
+                    string response = client.UploadString(ENGINE_API + "addRunsMetric?" + "metricId=" + metricId, json);
                 }
             }
             catch (Exception e)
@@ -65,7 +59,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         }
 
         public void CreateOrUpdate(RunMetricEngineDTO runMetric)
-         {
+        {
             PostDTO<RunMetricEngineDTO>(ref runMetric);
         }
 
@@ -73,19 +67,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string response = "";
-                    response = client.DownloadString(path + "search/findByRunIdAndMetricId?metricId=" + metricId + "&runId=" + runId + "&page=" + pageIndex + "&size=" + pageSize);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(response, 
-                                                                    new JsonSerializerSettings{
-                                                                                        NullValueHandling = NullValueHandling.Ignore
-                                                                                    });
+                    string response = client.DownloadString(path + "search/findByRunIdAndMetricId?metricId=" + metricId + "&runId=" + runId + "&page=" + pageIndex + "&size=" + pageSize);
+                    return JsonDeserialize<GetAllDTO>(response);
                 }
             }
             catch (Exception e)

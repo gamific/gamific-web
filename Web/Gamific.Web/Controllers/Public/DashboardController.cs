@@ -31,6 +31,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                     Text = episode.Name
                                 };
 
+            
+
 
             ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
@@ -191,6 +193,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [Route("{teamId:int}/{workerId:int}/{workerTypeId:int}")]
         public ActionResult Index(int teamId, int workerId, int workerTypeId)
         {
+            PlayerEngineDTO player = PlayerEngineService.Instance.GetById("58ada8b13001c12f60c1460f");
+
             List<WorkerTypeEntity> workerTypes = WorkerTypeRepository.Instance.GetAllFromFirm(CurrentFirm.Id);
             ViewBag.WorkerTypes = from workerType in workerTypes
                                   select new SelectListItem

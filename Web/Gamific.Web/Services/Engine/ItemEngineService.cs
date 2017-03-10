@@ -56,15 +56,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "/search/findByNameAndGameId?gameId=" + gameId + "&name=" + name);
-
-                    return JsonConvert.DeserializeObject<ItemEngineDTO>(responce);
+                    string response = client.DownloadString(path + "/search/findByNameAndGameId?gameId=" + gameId + "&name=" + name);
+                    return JsonDeserialize<ItemEngineDTO>(response);
                 }
             }
             catch (Exception e)

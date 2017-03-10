@@ -2,8 +2,9 @@
 using Vlast.Gamific.Web.Services.Engine.DTO;
 using System.Net;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Web.Configuration;
+using System.Security.Claims;
+using System.Linq;
 
 namespace Vlast.Gamific.Web.Services.Engine
 {
@@ -16,6 +17,54 @@ namespace Vlast.Gamific.Web.Services.Engine
 
         #endregion
 
+        private string GetEncodedEmail
+        {
+            get
+            {
+                var userIdentity = System.Web.HttpContext.Current.User;
+                if (userIdentity.Identity.IsAuthenticated)
+                {
+                    string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").
+                        GetBytes((userIdentity.Identity as ClaimsIdentity).
+                        Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value + ":" + ""));
+                    return encoded;
+                }
+                return null;
+            }
+        }
+
+        protected WebClient GetClient
+        {
+            get
+            {
+                WebClient client = new WebClient();
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                client.Headers[HttpRequestHeader.Accept] = "application/json";
+                client.Encoding = System.Text.Encoding.UTF8;
+                client.Headers[HttpRequestHeader.Authorization] = "Basic " + GetEncodedEmail;
+
+                return client;
+            }
+        }
+
+        protected string JsonSerialize<T>(ref T obj)
+        {
+            return JsonConvert.SerializeObject(obj, Formatting.None,
+                                                new JsonSerializerSettings
+                                                {
+                                                    NullValueHandling = NullValueHandling.Ignore
+                                                });
+        }
+
+        protected T JsonDeserialize<T>(string json)
+        {
+            return JsonConvert.DeserializeObject<T>(json,
+                                                   new JsonSerializerSettings
+                                                   {
+                                                       NullValueHandling = NullValueHandling.Ignore
+                                                   });
+        }
+
         protected EngineServiceBase(string path = "")
         {
             this.path = path;
@@ -25,53 +74,26 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string json = JsonConvert.SerializeObject(dto,
-                                                                Formatting.None,
-                                                                new JsonSerializerSettings
-                                                                {
-                                                                    NullValueHandling = NullValueHandling.Ignore
-                                                                });
-
-                    string response = "";
-                    response = client.UploadString(path, "POST", json);
-
-                    return JsonConvert.DeserializeObject<T>(response);
+                    string response = client.UploadString(path, "POST", JsonSerialize(ref dto));
+                    return JsonDeserialize<T>(response);
                 }
             }
             catch(Exception e)
             {
-                throw new InvalidOperationException(e.Message);
+                throw e;
             }
         }
 
         protected T GetDTO<T>(string id) 
         {
-            if(id == null || id == "")
-            {
-                throw new Exception("Id nulo ou vazio.");
-            }
-
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string response = "";
-                    response = client.DownloadString(path + id);
-
-                    return JsonConvert.DeserializeObject<T>(response,
-                                                            new JsonSerializerSettings
-                                                            {
-                                                                NullValueHandling = NullValueHandling.Ignore
-                                                            });
+                    string response = client.DownloadString(path + id);
+                    return JsonDeserialize<T>(response);
                 }
             }
             catch(Exception e)
@@ -82,14 +104,9 @@ namespace Vlast.Gamific.Web.Services.Engine
 
         protected string Delete(string id)
         {
-            if (id == null || id == "")
-            {
-                throw new Exception("Id nulo ou vazio.");
-            }
-
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
                     return client.UploadString(path + id, "DELETE", "");    
                 }
@@ -100,25 +117,15 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-        
-
         public GetAllDTO GetAll(int pageIndex = 0, int pageSize = 10)
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string response = "";
-                    response = client.DownloadString(path + "?size=" + pageSize + "&page=" + pageIndex);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(response, 
-                                                                    new JsonSerializerSettings
-                                                                    {
-                                                                        NullValueHandling = NullValueHandling.Ignore
-                                                                    });
+                    
+                    string response = client.DownloadString(path + "?size=" + pageSize + "&page=" + pageIndex);
+                    return JsonDeserialize<GetAllDTO>(response);
                 }
             }
             catch (Exception e)
@@ -131,15 +138,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "?size=" + pageSize + "&page=" + pageIndex);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(responce);
+                    string responce = client.DownloadString(path + "?size=" + pageSize + "&page=" + pageIndex);
+                    return JsonDeserialize<GetAllDTO>(responce);
                 }
             }
             catch (Exception e)
@@ -152,15 +154,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "search/findByGameId?gameId=" + gameId);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(responce);
+                    string responce = client.DownloadString(path + "search/findByGameId?gameId=" + gameId);
+                    return JsonDeserialize<GetAllDTO>(responce);
                 }
             }
             catch (Exception e)

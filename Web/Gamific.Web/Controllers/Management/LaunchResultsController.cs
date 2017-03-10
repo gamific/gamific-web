@@ -341,17 +341,33 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             return File(ms.ToArray(), "application/vnd.ms-excel");
         }
+
+        [Route("salvarResultadoArquivo")]
+        [HttpPost]
+        [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
+        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string episodeId)
+        {
+            if(CurrentFirm.ExternalId == "5885f7593a87786bec6ca6fd")
+            {
+                return SaveResultArchiveSolBebidas(resultsArchive, episodeId);
+            }
+            else
+            {
+                return SaveResultArchiveStandard(resultsArchive, episodeId);
+            }
+        }
+
         
-        /*
+        //Sol bebidas
         /// <summary>
         /// Salva as informações do resultado via arquivo
         /// </summary>
         /// <param name="resultsArchive"></param>
         /// <returns></returns>
-        [Route("salvarResultadoArquivo")]
-        [HttpPost]
-        [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
-        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string episodeId)
+        //[Route("salvarResultadoArquivo")]
+        //[HttpPost]
+        //[CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
+        public ActionResult SaveResultArchiveSolBebidas(HttpPostedFileBase resultsArchive, string episodeId)
         {
             int ANO = 0;
             int MES = 1;
@@ -587,7 +603,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
                 string subject = errorsCount >= 1 ? "Erros ao subir planilha de resultados" : "O lançamento de resultados foi um sucesso.";
                 subject = CurrentFirm.FirmName + ": " + subject;
-                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { //emailFrom, CurrentUserProfile.Email "igorgarantes@gmail.com" }, errors);
+                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { /*emailFrom, CurrentUserProfile.Email*/ "igorgarantes@gmail.com" }, errors);
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }
@@ -598,18 +614,18 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 return Json(new { Success = false, Exception = e.Message }, JsonRequestBehavior.DenyGet);
             }
         }
-        */
-
         
+
+
         /// <summary>
         /// Salva as informações do resultado via arquivo
         /// </summary>
         /// <param name="resultsArchive"></param>
         /// <returns></returns>
-        [Route("salvarResultadoArquivo")]
-        [HttpPost]
-        [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
-        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string teste_12_14)
+        //[Route("salvarResultadoArquivo")]
+        //[HttpPost]
+        //[CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
+        private ActionResult SaveResultArchiveStandard(HttpPostedFileBase resultsArchive, string episodeId)
         {
             string errors = "Quantidade de erros: {0}<br/>Última linha lida: {1}<br/>";
             int line = 1;
@@ -618,8 +634,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             try
             {
-                string episodeId = Request["episodeId"];
-
                 resultsArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), resultsArchive.FileName));
 
                 string path = Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(resultsArchive.FileName));

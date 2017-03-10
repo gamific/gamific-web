@@ -40,15 +40,10 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "episodeCardByMetricId?episodeId=" + episodeId + "&metricId=" + metricId);
-
-                    return JsonConvert.DeserializeObject<CardEngineDTO>(responce);
+                    string response = client.DownloadString(path + "episodeCardByMetricId?episodeId=" + episodeId + "&metricId=" + metricId);
+                    return JsonDeserialize<CardEngineDTO>(response);
                 }
             }
             catch (Exception e)
@@ -61,15 +56,10 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "episodeCards?gameId=" + gameId + "&episodeId=" + episodeId);
-
-                    return JsonConvert.DeserializeObject<List<CardEngineDTO>>(responce);
+                    string response = client.DownloadString(path + "episodeCards?gameId=" + gameId + "&episodeId=" + episodeId);
+                    return JsonDeserialize<List<CardEngineDTO>>(response);
                 }
             }
             catch (Exception e)
@@ -82,15 +72,10 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "teamCards?gameId=" + gameId + "&teamId=" + teamId);
-
-                    return JsonConvert.DeserializeObject<List<CardEngineDTO>>(responce);
+                    string response = client.DownloadString(path + "teamCards?gameId=" + gameId + "&teamId=" + teamId);
+                    return JsonDeserialize<List<CardEngineDTO>>(response);
                 }
             }
             catch (Exception e)
@@ -103,15 +88,10 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "playerCards?gameId=" + gameId + "&teamId=" + teamId + "&playerId=" + playerId);
-
-                    return JsonConvert.DeserializeObject<List<CardEngineDTO>>(responce);
+                    string response = client.DownloadString(path + "playerCards?gameId=" + gameId + "&teamId=" + teamId + "&playerId=" + playerId);
+                    return JsonDeserialize<List<CardEngineDTO>>(response);
                 }
             }
             catch (Exception e)
@@ -124,19 +104,10 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string response = "";
-                    response = client.DownloadString(ENGINE_API + "cardsByPlayerId" + "?playerId=" + playerId + "&episodeId=" + episodeId + "&gameId=" + gameId);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(response,
-                                                                    new JsonSerializerSettings
-                                                                    {
-                                                                        NullValueHandling = NullValueHandling.Ignore
-                                                                    });
+                    string response = client.DownloadString(ENGINE_API + "cardsByPlayerId" + "?playerId=" + playerId + "&episodeId=" + episodeId + "&gameId=" + gameId);
+                    return JsonDeserialize<GetAllDTO>(response);
                 }
             }
             catch (Exception e)

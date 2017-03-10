@@ -49,41 +49,14 @@ namespace Vlast.Gamific.Web.Services.Engine
             Delete(id);
         }
 
-
-        /*public GetAllDTO GetAllByGameId(string gameId, int pageIndex = 0, int pageSize = 10000)
-        {
-            try
-            {
-                using (WebClient client = new WebClient())
-                {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "?size=" + pageSize + "&page=" + pageIndex);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(responce);
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }*/
-
         public PlayerEngineDTO GetByGameIdAndNick(string gameId, string nick)
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "/search/findByGameIdAndNick?gameId=" + gameId + "&nick=" + nick);
-
-                    return JsonConvert.DeserializeObject<PlayerEngineDTO>(responce);
+                    string response = client.DownloadString(path + "/search/findByGameIdAndNick?gameId=" + gameId + "&nick=" + nick);
+                    return JsonDeserialize<PlayerEngineDTO>(response);
                 }
             }
             catch (Exception e)
@@ -96,15 +69,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "search/findByEmail?email=" + email);
-
-                    return JsonConvert.DeserializeObject<PlayerEngineDTO>(responce);
+                    string response = client.DownloadString(path + "search/findByEmail?email=" + email);
+                    return JsonDeserialize<PlayerEngineDTO>(response);
                 }
             }
             catch (Exception e)
@@ -112,11 +80,6 @@ namespace Vlast.Gamific.Web.Services.Engine
                 throw e;
             }
         }
-
-
-
-
-
 
         #endregion
     }

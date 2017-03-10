@@ -46,15 +46,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "search/findByTeamId/?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(responce);
+                    string response = client.DownloadString(path + "search/findByTeamId/?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
+                    return JsonDeserialize<GetAllDTO>(response);
                 }
             }
             catch (Exception e)
@@ -72,27 +67,11 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string response = "";
-                    response = client.DownloadString(path + "search/findByTeamIdAndPlayerId/?teamId=" + teamId + "&playerId=" + playerId); 
-
-                    if(response != "")
-                    {
-                        return JsonConvert.DeserializeObject<RunEngineDTO>(response,
-                                                    new JsonSerializerSettings
-                                                    {
-                                                        NullValueHandling = NullValueHandling.Ignore
-                                                    });
-                    }
-                    else
-                    {
-                        return null;
-                    }
-
+                    string response = client.DownloadString(path + "search/findByTeamIdAndPlayerId/?teamId=" + teamId + "&playerId=" + playerId);
+                    return JsonDeserialize<RunEngineDTO>(response);
+                    
                 }
             }
             catch (Exception e)
@@ -110,19 +89,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(ENGINE_API + "allRunScore" + "?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex + "&metricId=" + metricId);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(responce,
-                                                                    new JsonSerializerSettings
-                                                                    {
-                                                                        NullValueHandling = NullValueHandling.Ignore
-                                                                    });
+                    string response = client.DownloadString(ENGINE_API + "allRunScore" + "?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex + "&metricId=" + metricId);
+                    return JsonDeserialize<GetAllDTO>(response);
                 }
             }
             catch (Exception e)
@@ -135,18 +105,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-
-                    string responce = "";
-                    responce = client.DownloadString(path + "search/countByTeamIdAndPlayerParentIsNotNull?teamId=" + teamId);
-
-                    return JsonConvert.DeserializeObject<long>(responce,
-                                                                new JsonSerializerSettings
-                                                                {
-                                                                    NullValueHandling = NullValueHandling.Ignore
-                                                                });
+                    string response = client.DownloadString(path + "search/countByTeamIdAndPlayerParentIsNotNull?teamId=" + teamId);
+                    return JsonDeserialize<long>(response);
                 }
             }
             catch (Exception e)
@@ -155,24 +117,14 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-
         public GetAllDTO GetAllRunScoreByEpisodeId(string episodeId, int pageIndex = 0, int pageSize = 10)
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string responce = "";
-                    responce = client.DownloadString(ENGINE_API + "runnersScoreByEpisode" + "?episodeId=" + episodeId + "&size=" + pageSize + "&page=" + pageIndex);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(responce,
-                                                                    new JsonSerializerSettings
-                                                                    {
-                                                                        NullValueHandling = NullValueHandling.Ignore
-                                                                    });
+                    string response = client.DownloadString(ENGINE_API + "runnersScoreByEpisode" + "?episodeId=" + episodeId + "&size=" + pageSize + "&page=" + pageIndex);
+                    return JsonDeserialize<GetAllDTO>(response);
                 }
             }
             catch (Exception e)
@@ -186,20 +138,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-                    client.Encoding = System.Text.Encoding.UTF8;
-
-                    string response = "";
-                    string teste = (ENGINE_API + "⁠⁠⁠runnersScoreByEpisode" + "?episodeId=" + episodeId + "&metricId=" + metricId + "&page=" + pageIndex + "&size=" + pageSize);
-                    response = client.DownloadString(ENGINE_API + "runnersScoreByEpisode?episodeId=" + episodeId + "&metricId=" + metricId + "&page=" + pageIndex + "&size=" + pageSize);
-
-                    return JsonConvert.DeserializeObject<GetAllDTO>(response,
-                                                                    new JsonSerializerSettings
-                                                                    {
-                                                                        NullValueHandling = NullValueHandling.Ignore
-                                                                    });
+                    string response = client.DownloadString(ENGINE_API + "runnersScoreByEpisode?episodeId=" + episodeId + "&metricId=" + metricId + "&page=" + pageIndex + "&size=" + pageSize);
+                    return JsonDeserialize<GetAllDTO>(response);
                 }
             }
             catch (Exception e)
@@ -212,18 +154,10 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = new WebClient())
+                using (WebClient client = GetClient)
                 {
-                    client.Headers[HttpRequestHeader.Accept] = "application/json";
-
-                    string responce = "";
-                    responce = client.DownloadString(ENGINE_API + "findRunByEpisodeId?episodeId=" + episodeId + "&playerId=" + playerId);
-
-                    return JsonConvert.DeserializeObject<RunEngineDTO>(responce,
-                                                                new JsonSerializerSettings
-                                                                {
-                                                                    NullValueHandling = NullValueHandling.Ignore
-                                                                });
+                    string response = client.DownloadString(ENGINE_API + "findRunByEpisodeId?episodeId=" + episodeId + "&playerId=" + playerId);
+                    return JsonDeserialize<RunEngineDTO>(response);
                 }
             }
             catch (Exception e)

@@ -125,15 +125,17 @@ namespace Vlast.Gamific.Web.Controllers.Public
             {
                 CarDTO dto = new CarDTO();
 
+                string logoPath = CurrentURL + CurrentFirm.LogoId;
+
                 dto.cars = new List<WorkerCarDTO>();
                 dto.CompanyLogo = CurrentFirm.LogoId;
                 dto.Target = Target3D.PLAYER;
-                dto.LogoPathOutdoor1 = CurrentURL + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor2 = CurrentURL + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor3 = CurrentURL + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor4 = CurrentURL + CurrentFirm.LogoId;
-                dto.LogoPathBanner1 =  CurrentURL + CurrentFirm.LogoId;
-                dto.LogoPathBanner2 =  CurrentURL  + CurrentFirm.LogoId;
+                dto.LogoPathOutdoor1 = logoPath;
+                dto.LogoPathOutdoor2 = logoPath;
+                dto.LogoPathOutdoor3 = logoPath;
+                dto.LogoPathOutdoor4 = logoPath;
+                dto.LogoPathBanner1 = logoPath;
+                dto.LogoPathBanner2 = logoPath;
 
                 GetAllDTO all = TeamEngineService.Instance.GetAllTeamScoreByEpisodeId(episodeId, metricId);
 
@@ -149,7 +151,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         HelmetColor = GenerateColorHexadecimal(3 * i),
                         LogoId = team.LogoId,
                         Points = (int)team.Score,
-                        AvatarPath = CurrentURL + team.LogoId
+                        AvatarPath = logoPath,
+                        CarLogo = logoPath
                     });
                     i++;
                 }
@@ -166,15 +169,17 @@ namespace Vlast.Gamific.Web.Controllers.Public
             {
                 CarDTO dto = new CarDTO();
 
+                string logoPath = CurrentURL + CurrentFirm.LogoId;
+
                 dto.cars = new List<WorkerCarDTO>();
                 dto.CompanyLogo = CurrentFirm.LogoId;
                 dto.Target = Target3D.PLAYER;
-                dto.LogoPathOutdoor1 = CurrentURL+ CurrentFirm.LogoId;
-                dto.LogoPathOutdoor2 = CurrentURL + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor3 = CurrentURL + CurrentFirm.LogoId;
-                dto.LogoPathOutdoor4 = CurrentURL + CurrentFirm.LogoId;
-                dto.LogoPathBanner1 =  CurrentURL + CurrentFirm.LogoId;
-                dto.LogoPathBanner2 =  CurrentURL + CurrentFirm.LogoId;
+                dto.LogoPathOutdoor1 = logoPath;
+                dto.LogoPathOutdoor2 = logoPath;
+                dto.LogoPathOutdoor3 = logoPath;
+                dto.LogoPathOutdoor4 = logoPath;
+                dto.LogoPathBanner1 = logoPath;
+                dto.LogoPathBanner2 = logoPath;
 
                 GetAllDTO all = RunEngineService.Instance.GetAllRunScore(teamId, metricId);
                 List<PlayerEngineDTO> players = (from run in all.List.run select PlayerEngineService.Instance.GetById(run.PlayerId)).ToList();
@@ -200,7 +205,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                 HelmetColor = GenerateColorHexadecimal(3),
                                 LogoId = player.LogoId,
                                 Points = (int)run.Score,
-                                AvatarPath = CurrentURL + player.LogoId
+                                AvatarPath = CurrentURL + player.LogoId,
+                                CarLogo = logoPath
                             }).ToList();
 
                 return dto;
@@ -221,12 +227,16 @@ namespace Vlast.Gamific.Web.Controllers.Public
             dto.cars = new List<WorkerCarDTO>();
             dto.CompanyLogo = CurrentFirm.LogoId;
             dto.Target = Target3D.PLAYER;
-            dto.LogoPathOutdoor1 = CurrentURL + CurrentFirm.LogoId;
-            dto.LogoPathOutdoor2 = CurrentURL + CurrentFirm.LogoId;
-            dto.LogoPathOutdoor3 = CurrentURL + CurrentFirm.LogoId;
-            dto.LogoPathOutdoor4 = CurrentURL + CurrentFirm.LogoId;
-            dto.LogoPathBanner1=   CurrentURL + CurrentFirm.LogoId;
-            dto.LogoPathBanner2 =  CurrentURL + CurrentFirm.LogoId;
+
+            string logoPath = CurrentURL + CurrentFirm.LogoId;
+
+            dto.LogoPathOutdoor1 = logoPath;
+            dto.LogoPathOutdoor2 = logoPath;
+            dto.LogoPathOutdoor3 = logoPath;
+            dto.LogoPathOutdoor4 = logoPath;
+            dto.LogoPathBanner1 = logoPath;
+            dto.LogoPathBanner2 = logoPath;
+            
 
             if (CurrentWorkerType.ProfileName == Profiles.JOGADOR)
             {
@@ -254,7 +264,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         HelmetColor = GenerateColorHexadecimal(3),
                         LogoId = worker.LogoId,
                         Points = totalPoints,
-                        AvatarPath = CurrentURL + worker.LogoId
+                        AvatarPath = CurrentURL + worker.LogoId,
+                        CarLogo = logoPath
                     };
 
                     if (worker.IdWorker == CurrentWorker.Id)
