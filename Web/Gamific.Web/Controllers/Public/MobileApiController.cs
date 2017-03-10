@@ -18,6 +18,7 @@ using System.Drawing;
 using Vlast.Gamific.Model.Media.Repository;
 using Vlast.Gamific.Model.Firm.Repository;
 using Vlast.Gamific.Model.Firm.Domain;
+using Vlast.Gamific.Model.Firm.DTO;
 
 namespace Vlast.Gamific.Web.Controllers.Mobile
 {
@@ -132,7 +133,8 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
         {
             try
             {
-                PlayerEngineDTO player = PlayerEngineService.Instance.GetById(playerId);
+                WorkerDTO worker = WorkerRepository.Instance.GetDTOByExternalId(playerId);
+                PlayerEngineDTO player = PlayerEngineService.Instance.GetById(playerId, worker.Email);
 
                 ImageEntity imageSaving = new ImageEntity
                 {
@@ -152,11 +154,11 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
                         player.LogoId = imageSaving.Id;
                         player.LogoPath = GetImagePath(player.LogoId);
 
-                        WorkerEntity worker = WorkerRepository.Instance.GetByExternalId(player.Id);
+                        WorkerEntity workerEntity = WorkerRepository.Instance.GetByExternalId(player.Id);
                         worker.LogoId = player.LogoId;
-                        WorkerRepository.Instance.UpdateWorker(worker);
+                        WorkerRepository.Instance.UpdateWorker(workerEntity);
 
-                        PlayerEngineService.Instance.CreateOrUpdate(player);
+                        PlayerEngineService.Instance.CreateOrUpdate(player, player.Email);
                     }
 
                     ImageRepository.Instance.SaveOrReplaceLogo(player.LogoId, image);

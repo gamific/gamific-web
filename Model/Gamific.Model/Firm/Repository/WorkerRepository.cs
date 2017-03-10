@@ -207,6 +207,36 @@ namespace Vlast.Gamific.Model.Firm.Repository
             }
         }
 
+                /// <summary>
+        /// Busca um funcionario pelo Id externo
+        /// </summary>
+        /// <param name="workerTypeId"></param>
+        /// <returns></returns>
+        public WorkerDTO GetDTOByExternalId(string externalId)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from worker in context.Workers
+                            from profile in context.Profiles
+                            where worker.Status == GenericStatus.ACTIVE
+                            && worker.UserId == profile.Id
+                            && worker.ExternalId == externalId
+                            select new WorkerDTO
+                            {
+                                Name = profile.Name,
+                                IdWorker = worker.Id,
+                                WorkerTypeId = worker.WorkerTypeId,
+                                IdUser = worker.UserId,
+                                LogoId = worker.LogoId,
+                                Cpf = profile.CPF,
+                                Email = profile.Email,
+                                Phone = profile.Phone
+                            };
+
+                return query.FirstOrDefault();
+            }
+        }
+
         /// <summary>
         /// Busca todos os responsaveis de times na lista recebida
         /// </summary>

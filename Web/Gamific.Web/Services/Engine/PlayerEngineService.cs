@@ -39,9 +39,19 @@ namespace Vlast.Gamific.Web.Services.Engine
             return PostDTO<PlayerEngineDTO>(ref player);
         }
 
+        public PlayerEngineDTO CreateOrUpdate(PlayerEngineDTO player, string email)
+        {
+            return PostDTO<PlayerEngineDTO>(ref player, email);
+        }
+
         public PlayerEngineDTO GetById(string playerId)
         {
             return GetDTO<PlayerEngineDTO>(playerId);
+        }
+
+        public PlayerEngineDTO GetById(string playerId, string email)
+        {
+            return GetDTO<PlayerEngineDTO>(playerId, email);
         }
 
         public void DeleteById(string id)
@@ -71,6 +81,8 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient)
                 {
+                    string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                    client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
                     string response = client.DownloadString(path + "search/findByEmail?email=" + email);
                     return JsonDeserialize<PlayerEngineDTO>(response);
                 }

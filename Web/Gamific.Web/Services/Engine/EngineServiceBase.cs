@@ -86,6 +86,24 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        protected T PostDTO<T>(ref T dto, string email)
+        {
+            try
+            {
+                using (WebClient client = GetClient)
+                {
+                    string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                    client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+                    string response = client.UploadString(path, "POST", JsonSerialize(ref dto));
+                    return JsonDeserialize<T>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         protected T GetDTO<T>(string id) 
         {
             try
@@ -97,6 +115,24 @@ namespace Vlast.Gamific.Web.Services.Engine
                 }
             }
             catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
+        protected T GetDTO<T>(string id, string email)
+        {
+            try
+            {
+                using (WebClient client = GetClient)
+                {
+                    string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                    client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+                    string response = client.DownloadString(path + id);
+                    return JsonDeserialize<T>(response);
+                }
+            }
+            catch (Exception e)
             {
                 throw e;
             }
