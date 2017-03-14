@@ -585,8 +585,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         RunId = run.Id
                     };
                     
-                    //RunMetricEngineService.Instance.CreateOrUpdate(resultFaturamento);
-                    //RunMetricEngineService.Instance.CreateOrUpdate(resultVolume);
+                    RunMetricEngineService.Instance.CreateOrUpdate(resultFaturamento);
+                    RunMetricEngineService.Instance.CreateOrUpdate(resultVolume);
                 }
 
                 foreach(GoalEngineDTO goal in goalsTotalVol)
