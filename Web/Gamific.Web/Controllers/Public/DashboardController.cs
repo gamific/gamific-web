@@ -36,7 +36,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
-           ViewBag.State = state;
+            ViewBag.State = state;
 
 
             return View("Index");
