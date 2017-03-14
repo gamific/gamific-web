@@ -87,7 +87,7 @@ faqsContainer.on('swiperight', function (event) {
 
 faqTrigger.on('click', function (event) {
     event.preventDefault();
-    $(this).next('.cd-faq-content').slideToggle(200).end().parent('li').toggleClass('content-visible');
+    $(this).next('.cd-faq-content').slideToggle(1000).end().parent('li').toggleClass('content-visible');
 });
 
 function onSuccessSaveHelp(data) {

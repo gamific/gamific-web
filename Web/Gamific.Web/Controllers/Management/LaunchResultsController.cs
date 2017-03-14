@@ -597,7 +597,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
                 string subject = errorsCount >= 1 ? "Erros ao subir planilha de resultados" : "O lançamento de resultados foi um sucesso.";
                 subject = CurrentFirm.FirmName + ": " + subject;
-                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { /*emailFrom, CurrentUserProfile.Email*/ "igorgarantes@gmail.com" }, errors);
+                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { /*emailFrom, CurrentUserProfile.Email*/ "igorgarantes@gmail.com", "victor@duplov.com.br" }, errors);
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }

@@ -40,6 +40,11 @@ namespace Vlast.Gamific.Web.Services.Engine
             return PostDTO<GameEngineDTO>(ref game);
         }
 
+        public GameEngineDTO CreateOrUpdate(GameEngineDTO game, string email)
+        {
+            return PostDTO<GameEngineDTO>(ref game, email);
+        }
+
         #endregion
     }
 }
