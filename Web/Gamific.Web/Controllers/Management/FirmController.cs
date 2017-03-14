@@ -314,7 +314,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Phone = entity.DataInfo.Phone,
                                 Id = entity.DataInfo.ExternalId
                             };
-                            game = GameEngineService.Instance.CreateOrUpdate(game);
+                            game = GameEngineService.Instance.CreateOrUpdate(game, "victor@duplov.com.br");
+
+                            
 
                             entity.DataInfo.ExternalId = game.Id;
 
@@ -350,7 +352,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 GameId = worker.ExternalFirmId,
                                 LogoId = worker.LogoId
                             };
-                            player = PlayerEngineService.Instance.CreateOrUpdate(player);
+                            player = PlayerEngineService.Instance.CreateOrUpdate(player, "victor@duplov.com.br");
 
                             worker.ExternalId = player.Id;
                             worker.ExternalFirmId = game.Id;
