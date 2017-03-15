@@ -363,6 +363,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         /// Salva as informações do resultado via arquivo
         /// </summary>
         /// <param name="resultsArchive"></param>
+        /// <param name="episodeId"></param>
         /// <returns></returns>
         //[Route("salvarResultadoArquivo")]
         //[HttpPost]
@@ -396,7 +397,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             MetricEngineDTO metricFat;
             MetricEngineDTO metricVol;
 
-            int line = 0;
+            int line = 1;
             int errorsCount = 0;
 
             try
@@ -447,14 +448,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     catch(Exception e)
                     {
                         Debug.Print("Error player: " + e.Message);
-                        errors += "(Linha -> " + line + "°, Coluna -> " + REPRESENTANTE + ") " + "Jogador: " + row[EMAIL].ToString().Trim() + " não encontrado.<br/>";
-                        errorsCount++;
-                        continue;
-                    }
-
-                    if(player.Role == Profiles.ADMINISTRADOR.ToString() || player.Role == Profiles.LIDER.ToString())
-                    {
-                        errors += "(Linha -> " + line + "°, Coluna -> " + REPRESENTANTE + ") " + "Usuário: " + row[EMAIL].ToString().Trim() + " não é um jogador, portanto não pode ter resultados.<br/>";
+                        errors += "(Linha -> " + line + "°, Coluna -> 'Representante') " + "Jogador: " + row[EMAIL].ToString().Trim() + " não encontrado.<br/>";
                         errorsCount++;
                         continue;
                     }
@@ -466,7 +460,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     catch (Exception e)
                     {
                         Debug.Print("Error run: " + e.Message);
-                        errors += "(Linha -> " + line + "°, Coluna -> " + EMAIL + ") " + "Jogador: " + row[EMAIL].ToString().Trim() + " não participa desta campanha.<br/>";
+                        errors += "(Linha -> " + line + "°, Coluna -> 'Email') " + "Jogador: " + row[EMAIL].ToString().Trim() + " não participa desta campanha.<br/>";
                         errorsCount++;
                         continue;
                     }
