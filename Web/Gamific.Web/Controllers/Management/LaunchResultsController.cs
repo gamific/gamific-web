@@ -426,11 +426,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             try
             {
+                EpisodeEngineService.Instance.DeleteAllScoreByEpisodeId(episodeId);
+
                 resultsArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), resultsArchive.FileName));
 
                 var archive = new ExcelQueryFactory(Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(resultsArchive.FileName)));
 
-                var rows = from x in archive.WorksheetRange("A1", "N" + rowsCount, "Plan1") select x;
+                var rows = from x in archive.WorksheetRange("A1", "N" + rowsCount, "Planilha1") select x;
 
                 float points;
 
@@ -597,7 +599,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
                 string subject = errorsCount >= 1 ? "Erros ao subir planilha de resultados" : "O lançamento de resultados foi um sucesso.";
                 subject = CurrentFirm.FirmName + ": " + subject;
-                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { /*emailFrom, CurrentUserProfile.Email*/ "igorgarantes@gmail.com", "victor@duplov.com.br" }, errors);
+                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { emailFrom, CurrentUserProfile.Email }, errors);
 
                 return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }
