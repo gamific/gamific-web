@@ -93,8 +93,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("remover/{episodeId}")]
         public ActionResult Remove(string episodeId)
         {
+      
             EpisodeEngineService.Instance.CloseById(episodeId);
-
+           
             return View("Index");
         }
 

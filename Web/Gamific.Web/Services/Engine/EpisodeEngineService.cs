@@ -63,7 +63,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
             catch (Exception e)
             {
-
+                throw e;
             }
         }
 
