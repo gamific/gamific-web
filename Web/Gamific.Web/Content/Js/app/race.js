@@ -6,6 +6,9 @@ $(document).ready(function () {
 
 $('#dropDownEpisodes').change(function () {
     refreshDropDownTeams($(this).val());
+    if (unityOn === true) {
+        UpdateResults();
+    }
 });
 
 $('#dropDownTeams').change(function () {

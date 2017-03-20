@@ -129,11 +129,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             }
                         }
 
-                        if (team.LogoId > 0)
+                        //if (team.LogoId > 0)
                         {
-                            imageSaving.Id = team.LogoId;
+                            //imageSaving.Id = team.LogoId;
                         }
-                        else
+                        //else
                         {
                             imageSaving = ImageRepository.Instance.CreateImage(imageSaving);
                         }

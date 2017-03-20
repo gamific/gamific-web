@@ -151,7 +151,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         HelmetColor = GenerateColorHexadecimal(3 * i),
                         LogoId = team.LogoId,
                         Points = (int)team.Score,
-                        AvatarPath = logoPath,
+                        AvatarPath = CurrentURL + team.LogoId,
                         CarLogo = logoPath
                     });
                     i++;

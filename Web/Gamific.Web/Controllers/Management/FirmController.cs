@@ -350,7 +350,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Level = 1,
                                 Role = workerType.TypeName,
                                 GameId = worker.ExternalFirmId,
-                                LogoId = worker.LogoId
+                                LogoId = worker.LogoId,
+                                Email = entity.ProfileInfo.Email,
+                                Cpf = entity.ProfileInfo.CPF
                             };
                             player = PlayerEngineService.Instance.CreateOrUpdate(player, "victor@duplov.com.br");
 
