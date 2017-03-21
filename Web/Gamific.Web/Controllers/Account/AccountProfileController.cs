@@ -65,28 +65,29 @@ namespace Vlast.Gamific.Web.Controllers.Account
                 {
                     if (ModelState.IsValid)
                     {
-                        
+                        UserAccountEntity user = AccountRepository.Instance.GetById(CurrentUserId);
                         if (!entity.NewPassword.Equals(entity.NewPasswordConfirmation))
                         {
                             Error("As duas senhas digitadas não conferem.");
                             complete = false;
                         }
-
-                        UserAccountEntity user = AccountRepository.Instance.GetById(CurrentUserId);
-
-                        if (!PasswordUtils.ValidatePassword(entity.CurrentPassword, user.SecurityStamp, user.PasswordHash))
+                        else if (!PasswordUtils.ValidatePassword(entity.CurrentPassword, user.SecurityStamp, user.PasswordHash))
                         {
                             Error("A senha atual digitada não confere com a vigente.");
                             complete = false;
                         }
+                        else
+                        {
+                            NewRequest request = new NewRequest();
 
-                        NewRequest request = new NewRequest();
+                            request.Password = entity.NewPassword;
+                            request.Username = user.UserName;
+                            request.Name = user.UserName;
 
-                        request.Password = entity.NewPassword;
-                        request.Username = user.UserName;
-                        request.Name = user.UserName;
+                            AccountHandler.UpdateUser(request);
+                        }
 
-                        AccountHandler.UpdateUser(request);
+                        
 
                         if(complete)
                         {
