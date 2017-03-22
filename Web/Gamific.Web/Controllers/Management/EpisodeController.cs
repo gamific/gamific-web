@@ -36,14 +36,16 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 //episode.Active = true;
             }
-
-            episode.GameId = CurrentFirm.ExternalId;
-
-            ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
+            else
             {
-                Text = i.ToString(),
-                Value = i.ToString()
-            }).ToList();
+                episode.GameId = CurrentFirm.ExternalId;
+
+                ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
+                {
+                    Text = i.ToString(),
+                    Value = i.ToString()
+                }).ToList();
+            }
 
             return PartialView("_edit", episode);
         }
@@ -109,26 +111,35 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 if (ModelState.IsValid)
                 {
 
-
-                    if(episode.Id == null || episode.Id.Equals(""))
+                    if(episode.Active == false)
                     {
-                        episode.Active = true;
+                        Success("Campanha não pode ser alterada.");
                     }
-                    
-                
-
-                    episode.GameId = CurrentFirm.ExternalId;
-
-                    ValidateModel(episode);
-
-                    EpisodeEngineDTO newEpisode = EpisodeEngineService.Instance.CreateOrUpdate(episode);
-
-                    if (newEpisode == null)
+                    else
                     {
-                        throw new Exception(".");
+                        if (episode.Id == null || episode.Id.Equals(""))
+                        {
+                            episode.Active = true;
+                        }
+
+
+
+                        episode.GameId = CurrentFirm.ExternalId;
+
+                        ValidateModel(episode);
+
+                        EpisodeEngineDTO newEpisode = EpisodeEngineService.Instance.CreateOrUpdate(episode);
+
+                        if (newEpisode == null)
+                        {
+                            throw new Exception(".");
+                        }
+
+                        Success("Campanha atualizada com sucesso.");
                     }
 
-                    Success("Campanha atualizada com sucesso.");
+
+                   
 
                 }
                 else
