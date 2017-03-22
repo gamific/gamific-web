@@ -62,7 +62,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("remover/{metricId}")]
         public ActionResult Remove(string metricId)
         {
-            MetricEngineService.Instance.DeleteById(metricId);
+            MetricEngineService.Instance.DeleteByIdAndActiveIsTrue(metricId);
+            //MetricEngineService.Instance.DeleteById(metricId);
 
             return View("Index");
         }

@@ -56,6 +56,11 @@ namespace Vlast.Gamific.Web.Services.Engine
             Delete(id);
         }
 
+        public void DeleteByIdAndActiveIsTrue(string id)
+        {
+            //aqui vem a exclusao logica, falta a alteração na engine.
+        }
+
         public GetAllDTO GetAllDTOByGame(string gameId, int pageIndex = 0, int pageSize = 10)
         {
             try
