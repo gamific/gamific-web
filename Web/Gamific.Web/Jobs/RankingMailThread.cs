@@ -25,13 +25,13 @@ namespace Vlast.Gamific.Web.Jobs
         /// <returns></returns>
         public async override void Run()
         {
-            //Send(new EmailSupportDTO { Msg = "Bom dia", Category = "", Subject = "Testes Gamific" }, "igorgarantes@gmail.com");
-            
+            Send(new EmailSupportDTO { Msg = "Bom dia", Category = "", Subject = "Testes Gamific" }, "igorgarantes@gmail.com");
+            /*
             GetAllDTO games = GameEngineService.Instance.GetAll(0, 10000);
 
             foreach (GameEngineDTO game in games.List.game)
             {
-                if (game.Id == "5880a1743a87783b4f0ba709"/* || game.Id == "5885fa373a87786bec6ca6ff"*/)
+                if (game.Id == "5880a1743a87783b4f0ba709" || game.Id == "5885fa373a87786bec6ca6ff")
                 {
                     GetAllDTO players = PlayerEngineService.Instance.GetByGameId(game.Id);
 
@@ -60,7 +60,7 @@ namespace Vlast.Gamific.Web.Jobs
                     }
                 }
             }
-            
+            */
         }
 
         public override void Init(TimeSpan timeToRun)

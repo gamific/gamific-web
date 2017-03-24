@@ -24,7 +24,7 @@ namespace Vlast.Gamific.Web.Jobs
                     timeToRun.TotalMilliseconds - now.TimeOfDay.TotalMilliseconds);
 
                Thread.Sleep(miliseconds);
-                Run();
+               Run();
             }
         }
 

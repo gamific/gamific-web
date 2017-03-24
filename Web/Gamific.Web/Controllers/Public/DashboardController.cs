@@ -31,9 +31,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                     Text = episode.Name
                                 };
 
-            
-
-
             ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
             ViewBag.State = state;
