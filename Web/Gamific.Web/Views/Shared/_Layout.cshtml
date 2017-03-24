@@ -42,11 +42,11 @@
                     </div>
                 </div>
                 <div class="navbar-collapse">
-                    <ul class="nav navbar-nav refresh">
+                    <!--<ul class="nav navbar-nav refresh">
                         <li class="divided">
                             <a href="@Html.Raw(BaseController.CurrentURL)" class="page-refresh"><i class="fa fa-refresh"></i></a>
                         </li>
-                    </ul>
+                    </ul>-->
                     <ul class="nav navbar-nav quick-actions">
                         <li class="dropdown divided user" id="current-user">
                             @if (@BaseController.CurrentWorker != null)
@@ -124,17 +124,13 @@
                                         </a>
                                     </li>
 
-                                    <li id="Chat">
+                                    <!--<li id="Chat">
                                         <a href="/public/chat/">
                                             <i class="fa fa-comments"></i> Mensagens
                                         </a>
-                                    </li>
+                                    </li>-->
 
-                                    <li id="Ajuda">
-                                        <a href="/admin/ajuda/public">
-                                            <i class="fa fa-question-circle"></i> Ajuda
-                                        </a>
-                                    </li>
+                                    
                                 </ul>
                             </li>
                             <li class="navigation" id="adm-empresa">
@@ -143,11 +139,7 @@
                                 <ul class="menu">
                                     @if(BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.ADMINISTRADOR))
                                     {
-                                        <li id="Funcionarios" class="hidden-xs">
-                                            <a href="/admin/funcionarios/">
-                                                <i class="fa fa-users"></i> Funcionários
-                                            </a>
-                                        </li>
+                                        
 
                                         <li id="Funcao" class="hidden-xs">
                                             <a href="/admin/funcoes/">
@@ -155,9 +147,15 @@
                                             </a>
                                         </li>
 
+                                        <li id="Funcionarios" class="hidden-xs">
+                                            <a href="/admin/funcionarios/">
+                                                <i class="fa fa-users"></i> Funcionários
+                                            </a>
+                                        </li>
+
                                             <li id="Metricas" class="hidden-xs">
                                                 <a href="/admin/metricas/">
-                                                    <i class="fa fa-object-group"></i> Metricas
+                                                    <i class="fa fa-object-group"></i> Métricas
                                                 </a>
                                             </li>
 
@@ -175,6 +173,12 @@
                                             </li>
                                             -->
 
+                                        <li id="Equipes" class="hidden-xs">
+                                            <a href="/admin/equipes/">
+                                                <i class="fa fa-flag"></i> Equipes
+                                            </a>
+                                        </li>
+
                                             <li id="Metas" class="hidden-xs">
                                                 <a href="/admin/metas/">
                                                     <i class="fa fa-bar-chart-o"></i> Metas
@@ -187,17 +191,19 @@
                                                 </a>
                                             </li>
 
-                                            <li id="Equipes" class="hidden-xs">
-                                                <a href="/admin/equipes/">
-                                                    <i class="fa fa-flag"></i> Equipes
-                                                </a>
-                                            </li>
+                                            
 
-                                            <li id="CadastrarAjuda" class="hidden-xs">
+                                            <!--<li id="CadastrarAjuda" class="hidden-xs">
                                                 <a href="/admin/topicoAjuda">
                                                     <i class="fa fa-question-circle"></i> Cadastrar Ajuda
                                                 </a>
-                                            </li>
+                                            </li>-->
+
+                                        <li id="Ajuda">
+                                            <a href="/admin/ajuda/public">
+                                                <i class="fa fa-question-circle"></i> Ajuda
+                                            </a>
+                                        </li>
                                     }
 
                                     @if (BaseController.CurrentWorkerType.ProfileName.Equals(Profiles.ADMINISTRADOR))
