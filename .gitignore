@@ -1,0 +1,17 @@
+Web/Gamific.Web/obj/
+Web/Gamific.Web/bin/
+Model/Gamific.Model/bin/
+Model/Gamific.Model/obj/
+Global/Gamific.Batch/bin/
+Global/Gamific.Batch/obj/
+Global/Vlast.Broker/bin/
+Global/Vlast.Broker/obj/
+Global/Vlast.Util/bin/
+Global/Vlast.Util/obj/
+Jobs/Gamific.Jobs/bin/
+Jobs/Gamific.Jobs/obj/
+.vs/config/applicationhost.config
+
+Global/Lib/MySql.AspNet.Identity/MySql.AspNet.Identity/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+
+.vs/Gamific/v14/.suo
