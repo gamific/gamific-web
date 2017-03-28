@@ -19,41 +19,81 @@
         "fnServerParams": function (aoData) { },
         "columnDefs": [
             {
-                "width": "30%",
+                "width": "25%",
                 "targets": 0,
                 "orderable": true,
                 "searchable": true
             },
             {
-                "width": "30%",
+                "width": "25%",
                 "targets": 1,
                 "orderable": true,
                 "searchable": true,
             },
             {
-                "width": "30%",
+                "width": "20%",
                 "targets": 2,
                 "orderable": true,
                 "searchable": true,
             },
             {
-                "width": "10%",
+                "width": "5%",
                 "targets": 3,
                 "orderable": false,
                 "searchable": false,
                 "render": function (data, type, row) {
                     var name = row[0].split(";")[0];
-                    var links = "<a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/episode/editar/" + data + "' title='Editar'> </a> &nbsp; " +
-                                     " <a class='fa fa-clone' onclick='showEntityModal(this); return false;'  href='/admin/episode/clonar/" + data + "' title='Clonar.'> </a>" + "&nbsp;&nbsp;";
-                                     
+                    var links = "<a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/episode/editar/" + data + "' title='Editar'> </a>";
+                    return links;
+                }
+            },
+            {
+                "width": "5%",
+                "targets": 4,
+                "orderable": false,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    var name = row[0].split(";")[0];
+                    var links =" <a class='fa fa-clone' onclick='showEntityModal(this); return false;'  href='/admin/episode/clonar/" + data + "' title='Clonar.'> </a>" 
 
+                    return links;
+                }
+            },
+            {
+                "width": "5%",
+                "targets": 5,
+                "orderable": false,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    var name = row[0].split(";")[0];
+                    var links = " <a class='fa fa-eraser' " + data + "' title='Limpar campanha.'> </a>";
+
+
+
+
+
+                    return links;
+                }
+            },
+            {
+                "width": "5%",
+                "targets": 6,
+                "orderable": false,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    var name = row[0].split(";")[0];
+                    var links = "";
                     if (row[2] == "Sim") {
-                        links += " <a class='fa fa-remove'  href='#' onclick='removeClickEpisode(\"" + data + "\",\"" + name + "\")' title='Finalizar.'> </a>";
+                        links += " <a class='fa fa-power-off'  href='#' onclick='removeClickEpisode(\"" + data + "\",\"" + name + "\")' title='Finalizar.'> </a>";
                     }
 
                     return links;
                 }
             }
+
+
+
+
         ]
     });
 }
