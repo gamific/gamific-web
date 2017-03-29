@@ -115,6 +115,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("editar/{playerId}/{teamId}/{episodeId}")]
         public ActionResult Edit(string playerId, string teamId, string episodeId)
         {
+
+           try { 
             PlayerEngineDTO player = PlayerEngineService.Instance.GetById(playerId);
             ViewBag.WorkerName = player.Nick;
 
@@ -124,13 +126,21 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             foreach (WorkerTypeMetricDTO metric in metricsWorkerType)
             {
-                MetricEngineDTO m = MetricEngineService.Instance.GetById(metric.MetricExternalId);
 
-                metrics.Add(new MetricEntity{
-                    MetricName = m.Name,
-                    Icon = m.Icon,
-                    ExternalID = m.Id,
-                });
+               try { 
+                    MetricEngineDTO m = MetricEngineService.Instance.GetById(metric.MetricExternalId);
+                        metrics.Add(new MetricEntity
+                        {
+                            MetricName = m.Name,
+                            Icon = m.Icon,
+                            ExternalID = m.Id,
+                        });
+                    }
+               catch (Exception ex)
+               {
+                        continue;
+               }
+                    
             }
 
             RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(playerId, teamId);
@@ -145,7 +155,16 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 }
             }
 
-            return PartialView("_Edit", goals);
+                return PartialView("_Edit", goals);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                Error("Ocorreu um erro ao tentar adicionar uma meta.", ex);
+            }
+
+            return Redirect("/admin/metas");
         }
 
         [Route("salvar")]
