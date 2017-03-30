@@ -29,10 +29,11 @@ function refreshDropDownEpisodes(currentId) {
             $("#dropDownEpisodes").empty();
             var episodes = JSON.parse(data);
 
-            for (var i = 0; i < episodes.length; i++) {
+            for (var i = episodes.length - 1; i >= 0 ; i--) {
                 var selected = "";
-                if (currentId == episodes[i].id) {
+                if (currentId == undefined || currentId == episodes[i].id) {
                     selected = "selected";
+                    currentId = episodes[i].id;
                 }
                 $("#dropDownEpisodes").append($("<option value='" + episodes[i].id + "'" + selected + " >" + episodes[i].name + "</option>"));
             }
