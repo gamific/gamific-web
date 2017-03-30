@@ -73,6 +73,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return new EmptyResult();
         }
 
+        [Route("clean/{episodeId}")]
+        public ActionResult Cleaning(string episodeId)
+        {
+            List<EpisodeEngineDTO> episode = EpisodeEngineService.Instance.Clean(episodeId);
+
+            return new EmptyResult();
+        }
 
 
 
