@@ -27,7 +27,9 @@ function refreshDropDownEpisodes(state, currentId) {
             $("#dropDownEpisodes").empty();
             var episodes = JSON.parse(data);
 
-            for (var i = 0; i < episodes.length; i++) {
+            //for (var i = 0; i < episodes.length; i++) {
+            for (var i = episodes.length-1; i >= 0 ; i--) {
+
                 var selected = "";
                 if(currentId == episodes[i].id){
                     selected = "selected";

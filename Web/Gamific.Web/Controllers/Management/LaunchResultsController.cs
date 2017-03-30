@@ -102,7 +102,18 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             foreach (WorkerTypeMetricDTO metric in metricsWorkerType)
             {
-                metrics.Add(MetricEngineService.Instance.GetById(metric.MetricExternalId));
+
+
+                try
+                {
+                    metrics.Add(MetricEngineService.Instance.GetById(metric.MetricExternalId));
+                   
+                }
+                catch (Exception ex)
+                {
+                    continue;
+                }
+
             }
 
             return PartialView("_Edit", metrics);
