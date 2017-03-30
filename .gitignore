@@ -11,6 +11,7 @@ Global/Vlast.Util/obj/
 Jobs/Gamific.Jobs/bin/
 Jobs/Gamific.Jobs/obj/
 .vs/config/applicationhost.config
+layout/
 
 Global/Lib/MySql.AspNet.Identity/MySql.AspNet.Identity/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 
