@@ -243,7 +243,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Name = entity.DataInfo.FirmName,
                                 Neighborhood = entity.DataInfo.Neighborhood,
                                 Phone = entity.DataInfo.Phone,
-                                Id = entity.DataInfo.ExternalId
+                                Id = entity.DataInfo.ExternalId,
+                                LogoPath = CurrentURL + entity.DataInfo.LogoId
                             };
                             game = GameEngineService.Instance.CreateOrUpdate(game);
 
