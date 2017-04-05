@@ -64,24 +64,53 @@ namespace Vlast.Gamific.Web.Controllers.Util
 
         static public void MigrationEmailToEngine()
         {
-            List<WorkerDTO> workers = WorkerRepository.Instance.GetAllDTO();
+
+            List<DataEntity> entityList = DataRepository.Instance.GetAll(0,100);
+
+
+            foreach (DataEntity entity in entityList) { 
+
+                GameEngineDTO game = new GameEngineDTO
+            {
+                Adress = entity.Adress,
+                City = entity.City,
+                LogoId = entity.LogoId,
+                Name = entity.FirmName,
+                Neighborhood = entity.Neighborhood,
+                Phone = entity.Phone,
+                Id = entity.ExternalId,
+                LogoPath = CurrentURL + entity.LogoId
+            };
+            game = GameEngineService.Instance.CreateOrUpdate(game, "miller@gamific.com.br" );
+
+            //List<WorkerDTO> workers = WorkerRepository.Instance.GetAllFromFirm(entity.ExternalId);
+
+            List<WorkerDTO> workers = WorkerRepository.Instance.GetWorkerDTOByExternalGameId(entity.ExternalId);
             string errors = "";
 
             foreach(WorkerDTO worker in workers)
             {
                 try
                 {
-                    PlayerEngineDTO player = PlayerEngineService.Instance.GetById(worker.ExternalId);
+                    PlayerEngineDTO player = new PlayerEngineDTO();
                     player.Email = worker.Email;
                     player.Cpf = worker.Cpf;
                     player.Role = worker.Role;
+                    player.LogoId = worker.LogoId;
                     player.LogoPath = CurrentURL + player.LogoId;
-                    PlayerEngineService.Instance.CreateOrUpdate(player);
+                    player.Id = worker.ExternalId;
+                    player.GameId = entity.ExternalId;
+                    player.Nick = worker.Name;
+                    player.Xp = 1;
+                    player.Level = 1;
+                    PlayerEngineService.Instance.CreateOrUpdate(player, "miller@gamific.com.br");
                 }
                 catch(Exception e)
                 {
                     errors += worker.Email + " -> " + e.Message + "<br/>";
                 }
+            }
+
             }
         }
     }

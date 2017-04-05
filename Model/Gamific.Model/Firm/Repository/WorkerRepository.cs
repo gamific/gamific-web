@@ -344,6 +344,48 @@ namespace Vlast.Gamific.Model.Firm.Repository
             }
         }
 
+
+
+
+        /// <summary>
+        /// Busca todos os responsaveis de times na lista recebida
+        /// </summary>
+        /// <param name="teamIds"></param>
+        /// <returns></returns>
+        public List<WorkerDTO> GetWorkerDTOByExternalGameId(string gameId)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from worker in context.Workers
+                            from profile in context.Profiles
+                            from wt in context.WorkerTypes
+                            where worker.Status == GenericStatus.ACTIVE
+                            && worker.ExternalFirmId == gameId
+                            && worker.UserId == profile.Id
+                            && worker.WorkerTypeId == wt.Id
+                            select new WorkerDTO
+                            {
+                                Cpf = profile.CPF,
+                                Name = profile.Name,
+                                Email = profile.Email,
+                                IdAssociation = 0,
+                                ExternalId = worker.ExternalId,
+                                IdUser = worker.UserId,
+                                IdWorker = worker.Id,
+                                LogoId = worker.LogoId,
+                                Phone = profile.Phone,
+                                TotalPoints = 0,
+                                WorkerTypeId = worker.WorkerTypeId,
+                                WorkerTypeName = wt.TypeName,
+                                ProfileName = wt.ProfileName,
+                                Role = wt.ProfileName.ToString()
+                            };
+
+                return query.ToList();
+            }
+        }
+
+
         /// <summary>
         /// Busca todos funcionarios ativos de uma equipe
         /// </summary>

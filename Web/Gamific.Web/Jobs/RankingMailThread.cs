@@ -11,6 +11,7 @@ using System.Linq;
 using Vlast.Gamific.Model.Firm.Repository;
 using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
+using System.Collections;
 
 namespace Vlast.Gamific.Web.Jobs
 {
@@ -26,18 +27,20 @@ namespace Vlast.Gamific.Web.Jobs
         public async override void Run()
         {
             Send(new EmailSupportDTO { Msg = "Bom dia", Category = "", Subject = "Testes Gamific" }, "igorgarantes@gmail.com");
-            /*
+            
             GetAllDTO games = GameEngineService.Instance.GetAll(0, 10000);
 
             foreach (GameEngineDTO game in games.List.game)
             {
-                if (game.Id == "5880a1743a87783b4f0ba709" || game.Id == "5885fa373a87786bec6ca6ff")
-                {
                     GetAllDTO players = PlayerEngineService.Instance.GetByGameId(game.Id);
 
-                    GetAllDTO episodes = EpisodeEngineService.Instance.GetByGameIdAndActive(game.Id, 1);
+                //GetAllDTO episodes = EpisodeEngineService.Instance.GetByGameIdAndActive(game.Id, 1);
 
-                    foreach(EpisodeEngineDTO episode in episodes.List.episode)
+                List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
+                //episodes.Add(new EpisodeEngineDTO("58b6e3663a87782c725a93b8")); // marco todeschini
+                //episodes.Add(new EpisodeEngineDTO("58b5f8d53a87782c725a90c9")); // março pelegrini
+
+                foreach (EpisodeEngineDTO episode in episodes)
                     {
                         List<string> emails = new List<string>();
                         GetAllDTO teams = TeamEngineService.Instance.FindByEpisodeId(episode.Id);
@@ -58,9 +61,9 @@ namespace Vlast.Gamific.Web.Jobs
                             }
                         }
                     }
-                }
+                
             }
-            */
+            
         }
 
         public override void Init(TimeSpan timeToRun)

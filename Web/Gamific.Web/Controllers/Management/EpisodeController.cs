@@ -88,6 +88,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult Create()
         {
             EpisodeEngineDTO episode = new EpisodeEngineDTO();
+            episode.Active = true;
             
             ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
             {

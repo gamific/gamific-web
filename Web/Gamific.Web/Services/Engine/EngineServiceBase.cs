@@ -92,13 +92,17 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
-                {
-                    string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
-                    client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
-                    string response = client.UploadString(path, "POST", JsonSerialize(ref dto));
-                    return JsonDeserialize<T>(response);
-                }
+
+                WebClient client = new WebClient();
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                client.Headers[HttpRequestHeader.Accept] = "application/json";
+                client.Encoding = System.Text.Encoding.UTF8;
+                
+               string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+               client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+               string response = client.UploadString(path, "POST", JsonSerialize(ref dto));
+               return JsonDeserialize<T>(response);
+                
             }
             catch (Exception e)
             {
@@ -126,13 +130,15 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
-                {
+                    WebClient client = new WebClient();
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    client.Headers[HttpRequestHeader.Accept] = "application/json";
+                    client.Encoding = System.Text.Encoding.UTF8;
                     string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
                     client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
                     string response = client.DownloadString(path + id);
                     return JsonDeserialize<T>(response);
-                }
+                
             }
             catch (Exception e)
             {
