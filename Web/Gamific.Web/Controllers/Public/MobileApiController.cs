@@ -34,6 +34,26 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
             return CurrentURL + logoId;
         }
 
+        [Route("imagePathGame")]
+        [HttpPost]
+        [AllowAnonymous]
+        public string GetImagePathGame(string gameId, string email)
+        {
+
+            GameEngineDTO game =  GameEngineService.Instance.GetById(gameId, email);
+            
+            var json = JsonConvert.SerializeObject(
+                   new
+                   {
+                       logoPath = CurrentURL + game.LogoId
+                   },
+                   Formatting.Indented,
+                   new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }
+                 );
+
+            return json;
+        }
+
         [Route("resetarSenhaMobile")]
         [HttpPost]
         [AllowAnonymous]

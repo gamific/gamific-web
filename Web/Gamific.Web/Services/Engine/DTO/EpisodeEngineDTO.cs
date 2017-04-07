@@ -19,6 +19,11 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             this.Name = name;
         }
 
+        public EpisodeEngineDTO(string id)
+        {
+            this.Id = id;
+        }
+
         [JsonProperty("id")]
         public string Id { get; set; }
 
