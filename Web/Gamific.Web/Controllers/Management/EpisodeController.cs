@@ -88,6 +88,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult Create()
         {
             EpisodeEngineDTO episode = new EpisodeEngineDTO();
+            episode.Active = true;
             
             ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
             {
@@ -129,7 +130,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             episode.Active = true;
                         }
 
+                        episode.initDate = episode.initDateAux.Ticks;
 
+                        episode.finishDate = episode.finishDateAux.Ticks;
 
                         episode.GameId = CurrentFirm.ExternalId;
 
@@ -180,6 +183,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 GetAllDTO all = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, jqueryTableRequest.Page);
                 JQueryDataTableResponse response = null;
+                DateTime dateInit;
+                DateTime dateFinish;
 
                 if (jqueryTableRequest.Type == null || jqueryTableRequest.Type.Equals("asc"))
                 {
@@ -188,9 +193,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = all.PageInfo.totalElements,
                         RecordsFiltered = all.PageInfo.totalElements,
-                        Data = all.List.episode.Select(r => new string[] { r.Name, r.XpReward.ToString(), r.Active == true ? "Sim" : "Não", r.Id }).ToArray().OrderBy(item => item[index]).ToArray()
+                        Data = all.List.episode.Select(r => new string[] { r.Name, (dateInit = new DateTime(r.initDate)).ToString("dd/MM/yyyy") , (dateFinish = new DateTime (r.finishDate)).ToString("dd/MM/yyyy"), r.XpReward.ToString(), r.Active == true ? "Sim" : "Não", r.Id }).ToArray().OrderBy(item => item[index]).ToArray()
 
                     };
+                    
                 }
                 else
                 {
@@ -199,7 +205,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = all.PageInfo.totalElements,
                         RecordsFiltered = all.PageInfo.totalElements,
-                        Data = all.List.episode.Select(r => new string[] { r.Name, r.XpReward.ToString(), r.Active == true ? "Sim" : "Não", r.Id }).ToArray().OrderByDescending(item => item[index]).ToArray()
+                        Data = all.List.episode.Select(r => new string[] { r.Name, (dateInit = new DateTime(r.initDate)).ToString("dd/MM/yyyy"), (dateFinish = new DateTime(r.finishDate)).ToString("dd/MM/yyyy"), r.XpReward.ToString(), r.Active == true ? "Sim" : "Não", r.Id }).ToArray().OrderByDescending(item => item[index]).ToArray()
 
                     };
                 }

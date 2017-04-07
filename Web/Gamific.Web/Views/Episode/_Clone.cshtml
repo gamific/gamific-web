@@ -26,6 +26,22 @@
                             @Html.ValidationMessageFor(model => model.Name, "O campo Nome da Episode é obrigatório.", new { @class = "text-danger" })
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-12 modal-div">
+                            @{
+                                @Html.LabelFor(model => model.initDate, "Data", new { @class = "col-sm-12 control-label" })
+                                @Html.EditorFor(model => model.initDate, new { htmlAttributes = new { @class = "form-control", @tabindex = "2" } })
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-12 modal-div">
+                            @{
+                                @Html.LabelFor(model => model.finishDate, "Data", new { @class = "col-sm-12 control-label" })
+                                @Html.EditorFor(model => model.finishDate, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
+                            }
+                        </div>
+                    </div>
                     
                 </div>
                 <div class="modal-footer">

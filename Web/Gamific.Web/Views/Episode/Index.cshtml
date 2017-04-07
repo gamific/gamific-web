@@ -17,13 +17,15 @@
                 <div class="tile transparent">
                     <div class="tile-body color transparent-black rounded-corners">
                         <div id="registermetrics" class="table-toolbar-left">
-                            <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/episode/cadastrar" title="Cadastrar nova Campanha" onclick="showEntityModal(this); return false;"><i class="fa fa-plus"></i> Cadastrar nova Campanha</a>
+                            <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/episode/cadastrar" title="Cadastrar nova Campanha" onclick="loadData();showEntityModal(this); return false;"><i class="fa fa-plus"></i> Cadastrar nova Campanha</a>
                         </div>
                         <div class="">
                             <table id="episodeDataTable" class="table table-striped" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
+                                        <th>Data Inicial</th>
+                                        <th>Data Final</th>
                                         <th>Quantidade de XP</th>
                                         <th>Ativo</th>
                                         <th>Ações</th>

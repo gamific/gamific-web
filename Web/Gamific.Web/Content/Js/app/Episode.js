@@ -1,4 +1,5 @@
 ﻿function loadEpisodeDataTable() {
+    loadData();
     table = $('#episodeDataTable').dataTable({
         "serverSide": true,
         "ajax": "/admin/episode/search/",
@@ -19,38 +20,109 @@
         "fnServerParams": function (aoData) { },
         "columnDefs": [
             {
-                "width": "25%",
+                "width": "20%",
                 "targets": 0,
                 "orderable": true,
                 "searchable": true
             },
             {
-                "width": "25%",
+                "width": "10%",
                 "targets": 1,
                 "orderable": true,
-                "searchable": true,
+                "searchable": true
             },
             {
-                "width": "20%",
+                "width": "10%",
                 "targets": 2,
+                "orderable": true,
+                "searchable": true
+            },
+            {
+                "width": "15%",
+                "targets": 3,
                 "orderable": true,
                 "searchable": true,
             },
             {
-                "width": "20%",
-                "targets": 3,
+                "width": "10%",
+                "targets": 4,
+                "orderable": true,
+                "searchable": true,
+            },
+            {
+                "width": "25%",
+                "targets": 5,
                 "orderable": false,
                 "searchable": false,
                 "render": function (data, type, row) {
                     var name = row[0].split(";")[0];
-                    var links = "<a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/episode/editar/" + data + "' title='Edite está campanha'> </a>" + " <a class='fa fa-clone' onclick='showEntityModal(this); return false;'  href='/admin/episode/clonar/" + data + "' title='Clone está campanha, com todas as equipes,metas e metricas'> </a>" + " <a class='fa fa-eraser' href='#' onclick='cleanClickEpisode(\"" + data + "\")' title='Zera todos os resultados desta campanha.'> </a>";
-                    if (row[2] == "Sim") {
+                    var links = "<a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/episode/editar/" + data + "' title='Edite está campanha'> </a>";
+                    links +=  " <a class='fa fa-clone' onclick='showEntityModal(this); return false;'  href='/admin/episode/clonar/" + data + "' title='Clone está campanha, com todas as equipes,metas e metricas'> </a>";
+                    links += " <a class='fa fa-eraser' href='#' onclick='cleanClickEpisode(\"" + data + "\")' title='Zera todos os resultados desta campanha.'> </a>";
+                    if (row[4] == "Sim") {
                         links += " <a class='fa fa-power-off'  href='#' onclick='removeClickEpisode(\"" + data + "\",\"" + name + "\")' title='Finaliza está campanha.'> </a>";
                     }
                     return links;
                 }
             }
-
+            /*
+            {
+                "width": "5%",
+                "targets": 5,
+                "orderable": false,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    var name = row[0].split(";")[0];
+                    data = row[0].data;
+                    type = row[0].type;
+                    var links = "<a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/episode/editar/" + data + "' title='Edite está campanha'> </a>";
+                    
+                    return links;
+                }
+            },
+            {
+                "width": "5%",
+                "targets": 6,
+                "orderable": false,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    var name = row[0].split(";")[0];
+                    data = row[0].data;
+                    type = row[0].type;
+                    var links = " <a class='fa fa-clone' onclick='showEntityModal(this); return false;'  href='/admin/episode/clonar/" + data + "' title='Clone está campanha, com todas as equipes,metas e metricas'> </a>";
+                    
+                    return links;
+                }
+            },
+            {
+                "width": "5%",
+                "targets": 7,
+                "orderable": false,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    var name = row[0].split(";")[0];
+                    data = row[0].data;
+                    type = row[0].type;
+                    var links = " <a class='fa fa-eraser' href='#' onclick='cleanClickEpisode(\"" + data + "\")' title='Zera todos os resultados desta campanha.'> </a>";
+                   
+                    return links;
+                }
+            },
+            {
+                "width": "5%",
+                "targets": 8,
+                "orderable": false,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    var name = row[0].split(";")[0];
+                    data = row[0].data;
+                    type = row[0].type;
+                    if (row[4] == "Sim") {
+                        var links = " <a class='fa fa-power-off'  href='#' onclick='removeClickEpisode(\"" + data + "\",\"" + name + "\")' title='Finaliza está campanha.'> </a>";
+                    }
+                    return links;
+                }
+            }*/
 
         ]
     });
@@ -141,5 +213,8 @@ function onFailureSaveEpisode() {
 
 }
 
-loadEpisodeDataTable();
+function loadData() {
+}
 
+
+loadEpisodeDataTable();
