@@ -16,7 +16,7 @@ layout/
 Global/Lib/MySql.AspNet.Identity/MySql.AspNet.Identity/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 
 .vs/Gamific/v14/.suo
-.gitignore
+
 
 Web/Gamific.Web/App_Data/testeplan.xlsx
 
@@ -24,6 +24,6 @@ Web/Gamific.Web/App_Data/vda alegria - FEV.xls
 
 Web/Gamific.Web/App_Data/vdaalegria-FEV.xlsx
 
-Web/Gamific.Web/Gamific.Web.csproj
 
-Gamific.sln
+
+

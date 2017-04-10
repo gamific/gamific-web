@@ -1,0 +1,86 @@
+@@ -1,85 +0,0 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{8EE91C9D-A769-44C8-A4C1-52D07C2389E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{396E134C-0C79-43ED-96E3-77E06D8EC542}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D2576914-E497-4F10-8D0D-0077197695C2}"
+	ProjectSection(SolutionItems) = preProject
+		Web\Gamific.Web\Views\LaunchResults\_ResultsArchive.cshtml = Web\Gamific.Web\Views\LaunchResults\_ResultsArchive.cshtml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlast.Util", "Global\Vlast.Util\Vlast.Util.csproj", "{BE0DB0B5-F80E-4173-9A2F-1BE242F238FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B7C382C4-4CB1-4417-B4B8-DE3F308327EE}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlast.Broker", "Global\Vlast.Broker\Vlast.Broker.csproj", "{BFCCB8F7-AF0F-4691-A437-2857D1FC0E5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySql.AspNet.Identity", "Global\Lib\MySql.AspNet.Identity\MySql.AspNet.Identity\MySql.AspNet.Identity.csproj", "{EC3ADD94-5E1D-4A5F-BE06-788AC6C0E252}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamific.Model", "Model\Gamific.Model\Gamific.Model.csproj", "{951BF9BC-CE2C-476D-A16E-DEB4A2EA483A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamific.Web", "Web\Gamific.Web\Gamific.Web.csproj", "{C3E0408F-62CA-4608-A199-C9FA1F395C2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jobs", "Jobs", "{FBBD2A48-1800-4DA3-96BB-CA3907D5E06F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamific.Jobs", "Jobs\Gamific.Jobs\Gamific.Jobs.csproj", "{F1346A4B-CA97-4334-993A-447E93675BC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamific.Batch", "Global\Gamific.Batch\Gamific.Batch.csproj", "{2D4E91AB-3ADB-43FF-A3F1-701FF5652153}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE0DB0B5-F80E-4173-9A2F-1BE242F238FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE0DB0B5-F80E-4173-9A2F-1BE242F238FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE0DB0B5-F80E-4173-9A2F-1BE242F238FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE0DB0B5-F80E-4173-9A2F-1BE242F238FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFCCB8F7-AF0F-4691-A437-2857D1FC0E5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFCCB8F7-AF0F-4691-A437-2857D1FC0E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFCCB8F7-AF0F-4691-A437-2857D1FC0E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFCCB8F7-AF0F-4691-A437-2857D1FC0E5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC3ADD94-5E1D-4A5F-BE06-788AC6C0E252}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC3ADD94-5E1D-4A5F-BE06-788AC6C0E252}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC3ADD94-5E1D-4A5F-BE06-788AC6C0E252}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC3ADD94-5E1D-4A5F-BE06-788AC6C0E252}.Release|Any CPU.Build.0 = Release|Any CPU
+		{951BF9BC-CE2C-476D-A16E-DEB4A2EA483A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{951BF9BC-CE2C-476D-A16E-DEB4A2EA483A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{951BF9BC-CE2C-476D-A16E-DEB4A2EA483A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{951BF9BC-CE2C-476D-A16E-DEB4A2EA483A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3E0408F-62CA-4608-A199-C9FA1F395C2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E0408F-62CA-4608-A199-C9FA1F395C2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E0408F-62CA-4608-A199-C9FA1F395C2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E0408F-62CA-4608-A199-C9FA1F395C2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1346A4B-CA97-4334-993A-447E93675BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1346A4B-CA97-4334-993A-447E93675BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1346A4B-CA97-4334-993A-447E93675BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1346A4B-CA97-4334-993A-447E93675BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D4E91AB-3ADB-43FF-A3F1-701FF5652153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D4E91AB-3ADB-43FF-A3F1-701FF5652153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D4E91AB-3ADB-43FF-A3F1-701FF5652153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D4E91AB-3ADB-43FF-A3F1-701FF5652153}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BE0DB0B5-F80E-4173-9A2F-1BE242F238FB} = {8EE91C9D-A769-44C8-A4C1-52D07C2389E8}
+		{BFCCB8F7-AF0F-4691-A437-2857D1FC0E5E} = {8EE91C9D-A769-44C8-A4C1-52D07C2389E8}
+		{EC3ADD94-5E1D-4A5F-BE06-788AC6C0E252} = {8EE91C9D-A769-44C8-A4C1-52D07C2389E8}
+		{951BF9BC-CE2C-476D-A16E-DEB4A2EA483A} = {396E134C-0C79-43ED-96E3-77E06D8EC542}
+		{C3E0408F-62CA-4608-A199-C9FA1F395C2C} = {D2576914-E497-4F10-8D0D-0077197695C2}
+		{F1346A4B-CA97-4334-993A-447E93675BC5} = {FBBD2A48-1800-4DA3-96BB-CA3907D5E06F}
+		{2D4E91AB-3ADB-43FF-A3F1-701FF5652153} = {8EE91C9D-A769-44C8-A4C1-52D07C2389E8}
+	EndGlobalSection
+EndGlobal
