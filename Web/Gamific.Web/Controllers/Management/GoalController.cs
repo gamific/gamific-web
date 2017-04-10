@@ -64,7 +64,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = all.List.run.Count(), 
+                        RecordsTotal = all.List.run.Count(),
                         RecordsFiltered = all.List.run.Count(),
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderBy(item => item[index]).ToArray()
                     };
@@ -116,19 +116,21 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult Edit(string playerId, string teamId, string episodeId)
         {
 
-           try { 
-            PlayerEngineDTO player = PlayerEngineService.Instance.GetById(playerId);
-            ViewBag.WorkerName = player.Nick;
-
-            List<WorkerTypeMetricDTO> metricsWorkerType = WorkerTypeMetricRepository.Instance.GetAllFromWorkerByPlayerId(playerId);
-
-            List<MetricEntity> metrics = new List<MetricEntity>();
-
-            foreach (WorkerTypeMetricDTO metric in metricsWorkerType)
+            try
             {
+                PlayerEngineDTO player = PlayerEngineService.Instance.GetById(playerId);
+                ViewBag.WorkerName = player.Nick;
 
-               try { 
-                    MetricEngineDTO m = MetricEngineService.Instance.GetById(metric.MetricExternalId);
+                List<WorkerTypeMetricDTO> metricsWorkerType = WorkerTypeMetricRepository.Instance.GetAllFromWorkerByPlayerId(playerId);
+
+                List<MetricEntity> metrics = new List<MetricEntity>();
+
+                foreach (WorkerTypeMetricDTO metric in metricsWorkerType)
+                {
+
+                    try
+                    {
+                        MetricEngineDTO m = MetricEngineService.Instance.GetById(metric.MetricExternalId);
                         metrics.Add(new MetricEntity
                         {
                             MetricName = m.Name,
@@ -136,26 +138,89 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             ExternalID = m.Id,
                         });
                     }
-               catch (Exception ex)
-               {
+                    catch (Exception ex)
+                    {
                         continue;
-               }
-                    
-            }
+                    }
 
-            RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(playerId, teamId);
-
-            List<GoalDTO> goals = GoalRepository.Instance.GetAllFromWorkerByRunId(run.Id, metrics);
-
-            foreach(GoalDTO goal in goals)
-            {
-                if(goal.EpisodeId == null)
-                {
-                    goal.EpisodeId = episodeId;
                 }
-            }
+
+                RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(playerId, teamId);
+
+                List<GoalDTO> goals = GoalRepository.Instance.GetAllFromWorkerByRunId(run.Id, metrics);
+
+                foreach (GoalDTO goal in goals)
+                {
+                    if (goal.EpisodeId == null)
+                    {
+                        goal.EpisodeId = episodeId;
+                    }
+                }
 
                 return PartialView("_Edit", goals);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                Error("Ocorreu um erro ao tentar adicionar uma meta.", ex);
+            }
+
+            return Redirect("/admin/metas");
+        }
+
+        [Route("editarEquipe/{teamId}/{episodeId}")]
+        public ActionResult EditTeam(string teamId, string episodeId)
+        {
+            try
+            {
+                TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
+                ViewBag.TeamName = team.Nick;
+
+                List<MetricEngineDTO> metricsDTO = MetricEngineService.Instance.GetAllByGameId(team.GameId).List.metric;
+
+                List<GoalEngineDTO> goals = GoalEngineService.Instance.GetByTeamId(teamId).List.goal;
+
+                if (goals.Count < 1)
+                {
+                    foreach (MetricEngineDTO m in metricsDTO)
+                    {
+                        GoalEngineDTO dto = new GoalEngineDTO();
+
+                        dto.MetricIcon = m.Icon;
+                        dto.MetricId = m.Id;
+                        dto.MetricName = m.Name;
+                        dto.TeamId = teamId;
+
+                        goals.Add(dto);
+                    }
+                }
+                else
+                {
+                    List<string> metricIds = new List<string>();
+
+                    foreach (GoalEngineDTO g in goals)
+                    {
+                        metricIds.Add(g.MetricId);
+                    }
+
+                    foreach (MetricEngineDTO m in metricsDTO)
+                    {
+                        if (!metricIds.Contains(m.Id))
+                        {
+                            GoalEngineDTO dto = new GoalEngineDTO();
+
+                            dto.MetricIcon = m.Icon;
+                            dto.MetricId = m.Id;
+                            dto.MetricName = m.Name;
+                            dto.TeamId = teamId;
+
+                            goals.Add(dto);
+                        }
+                    }
+                }
+
+                return PartialView("_EditTeam", goals);
 
             }
             catch (Exception ex)
@@ -178,7 +243,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     foreach (GoalEntity goal in goalList)
                     {
                         goal.UpdatedBy = CurrentUserId;
-                        if(goal.Id == 0 && goal.Goal > 0)
+                        if (goal.Id == 0 && goal.Goal > 0)
                         {
                             MetricEngineDTO metric = MetricEngineService.Instance.GetById(goal.ExternalMetricId);
                             GoalEngineDTO goalEngine = new GoalEngineDTO
@@ -192,7 +257,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             GoalEngineService.Instance.CreateOrUpdate(goalEngine);
                             GoalRepository.Instance.CreateGoal(goal);
                         }
-                        else if(goal.Goal >= 0 && goal.Id > 0)
+                        else if (goal.Goal >= 0 && goal.Id > 0)
                         {
                             GoalEngineDTO goalEngine = GoalEngineService.Instance.GetByRunIdAndMetricId(goal.RunId, goal.ExternalMetricId);
                             goalEngine.Goal = goal.Goal;
@@ -200,7 +265,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                             GoalRepository.Instance.UpdateGoal(goal);
                         }
-                               
+
                     }
 
                     Success("Associação feita com sucesso.");
@@ -216,19 +281,52 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return Redirect("/admin/metas");
         }
 
-           /// <summary>
-           /// Abre o modal para cadastro de uma meta padrao
-           /// </summary>
-           /// <returns></returns>
-           [Route("cadastrar/")]
-           public ActionResult Create(/*List<GoalEntity> goalList, string gameId*/)
-           {
+        [Route("salvarEquipe")]
+        [HttpPost]
+        public ActionResult SaveTeam(List<GoalEngineDTO> goalList)
+        {
+            try
+            {
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
+                {
+                    foreach (GoalEngineDTO goal in goalList)
+                    {
+                        if (string.IsNullOrWhiteSpace(goal.Id) && goal.Goal > 0)
+                        {
+                            GoalEngineService.Instance.CreateOrUpdate(goal);
+                        }
+                        else if (!string.IsNullOrWhiteSpace(goal.Id) && goal.Goal > 0)
+                        {
+                            GoalEngineService.Instance.CreateOrUpdate(goal);
+                        }
+                    }
+
+                    Success("Associação feita com sucesso.");
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                Error("Ocorreu um erro ao tentar adicionar uma meta.", ex);
+            }
+
+            return Redirect("/admin/metas");
+        }
+
+        /// <summary>
+        /// Abre o modal para cadastro de uma meta padrao
+        /// </summary>
+        /// <returns></returns>
+        [Route("cadastrar/")]
+        public ActionResult Create(/*List<GoalEntity> goalList, string gameId*/)
+        {
             GoalDTO goals = new GoalDTO();
-            
+
 
 
             return PartialView("_EditAll", goals);
-           }
+        }
 
 
         /// <summary>
@@ -238,9 +336,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("cadastrarArquivoMeta/{episodeId}")]
         public ActionResult CreateGoalArchive(string episodeId)
         {
-           
+
             ViewBag.EpisodeId = episodeId;
-            
+
             return PartialView("_EditAll");
         }
 
@@ -257,7 +355,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
             var workbook = new Workbook();
-            
+
 
             var worksheetResults = workbook.Worksheets[0];
 
@@ -275,7 +373,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             cellsResults["B1"].PutValue("Métrica");
             cellsResults["C1"].PutValue("Equipe");
             cellsResults["D1"].PutValue("Meta");
-            
+
 
             List<string> metricsNames = new List<string>();
 
@@ -355,12 +453,12 @@ namespace Vlast.Gamific.Web.Controllers.Management
             areaResult.EndColumn = 3;
             validationResult.AreaList.Add(areaResult);
 
-            
+
 
             MemoryStream ms = new MemoryStream();
 
             ms = workbook.SaveToStream();
-            
+
 
             return File(ms.ToArray(), "application/vnd.ms-excel");
         }
@@ -418,13 +516,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     TeamEngineDTO team = new TeamEngineDTO();
                     RunEngineDTO run = new RunEngineDTO();
 
-                    
+
 
                     try
                     {
                         metric = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, row[1].ToString());
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         errors += "Erro na coluna 2 da linha " + line + "<br/>";
                         countErrors++;
@@ -453,7 +551,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     {
                         team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId, row[2].Value.ToString());
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         errors += "Erro na coluna 3 da linha " + line + "<br/>";
                         countErrors++;
@@ -464,13 +562,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     {
                         run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         errors += "Jogador " + user.Name + " não está cadastrado no time " + team.Nick + ". Linha: " + line + "<br/>";
                         countErrors++;
                         continue;
                     }
-                    
+
 
                     if (!string.IsNullOrWhiteSpace(row[0].ToString()) && !string.IsNullOrWhiteSpace(row[1].ToString()) && !string.IsNullOrWhiteSpace(row[2].ToString()) && !string.IsNullOrWhiteSpace(row[3].ToString()))
                     {
@@ -486,7 +584,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 goalEngineDTO = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
                                 goalEngineDTO.Goal = Int32.Parse(row[3].Value.ToString());
                             }
-                            catch(Exception e)
+                            catch (Exception e)
                             {
                                 goalEngineDTO = new GoalEngineDTO
                                 {
@@ -499,7 +597,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                     Percentage = 0
                                 };
                             }
-                            
+
 
                             GoalEntity goal = new GoalEntity
                             {
@@ -540,10 +638,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             GoalEngineService.Instance.CreateOrUpdate(goalEngineDTO);
 
                         }
-                        
+
                     }
 
-                    
+
                 }
 
                 errors = string.Format(errors, countErrors, line);

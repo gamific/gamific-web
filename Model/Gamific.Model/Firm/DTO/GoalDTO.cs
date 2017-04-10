@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Vlast.Gamific.Model.Firm.DTO
+﻿namespace Vlast.Gamific.Model.Firm.DTO
 {
     public class GoalDTO
     {
         public int GoalId { get; set; }
 
         public long WorkerId { get; set; }
+
+        public long TeamId { get; set; }
+
+        public string ExternalTeamId { get; set; }
 
         public string ExternalPlayerId { get; set; }
 

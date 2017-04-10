@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Vlast.Gamific.Web.Services.Engine.DTO
 {
@@ -13,6 +9,9 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
 
         [JsonProperty("runId")]
         public string RunId { get; set; }
+
+        [JsonProperty("teamId")]
+        public string TeamId { get; set; }
 
         [JsonProperty("goal")]
         public float Goal { get; set; }
