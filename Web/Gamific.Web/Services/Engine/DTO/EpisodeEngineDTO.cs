@@ -54,7 +54,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         public DateTime finishDateAux { get; set; }
 
         [JsonProperty("sendEmail")]
-        public string sendEmail { get; set; }
+        public bool sendEmail { get; set; }
         
         [JsonProperty("description")]
         public string description { get; set; }

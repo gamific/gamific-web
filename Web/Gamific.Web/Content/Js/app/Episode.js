@@ -20,7 +20,7 @@
         "fnServerParams": function (aoData) { },
         "columnDefs": [
             {
-                "width": "20%",
+                "width": "17%",
                 "targets": 0,
                 "orderable": true,
                 "searchable": true
@@ -44,14 +44,20 @@
                 "searchable": true,
             },
             {
-                "width": "10%",
+                "width": "15%",
                 "targets": 4,
                 "orderable": true,
                 "searchable": true,
             },
             {
-                "width": "25%",
+                "width": "10%",
                 "targets": 5,
+                "orderable": true,
+                "searchable": true,
+            },
+            {
+                "width": "13%",
+                "targets": 6,
                 "orderable": false,
                 "searchable": false,
                 "render": function (data, type, row) {
