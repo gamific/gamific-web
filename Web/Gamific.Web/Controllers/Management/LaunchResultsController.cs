@@ -443,7 +443,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 var archive = new ExcelQueryFactory(Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(resultsArchive.FileName)));
 
-                var rows = from x in archive.WorksheetRange("A1", "N" + rowsCount, "Planilha1") select x;
+                var rows = from x in archive.WorksheetRange("A1", "O" + rowsCount, "Sheet1") select x;
 
                 float points;
 
@@ -571,6 +571,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Date = DateTime.Now.Ticks,
                         PlayerId = player.Id,
                         ItemId = item.Id,
+                        ItemName = item.Name,
                         RunId = run.Id
                     };
 
