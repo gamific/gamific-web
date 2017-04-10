@@ -32,7 +32,7 @@ namespace Vlast.Gamific.Web
                             "~/Content/Js/lib/jquery.bootstrap.wizard.min.js",
                             "~/Content/Js/lib/minimal.min.js",
                             "~/Content/Js/lib/vanilla-masker.min.js",
-                            "~/Content/Js/lib/bootstrap-datepicker.min.js",
+                            "~/Content/Js/lib/bootstrap-datepicker.js",
                             "~/Content/Js/lib/plugin.min.js",
                             "~/Content/Js/lib/custom-colored.min.js",
                             "~/Content/Js/lib/Treant.min.js",
