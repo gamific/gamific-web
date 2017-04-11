@@ -28,35 +28,38 @@
                     </div>
                     
                     <div class="form-group">
-                        <div class="col-sm-10 col-md-6 modal-div">
+                        <div class="col-sm-10 col-md-12 modal-div">
                             @Html.LabelFor(model => model.XpReward, "Quantidade de XP*:", new { @class = "col-sm-12 control-label" })
                             @Html.EditorFor(model => model.XpReward, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
                             @Html.ValidationMessageFor(model => model.XpReward, "O campo Xp é obrigatório.", new { @class = "text-danger" })
                         </div>
                     </div>
+                    
+
                     <div class="form-group">
                         <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.initDateAux, "Data inicial do periodo:", new { @class = "col-sm-12 control-label" })
+                            @Html.EditorFor(model => model.initDateAux, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+                            @Html.ValidationMessageFor(model => model.initDateAux, "O campo Data inicial do periodo é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.finishDateAux, "Data final do periodo:", new { @class = "col-sm-12 control-label" })
+                            @Html.EditorFor(model => model.finishDateAux, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+                            @Html.ValidationMessageFor(model => model.finishDateAux, "O campo Data final do periodo é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-12 modal-div">
                             <label style="font-size:larger;">
-                                Ativar email:
+                                Enviar email:
                                 @Html.CheckBoxFor(model => model.sendEmail, Model.sendEmail)
                             </label>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-sm-10 col-md-12 modal-div">
-                            @Html.LabelFor(model => model.initDateAux, "Data inicial do periodo:", new { @class = "col-sm-12 control-label" })
-                            @Html.EditorFor(model => model.initDateAux, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
-                            @Html.ValidationMessageFor(model => model.initDateAux, "O campo Data inicial do periodo é obrigatório.", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div>
-                            @Html.LabelFor(model => model.finishDateAux, "Data final do periodo:", new { @class = "col-sm-12 control-label" })
-                            @Html.EditorFor(model => model.finishDateAux, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
-                            @Html.ValidationMessageFor(model => model.finishDateAux, "O campo Data final do periodo é obrigatório.", new { @class = "text-danger" })
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -97,3 +100,4 @@
     });
     $("#finishDateAux").datepicker("setDate", currentDate);
 </script>
+

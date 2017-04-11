@@ -365,6 +365,7 @@
     <Content Include="Content\Css\data-tables.css" />
     <Content Include="Content\Css\dataTables.bootstrap.css" />
     <Content Include="Content\Css\dataTables.responsive.css" />
+    <Content Include="Content\Css\datepicker2.css" />
     <Content Include="Content\Css\datepicker.css" />
     <Content Include="Content\Css\jquery-ui.css" />
     <Content Include="Content\Css\jquery.mmenu.all.css" />

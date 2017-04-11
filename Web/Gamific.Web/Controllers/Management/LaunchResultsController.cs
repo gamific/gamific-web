@@ -353,12 +353,16 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return File(ms.ToArray(), "application/vnd.ms-excel");
         }
 
-        [Route("salvarResultadoArquivo")]
+        [Route("salvarResultadoArquivo/")]//{clean}")]
         [HttpPost]
         [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
-        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string episodeId)
+        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string episodeId)//, bool clean)
         {
-            if(CurrentFirm.ExternalId == "5885f7593a87786bec6ca6fd")
+            //if(clean)
+            
+
+
+            if (CurrentFirm.ExternalId == "5885f7593a87786bec6ca6fd")
             {
                 return SaveResultArchiveSolBebidas(resultsArchive, episodeId);
             }
