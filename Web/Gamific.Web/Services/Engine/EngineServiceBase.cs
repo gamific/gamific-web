@@ -178,22 +178,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-        public GetAllDTO GetAllByGameId(string gameId, int pageIndex = 0, int pageSize = 10)
-        {
-            try
-            {
-                using (WebClient client = GetClient)
-                {
-                    string responce = client.DownloadString(path + "?size=" + pageSize + "&page=" + pageIndex);
-                    return JsonDeserialize<GetAllDTO>(responce);
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
+      
         public GetAllDTO GetByGameId(string gameId, int size = 1000, int page = 0)
         {
             try

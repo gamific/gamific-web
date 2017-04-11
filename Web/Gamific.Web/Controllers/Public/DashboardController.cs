@@ -410,7 +410,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
 
                 List<WorkerDTO> workers = all.List == null ? new List<WorkerDTO>() : WorkerRepository.Instance.GetWorkerDTOByListExternalId(all.List.runMetric.Select(i => i.PlayerId).ToList());
-                GetAllDTO itens = ItemEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 10000);
+                GetAllDTO itens = ItemEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 10000);
 
 
                 if(all.List != null)

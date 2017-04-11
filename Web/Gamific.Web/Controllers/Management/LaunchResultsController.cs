@@ -594,6 +594,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Date = DateTime.Now.Ticks,
                         PlayerId = player.Id,
                         ItemId = item.Id,
+                        ItemName = item.Name,
                         RunId = run.Id
                     };
                     

@@ -177,7 +177,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
                 ViewBag.TeamName = team.Nick;
 
-                List<MetricEngineDTO> metricsDTO = MetricEngineService.Instance.GetAllByGameId(team.GameId).List.metric;
+                List<MetricEngineDTO> metricsDTO = MetricEngineService.Instance.GetByGameId(team.GameId).List.metric;
 
                 List<GoalEngineDTO> goals = GoalEngineService.Instance.GetByTeamId(teamId).List.goal;
 

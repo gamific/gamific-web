@@ -19,9 +19,9 @@ namespace Vlast.Gamific.Web.Controllers.Util
 
             foreach(GameEngineDTO game in games)
             {
-                List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetAllByGameId(game.Id, 0, 10000).List.episode;
+                List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(game.Id, 0, 10000).List.episode;
 
-                List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetAllByGameId(game.Id, 0, 10000).List.metric;
+                List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetByGameId(game.Id, 0, 10000).List.metric;
 
                 foreach(EpisodeEngineDTO episode in episodes)
                 {
