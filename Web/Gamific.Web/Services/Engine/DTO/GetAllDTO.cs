@@ -36,6 +36,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             public List<ResultEngineDTO> result { get; set; }
             public List<GameEngineDTO> game { get; set; }
             public List<ItemEngineDTO> item { get; set; }
+            public List<GoalEngineDTO> goal { get; set; }
         }
     }
 }

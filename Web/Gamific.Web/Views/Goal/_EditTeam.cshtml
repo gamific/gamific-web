@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Vlast.Gamific.Web.Services.Engine.DTO.GoalEngineDTO>
+
+<form action="/admin/metas/salvarEquipe" method="post" enctype="multipart/form-data">
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="editGoalsLabel"><br class="Apple-interchange-newline" />@ViewBag.TeamName</h4>
+                </div>
+                <div class="modal-body" id="edit-modal-body">
+                    @if (Model != null)
+                    {
+                        int i = 0;
+                        foreach (var item in Model)
+                        {
+                            <label class="col-sm-12 col-md-12 col-xs-6" style="font-size:100%">@item.MetricName</label>
+                            <input type="hidden" value="@item.TeamId" id="GoalList[@i].TeamId" name="GoalList[@i].TeamId"/>
+                            <input type="hidden" value="@item.Id" id="GoalList[@i].Id" name="GoalList[@i].Id" />
+                            <input type="hidden" value="@item.MetricId" id="GoalList[@i].MetricId" name="GoalList[@i].MetricId"/>
+                            <input type="hidden" value="@item.MetricName" id="GoalList[@i].MetricName" name="GoalList[@i].MetricName" />
+                            <input type="hidden" value="@item.MetricIcon" id="GoalList[@i].MetricIcon" name="GoalList[@i].MetricIcon" />
+                            <input type="number" min="0" value="@item.Goal" class="form-control col-xs-6" id="GoalList[@i].Goal" name="GoalList[@i].Goal"/>
+                            i++;
+                        }
+                    } 
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

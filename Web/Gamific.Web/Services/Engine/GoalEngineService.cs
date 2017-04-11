@@ -68,6 +68,22 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public GetAllDTO GetByTeamId(string teamId)
+        {
+            try
+            {
+                using (WebClient client = GetClient)
+                {
+                    string response = client.DownloadString(path + "/search/findByTeamId?teamId=" + teamId);
+                    return JsonDeserialize<GetAllDTO>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public GoalEngineDTO GetByRunIdAndMetricId(string runId, string metricId)
         {
             try
