@@ -32,7 +32,6 @@ namespace Vlast.Gamific.Web
                             "~/Content/Js/lib/jquery.bootstrap.wizard.min.js",
                             "~/Content/Js/lib/minimal.min.js",
                             "~/Content/Js/lib/vanilla-masker.min.js",
-                            "~/Content/Js/lib/bootstrap-datepicker.js",
                             "~/Content/Js/lib/plugin.min.js",
                             "~/Content/Js/lib/custom-colored.min.js",
                             "~/Content/Js/lib/Treant.min.js",
@@ -53,6 +52,7 @@ namespace Vlast.Gamific.Web
                             "~/Content/Js/lib/jquery.animateNumbers.js",
                             "~/Content/Js/app/gamific.min.js",
                             "~/Content/Js/lib/progressbar.min.js",
+                            "~/Content/Js/lib/bootstrap-datepicker.js",
                             "~/Content/Js/lib/bootstrap-dialog.min.js"
                             ));
             }
@@ -115,6 +115,7 @@ namespace Vlast.Gamific.Web
                         "~/Content/css/morris.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/rickshaw.min.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/gamific.css", new CssRewriteUrlTransform()).Include(
+                          "~/Content/css/datepicker2.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/bootstrap-dialog.min.css", new CssRewriteUrlTransform()
                         ));
 
@@ -123,6 +124,7 @@ namespace Vlast.Gamific.Web
                     "~/Content/css/bootstrap-checkbox.css", new CssRewriteUrlTransform()).Include(
                     "~/Content/css/login-load.css", new CssRewriteUrlTransform()).Include(
                     "~/Content/css/bootstrap-dropdown-multilevel.css", new CssRewriteUrlTransform()).Include(
+                    "~/Content/css/datepicker2.css", new CssRewriteUrlTransform()).Include(
                     "~/Content/css/minimal.css", new CssRewriteUrlTransform()
                     ));
         }

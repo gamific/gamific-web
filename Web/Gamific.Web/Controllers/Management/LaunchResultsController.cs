@@ -353,12 +353,16 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return File(ms.ToArray(), "application/vnd.ms-excel");
         }
 
-        [Route("salvarResultadoArquivo")]
+        [Route("salvarResultadoArquivo/")]//{clean}")]
         [HttpPost]
         [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
-        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string episodeId)
+        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string episodeId)//, bool clean)
         {
-            if(CurrentFirm.ExternalId == "5885f7593a87786bec6ca6fd")
+            //if(clean)
+            
+
+
+            if (CurrentFirm.ExternalId == "5885f7593a87786bec6ca6fd")
             {
                 return SaveResultArchiveSolBebidas(resultsArchive, episodeId);
             }
@@ -443,7 +447,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 var archive = new ExcelQueryFactory(Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(resultsArchive.FileName)));
 
-                var rows = from x in archive.WorksheetRange("A1", "N" + rowsCount, "Planilha1") select x;
+                var rows = from x in archive.WorksheetRange("A1", "O" + rowsCount, "Sheet1") select x;
 
                 float points;
 
@@ -571,6 +575,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Date = DateTime.Now.Ticks,
                         PlayerId = player.Id,
                         ItemId = item.Id,
+                        ItemName = item.Name,
                         RunId = run.Id
                     };
 
@@ -589,6 +594,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Date = DateTime.Now.Ticks,
                         PlayerId = player.Id,
                         ItemId = item.Id,
+                        ItemName = item.Name,
                         RunId = run.Id
                     };
                     

@@ -71,6 +71,9 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("itemId")]
         public string ItemId { get; set; }
 
+        [JsonProperty("itemName")]
+        public string ItemName { get; set; }
+
         [JsonProperty("arithmeticMultiplier")]
         public float ArithmeticMultiplier { get; set; } //Somente para a Fabiana
 
