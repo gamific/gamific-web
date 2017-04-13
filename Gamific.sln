@@ -8,9 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{396E134C-0C79-43ED-96E3-77E06D8EC542}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D2576914-E497-4F10-8D0D-0077197695C2}"
-	ProjectSection(SolutionItems) = preProject
-		Web\Gamific.Web\Views\LaunchResults\_ResultsArchive.cshtml = Web\Gamific.Web\Views\LaunchResults\_ResultsArchive.cshtml
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlast.Util", "Global\Vlast.Util\Vlast.Util.csproj", "{BE0DB0B5-F80E-4173-9A2F-1BE242F238FB}"
 EndProject
