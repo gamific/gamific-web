@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Vlast.Gamific.Web.Services.Engine.DTO
 {
@@ -16,5 +12,8 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
 
         [JsonProperty("gameId")]
         public string GameId { get; set; }
+
+        [JsonProperty("value")]
+        public double Value { get; set; }
     }
 }

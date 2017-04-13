@@ -3,6 +3,7 @@
 @model  Vlast.Gamific.Web.Controllers.Public.Model.FilterResultDTO
 
 @using Vlast.Gamific.Web.Services.Engine.DTO
+@using Vlast.Gamific.Web.Controllers.Public.Model
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -34,10 +35,10 @@
 </div>
 
 <body class="bg-1">
-    <input hidden type="text" value="@ViewBag.State" id="state"/>
-    <input hidden type="text" value="@ViewBag.EpisodeId" id="EpisodeId"/>
-    <input hidden type="text" value="@ViewBag.TeamId" id="TeamId"/>
-    <input hidden type="text" value="@ViewBag.PlayerId" id="PlayerId"/>
+    <input hidden type="text" value="@ViewBag.State" id="state" />
+    <input hidden type="text" value="@ViewBag.EpisodeId" id="EpisodeId" />
+    <input hidden type="text" value="@ViewBag.TeamId" id="TeamId" />
+    <input hidden type="text" value="@ViewBag.PlayerId" id="PlayerId" />
 
     <div id="wrap">
         <div class="row">
@@ -45,7 +46,7 @@
             <div class="main">
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
-                        
+
                         <section class="tile transparent" id="Filters">
                             <div class="tile-header color transparent-black textured rounded-corners ">
                                 <div class="hidden-xs">
@@ -54,7 +55,7 @@
                                     <br />
 
                                 </div>
-                                
+
                                 <div class="row">
                                     <div class="form-group">
                                         <div class="col-xs-12 col-sm-6 col-md-3">
@@ -197,10 +198,52 @@
                     </section>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <section class="tile color transparent-black">
+                        <div class="tile-widget color transparent-black textured">
+                            <div class="row">
 
+                                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+                                    <div class="tile-header">
+                                        <h2>Grafico de Produtos</h2>
+                                        <input id="morrisType" value="1" hidden />
+                                    </div>
+                                    <div class="tile-body">
+                                        <div id="products" style="height: 230px;" class="morris-chart"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
+                                    <div class="tile-header">
+                                    </div>
+                                    <div class="tile-body">
+                                        <ul class="inline text-center chart-legend" id="productsList"></ul>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div id="metrics">
+                                        <h5>Metricas:</h5>
+
+                                        <select class="form-control" name="metricMorris" id="metricMorris">
+                                            @{
+                                                int i;
+                                                <option value="@ViewBag.Metrics[0].Id">@ViewBag.Metrics[0].Name</option>
+                                                for (i = 1; i < @ViewBag.Metrics.Count; i++)
+                                                {
+                                                    <option value="@ViewBag.Metrics[i].Id">@ViewBag.Metrics[i].Name</option>
+                                                }
+
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
         </div>
-
-
 
     </div>
     <script type="text/javascript">
@@ -218,7 +261,7 @@
             if ($('#Filters').is(":visible")) {
                 $('#Filters').hide();
             }
-            else{
+            else {
                 $('#Filters').show();
             }
         }
@@ -228,6 +271,8 @@
                 $('#Filters').show();
             }
         }
+
+        loadMorris(1);
     </script>
 </body>
 </html>

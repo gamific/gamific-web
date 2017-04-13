@@ -23,7 +23,7 @@ namespace Vlast.Gamific.Web
                             "~/Content/Js/lib/jquery.mmenu.min.js",
                             "~/Content/Js/lib/jquery.sparkline.min.js",
                             "~/Content/Js/lib/jquery.nicescroll.min.js",
-                            "~/Content/Js/lib/jquery.animateNumber.min.js",                            
+                            "~/Content/Js/lib/jquery.animateNumber.min.js",
                             "~/Content/Js/lib/jquery.videobackground.min.js",
                             "~/Content/Js/lib/jquery.blockUI.min.js",
                             "~/Content/Js/lib/bootstrap-tabdrop.min.js",
@@ -36,16 +36,16 @@ namespace Vlast.Gamific.Web
                             "~/Content/Js/lib/plugin.min.js",
                             "~/Content/Js/lib/custom-colored.min.js",
                             "~/Content/Js/lib/Treant.min.js",
-                            "~/Content/Js/lib/d3.v2.min.js",
-                            "~/Content/Js/lib/jquery.easypiechart.min.js",
-                            "~/Content/Js/lib/jquery.flot.animator.min.js",
                             "~/Content/Js/lib/jquery.flot.min.js",
-                            "~/Content/Js/lib/jquery.flot.orderBars.min.js",
-                            "~/Content/Js/lib/jquery.flot.selection.min.js",
                             "~/Content/Js/lib/jquery.flot.time.min.js",
-                            "~/Content/Js/lib/morris.min.js",
+                            "~/Content/Js/lib/jquery.flot.selection.min.js",
+                            "~/Content/Js/lib/jquery.flot.animator.min.js",
+                            "~/Content/Js/lib/jquery.flot.orderBars.min.js",
+                            "~/Content/Js/lib/jquery.easypiechart.min.js",
                             "~/Content/Js/lib/raphael-min.js",
+                            "~/Content/Js/lib/d3.v2.min.js",
                             "~/Content/Js/lib/rickshaw.min.js",
+                            "~/Content/Js/lib/morris.min.js",
                             "~/Content/Js/lib/summernote.min.js",
                             "~/Content/Js/lib/jquery.unobtrusive-ajax.min.js",
                             "~/Content/Js/lib/tiny-mce.min.js",
@@ -125,8 +125,6 @@ namespace Vlast.Gamific.Web
                     "~/Content/css/bootstrap-dropdown-multilevel.css", new CssRewriteUrlTransform()).Include(
                     "~/Content/css/minimal.css", new CssRewriteUrlTransform()
                     ));
-
-          
-            }
+        }
     }
 }

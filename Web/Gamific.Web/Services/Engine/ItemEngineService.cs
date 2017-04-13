@@ -15,7 +15,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         protected static object _syncRoot = new Object();
         private static volatile ItemEngineService instance;
 
-        private ItemEngineService() : base(ENGINE_API + "item/") { }
+        private ItemEngineService() : base(ENGINE_API + "") { }
 
         public static ItemEngineService Instance
         {
@@ -60,6 +60,54 @@ namespace Vlast.Gamific.Web.Services.Engine
                 {
                     string response = client.DownloadString(path + "/search/findByNameAndGameId?gameId=" + gameId + "&name=" + name);
                     return JsonDeserialize<ItemEngineDTO>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<ItemEngineDTO> FindByTeam(string metricId, string teamId)
+        {
+            try
+            {
+                using (WebClient client = GetClient)
+                {
+                    string response = client.DownloadString(path + "/itensByTeamId?metricId=" + metricId + "&teamId=" + teamId);
+                    return JsonDeserialize<List<ItemEngineDTO>>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<ItemEngineDTO> FindByEpisode(string metricId, string episodeId)
+        {
+            try
+            {
+                using (WebClient client = GetClient)
+                {
+                    string response = client.DownloadString(path + "/itensByEpisodeId?metricId=" + metricId + "&episodeId=" + episodeId);
+                    return JsonDeserialize<List<ItemEngineDTO>>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<ItemEngineDTO> FindByRun(string metricId, string runId)
+        {
+            try
+            {
+                using (WebClient client = GetClient)
+                {
+                    string response = client.DownloadString(path + "/itensByRunId?metricId=" + metricId + "&runId=" + runId);
+                    return JsonDeserialize<List<ItemEngineDTO>>(response);
                 }
             }
             catch (Exception e)

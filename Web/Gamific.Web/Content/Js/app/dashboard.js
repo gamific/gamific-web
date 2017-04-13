@@ -2,16 +2,19 @@
     refreshDropDownEpisodes($(this).val());
 });
 
-$('#dropDownEpisodes').change(function () { 
+$('#dropDownEpisodes').change(function () {
     refreshDropDownTeams($(this).val());
+    loadMorris(1);
 });
 
 $('#dropDownTeams').change(function () {
     refreshDropDownWorkers($(this).val());
+    loadMorris(2);
 });
 
 $('#dropDownWorkers').change(function () {
     refreshCardResults($("#dropDownEpisodes").val(), $("#dropDownTeams").val(), $("#dropDownWorkers").val());
+    loadMorris(3);
 });
 
 function refreshDropDownEpisodes(state, currentId) {
@@ -28,10 +31,10 @@ function refreshDropDownEpisodes(state, currentId) {
             var episodes = JSON.parse(data);
 
             //for (var i = 0; i < episodes.length; i++) {
-            for (var i = episodes.length-1; i >= 0 ; i--) {
+            for (var i = episodes.length - 1; i >= 0 ; i--) {
 
                 var selected = "";
-                if(currentId == episodes[i].id){
+                if (currentId == episodes[i].id) {
                     selected = "selected";
                 }
                 $("#dropDownEpisodes").append($("<option value='" + episodes[i].id + "'" + selected + " >" + episodes[i].name + "</option>"));
@@ -40,7 +43,7 @@ function refreshDropDownEpisodes(state, currentId) {
             if (currentId == "" || currentId == undefined) {
                 refreshDropDownTeams($('#dropDownEpisodes').val());
             }
-           
+
             if (episodes.length <= 0) {
                 $("#dropDownEpisodes").empty();
                 $("#dropDownTeams").empty();
@@ -50,6 +53,7 @@ function refreshDropDownEpisodes(state, currentId) {
                 $("#dropDownWorkers").append($("<option value=''>Vazio</option>"));
                 $('#div-cards').empty();
             }
+
         },
         error: function () {
             $("#dropDownEpisodes").empty();
@@ -91,7 +95,7 @@ function refreshDropDownTeams(episodeId, currentId) {
             if (currentId == "" || currentId == undefined) {
                 refreshDropDownWorkers($('#dropDownTeams').val());
             }
-            
+
         },
         error: function () {
             $("#dropDownTeams").empty();
@@ -162,7 +166,7 @@ function refreshCardResults(episodeId, teamId, playerId) {
                     else {
                         containerCards += "<div class='item'>";
                     }
-                    
+
                     containerCards += "<div class='col-xs-12' id='div-cards-" + k + "'>";
                     containerCards += "</div>";
                     containerCards += "</div>";
@@ -226,7 +230,7 @@ function refreshCardResults(episodeId, teamId, playerId) {
                                 + "</div>"
                                 + "</div>";
 
-                
+
                 var id_card = "#div-cards-" + k;
                 $(id_card).append(card);
 
@@ -235,8 +239,6 @@ function refreshCardResults(episodeId, teamId, playerId) {
                     number: cardResults[i].totalPoints,
                     numberStep: comma_separator_number_step
                 }, 1500);
-
-
 
                 $('#' + cardResults[i].metricId + '-percent').animateNumber({
                     number: cardResults[i].percentGoal * 100,
@@ -274,7 +276,7 @@ function showLoading() {
 }
 
 function hideLoading() {
-   // document.getElementById('chartLoading').style.display = 'none';
+    // document.getElementById('chartLoading').style.display = 'none';
     //document.getElementById('metrics').style.display = 'block';
 }
 
@@ -295,7 +297,7 @@ function LoadMetricResultsDataTable() {
             }
         },
         "dom": '<"newtoolbar">frtip',
-        "fnServerParams": function (aoData) {},
+        "fnServerParams": function (aoData) { },
         "columnDefs": [
             {
                 "width": "15%",
@@ -360,7 +362,7 @@ function removeClickResult(data, value, name) {
     var dialog = BootstrapDialog.show({
         size: BootstrapDialog.SIZE_SMALL,
         title: "<div style='font-size:20px;'>Atenção!</div>",
-        message: function () { return "<div style='font-size:20px;'>Deseja mesmo remover o resultado " + value  + " de " + name + "?</div>"; },
+        message: function () { return "<div style='font-size:20px;'>Deseja mesmo remover o resultado " + value + " de " + name + "?</div>"; },
         buttons: [{
             label: 'Sim',
             action: function (dialog) {
@@ -405,7 +407,7 @@ function createProgressBar(id, percent) {
         color: 'rgba(0,0,0,0.25)',
         trailColor: 'rgba(0,0,0,0.1)',
         trailWidth: 1,
-        svgStyle: { width: '100%', height: '100%'}
+        svgStyle: { width: '100%', height: '100%' }
     });
 
     bar.animate(percent);
@@ -511,69 +513,69 @@ if (metricToInitialize) {
         legend: { show: false }
     };
 
-        $.ajax({
-            url: "/public/dashboard/loadChart/" + metricToInitialize,
-            async: true,
-            dataType: 'json',
-            success: function (d) {
-                values.push({
-                    metricId: metricToInitialize,
-                    label: d.MetricName,
-                    data: d.Positions,
-                    lines: { show: true, lineWidth: 3 },
-                    points: { show: true, fill: true, radius: 6, fillColor: "rgba(0,0,0,.5)", lineWidth: 2 },
-                    shadowSize: 0,
-                    color: generateColor()
-                })
+    $.ajax({
+        url: "/public/dashboard/loadChart/" + metricToInitialize,
+        async: true,
+        dataType: 'json',
+        success: function (d) {
+            values.push({
+                metricId: metricToInitialize,
+                label: d.MetricName,
+                data: d.Positions,
+                lines: { show: true, lineWidth: 3 },
+                points: { show: true, fill: true, radius: 6, fillColor: "rgba(0,0,0,.5)", lineWidth: 2 },
+                shadowSize: 0,
+                color: generateColor()
+            })
 
-                plot = $.plotAnimator($("#statistics-chart"), values, properties);
+            plot = $.plotAnimator($("#statistics-chart"), values, properties);
 
-                $("#statistics-chart").bind("plothover", function (event, pos, item) {
-                    if (item) {
-                        var x = item.datapoint[0],
-                            y = item.datapoint[1];
+            $("#statistics-chart").bind("plothover", function (event, pos, item) {
+                if (item) {
+                    var x = item.datapoint[0],
+                        y = item.datapoint[1];
 
-                        $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
-                          .css({ top: item.pageY - 30, left: item.pageX + 5 })
-                          .fadeIn(200);
-                    } else {
-                        $("#tooltip").hide();
-                    }
-                });
+                    $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
+                      .css({ top: item.pageY - 30, left: item.pageX + 5 })
+                      .fadeIn(200);
+                } else {
+                    $("#tooltip").hide();
+                }
+            });
 
-                $("<div id='tooltip'></div>").css({
-                    position: "absolute",
-                    padding: "10px 20px",
-                    "background-color": "#ffffff",
-                    "z-index": "99999"
-                }).appendTo("body");
+            $("<div id='tooltip'></div>").css({
+                position: "absolute",
+                padding: "10px 20px",
+                "background-color": "#ffffff",
+                "z-index": "99999"
+            }).appendTo("body");
 
-                $(window).resize(function () {
-                    plot.resize();
-                    plot.setupGrid();
-                    plot.draw();
-                });
+            $(window).resize(function () {
+                plot.resize();
+                plot.setupGrid();
+                plot.draw();
+            });
 
-                $('#mmenu').on(
-                  "opened.mm",
-                  function () {
-                      plot.resize();
-                      plot.setupGrid();
-                      plot.draw();
-                  }
-                );
+            $('#mmenu').on(
+              "opened.mm",
+              function () {
+                  plot.resize();
+                  plot.setupGrid();
+                  plot.draw();
+              }
+            );
 
-                $('#mmenu').on(
-                  "closed.mm",
-                  function () {
-                      plot.resize();
-                      plot.setupGrid();
-                      plot.draw();
-                  }
-                );
+            $('#mmenu').on(
+              "closed.mm",
+              function () {
+                  plot.resize();
+                  plot.setupGrid();
+                  plot.draw();
+              }
+            );
 
-            }
-        });
+        }
+    });
 
 }
 
@@ -599,7 +601,7 @@ function initializeChart(metricId, checked) {
         dataType: 'json',
         success: function (d) {
             for (var i = 0; i < d.length; i++) {
-                var z = [i, d[i].name.substr(0, 7) + "..." ];
+                var z = [i, d[i].name.substr(0, 7) + "..."];
                 y.push(z);
             }
 
@@ -802,4 +804,100 @@ function generateColor() {
         cor_aleatoria += hexadecimal[posarray]
     }
     return cor_aleatoria
+}
+
+$('#metricMorris').change(function () {
+    loadMorris($('#morrisType').val());
+});
+
+function loadMorris(type) {
+
+    //type legend
+    // 1 = episode
+    // 2 = team
+    // 3 = run
+
+    $('#morrisType').val(type);
+
+    var metricId = $('#metricMorris').val();
+    var teamId = $('#dropDownTeams').val();
+    var episodeId = $('#dropDownEpisodes').val();
+    var runId = $('#dropDownWorkers').val();
+
+    if (type == 1) {
+        $.ajax({
+            url: "/public/dashboard/loadMorrisByEpisode/" + metricId + "/" + episodeId,
+            async: false,
+            type: "GET",
+            success: function (data) {
+                Morris.Donut({
+                    element: 'products',
+                    data: data.products,
+                    colors: data.colors
+                });
+
+                $('#products').find("path[stroke='#ffffff']").attr('stroke', 'rgba(0,0,0,0)');
+
+                var z;
+                for (z = 0; z < data.products.length; z++) {
+                    $("#productsList").append('<li><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label + '<small>' + data.products[z].value + '</small></li>');
+                }
+
+            },
+            error: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    if (type == 2) {
+        $.ajax({
+            url: "/public/dashboard/loadMorrisByTeam/" + metricId + "/" + teamId,
+            async: false,
+            type: "GET",
+            success: function (data) {
+                Morris.Donut({
+                    element: 'products',
+                    data: data.products,
+                    colors: data.colors
+                });
+
+                $('#products').find("path[stroke='#ffffff']").attr('stroke', 'rgba(0,0,0,0)');
+
+                var z;
+                for (z = 0; z < data.products.length; z++) {
+                    $("#productsList").append('<li><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label + '<small>' + data.products[z].value + '</small></li>');
+                }
+            },
+            error: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    if (type == 3) {
+        $.ajax({
+            url: "/public/dashboard/loadMorrisByRun/" + metricId + "/" + runId,
+            async: false,
+            type: "GET",
+            success: function (data) {
+                Morris.Donut({
+                    element: 'products',
+                    data: data.products,
+                    colors: data.colors
+                });
+
+                $('#products').find("path[stroke='#ffffff']").attr('stroke', 'rgba(0,0,0,0)');
+
+                var z;
+                for (z = 0; z < data.products.length; z++) {
+                    $("#productsList").append('<li><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label + '<small>' + data.products[z].value + '</small></li>');
+                }
+            },
+            error: function (data) {
+                alert(data);
+            }
+        });
+    }
+
 }
