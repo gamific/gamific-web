@@ -15,7 +15,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         protected static object _syncRoot = new Object();
         private static volatile ItemEngineService instance;
 
-        private ItemEngineService() : base(ENGINE_API + "") { }
+        private ItemEngineService() : base(ENGINE_API + "item") { }
 
         public static ItemEngineService Instance
         {
@@ -74,7 +74,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient)
                 {
-                    string response = client.DownloadString(path + "/itensByTeamId?metricId=" + metricId + "&teamId=" + teamId);
+                    string response = client.DownloadString(ENGINE_API + "/itensByTeamId?metricId=" + metricId + "&teamId=" + teamId);
                     return JsonDeserialize<List<ItemEngineDTO>>(response);
                 }
             }
@@ -90,7 +90,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient)
                 {
-                    string response = client.DownloadString(path + "/itensByEpisodeId?metricId=" + metricId + "&episodeId=" + episodeId);
+                    string response = client.DownloadString(ENGINE_API + "/itensByEpisodeId?metricId=" + metricId + "&episodeId=" + episodeId);
                     return JsonDeserialize<List<ItemEngineDTO>>(response);
                 }
             }
@@ -106,7 +106,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient)
                 {
-                    string response = client.DownloadString(path + "/itensByRunId?metricId=" + metricId + "&runId=" + runId);
+                    string response = client.DownloadString(ENGINE_API + "/itensByRunId?metricId=" + metricId + "&runId=" + runId);
                     return JsonDeserialize<List<ItemEngineDTO>>(response);
                 }
             }

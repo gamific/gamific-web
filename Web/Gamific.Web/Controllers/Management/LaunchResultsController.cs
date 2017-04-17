@@ -458,6 +458,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     PlayerEngineDTO player;
                     RunEngineDTO run;
 
+                    if(row[PRODUTO].ToString().ToLower().Contains("uvinha"))
+                    {
+                        continue;
+                    }
+
                     try
                     {
                         player = PlayerEngineService.Instance.GetByEmail(row[EMAIL].ToString().Trim().ToLower());
