@@ -24,17 +24,16 @@ namespace Vlast.Gamific.Web.Controllers.Public
         public ActionResult Index(int state = 1)
         {
             GetAllDTO all = EpisodeEngineService.Instance.GetByGameIdAndActive(CurrentFirm.ExternalId, 1);
-            ViewBag.Episodes =  from episode in all.List.episode
-                                select new SelectListItem
-                                {
-                                    Value = episode.Id.ToString(),
-                                    Text = episode.Name
-                                };
+            ViewBag.Episodes = from episode in all.List.episode
+                               select new SelectListItem
+                               {
+                                   Value = episode.Id.ToString(),
+                                   Text = episode.Name
+                               };
 
             ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
             ViewBag.State = state;
-
 
             return View("Index");
         }
@@ -44,7 +43,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         public ContentResult GetCampaignsWithIds()
         {
             List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
-            
+
             return Content(JsonConvert.SerializeObject(episodes), "application/json");
         }
 
@@ -64,11 +63,117 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return Content(JsonConvert.SerializeObject(rtn), "application/json");
         }
 
+        [Route("loadMorrisByEpisode/{metricId}/{episodeId}")]
+        [HttpGet]
+        public ContentResult LoadMorrisByEpisode(string metricId, string episodeId)
+        {
+            MorrisDTO dto = new MorrisDTO
+            {
+                products = new List<MorrisPropertyDTO>()
+            };
+
+            List<ItemEngineDTO> items = new List<ItemEngineDTO>();
+
+            items = ItemEngineService.Instance.FindByEpisode(metricId, episodeId);
+
+            int i = 1;
+            List<string> colors = new List<string>();
+
+            foreach (ItemEngineDTO item in items)
+            {
+                MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
+
+                morrisDTO.label = item.Name.Substring(0, 11) + "...";
+                morrisDTO.value = double.Parse(item.Value.ToString("n2"));
+
+                colors.Add(GenerateColorHexadecimal(1 * i));
+
+                dto.products.Add(morrisDTO);
+
+                i++;
+            }
+
+            dto.colors = colors;
+
+            return Content(JsonConvert.SerializeObject(dto), "application/json");
+        }
+
+        [Route("loadMorrisByRun/{metricId}/{runId}")]
+        [HttpGet]
+        public ContentResult LoadMorrisByRun(string metricId, string runId)
+        {
+            MorrisDTO dto = new MorrisDTO
+            {
+                products = new List<MorrisPropertyDTO>()
+            };
+
+            List<ItemEngineDTO> items = new List<ItemEngineDTO>();
+
+            items = ItemEngineService.Instance.FindByRun(metricId, runId);
+
+            int i = 1;
+            List<string> colors = new List<string>();
+
+            foreach (ItemEngineDTO item in items)
+            {
+                MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
+
+                morrisDTO.label = item.Name.Substring(0, 11) + "...";
+                morrisDTO.value = double.Parse(item.Value.ToString("n2"));
+
+                colors.Add(GenerateColorHexadecimal(1 * i));
+
+                dto.products.Add(morrisDTO);
+
+                i++;
+            }
+
+            dto.colors = colors;
+
+            return Content(JsonConvert.SerializeObject(dto), "application/json");
+        }
+
+        [Route("loadMorrisByTeam/{metricId}/{teamId}")]
+        [HttpGet]
+        public ContentResult LoadMorrisByTeam(string metricId, string teamId)
+        {
+            MorrisDTO dto = new MorrisDTO
+            {
+                products = new List<MorrisPropertyDTO>()
+            };
+
+            List<ItemEngineDTO> items = new List<ItemEngineDTO>();
+
+            items = ItemEngineService.Instance.FindByTeam(metricId, teamId);
+
+            int i = 1;
+            List<string> colors = new List<string>();
+
+            foreach (ItemEngineDTO item in items)
+            {
+                MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
+
+                morrisDTO.label = item.Name.Substring(0, 11) + "...";
+                morrisDTO.value = double.Parse(item.Value.ToString("n2"));
+
+                colors.Add(GenerateColorHexadecimal(1 * i));
+
+                dto.products.Add(morrisDTO);
+
+                i++;
+            }
+
+            dto.colors = colors;
+
+            return Content(JsonConvert.SerializeObject(dto), "application/json");
+        }
+
         [Route("loadChart/{metricId}")]
         [HttpGet]
         public ContentResult GetChartResults(string metricId)
         {
-            ChartResultDTO chartDTO = new ChartResultDTO {
+            ChartResultDTO chartDTO = new ChartResultDTO
+            {
                 Positions = new List<List<int>>()
             };
 
@@ -84,11 +189,12 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 List<GoalDTO> goals = new List<GoalDTO>();
                 results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
 
-                if (results[0] != null) { 
+                if (results[0] != null)
+                {
                     point.Add(i);
                     point.Add((int)results[0].TotalPoints);
                     chartDTO.Positions.Add(point);
-                    
+
                 }
                 else
                 {
@@ -212,7 +318,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             FilterResultDTO filter = new FilterResultDTO { InitialDate = initialDate.ToString("dd/MM/yyyy"), EndDate = endDate.ToString("dd/MM/yyyy") };
 
-            if(workerTypeId != 0)
+            if (workerTypeId != 0)
             {
                 ViewBag.WorkerTypeId = workerTypeId.ToString();
 
@@ -258,7 +364,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId, 0, 10000);
 
-            List<string> externalIds = (from run in all.List.run select run.PlayerId).ToList();  
+            List<string> externalIds = (from run in all.List.run select run.PlayerId).ToList();
 
             List<WorkerDTO> workers = WorkerRepository.Instance.GetDTOFromListExternalId(externalIds);
 
@@ -297,7 +403,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             GetAllDTO all = TeamEngineService.Instance.FindByEpisodeId(episodeId);
 
             return Json(JsonConvert.SerializeObject(all.List.team), JsonRequestBehavior.AllowGet);
-        }        
+        }
 
         /// <summary>
         /// Busca os times de um tipo de jogador
@@ -323,10 +429,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
             List<CardEngineDTO> results = new List<CardEngineDTO>();
 
             if (playerId != "empty" && playerId != "")
-            {   
+            {
                 results = CardEngineService.Instance.Player(CurrentFirm.ExternalId, teamId, playerId);
             }
-            else if(teamId != "empty" && teamId != "")
+            else if (teamId != "empty" && teamId != "")
             {
                 results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId);
             }
@@ -365,12 +471,12 @@ namespace Vlast.Gamific.Web.Controllers.Public
             ViewBag.TeamId = teamId;
             ViewBag.PlayerId = playerId;
 
-            if(playerId != "empty")
+            if (playerId != "empty")
             {
                 PlayerEngineDTO player = PlayerEngineService.Instance.GetById(playerId);
                 ViewBag.Name = player.Nick;
             }
-            else if(teamId != "empty")
+            else if (teamId != "empty")
             {
                 TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
                 ViewBag.Name = team.Nick;
@@ -395,12 +501,12 @@ namespace Vlast.Gamific.Web.Controllers.Public
             {
                 GetAllDTO all = new GetAllDTO();
 
-                if(playerId != "" && playerId != "empty")
+                if (playerId != "" && playerId != "empty")
                 {
                     RunEngineDTO run = RunEngineService.Instance.GetRunByPlayerAndTeamId(playerId, teamId);
                     all = RunMetricEngineService.Instance.findByRunIdAndMetricId(run.Id, metricId, jqueryTableRequest.Page);
                 }
-                else if(teamId != "" && teamId != "empty" && teamId != "null")
+                else if (teamId != "" && teamId != "empty" && teamId != "null")
                 {
                     all = TeamEngineService.Instance.resultsByTeamIdAndMetricId(teamId, metricId, jqueryTableRequest.Page);
                 }
@@ -410,10 +516,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
 
                 List<WorkerDTO> workers = all.List == null ? new List<WorkerDTO>() : WorkerRepository.Instance.GetWorkerDTOByListExternalId(all.List.runMetric.Select(i => i.PlayerId).ToList());
-                GetAllDTO itens = ItemEngineService.Instance.GetAllByGameId(CurrentFirm.ExternalId, 0, 10000);
+                GetAllDTO itens = ItemEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 10000);
 
 
-                if(all.List != null)
+                if (all.List != null)
                 {
                     foreach (RunMetricEngineDTO rm in all.List.runMetric)
                     {
@@ -430,8 +536,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                     Data = (from runMetric in all.List.runMetric
                             join worker in workers on runMetric.PlayerId equals worker.ExternalId into runMetricWorker
                             from rmw in runMetricWorker.DefaultIfEmpty()
-                            select new { Date = new DateTime(runMetric.Date), WorkerName = rmw != null ?  rmw.Name : "Jogador excluído", Email = rmw != null ? rmw.Email : "", Result = runMetric.Points, RunMetricId = runMetric.Id, ItemName = itens.List == null ? "" : (itens.List.item.Where(q => q.Id == runMetric.ItemId).Select(x => x.Name)).FirstOrDefault()}).
-                            Select(r => new string[] { r.Date.ToString("dd/MM/yyyy"), r.WorkerName, r.Email, r.ItemName, r.Result.ToString(), r.RunMetricId}).ToArray()
+                            select new { Date = new DateTime(runMetric.Date), WorkerName = rmw != null ? rmw.Name : "Jogador excluído", Email = rmw != null ? rmw.Email : "", Result = runMetric.Points, RunMetricId = runMetric.Id, ItemName = itens.List == null ? "" : (itens.List.item.Where(q => q.Id == runMetric.ItemId).Select(x => x.Name)).FirstOrDefault() }).
+                            Select(r => new string[] { r.Date.ToString("dd/MM/yyyy"), r.WorkerName, r.Email, r.ItemName, r.Result.ToString(), r.RunMetricId }).ToArray()
                 };
 
                 return new DataContractResult() { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
@@ -509,7 +615,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             }
             else
             {
-                percentGoal = isInverse ? totalGoal / (float)totalPoints : totalPoints / (float)totalGoal;   
+                percentGoal = isInverse ? totalGoal / (float)totalPoints : totalPoints / (float)totalGoal;
             }
 
             return percentGoal;
