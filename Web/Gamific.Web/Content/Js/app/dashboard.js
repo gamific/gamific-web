@@ -838,11 +838,12 @@ function loadMorris(type) {
 
                 $('#products').find("path[stroke='#ffffff']").attr('stroke', 'rgba(0,0,0,0)');
 
+                $('.morrisLi').remove();
+
                 var z;
                 for (z = 0; z < data.products.length; z++) {
-                    $("#productsList").append('<li><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label + '<small>' + data.products[z].value + '</small></li>');
+                    $("#productsList").append('<li class="morrisLi"><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label + '<small>' + data.products[z].value + '</small></li>');
                 }
-
             },
             error: function (data) {
                 alert(data);
@@ -864,9 +865,11 @@ function loadMorris(type) {
 
                 $('#products').find("path[stroke='#ffffff']").attr('stroke', 'rgba(0,0,0,0)');
 
+                $('.morrisLi').remove();
+
                 var z;
                 for (z = 0; z < data.products.length; z++) {
-                    $("#productsList").append('<li><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label + '<small>' + data.products[z].value + '</small></li>');
+                    $("#productsList").append('<li class="morrisLi"><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label + '<small>' + data.products[z].value + '</small></li>');
                 }
             },
             error: function (data) {
@@ -889,9 +892,11 @@ function loadMorris(type) {
 
                 $('#products').find("path[stroke='#ffffff']").attr('stroke', 'rgba(0,0,0,0)');
 
+                $('.morrisLi').remove();
+
                 var z;
                 for (z = 0; z < data.products.length; z++) {
-                    $("#productsList").append('<li><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label + '<small>' + data.products[z].value + '</small></li>');
+                    $("#productsList").append('<li class="morrisLi"><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label + '<small>' + data.products[z].value + '</small></li>');
                 }
             },
             error: function (data) {
@@ -901,3 +906,7 @@ function loadMorris(type) {
     }
 
 }
+
+$(document).ready(function () {
+    loadMorris(1);
+});
