@@ -5,7 +5,11 @@
     <span style="display:none">
         @Html.HiddenFor(model => model.Id);
         @Html.HiddenFor(model => model.Active);
+        @Html.HiddenFor(model => model.initDate );
+        @Html.HiddenFor(model => model.finishDate );
+        @Html.HiddenFor(model => model.GameId);
     </span>
+
 
     <div id="modal-panel">
         <div class="modal-dialog modal-xlg">
@@ -54,6 +58,7 @@
                             <label style="font-size:larger;">
                                 Enviar email:
                                 @Html.CheckBoxFor(model => model.sendEmail, Model.sendEmail)
+                               
                             </label>
                         </div>
                     </div>
@@ -72,18 +77,19 @@
 }
 
 <script>
+
     var currentDate = new Date();
-    $('#initDateAux').datepicker({
-        language: 'pt-BR',
-        changeMonth: true,
-        changeYear: true,
-        showOtherMonths: true,
-        autoclose:true,
-        selectOtherMonths: true,
-        selectOtherYears: true,
-        changeYear: true
-    });
-    $("#initDateAux").datepicker("setDate", currentDate);
+        $('#initDateAux').datepicker({
+            language: 'pt-BR',
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            autoclose:true,
+            selectOtherMonths: true,
+            selectOtherYears: true,
+            changeYear: true
+        });
+        //$("#initDateAux").datepicker("setDate", currentDate);
 </script>
 
 <script>
@@ -98,6 +104,6 @@
         selectOtherYears: true,
         changeYear: true
     });
-    $("#finishDateAux").datepicker("setDate", currentDate);
+    //$("#finishDateAux").datepicker("setDate", currentDate);
 </script>
 
