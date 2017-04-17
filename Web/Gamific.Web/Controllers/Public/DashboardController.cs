@@ -72,11 +72,14 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 products = new List<MorrisPropertyDTO>()
             };
 
+            List<string> colorsToAdd = new List<string> { "#000000", "#4B0082", "#000080", "#C71585", "#FF4500", "#FFFF00", "#696969", "#808000",
+                "#FF0000", "#2F4F4F", "#8B4513", "#808000", "#FFA500", "#7FFFD4", "#87CEFA", "#FF69B4", "#FF00FF", "#7CFC00", "#BC8F8F", "#4682B4", "#006400", "#7B68EE" };
+
             List<ItemEngineDTO> items = new List<ItemEngineDTO>();
 
             items = ItemEngineService.Instance.FindByEpisode(metricId, episodeId);
 
-            int i = 1;
+            int i = 0;
             List<string> colors = new List<string>();
 
             foreach (ItemEngineDTO item in items)
@@ -86,11 +89,18 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 morrisDTO.label = item.Name.Substring(0, 11) + "...";
                 morrisDTO.value = double.Parse(item.Value.ToString("n2"));
 
-                colors.Add(GenerateColorHexadecimal(1 * i));
+                colors.Add(colorsToAdd[i]);
 
                 dto.products.Add(morrisDTO);
 
-                i++;
+                if (i >= colorsToAdd.Count)
+                {
+                    i = 0;
+                }
+                else
+                {
+                    i++;
+                }
             }
 
             dto.colors = colors;
@@ -107,11 +117,14 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 products = new List<MorrisPropertyDTO>()
             };
 
+            List<string> colorsToAdd = new List<string> { "#000000", "#4B0082", "#000080", "#C71585", "#FF4500", "#FFFF00", "#696969", "#808000",
+                "#FF0000", "#2F4F4F", "#8B4513", "#808000", "#FFA500", "#7FFFD4", "#87CEFA", "#FF69B4", "#FF00FF", "#7CFC00", "#BC8F8F", "#4682B4", "#006400", "#7B68EE" };
+
             List<ItemEngineDTO> items = new List<ItemEngineDTO>();
 
             items = ItemEngineService.Instance.FindByRun(metricId, runId);
 
-            int i = 1;
+            int i = 0;
             List<string> colors = new List<string>();
 
             foreach (ItemEngineDTO item in items)
@@ -121,11 +134,18 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 morrisDTO.label = item.Name.Substring(0, 11) + "...";
                 morrisDTO.value = double.Parse(item.Value.ToString("n2"));
 
-                colors.Add(GenerateColorHexadecimal(1 * i));
+                colors.Add(colorsToAdd[i]);
 
                 dto.products.Add(morrisDTO);
 
-                i++;
+                if (i >= colorsToAdd.Count)
+                {
+                    i = 0;
+                }
+                else
+                {
+                    i++;
+                }
             }
 
             dto.colors = colors;
@@ -142,11 +162,14 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 products = new List<MorrisPropertyDTO>()
             };
 
+            List<string> colorsToAdd = new List<string> { "#000000", "#4B0082", "#000080", "#C71585", "#FF4500", "#FFFF00", "#696969", "#808000",
+                "#FF0000", "#2F4F4F", "#8B4513", "#808000", "#FFA500", "#7FFFD4", "#87CEFA", "#FF69B4", "#FF00FF", "#7CFC00", "#BC8F8F", "#4682B4", "#006400", "#7B68EE" };
+
             List<ItemEngineDTO> items = new List<ItemEngineDTO>();
 
             items = ItemEngineService.Instance.FindByTeam(metricId, teamId);
 
-            int i = 1;
+            int i = 0;
             List<string> colors = new List<string>();
 
             foreach (ItemEngineDTO item in items)
@@ -156,11 +179,18 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 morrisDTO.label = item.Name.Substring(0, 11) + "...";
                 morrisDTO.value = double.Parse(item.Value.ToString("n2"));
 
-                colors.Add(GenerateColorHexadecimal(1 * i));
+                colors.Add(colorsToAdd[i]);
 
                 dto.products.Add(morrisDTO);
 
-                i++;
+                if (i >= colorsToAdd.Count)
+                {
+                    i = 0;
+                }
+                else
+                {
+                    i++;
+                }
             }
 
             dto.colors = colors;
