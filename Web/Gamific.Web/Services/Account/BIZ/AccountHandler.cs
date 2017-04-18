@@ -48,7 +48,7 @@ namespace Vlast.Gamific.Web.Services.Account.BIZ
 
                 Random rnd = new Random();
 
-                string newPwd = "PWD" + rnd.Next();
+                string newPwd = rnd.Next().ToString(); //"PWD" + rnd.Next();
 
                 NewRequest request = new NewRequest();
 
