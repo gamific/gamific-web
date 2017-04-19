@@ -90,7 +90,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient)
                 {
-                    string response = client.DownloadString(ENGINE_API + "/itensByEpisodeId?metricId=" + metricId + "&episodeId=" + episodeId);
+                    string response = client.DownloadString(ENGINE_API + "itensByEpisodeId?metricId=" + metricId + "&episodeId=" + episodeId);
                     return JsonDeserialize<List<ItemEngineDTO>>(response);
                 }
             }
