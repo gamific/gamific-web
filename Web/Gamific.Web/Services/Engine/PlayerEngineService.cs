@@ -75,6 +75,22 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public PlayerEngineDTO GetByGameIdAndActiveIsTrue(string gameId)
+        {
+            try
+            {
+                using (WebClient client = GetClient)
+                {
+                    string response = client.DownloadString(path + "/search/findByGameIdAndActiveIsTrue?gameId=" + gameId);
+                    return JsonDeserialize<PlayerEngineDTO>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public PlayerEngineDTO GetByEmail(string email)
         {
             try

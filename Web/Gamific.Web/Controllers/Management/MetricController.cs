@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Transactions;
@@ -37,7 +38,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
             {
                 Selected = metric.Icon == i.ToString().Replace("_", "-") ? true : false,
-                Text = i.ToString().Replace("_", "-"),
+                Text = i.GetType().GetMember(i.ToString()).First().GetCustomAttribute<DisplayAttribute>().Name,
                 Value = i.ToString().Replace("_", "-")
             }).ToList();
 
@@ -52,7 +53,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
             {
                 Selected = metric.Icon == i.ToString().Replace("_", "-") ? true : false,
-                Text = i.ToString().Replace("_", "-"),
+                Text = i.GetType().GetMember(i.ToString()).First().GetCustomAttribute<DisplayAttribute>().Name,
                 Value = i.ToString().Replace("_", "-")
             }).ToList();
 
@@ -62,8 +63,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("remover/{metricId}")]
         public ActionResult Remove(string metricId)
         {
-            MetricEngineService.Instance.DeleteByIdAndActiveIsTrue(metricId);
-            //MetricEngineService.Instance.DeleteById(metricId);
+            //MetricEngineService.Instance.DeleteByIdAndActiveIsTrue(metricId);
+            MetricEngineService.Instance.DeleteById(metricId);
 
             return View("Index");
         }
