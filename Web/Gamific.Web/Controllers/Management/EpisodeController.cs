@@ -40,6 +40,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 episode.GameId = CurrentFirm.ExternalId;
 
+                episode.initDateAux = new DateTime(episode.initDate);
+                
+                episode.finishDateAux = new DateTime(episode.finishDate);
+                
+
                 ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
                 {
                     Text = i.ToString(),
@@ -80,7 +85,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("clean/{episodeId}")]
         public ActionResult Cleaning(string episodeId)
         {
-            List<EpisodeEngineDTO> episode = EpisodeEngineService.Instance.Clean(episodeId);
+            //List<EpisodeEngineDTO> episode = EpisodeEngineService.Instance.Clean(episodeId);
+            EpisodeEngineService.Instance.DeleteAllScoreByEpisodeId(episodeId);
 
             return new EmptyResult();
         }
@@ -134,6 +140,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             episode.Active = true;
                         }
 
+                        
                         episode.initDate = episode.initDateAux.Ticks;
 
                         episode.finishDate = episode.finishDateAux.Ticks;

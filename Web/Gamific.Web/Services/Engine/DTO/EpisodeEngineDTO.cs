@@ -47,7 +47,6 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("finishDate")]
         public long finishDate { get; set; }
 
-      
         public DateTime initDateAux { get; set; }
 
      

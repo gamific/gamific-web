@@ -189,10 +189,7 @@ $(document).ready(function () {
 function SubmitArchive() {
     var formData = new FormData($('#ArchiveForm')[0]);
     alertMessage("Resultados lançados, aguarde...", "success");
-    
-
     $.ajax({
-        //url: "/admin/lancarResultados/salvarResultadoArquivo/" + valueCheck,
         url: "/admin/lancarResultados/salvarResultadoArquivo",
         type: "POST",
         data: formData,

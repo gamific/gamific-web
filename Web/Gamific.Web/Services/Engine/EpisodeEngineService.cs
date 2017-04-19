@@ -212,13 +212,15 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-        public void DeleteAllScoreByEpisodeId(string episodeId)
+        public void DeleteAllScoreByEpisodeId(string episodeId) /* List<EpisodeEngineDTO> */
         {
             try
             {
                 using (WebClient client = GetClient)
                 {
+                    /*string response = */
                     client.DownloadString(ENGINE_API + "deleteAllScoreByEpisodeId?episodeId=" + episodeId);
+                    /*return JsonDeserialize<List<EpisodeEngineDTO>>(response);*/
                 }
             }
             catch (Exception e)

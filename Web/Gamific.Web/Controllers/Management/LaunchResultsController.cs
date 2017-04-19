@@ -7,6 +7,8 @@ using Vlast.Gamific.Model.Account.Repository;
 using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
 using Vlast.Gamific.Model.Firm.Repository;
+using Vlast.Gamific.Model.Media.Domain;
+using Vlast.Gamific.Model.Media.Repository;
 using Vlast.Gamific.Model.School.DTO;
 using Vlast.Gamific.Web.Controllers.Management.Model;
 using Vlast.Util.Data;
@@ -214,8 +216,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("cadastrarResultadoArquivo/{episodeId}")]
         public ActionResult CreateResultArchive(string episodeId)
         {
-            
+            //ViewBag.Clean = "false";
             ViewBag.EpisodeId = episodeId;
+            ViewBag.Episodes = GetEpisodesToSelect(episodeId);
 
             return PartialView("_ResultsArchive");
         }
@@ -353,15 +356,18 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return File(ms.ToArray(), "application/vnd.ms-excel");
         }
 
-        [Route("salvarResultadoArquivo/")]//{clean}")]
+        [Route("salvarResultadoArquivo")]
         [HttpPost]
         [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
-        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string episodeId)//, bool clean)
+        public ActionResult SaveResultArchive(HttpPostedFileBase resultsArchive, string episodeId, string clean)
         {
-            //if(clean)
-            
+            if (clean == "on")
+            {
+                EpisodeEngineService.Instance.DeleteAllScoreByEpisodeId(episodeId);
+            }
 
 
+            /*
             if (CurrentFirm.ExternalId == "5885f7593a87786bec6ca6fd")
             {
                 return SaveResultArchiveSolBebidas(resultsArchive, episodeId);
@@ -370,6 +376,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 return SaveResultArchiveStandard(resultsArchive, episodeId);
             }
+            */
+
+            return Json(new { Success = false }, JsonRequestBehavior.DenyGet);
         }
 
         
@@ -777,6 +786,33 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 return Json(new { Success = false, Exception = ex.Message }, JsonRequestBehavior.DenyGet);
             }
         }
-        
+
+        /// <summary>
+        /// Cria a lista de seleção dos responsaveis
+        /// </summary>
+        /// <param name="selected"></param>
+        /// <returns></returns>
+        private List<SelectListItem> GetEpisodesToSelect(string selected = null)
+        {
+            GetAllDTO episodes;
+
+            episodes = EpisodeEngineService.Instance.GetByGameIdAndActiveIsTrue(CurrentFirm.ExternalId);
+
+            var query = from episode in episodes.List.episode
+                        select new SelectListItem
+                        {
+                            Text = episode.Name,
+                            Value = episode.Id,
+                            Selected = episode.Id == selected
+                        };
+
+            if (query == null)
+            {
+                return new List<SelectListItem>();
+            }
+
+            return query.ToList();
+        }
+
     }
 }
