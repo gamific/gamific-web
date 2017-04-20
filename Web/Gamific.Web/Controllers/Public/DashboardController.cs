@@ -216,7 +216,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 List<int> point = new List<int>();
 
                 List<CardEngineDTO> results = new List<CardEngineDTO>();
-                List<GoalDTO> goals = new List<GoalDTO>();
+
                 results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
 
                 if (results[0] != null)
