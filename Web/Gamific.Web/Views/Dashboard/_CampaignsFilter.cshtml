@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Vlast.Gamific.Web.Services.Engine.DTO.EpisodeEngineDTO>
+
+@using (Ajax.BeginForm("KeepCampaigns", "Dashboard", new AjaxOptions { OnSuccess = "onSuccessSaveFilter", OnFailure = "onFailureSaveFilter", UpdateTargetId = "modal-panel" }, new { enctype = "multipart/form-data" }))
+{
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-body" id="edit-modal-body">
+                    <ul class="list-unstyled">
+                        @if (Model != null)
+                        {
+                            int i = 0;
+                            foreach (var item in Model)
+                            {
+                                <li>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" class="checkbox-div" value="@item.checkedFlag.ToString()" checked="@item.checkedFlag" name="Episodes[@i].checkedFlag" onclick="if (this.checked) {$(this).attr('value', 'true');} else {$(this).attr('value','false');}" />
+                                            <span>
+                                                @item.Name
+                                            </span>
+                                            <input type="hidden" value="@item.Id" name="Episodes[@i].Id" />
+                                            <input type="hidden" value="@item.Name" name="Episodes[@i].Name" />
+                                        </label>
+                                    </div>
+                                </li>
+                                i++;
+                            }
+                        }
+                    </ul>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+        if (form.getAttribute("enctype") === "multipart/form-data") {
+            if (form.dataset.ajax) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action, false);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (form.dataset.ajaxUpdate) {
+                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                            if (updateTarget) {
+                                updateTarget.innerHTML = xhr.responseText;
+                            }
+                        }
+                    }
+                };
+                xhr.send(new FormData(form));
+            }
+            onSuccessSaveFilter();
+        }
+    }, true);
+</script>
