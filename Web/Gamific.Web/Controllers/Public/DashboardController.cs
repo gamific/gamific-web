@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
@@ -110,7 +111,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            return Content(JsonConvert.SerializeObject(episodes), "application/json");
+            return Content(JsonConvert.SerializeObject(rtn), "application/json");
         }
 
         [Route("loadMorrisByEpisode/{metricId}/{episodeId}")]
@@ -136,20 +137,22 @@ namespace Vlast.Gamific.Web.Controllers.Public
             {
                 MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
 
-                morrisDTO.label = item.Name.Substring(0, 11) + "...";
-                morrisDTO.value = double.Parse(item.Value.ToString("n2"));
+                if(item.Name != null) {
+                    morrisDTO.label = item.Name;
+                    morrisDTO.value = double.Parse(item.Value.ToString("n2"));
 
-                colors.Add(colorsToAdd[i]);
+                    colors.Add(colorsToAdd[i]);
 
-                dto.products.Add(morrisDTO);
+                    dto.products.Add(morrisDTO);
 
-                if (i >= colorsToAdd.Count)
-                {
-                    i = 0;
-                }
-                else
-                {
-                    i++;
+                    if (i >= colorsToAdd.Count)
+                    {
+                        i = 0;
+                    }
+                    else
+                    {
+                        i++;
+                    }
                 }
             }
 
@@ -312,15 +315,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
         public ContentResult GetChartResults(string metricId)
         {
             ChartResultDTO chartDTO = new ChartResultDTO();
-
             chartDTO.Positions = new List<List<int>>();
-
             MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
-
             List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
-
             int i = 0;
-
             foreach (EpisodeEngineDTO episode in episodes)
             {
                 List<int> point = new List<int>();
@@ -330,7 +328,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
                 goals = GoalRepository.Instance.GetByEpisodeId(episode.Id);
                 long playersCount = EpisodeEngineService.Instance.GetCountPlayersByEpisodeId(episode.Id);
-
                 results   = (from result in results
                         join goal in goals
                         on result.MetricId equals goal.ExternalMetricId into rg
@@ -345,9 +342,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                             PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0),
                             IsAverage = result.IsAverage
                         }).ToList();
-
                 int resultInt = 0;
-
                 if (results != null)
                 {
                     foreach (CardEngineDTO result in results)
@@ -355,15 +350,12 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         resultInt += result.TotalPoints;
                     }
                 }
-
                 point.Add(i);
                 point.Add(resultInt);
                 chartDTO.Positions.Add(point);
                 i++;
             }
-
             chartDTO.MetricName = metric.Name;
-
             return Content(JsonConvert.SerializeObject(chartDTO), "application/json");
         }
         */

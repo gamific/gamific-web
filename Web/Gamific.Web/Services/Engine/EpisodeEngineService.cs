@@ -47,6 +47,12 @@ namespace Vlast.Gamific.Web.Services.Engine
             return GetDTO<EpisodeEngineDTO>(episodeId);
         }
 
+        public EpisodeEngineDTO GetById(string episodeId, string email)
+        {
+            return GetDTO<EpisodeEngineDTO>(episodeId, email);
+        }
+
+
         public void DeleteById(string id)
         {
             Delete(id);
