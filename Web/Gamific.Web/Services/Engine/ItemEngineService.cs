@@ -74,7 +74,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient)
                 {
-                    string response = client.DownloadString(ENGINE_API + "/itensByTeamId?metricId=" + metricId + "&teamId=" + teamId);
+                    string response = client.DownloadString(ENGINE_API + "itensByTeamId?metricId=" + metricId + "&teamId=" + teamId);
                     return JsonDeserialize<List<ItemEngineDTO>>(response);
                 }
             }
@@ -90,7 +90,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient)
                 {
-                    string response = client.DownloadString(ENGINE_API + "/itensByEpisodeId?metricId=" + metricId + "&episodeId=" + episodeId);
+                    string response = client.DownloadString(ENGINE_API + "itensByEpisodeId?metricId=" + metricId + "&episodeId=" + episodeId);
                     return JsonDeserialize<List<ItemEngineDTO>>(response);
                 }
             }
@@ -106,7 +106,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient)
                 {
-                    string response = client.DownloadString(ENGINE_API + "/itensByRunId?metricId=" + metricId + "&runId=" + runId);
+                    string response = client.DownloadString(ENGINE_API + "itensByRunId?metricId=" + metricId + "&runId=" + runId);
                     return JsonDeserialize<List<ItemEngineDTO>>(response);
                 }
             }

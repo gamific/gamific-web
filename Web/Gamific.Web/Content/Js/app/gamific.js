@@ -6,6 +6,13 @@ function showEntityModal(editLink) {
     $('#entity-edit-modal').modal('show');
 }
 
+function hideEntityModal() {
+
+    $('#entity-edit-modal').removeData("bs.modal");
+    $('#entity-edit-modal').empty();
+    $('#entity-edit-modal').modal('hide');
+}
+
 function verifyErrors() {
 
     if (!hasErrors()) {
