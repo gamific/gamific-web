@@ -149,6 +149,31 @@ function refreshDropDownTeams(episodeId, currentId) {
     });
 }
 
+function SubmitArchive() {
+    var formData = new FormData($('#ArchiveForm')[0]);
+    alertMessage("Metas lançadas, aguarde...", "success");
+    $.ajax({
+        url: "/admin/metas/salvarArquivoMeta",
+        type: "POST",
+        data: formData,
+        async: true,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+            if (data.Success == true) {
+                alertMessage("Metas adicionados com sucesso.", "success");
+            }
+            else {
+                alertMessage("Não foi possivel adicionar todos as metas.", "danger");
+            }
+        },
+        error: function () {
+            alertMessage("Não foi possivel adicionar as metas.", "danger");
+        }
+    });
+};
 
 $(document).ready(function () {
     refreshDropDownEpisodes();

@@ -9,7 +9,6 @@
                     <!--<input type="hidden" name="clean" id="clean" value="@ViewBag.Clean" />-->
                     <input type="hidden" name="episode" id="episode" value="@ViewBag.Episodes" />
                     <input type="hidden" name="episodeId" id="episodeId" value="@ViewBag.EpisodeId" />
-                    <input type="hidden" name="teste_12_14" id="teste_12_14" value="17-02-2017" />
                     @Html.AntiForgeryToken()
                     <div class="row">
                         @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })

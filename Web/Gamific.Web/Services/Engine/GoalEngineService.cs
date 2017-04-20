@@ -100,6 +100,22 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public List<GoalEngineDTO> GetByRunId(string runId)
+        {
+            try
+            {
+                using (WebClient client = GetClient)
+                {
+                    string response = client.DownloadString(path + "search/findByRunId?runId=" + runId);
+                    return JsonDeserialize<List<GoalEngineDTO>>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         #endregion
     }
 }

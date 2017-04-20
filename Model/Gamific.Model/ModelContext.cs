@@ -56,8 +56,6 @@ namespace Vlast.Gamific.Model
 
         public DbSet<WorkerTypeMetricEntity> WorkerTypeMetrics { get; set; }
 
-        public DbSet<GoalEntity> Goals { get; set; }
-
         public DbSet<ParamEntity> Params { get; set; }
 
         #endregion
