@@ -70,6 +70,7 @@ namespace Vlast.Gamific.Model.Firm.DTO
 
     }
 
+
     public enum Target3D
     {
         TEAM,

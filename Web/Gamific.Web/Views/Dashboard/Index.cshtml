@@ -39,6 +39,7 @@
     <input hidden type="text" value="@ViewBag.EpisodeId" id="EpisodeId" />
     <input hidden type="text" value="@ViewBag.TeamId" id="TeamId" />
     <input hidden type="text" value="@ViewBag.PlayerId" id="PlayerId" />
+    <input hidden type="text" value="@ViewBag.Grafic_itens" id="Grafic_itens" />
 
     <div id="wrap">
         <div class="row">
@@ -221,7 +222,9 @@
                     </section>
                 </div>
             </div>
-            <div class="row">
+
+            <!--/Grafico produtos -->
+            <div class="row" id="grafic_products">
                 <div class="col-lg-12 col-md-12">
                     <section class="tile color transparent-black">
                         <div class="tile-widget color transparent-black textured">
@@ -266,18 +269,26 @@
                     </section>
                 </div>
             </div>
+
+
+
         </div>
 
     </div>
     <script type="text/javascript">
 
         $(document).ready(function () {
+            
             dashBoardLoad($('#state').val(), $('#EpisodeId').val(), $('#TeamId').val(), $('#PlayerId').val());
             $(window).resize(function () {
                 if ($('header').width() <= 768) {
                     showFilters()
                 }
             });
+
+            hideGraficProducts();
+
+            
         });
 
         function hideFilters() {
@@ -292,6 +303,13 @@
         function showFilters() {
             if ($('#Filters').is(":hidden")) {
                 $('#Filters').show();
+            }
+        }
+
+        function hideGraficProducts() {
+            if (!$('#Grafic_itens').val()) {
+                console.log('entrou 2');
+                $('#grafic_products').hide();
             }
         }
     </script>

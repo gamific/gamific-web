@@ -33,11 +33,31 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                    Text = episode.Name
                                };
 
+            ViewBag.Grafic_itens = changeVisibilityGraph();
+
             ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
             ViewBag.State = state;
 
             return View("Index");
+        }
+
+        private bool changeVisibilityGraph()
+        {
+            bool active = false;
+
+            List<ParamEntity> grafics = ParamRepository.Instance.GetAll(CurrentFirm.ExternalId);
+
+            if (ParamEntity.GRAFICO_PRODUTOS.Equals(grafics[0].Name) && grafics[0].Value == "1")
+            {
+                active = true;
+            }
+
+
+
+            return active;
+
+
         }
 
         [Route("getCampaignsWithIds")]
