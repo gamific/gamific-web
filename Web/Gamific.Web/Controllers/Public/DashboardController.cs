@@ -110,7 +110,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            return Content(JsonConvert.SerializeObject(rtn), "application/json");
+            return Content(JsonConvert.SerializeObject(episodes), "application/json");
         }
 
         [Route("loadMorrisByEpisode/{metricId}/{episodeId}")]

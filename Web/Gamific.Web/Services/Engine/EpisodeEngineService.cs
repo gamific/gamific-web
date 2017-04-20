@@ -139,7 +139,9 @@ namespace Vlast.Gamific.Web.Services.Engine
                 using (WebClient client = GetClient)
                 {
                     string response = client.DownloadString(path + "search/findByGameIdAndActive/" + "?gameId=" + gameId + "&active=" + active);
-                    return JsonDeserialize<GetAllDTO>(response);
+                    GetAllDTO all = JsonDeserialize<GetAllDTO>(response);
+                    all.List.episode = all.List.episode.OrderBy(x => x.initDate).ToList();
+                    return all;
                 }
             }
             catch (Exception e)
@@ -155,7 +157,9 @@ namespace Vlast.Gamific.Web.Services.Engine
                 using (WebClient client = GetClient)
                 {
                     string response = client.DownloadString(path + "search/findByGameId/" + "?gameId=" + gameId + "&page=" + pageIndex + "&size=" + pageSize);
-                    return JsonDeserialize<GetAllDTO>(response);
+                    GetAllDTO all = JsonDeserialize<GetAllDTO>(response);
+                    all.List.episode = all.List.episode.OrderBy(x => x.initDate).ToList();
+                    return all;
                 }
             }
             catch (Exception e)

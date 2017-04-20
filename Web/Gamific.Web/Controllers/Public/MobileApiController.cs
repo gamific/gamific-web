@@ -175,7 +175,7 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
                         player.LogoPath = GetImagePath(player.LogoId);
 
                         WorkerEntity workerEntity = WorkerRepository.Instance.GetByExternalId(player.Id);
-                        worker.LogoId = player.LogoId;
+                        workerEntity.LogoId = player.LogoId;
                         WorkerRepository.Instance.UpdateWorker(workerEntity);
 
                         PlayerEngineService.Instance.CreateOrUpdate(player, player.Email);

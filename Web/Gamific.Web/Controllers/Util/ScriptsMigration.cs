@@ -8,6 +8,7 @@ using Vlast.Gamific.Model.Firm.DTO;
 using Vlast.Gamific.Model.Firm.Repository;
 using Vlast.Gamific.Web.Services.Engine;
 using Vlast.Gamific.Web.Services.Engine.DTO;
+using Vlast.Util.Data;
 
 namespace Vlast.Gamific.Web.Controllers.Util
 {
@@ -112,6 +113,40 @@ namespace Vlast.Gamific.Web.Controllers.Util
             }
 
             }
+        }
+
+        static public void SetAllPlayersTrue()
+        {
+            //string gameId = CurrentFirm.ExternalId;
+
+            GetAllDTO games = GameEngineService.Instance.GetAll(0, 10000, "miller@gamific.com.br");
+
+            foreach(GameEngineDTO game in games.List.game)
+            {
+                List<WorkerDTO> workers = WorkerRepository.Instance.GetWorkerDTOByExternalGameId(game.Id);
+                string errors = "";
+
+                foreach (WorkerDTO workerDTO in workers)
+                {
+                    try
+                    {
+                        PlayerEngineDTO player = PlayerEngineService.Instance.GetById(workerDTO.ExternalId, "miller@gamific.com.br");
+                        player.Active = true;
+                        player.Role = workerDTO.Role;
+                        PlayerEngineService.Instance.CreateOrUpdate(player, "miller@gamific.com.br");
+
+                        WorkerEntity worker = WorkerRepository.Instance.GetById(workerDTO.IdWorker);
+                        worker.Status = GenericStatus.ACTIVE;
+                        WorkerRepository.Instance.UpdateWorker(worker);
+                    }
+                    catch (Exception e)
+                    {
+                        errors += workerDTO.Email + " -> " + e.Message + "<br/>";
+                    }
+                }
+            }
+             
+
         }
     }
 }

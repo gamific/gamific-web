@@ -48,12 +48,15 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult Edit(int workerId)
         {
             WorkerDTO worker = WorkerRepository.Instance.GetDTOById(workerId);
-            PlayerEngineDTO workerEngine = PlayerEngineService.Instance.GetByGameIdAndNick(CurrentFirm.ExternalId , worker.Name);
+            PlayerEngineDTO workerEngine = PlayerEngineService.Instance.GetById(worker.ExternalId);
+            WorkerTypeEntity workerType = WorkerTypeRepository.Instance.GetById(worker.WorkerTypeId);
+
+            worker.Role = workerType.ProfileName.ToString();
+            worker.ProfileName = workerType.ProfileName;
 
             worker.TotalXp = (int)workerEngine.Xp;
 
             ViewBag.Types = GetWorkerTypesToSelect(worker.WorkerTypeId);
-            ViewBag.Xp = workerEngine;
 
             return PartialView("_Edit", worker);
         }
@@ -77,12 +80,16 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
                     WorkerEntity worker = WorkerRepository.Instance.GetById(workerId);
+                    worker.Status = GenericStatus.INACTIVE;
+                    WorkerRepository.Instance.UpdateWorker(worker);
+                    //WorkerRepository.Instance.RemoveWorker(worker.Id);
 
-                    WorkerRepository.Instance.RemoveWorker(worker.Id);
+                    //AccountRepository.Instance.RemoveAccount(worker.UserId);
 
-                    AccountRepository.Instance.RemoveAccount(worker.UserId);
-
-                    PlayerEngineService.Instance.DeleteById(worker.ExternalId);
+                    //PlayerEngineService.Instance.DeleteById(worker.ExternalId);
+                    PlayerEngineDTO player = PlayerEngineService.Instance.GetById(worker.ExternalId);
+                    player.Active = false;
+                    PlayerEngineService.Instance.CreateOrUpdate(player);
 
                     scope.Complete();
                 }
@@ -154,6 +161,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         if (entity.IdWorker > 0)
                         {
                             PlayerEngineDTO player = PlayerEngineService.Instance.GetById(entity.ExternalId);
+                            WorkerTypeEntity workerType = WorkerTypeRepository.Instance.GetById(entity.WorkerTypeId);
 
                             UserProfileEntity userProfile = new UserProfileEntity();
 
@@ -190,12 +198,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             AccountRepository.Instance.Update(acc);
 
                             player.Nick = userProfile.Name;
-                            player.Role = entity.ProfileName.ToString();
+                            player.Role = workerType.ProfileName.ToString();
                             player.LogoId = worker.LogoId;
                             player.Xp = entity.TotalXp;
                             player.Email = entity.Email;
                             player.Cpf = entity.Cpf;
                             player.LogoPath = CurrentURL + player.LogoId;
+                            player.Active = true;
 
                             PlayerEngineService.Instance.CreateOrUpdate(player);
 
@@ -204,8 +213,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         }
                         else
                         {
-                            NewRequest request = new NewRequest();
+                            WorkerTypeEntity workerType = WorkerTypeRepository.Instance.GetById(entity.WorkerTypeId);
 
+                            NewRequest request = new NewRequest();
                             AuthResult result = new AuthResult();
 
                             request.Cpf = entity.Cpf.Replace("-", "").Replace(".", "");
@@ -245,13 +255,14 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 {
                                     GameId = worker.ExternalFirmId,
                                     Nick = request.Name,
-                                    Role = entity.ProfileName.ToString(),
+                                    Role = workerType.ProfileName.ToString(),
                                     Level = 1,
                                     LogoId = worker.LogoId,
                                     Cpf = entity.Cpf.Replace(".", "").Replace("-", ""),
                                     Email = entity.Email,
                                     Xp = 1,
-                                    LogoPath = CurrentURL + worker.LogoId
+                                    LogoPath = CurrentURL + worker.LogoId,
+                                    Active = true
                                 });
 
                             worker.ExternalId = player.Id;
@@ -291,6 +302,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("search/{numberOfWorkers:int}")]
         public ActionResult Search(JQueryDataTableRequest jqueryTableRequest, int numberOfWorkers)
         {
+            numberOfWorkers = WorkerRepository.Instance.GetCountFromFirm(CurrentFirm.Id);
+
             if (jqueryTableRequest != null)
             {
                 string filter = "";
