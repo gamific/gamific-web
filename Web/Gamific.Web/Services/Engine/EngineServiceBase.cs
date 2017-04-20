@@ -178,7 +178,29 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-      
+        public GetAllDTO GetAll(int pageIndex, int pageSize, string email)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                client.Headers[HttpRequestHeader.Accept] = "application/json";
+                client.Encoding = System.Text.Encoding.UTF8;
+                string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+
+
+                string response = client.DownloadString(path + "?size=" + pageSize + "&page=" + pageIndex);
+                return JsonDeserialize<GetAllDTO>(response);
+                
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+
         public GetAllDTO GetByGameId(string gameId, int size = 1000, int page = 0)
         {
             try

@@ -359,8 +359,9 @@ namespace Vlast.Gamific.Model.Firm.Repository
                 var query = from worker in context.Workers
                             from profile in context.Profiles
                             from wt in context.WorkerTypes
-                            where worker.Status == GenericStatus.ACTIVE
-                            && worker.ExternalFirmId == gameId
+                            where 
+                            //worker.Status == GenericStatus.ACTIVE
+                            worker.ExternalFirmId == gameId
                             && worker.UserId == profile.Id
                             && worker.WorkerTypeId == wt.Id
                             select new WorkerDTO
@@ -570,8 +571,7 @@ namespace Vlast.Gamific.Model.Firm.Repository
         {
             ModelContext context = new ModelContext();
             var query = from sc in context.Workers
-                        where sc.Status == GenericStatus.ACTIVE && sc.Id == workerId
-                        orderby sc.Id ascending
+                        where sc.Id == workerId
                         select sc;
 
             return query.FirstOrDefault();

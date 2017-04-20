@@ -148,9 +148,32 @@
                 <div class="col-lg-12 col-md-12">
                     <section class="tile transparent">
                         <div class="tile-header color transparent-black textured rounded-top-corners">
-                            <h1>Evolução</h1>
-                            <br />
-                            <h4 class="underline text-left">Comparativo de Campanhas Geral</h4>
+                            <row>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                            <h1 style="color:white !important">Evolução</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                            <a class="fa fa-bullseye" href="/public/dashboard/getCampaignsModal" onclick="showEntityModal(this); return false;" title="Mudar Filtros."></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </row>
+
+                            <row>
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                            <h4 style="color:white !important" class="underline text-left">Comparativo de Campanhas Geral</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </row>
                         </div>
                         <div class="tile-widget color transparent-black textured">
                             <div class="row">
@@ -171,7 +194,7 @@
                                                     <li>
                                                         <div>
                                                             <label>
-                                                                <input style="width:14px !important; height:auto !important" type="checkbox" value="@metric.Id" id="chart-@metric.Id" class="checkbox-div" onclick="initializeChart(this.value, this.checked);" />
+                                                                <input style="width:14px !important; height:auto !important" type="checkbox" value="@metric.Id" id="chart-@metric.Id" class="checkbox-div metricsChart" onclick="initializeChart(this.value, this.checked);" />
 
                                                                 <span style="color:white; font-size:14px !important">
                                                                     @metric.Name
@@ -294,3 +317,5 @@
 </html>
 
 <script src="~/Content/Js/app/dashboard.js" charset="iso-8859-1"></script>
+
+<div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />

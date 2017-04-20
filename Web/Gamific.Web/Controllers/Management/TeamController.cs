@@ -153,12 +153,14 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     if (team.Id != null)
                     {
                         TeamEngineDTO teamTemp = TeamEngineService.Instance.UpdateTeamMaster(team.MasterPlayerId, team.Id);
-                        teamTemp.LogoId = imageSaving.Id;
+                        teamTemp.LogoId = logoUpload != null ? imageSaving.Id : teamTemp.LogoId;
+                        teamTemp.LogoPath = CurrentURL + teamTemp.LogoId;
                         teamTemp.Nick = team.Nick; 
-                        team = TeamEngineService.Instance.CreateOrUpdate(team);
+                        team = TeamEngineService.Instance.CreateOrUpdate(teamTemp);
                     }
                     else
                     {
+                        team.LogoPath = CurrentURL + team.LogoId;
                         team = TeamEngineService.Instance.CreateOrUpdate(team);
                         List<PlayerEngineDTO> listPlayers = new List<PlayerEngineDTO>();
                         listPlayers.Add(PlayerEngineService.Instance.GetById(team.MasterPlayerId));

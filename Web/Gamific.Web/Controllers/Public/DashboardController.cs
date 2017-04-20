@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
-using Vlast.Gamific.Model.Public.DTO;
 using Vlast.Gamific.Model.Firm.Repository;
 using Vlast.Gamific.Web.Controllers.Public.Model;
 using System.Linq;
@@ -19,6 +18,9 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
     public class DashboardController : BaseController
     {
+
+        public static List<EpisodeEngineDTO> episodesFilter = new List<EpisodeEngineDTO>();
+
         // GET: Dashboard
         [Route("")]
         public ActionResult Index(int state = 1)
@@ -62,25 +64,73 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ContentResult GetCampaignsWithIds()
         {
-            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
+            List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
+
+            foreach (EpisodeEngineDTO episode in episodesFilter)
+            {
+                if (episodes.Count > 7)
+                {
+                    break;
+                }
+                else
+                {
+                    if (episode.checkedFlag)
+                    {
+                        episodes.Add(episode);
+                    }
+                }
+            }
 
             return Content(JsonConvert.SerializeObject(episodes), "application/json");
+        }
+
+        [Route("getCampaignsModal")]
+        [HttpGet]
+        public ActionResult GetCampaignsModal()
+        {
+
+            List<EpisodeEngineDTO> episodesRtn = new List<EpisodeEngineDTO>();
+
+            if (episodesFilter.Count > 0)
+            {
+                episodesRtn = episodesFilter;
+            }
+            else
+            {
+                episodesRtn = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 1000).List.episode;
+            }
+
+            return PartialView("_CampaignsFilter", episodesRtn);
+        }
+
+        [Route("keepCampaigns")]
+        public void KeepCampaigns(List<EpisodeEngineDTO> episodes)
+        {
+            episodesFilter = episodes;
         }
 
         [Route("getCampaigns")]
         [HttpGet]
         public ContentResult GetCampaigns()
         {
-            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
-
             List<string> rtn = new List<string>();
 
-            foreach (EpisodeEngineDTO episode in episodes)
+            foreach (EpisodeEngineDTO episode in episodesFilter)
             {
-                rtn.Add(episode.Name);
+                if (rtn.Count > 7)
+                {
+                    break;
+                }
+                else
+                {
+                    if (episode.checkedFlag)
+                    {
+                        rtn.Add(episode.Name);
+                    }
+                }
             }
 
-            return Content(JsonConvert.SerializeObject(rtn), "application/json");
+            return Content(JsonConvert.SerializeObject(episodes), "application/json");
         }
 
         [Route("loadMorrisByEpisode/{metricId}/{episodeId}")]
@@ -228,7 +278,23 @@ namespace Vlast.Gamific.Web.Controllers.Public
             };
 
             MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
-            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
+
+            List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
+
+            foreach (EpisodeEngineDTO episode in episodesFilter)
+            {
+                if (episodes.Count > 7)
+                {
+                    break;
+                }
+                else
+                {
+                    if (episode.checkedFlag)
+                    {
+                        episodes.Add(episode);
+                    }
+                }
+            }
 
             int i = 0;
             foreach (EpisodeEngineDTO episode in episodes)
