@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Vlast.Gamific.Model.Firm.DTO.GoalDTO>
+﻿@model IEnumerable<Vlast.Gamific.Web.Services.Engine.DTO.GoalEngineDTO>
 
 <form action="/admin/metas/salvar" method="post" enctype="multipart/form-data">
     <div id="modal-panel">
@@ -15,9 +15,9 @@
                         {
                             <label class="col-sm-12 col-md-12 col-xs-6" style="font-size:100%">@item.MetricName</label>
                             <input type="hidden" value="@item.RunId" id="GoalList[@i].RunId" name="GoalList[@i].RunId"/>
-                            <input type="hidden" value="@item.GoalId" id="GoalList[@i].Id" name="GoalList[@i].Id" />
-                            <input type="hidden" value="@item.ExternalMetricId" id="GoalList[@i].ExternalMetricId" name="GoalList[@i].ExternalMetricId"/>
-                            <input type="hidden" value="@item.EpisodeId" id="GoalList[@i].EpisodeId" name="GoalList[@i].EpisodeId"/>
+                            <input type="hidden" value="@item.Id" id="GoalList[@i].Id" name="GoalList[@i].Id" />
+                            <input type="hidden" value="@item.MetricId" id="GoalList[@i].MetricId" name="GoalList[@i].MetricId"/>
+                            <input type="hidden" value="@item.TeamId" id="GoalList[@i].TeamId" name="GoalList[@i].TeamId"/>
                             <input type="number" min="0" value="@item.Goal" class="form-control col-xs-6" id="GoalList[@i].Goal" name="GoalList[@i].Goal"/>
                             i++;
                         }

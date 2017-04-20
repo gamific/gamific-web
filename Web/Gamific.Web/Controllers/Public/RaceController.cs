@@ -56,47 +56,17 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpPost]
         public ActionResult Race(int workerTypeId = 0, int teamId = 0)
         {
-            if(workerTypeId == 0)
-            {
-                List<WorkerTypeEntity> workerTypes = WorkerTypeRepository.Instance.GetAllFromFirm(CurrentFirm.Id);
-                ViewBag.WorkerTypes = from workerType in workerTypes
-                                      select new SelectListItem
-                                      {
-                                          Value = workerType.Id.ToString(),
-                                          Text = workerType.TypeName
-                                      };
 
-                return View("Index");
-            }
-            else
-            {
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                CarDTO dto = GetResultsFromPlayer(workerTypeId, teamId);
-                int totalGoal = GoalRepository.Instance.GetTotalGoalFromWorkerType(workerTypeId);
-                int numberOfMembers = 1;
+            List<WorkerTypeEntity> workerTypes = WorkerTypeRepository.Instance.GetAllFromFirm(CurrentFirm.Id);
+            ViewBag.WorkerTypes = from workerType in workerTypes
+                                    select new SelectListItem
+                                    {
+                                        Value = workerType.Id.ToString(),
+                                        Text = workerType.TypeName
+                                    };
 
-                if (teamId != 0)
-                {
-                    ViewBag.TargetLogoId = CurrentFirm.LogoId;
-                    numberOfMembers = TeamRepository.Instance.GetNumberOfMembers(teamId);
-                }
-                else
-                {
-                    ViewBag.TargetLogoId = CurrentFirm.LogoId;
-                    numberOfMembers = TeamRepository.Instance.GetNumberOfTeamOfWorkerType(workerTypeId);
-                }
-
-                int totalPoints = dto.cars.Sum(p => p.Points);
-                int total = totalGoal * numberOfMembers;
-
-                
-                ViewBag.TargetName = dto.TargetName;
-                ViewBag.TotalGoal = total;
-                ViewBag.TotalReached = numberOfMembers == 0 ? 0 : (Math.Round((totalPoints * 100) / (float)total));
-                ViewBag.Result = serializer.Serialize(dto);
-
-                return View("Race");
-            }
+            return View("Index");
+            
 
         }
         
