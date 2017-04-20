@@ -10,6 +10,10 @@ namespace Vlast.Gamific.Model.Firm.Domain
     [DataContract]
     public class ParamEntity
     {
+        [NotMapped]
+        public static string GRAFICO_PRODUTOS = "GRAFICO_PRODUTOS";
+
+
         [Key]
         [DataMember(Name = "id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
