@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
@@ -111,7 +110,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            return Content(JsonConvert.SerializeObject(rtn), "application/json");
+            return Content(JsonConvert.SerializeObject(episodesFilter), "application/json");
         }
 
         [Route("loadMorrisByEpisode/{metricId}/{episodeId}")]
@@ -135,9 +134,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             foreach (ItemEngineDTO item in items)
             {
-                MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
+                if (item.Name != null)
+                {
+                    MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
 
-                if(item.Name != null) {
                     morrisDTO.label = item.Name;
                     morrisDTO.value = double.Parse(item.Value.ToString("n2"));
 
@@ -182,22 +182,26 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             foreach (ItemEngineDTO item in items)
             {
-                MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
 
-                morrisDTO.label = item.Name.Substring(0, 11) + "...";
-                morrisDTO.value = double.Parse(item.Value.ToString("n2"));
-
-                colors.Add(colorsToAdd[i]);
-
-                dto.products.Add(morrisDTO);
-
-                if (i >= colorsToAdd.Count)
+                if (item.Name != null)
                 {
-                    i = 0;
-                }
-                else
-                {
-                    i++;
+                    MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
+
+                    morrisDTO.label = item.Name;
+                    morrisDTO.value = double.Parse(item.Value.ToString("n2"));
+
+                    colors.Add(colorsToAdd[i]);
+
+                    dto.products.Add(morrisDTO);
+
+                    if (i >= colorsToAdd.Count)
+                    {
+                        i = 0;
+                    }
+                    else
+                    {
+                        i++;
+                    }
                 }
             }
 
@@ -227,22 +231,24 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             foreach (ItemEngineDTO item in items)
             {
-                MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
+                if (item.Name != null) { 
+                    MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
 
-                morrisDTO.label = item.Name.Substring(0, 11) + "...";
-                morrisDTO.value = double.Parse(item.Value.ToString("n2"));
+                    morrisDTO.label = item.Name;
+                    morrisDTO.value = double.Parse(item.Value.ToString("n2"));
 
-                colors.Add(colorsToAdd[i]);
+                    colors.Add(colorsToAdd[i]);
 
-                dto.products.Add(morrisDTO);
+                    dto.products.Add(morrisDTO);
 
-                if (i >= colorsToAdd.Count)
-                {
-                    i = 0;
-                }
-                else
-                {
-                    i++;
+                    if (i >= colorsToAdd.Count)
+                    {
+                        i = 0;
+                    }
+                    else
+                    {
+                        i++;
+                    }
                 }
             }
 
@@ -285,7 +291,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 List<int> point = new List<int>();
 
                 List<CardEngineDTO> results = new List<CardEngineDTO>();
-                List<GoalDTO> goals = new List<GoalDTO>();
+
                 results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
 
                 if (results[0] != null)

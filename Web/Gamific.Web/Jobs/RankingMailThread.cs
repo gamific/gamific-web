@@ -113,26 +113,32 @@ namespace Vlast.Gamific.Web.Jobs
         private string CreateIndividualResultsTable(TeamEngineDTO team, PlayerEngineDTO player, string gameId, Profiles perfil, string email)
         {
             RunEngineDTO run;
-            List<GoalDTO> goals;
+            List<GoalEngineDTO> goals = new List<GoalEngineDTO>();
             List<CardEngineDTO> results;
             if (perfil == Profiles.JOGADOR)
             {
-                results = CardEngineService.Instance.PlayerAuth(gameId, team.Id, player.Id, email);
-                run = RunEngineService.Instance.GetRunByPlayerAndTeamId(player.Id, team.Id, email);
-                goals = GoalRepository.Instance.GetByRunId(run.Id);
+
+                results = CardEngineService.Instance.Player(gameId, team.Id, player.Id);
+                run = RunEngineService.Instance.GetRunByPlayerAndTeamId(player.Id, team.Id);
+                goals = GoalEngineService.Instance.GetByRunId(run.Id);//GoalRepository.Instance.GetByRunId(run.Id);
+
             }
             else if(perfil == Profiles.LIDER)
             {
                 results = CardEngineService.Instance.TeamAuth(gameId, team.Id,email);
                 GetAllDTO all = RunEngineService.Instance.GetRunsByTeamIdAuth(team.Id, email);
                 List<string> runIds = all.List.run.Select(x => x.Id).ToList();
-                goals = GoalRepository.Instance.GetByRunId(runIds);
+                foreach(string runId in runIds)
+                {
+                    goals.AddRange(GoalEngineService.Instance.GetByRunId(runId)); //GoalRepository.Instance.GetByRunId(runIds);
+                }
+                
             }
             else
             {
                 results = new List<CardEngineDTO>();
                 run = new RunEngineDTO();
-                goals = new List<GoalDTO>();
+                goals = new List<GoalEngineDTO>();
             }
             
             long playersCount = 1;
@@ -144,7 +150,7 @@ namespace Vlast.Gamific.Web.Jobs
 
             results = (from result in results
                        join goal in goals
-                       on result.MetricId equals goal.ExternalMetricId into rg
+                       on result.MetricId equals goal.MetricId into rg
                        from resultGoal in rg.DefaultIfEmpty()
                        select new CardEngineDTO
                        {
@@ -152,8 +158,10 @@ namespace Vlast.Gamific.Web.Jobs
                            MetricId = result.MetricId,
                            MetricName = result.MetricName,
                            TotalPoints = result.TotalPoints,
+
                            Goal = result.Goal,
                            PercentGoal = result.PercentGoal,
+
                            IsAverage = result.IsAverage
                        }).ToList();
 

@@ -33,7 +33,7 @@ namespace Vlast.Gamific.Web.Controllers.Util
 
         public void MySqlGoalToEngineByEpisodeId(string episodeId, List<MetricEngineDTO> metrics)
         {
-            List<GoalDTO> goalsMySql = GoalRepository.Instance.GetAllByEpisodeId(episodeId);
+            List<GoalDTO> goalsMySql = new List<GoalDTO>(); //GoalRepository.Instance.GetAllByEpisodeId(episodeId);
 
             List<GoalEngineDTO> goalsEngine = (from goal in goalsMySql
                                                select new GoalEngineDTO

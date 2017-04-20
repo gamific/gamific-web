@@ -71,7 +71,6 @@
     <Compile Include="Account\Repository\AccountRepository.cs" />
     <Compile Include="Account\Repository\UserProfileRepository.cs" />
     <Compile Include="Firm\Domain\ParamEntity.cs" />
-    <Compile Include="Firm\Domain\GoalEntity.cs" />
     <Compile Include="Firm\Domain\MetricEntity.cs" />
     <Compile Include="Firm\Domain\DataEntity.cs" />
     <Compile Include="Firm\Domain\SponsorTeamEntity.cs" />
@@ -88,7 +87,6 @@
     <Compile Include="Firm\DTO\MetricDTO.cs" />
     <Compile Include="Firm\DTO\EngineTeamDTO.cs" />
     <Compile Include="Firm\DTO\WorkerTypeMetricDTO.cs" />
-    <Compile Include="Firm\Repository\GoalRepository.cs" />
     <Compile Include="Firm\Repository\ParamRepository.cs" />
     <Compile Include="Firm\Repository\VideoQuestionAnsweredRepository.cs" />
     <Compile Include="Firm\Repository\VideoQuestionRepository.cs" />
