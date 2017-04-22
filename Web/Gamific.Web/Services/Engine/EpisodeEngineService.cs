@@ -95,7 +95,8 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient)
                 {
-                    string response = client.UploadString(ENGINE_API + "cloneEpisode?name=" + name + "&episodeId=" + id, "POST");
+                    string response = client.UploadString(ENGINE_API + "cloneEpisode?name=" + name + "&episodeId=" + id+
+                        "&initDate=" + DateTime.Now.Ticks, "&finishDate=" + DateTime.Now.Ticks, "POST");
                     return JsonDeserialize<EpisodeEngineDTO>(response);
                 }
             }
