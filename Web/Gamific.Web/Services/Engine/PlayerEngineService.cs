@@ -63,7 +63,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "/search/findByGameIdAndNick?gameId=" + gameId + "&nick=" + nick);
                     return JsonDeserialize<PlayerEngineDTO>(response);
@@ -79,7 +79,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "/search/findByGameIdAndActiveIsTrue?gameId=" + gameId);
                     return JsonDeserialize<PlayerEngineDTO>(response);
@@ -95,7 +95,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
                     client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;

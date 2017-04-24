@@ -46,7 +46,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string json = JsonSerialize<List<RunEngineDTO>>(ref runs);
                     string response = client.UploadString(ENGINE_API + "addRunsMetric?" + "metricId=" + metricId, json);
@@ -67,7 +67,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "search/findByRunIdAndMetricId?metricId=" + metricId + "&runId=" + runId + "&page=" + pageIndex + "&size=" + pageSize);
                     return JsonDeserialize<GetAllDTO>(response);

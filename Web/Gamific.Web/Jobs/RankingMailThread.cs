@@ -20,49 +20,47 @@ namespace Vlast.Gamific.Web.Jobs
     /// </summary>
     public class RankingMailThread : BaseThread
     {
+        private string email = "rubens";
         /// <summary>
         /// Envia por email o ranking geral para os jogadores.
         /// </summary>
         /// <returns></returns>
         public async override void Run()
         {
-            Send(new EmailSupportDTO { Msg = "Bom dia", Category = "", Subject = "Testes Gamific" }, "igorgarantes@gmail.com");
             
-            GetAllDTO games = GameEngineService.Instance.GetAll(0, 10000);
-
-            foreach (GameEngineDTO game in games.List.game)
-            {
-                    GetAllDTO players = PlayerEngineService.Instance.GetByGameId(game.Id);
+            //Send(new EmailSupportDTO { Msg = "Bom dia", Category = "", Subject = "Testes Gamific" }, "igorgarantes@gmail.com");
+            
+                //GetAllDTO players = PlayerEngineService.Instance.GetByGameId(game.Id);
 
                 //GetAllDTO episodes = EpisodeEngineService.Instance.GetByGameIdAndActive(game.Id, 1);
 
                 List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
-                //episodes.Add(new EpisodeEngineDTO("58b6e3663a87782c725a93b8")); // marco todeschini
-                //episodes.Add(new EpisodeEngineDTO("58b5f8d53a87782c725a90c9")); // março pelegrini
+                episodes.Add(new EpisodeEngineDTO("58e3708a3a8778588098a82b", "5880a1743a87783b4f0ba709"));
 
                 foreach (EpisodeEngineDTO episode in episodes)
+                {
+                    List<string> emails = new List<string>();
+                    GetAllDTO teams = TeamEngineService.Instance.FindByEpisodeId(episode.Id, email);
+                    GameEngineDTO game = GameEngineService.Instance.GetById(episode.GameId, email);
+
+                    foreach (TeamEngineDTO team in teams.List.team)
                     {
-                        List<string> emails = new List<string>();
-                        GetAllDTO teams = TeamEngineService.Instance.FindByEpisodeId(episode.Id);
+                        GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(team.Id, email);
 
-                        foreach (TeamEngineDTO team in teams.List.team)
+                        foreach (RunEngineDTO run in runs.List.run)
                         {
-                            GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(team.Id);
-
-                            foreach (RunEngineDTO run in runs.List.run)
+                            WorkerDTO worker = WorkerRepository.Instance.GetWorkerDTOByExternalId(run.PlayerId);
+                            if (worker != null && (worker.ProfileName == Profiles.LIDER || worker.ProfileName == Profiles.JOGADOR))
                             {
-                                WorkerDTO worker = WorkerRepository.Instance.GetWorkerDTOByExternalId(run.PlayerId);
-                                if (worker != null && (worker.ProfileName == Profiles.LIDER || worker.ProfileName == Profiles.JOGADOR))
-                                {
-                                    string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
-                                    Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
-                                    Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
-                                }
+                                string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
+                                Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
+                                Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
                             }
                         }
                     }
+                }
                 
-            }
+            
             
         }
 
@@ -123,18 +121,18 @@ namespace Vlast.Gamific.Web.Jobs
             List<CardEngineDTO> results;
             if (perfil == Profiles.JOGADOR)
             {
-                results = CardEngineService.Instance.Player(gameId, team.Id, player.Id);
-                run = RunEngineService.Instance.GetRunByPlayerAndTeamId(player.Id, team.Id);
-                goals = GoalEngineService.Instance.GetByRunId(run.Id);//GoalRepository.Instance.GetByRunId(run.Id);
+                results = CardEngineService.Instance.Player(gameId, team.Id, player.Id, email);
+                run = RunEngineService.Instance.GetRunByPlayerAndTeamId(player.Id, team.Id, email);
+                goals = GoalEngineService.Instance.GetByRunId(run.Id, email).List.goal;//GoalRepository.Instance.GetByRunId(run.Id);
             }
             else if(perfil == Profiles.LIDER)
             {
-                results = CardEngineService.Instance.Team(gameId, team.Id);
-                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(team.Id);
+                results = CardEngineService.Instance.Team(gameId, team.Id, email);
+                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(team.Id, email);
                 List<string> runIds = all.List.run.Select(x => x.Id).ToList();
                 foreach(string runId in runIds)
                 {
-                    goals.AddRange(GoalEngineService.Instance.GetByRunId(runId)); //GoalRepository.Instance.GetByRunId(runIds);
+                    goals.AddRange(GoalEngineService.Instance.GetByRunId(runId, email).List.goal); //GoalRepository.Instance.GetByRunId(runIds);
                 }
                 
             }
@@ -144,26 +142,18 @@ namespace Vlast.Gamific.Web.Jobs
                 run = new RunEngineDTO();
                 goals = new List<GoalEngineDTO>();
             }
-            
-            long playersCount = 1;
-
-            if(perfil == Profiles.LIDER)
-            {
-                playersCount = RunEngineService.Instance.GetCountByTeamIdAndPlayerParentIsNotNull(team.Id);
-            }
+           
 
             results = (from result in results
-                       join goal in goals
-                       on result.MetricId equals goal.MetricId into rg
-                       from resultGoal in rg.DefaultIfEmpty()
+                       
                        select new CardEngineDTO
                        {
                            IconMetric = result.IconMetric.Replace("_", "-"),
                            MetricId = result.MetricId,
                            MetricName = result.MetricName,
                            TotalPoints = result.TotalPoints,
-                           Goal = (resultGoal != null ? CalculatesGoal((int)resultGoal.Goal, playersCount, result.IsAverage) : 0),
-                           PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal((int)resultGoal.Goal, (int)result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0),
+                           Goal = result.Goal,
+                           PercentGoal = result.PercentGoal,
                            IsAverage = result.IsAverage
                        }).ToList();
 
@@ -271,11 +261,11 @@ namespace Vlast.Gamific.Web.Jobs
 
         private string CreateEmail(GameEngineDTO game, string episodeId, string teamId, string playerId, WorkerDTO worker)
         {
-            PlayerEngineDTO player = playerId == null ? null : PlayerEngineService.Instance.GetById(playerId);
-            TeamEngineDTO team = teamId == null ? null : TeamEngineService.Instance.GetById(teamId);
-            EpisodeEngineDTO episode = episodeId == null ? null : EpisodeEngineService.Instance.GetById(episodeId);
-            GetAllDTO runs = RunEngineService.Instance.GetAllRunScore(teamId, "");
-            GetAllDTO teams = TeamEngineService.Instance.GetAllTeamScoreByEpisodeId(episode.Id, "", 0, 10);
+            PlayerEngineDTO player = playerId == null ? null : PlayerEngineService.Instance.GetById(playerId, email);
+            TeamEngineDTO team = teamId == null ? null : TeamEngineService.Instance.GetById(teamId, email);
+            EpisodeEngineDTO episode = episodeId == null ? null : EpisodeEngineService.Instance.GetById(episodeId, email);
+            GetAllDTO runs = RunEngineService.Instance.GetAllRunScore(teamId, "", email);
+            GetAllDTO teams = TeamEngineService.Instance.GetAllTeamScoreByEpisodeId(episode.Id, "", email, 0, 10);
 
             if (runs.List != null)
             {
@@ -285,7 +275,7 @@ namespace Vlast.Gamific.Web.Jobs
                 {
                     try
                     {
-                        PlayerEngineDTO p = PlayerEngineService.Instance.GetById(run.PlayerId);
+                        PlayerEngineDTO p = PlayerEngineService.Instance.GetById(run.PlayerId, email);
                         if (p != null)
                         {
                             players.Add(p);
@@ -311,7 +301,7 @@ namespace Vlast.Gamific.Web.Jobs
 
                 if (player.Id != null && worker.ProfileName == Profiles.JOGADOR && runs.List.result.Find(x => x.Id == player.Id) == null)
                 {
-                    RunEngineDTO playerRun = RunEngineService.Instance.GetRunByPlayerAndTeamId(player.Id, team.Id);
+                    RunEngineDTO playerRun = RunEngineService.Instance.GetRunByPlayerAndTeamId(player.Id, team.Id, email);
                     ResultEngineDTO result = new ResultEngineDTO
                     {
                         Id = player.Id,
@@ -358,37 +348,7 @@ namespace Vlast.Gamific.Web.Jobs
             return emailBody;
         }
 
-        private int CalculatesGoal(int totalGoal, long playersCount, bool IsAverage)
-        {
-            int goal;
-            if (IsAverage)
-            {
-                goal = (int)(totalGoal / (float)playersCount);
-            }
-            else
-            {
-                goal = totalGoal;
-            }
-
-            return goal;
-        }
-
-        private float CalculatesPercentGoal(int totalGoal, int totalPoints, long playersCount, bool isAverage, bool isInverse)
-        {
-            float percentGoal;
-
-            if (isAverage)
-            {
-                float averageGoal = totalGoal / (float)playersCount;
-                percentGoal = isInverse ? averageGoal / (float)totalPoints : totalPoints / averageGoal;
-            }
-            else
-            {
-                percentGoal = isInverse ? totalGoal / (float)totalPoints : totalPoints / (float)totalGoal;
-            }
-
-            return percentGoal;
-        }
+       
     }
 }
 

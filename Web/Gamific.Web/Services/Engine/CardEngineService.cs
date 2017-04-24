@@ -40,7 +40,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "episodeCardByMetricId?episodeId=" + episodeId + "&metricId=" + metricId);
                     return JsonDeserialize<CardEngineDTO>(response);
@@ -56,7 +56,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "episodeCards?gameId=" + gameId + "&episodeId=" + episodeId);
                     return JsonDeserialize<List<CardEngineDTO>>(response);
@@ -72,7 +72,23 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
+                {
+                    string response = client.DownloadString(path + "teamCards?gameId=" + gameId + "&teamId=" + teamId);
+                    return JsonDeserialize<List<CardEngineDTO>>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<CardEngineDTO> Team(string gameId, string teamId, string email)
+        {
+            try
+            {
+                using (WebClient client = GetClient(email))
                 {
                     string response = client.DownloadString(path + "teamCards?gameId=" + gameId + "&teamId=" + teamId);
                     return JsonDeserialize<List<CardEngineDTO>>(response);
@@ -88,7 +104,23 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
+                {
+                    string response = client.DownloadString(path + "playerCards?gameId=" + gameId + "&teamId=" + teamId + "&playerId=" + playerId);
+                    return JsonDeserialize<List<CardEngineDTO>>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<CardEngineDTO> Player(string gameId, string teamId, string playerId, string email)
+        {
+            try
+            {
+                using (WebClient client = GetClient(email))
                 {
                     string response = client.DownloadString(path + "playerCards?gameId=" + gameId + "&teamId=" + teamId + "&playerId=" + playerId);
                     return JsonDeserialize<List<CardEngineDTO>>(response);
@@ -104,7 +136,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(ENGINE_API + "cardsByPlayerId" + "?playerId=" + playerId + "&episodeId=" + episodeId + "&gameId=" + gameId);
                     return JsonDeserialize<GetAllDTO>(response);
