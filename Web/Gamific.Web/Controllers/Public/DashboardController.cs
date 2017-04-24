@@ -45,11 +45,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
         private bool changeVisibilityGraph()
         {
             bool active = false;
-
-
+            
             ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, ParamEntity.GRAFICO_PRODUTOS);
 
-            if (grafics.Value == "1" && grafics.Value != null)
+            if (grafics != null && grafics.Value == "1" )
             {
                 active = true;
             }

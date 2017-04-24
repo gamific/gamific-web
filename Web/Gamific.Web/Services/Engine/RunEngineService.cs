@@ -42,13 +42,34 @@ namespace Vlast.Gamific.Web.Services.Engine
             return PostDTO<RunEngineDTO>(ref run);
         }
 
+   
+        public GetAllDTO GetRunsByTeamIdAuth(string teamId, string email, int pageIndex = 0, int pageSize = 10 )
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                client.Headers[HttpRequestHeader.Accept] = "application/json";
+                client.Encoding = System.Text.Encoding.UTF8;
+                string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+                string response = client.DownloadString(path + "search/findByTeamId/?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
+                return JsonDeserialize<GetAllDTO>(response);
+                
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public GetAllDTO GetRunsByTeamId(string teamId, int pageIndex = 0, int pageSize = 10)
         {
             try
             {
                 using (WebClient client = GetClient)
                 {
-                    string response = client.DownloadString(path + "search/findByTeamId/?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
+                    string response = client.DownloadString(path + "search/findByTeamId?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
                     return JsonDeserialize<GetAllDTO>(response);
                 }
             }
@@ -57,6 +78,7 @@ namespace Vlast.Gamific.Web.Services.Engine
                 throw e;
             }
         }
+
 
         public RunEngineDTO GetById(string runId)
         {
@@ -80,9 +102,71 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public RunEngineDTO GetRunByPlayerAndTeamId(string playerId, string teamId, string email)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                client.Headers[HttpRequestHeader.Accept] = "application/json";
+                client.Encoding = System.Text.Encoding.UTF8;
+                string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+                string response = client.DownloadString(path + "search/findByTeamIdAndPlayerId/?teamId=" + teamId + "&playerId=" + playerId);
+                    return JsonDeserialize<RunEngineDTO>(response);
+
+                
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public RunEngineDTO GetRunByPlayerAndTeamIdAuth(string playerId, string teamId, string email)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                client.Headers[HttpRequestHeader.Accept] = "application/json";
+                client.Encoding = System.Text.Encoding.UTF8;
+                string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+                string response = client.DownloadString(path + "search/findByTeamIdAndPlayerId/?teamId=" + teamId + "&playerId=" + playerId);
+                    return JsonDeserialize<RunEngineDTO>(response);
+                
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public void DeleteById(string id)
         {
             Delete(id);
+        }
+
+        public GetAllDTO GetAllRunScore(string teamId, string metricId,string email, int pageIndex = 0, int pageSize = 10)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                client.Headers[HttpRequestHeader.Accept] = "application/json";
+                client.Encoding = System.Text.Encoding.UTF8;
+                string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+                
+                    string response = client.DownloadString(ENGINE_API + "allRunScore" + "?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex + "&metricId=" + metricId);
+                    return JsonDeserialize<GetAllDTO>(response);
+                
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public GetAllDTO GetAllRunScore(string teamId, string metricId, int pageIndex = 0, int pageSize = 10)
@@ -110,6 +194,27 @@ namespace Vlast.Gamific.Web.Services.Engine
                     string response = client.DownloadString(path + "search/countByTeamIdAndPlayerParentIsNotNull?teamId=" + teamId);
                     return JsonDeserialize<long>(response);
                 }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long GetCountByTeamIdAndPlayerParentIsNotNullAuth(string teamId, string email)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                client.Headers[HttpRequestHeader.Accept] = "application/json";
+                client.Encoding = System.Text.Encoding.UTF8;
+                string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+
+                string response = client.DownloadString(path + "search/countByTeamIdAndPlayerParentIsNotNull?teamId=" + teamId);
+                    return JsonDeserialize<long>(response);
+                
             }
             catch (Exception e)
             {
