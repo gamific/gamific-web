@@ -73,7 +73,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             return JsonConvert.DeserializeObject<T>(json,
                                                    new JsonSerializerSettings
                                                    {
-                                                       NullValueHandling = NullValueHandling.Include,
+                                                       NullValueHandling = NullValueHandling.Ignore,
                                                    });
         }
 
