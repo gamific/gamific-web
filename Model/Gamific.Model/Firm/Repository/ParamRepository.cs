@@ -94,6 +94,22 @@ namespace Vlast.Gamific.Model.Firm.Repository
         /// Query para consulta externa
         /// </summary>
         /// <returns></returns>
+        public ParamEntity GetElementParam(string gameId, string name)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = (from param in context.Params
+                             where param.GameId == gameId && param.Name == name
+                             select param);
+
+                return query.FirstOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Query para consulta externa
+        /// </summary>
+        /// <returns></returns>
         public int GetCountFromGame(string gameId)
         {
             using (ModelContext context = new ModelContext())

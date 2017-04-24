@@ -46,18 +46,16 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             bool active = false;
 
-            List<ParamEntity> grafics = ParamRepository.Instance.GetAll(CurrentFirm.ExternalId);
 
-            if (ParamEntity.GRAFICO_PRODUTOS.Equals(grafics[0].Name) && grafics[0].Value == "1")
+            ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, ParamEntity.GRAFICO_PRODUTOS);
+
+            if (grafics.Value == "1" && grafics.Value != null)
             {
                 active = true;
             }
 
-
-
             return active;
-
-
+            
         }
 
         [Route("getCampaignsWithIds")]
