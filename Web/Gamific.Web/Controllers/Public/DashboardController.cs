@@ -45,19 +45,16 @@ namespace Vlast.Gamific.Web.Controllers.Public
         private bool changeVisibilityGraph()
         {
             bool active = false;
+            
+            ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, ParamEntity.GRAFICO_PRODUTOS);
 
-            List<ParamEntity> grafics = ParamRepository.Instance.GetAll(CurrentFirm.ExternalId);
-
-            if (ParamEntity.GRAFICO_PRODUTOS.Equals(grafics[0].Name) && grafics[0].Value == "1")
+            if (grafics != null && grafics.Value == "1" )
             {
                 active = true;
             }
 
-
-
             return active;
-
-
+            
         }
 
         [Route("getCampaignsWithIds")]

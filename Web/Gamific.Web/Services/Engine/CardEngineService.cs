@@ -100,6 +100,27 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             }
         }
 
+        public List<CardEngineDTO> TeamAuth(string gameId, string teamId, string email)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                client.Headers[HttpRequestHeader.Accept] = "application/json";
+                client.Encoding = System.Text.Encoding.UTF8;
+                string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+
+                string response = client.DownloadString(path + "teamCards?gameId=" + gameId + "&teamId=" + teamId);
+                    return JsonDeserialize<List<CardEngineDTO>>(response);
+                
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<CardEngineDTO> Player(string gameId, string teamId, string playerId)
         {
             try
@@ -125,6 +146,27 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
                     string response = client.DownloadString(path + "playerCards?gameId=" + gameId + "&teamId=" + teamId + "&playerId=" + playerId);
                     return JsonDeserialize<List<CardEngineDTO>>(response);
                 }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<CardEngineDTO> PlayerAuth(string gameId, string teamId, string playerId,  string email)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                client.Headers[HttpRequestHeader.Accept] = "application/json";
+                client.Encoding = System.Text.Encoding.UTF8;
+                string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+
+                string response = client.DownloadString(path + "playerCards?gameId=" + gameId + "&teamId=" + teamId + "&playerId=" + playerId);
+                    return JsonDeserialize<List<CardEngineDTO>>(response);
+                
             }
             catch (Exception e)
             {

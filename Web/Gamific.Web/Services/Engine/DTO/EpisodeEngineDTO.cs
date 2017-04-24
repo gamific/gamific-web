@@ -13,10 +13,10 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
     {
         public EpisodeEngineDTO() { }
 
-        public EpisodeEngineDTO(string episodeId, string gameId)
+        public EpisodeEngineDTO(string id, string gameId)
         {
             this.GameId = gameId;
-            this.Id = episodeId;
+            this.Id = id;
         }
 
         public EpisodeEngineDTO(string id)
