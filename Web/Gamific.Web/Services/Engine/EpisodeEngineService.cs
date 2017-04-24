@@ -52,7 +52,6 @@ namespace Vlast.Gamific.Web.Services.Engine
             return GetDTO<EpisodeEngineDTO>(episodeId, email);
         }
 
-
         public void DeleteById(string id)
         {
             Delete(id);
@@ -62,7 +61,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.UploadString(ENGINE_API + "closeEpisode?episodeId=" + id, "POST");
                 }
@@ -77,7 +76,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "search/findByGameIdAndActiveIsTrue/" + "?gameId=" + gameId + "&page=" + pageIndex + "&size=" + pageSize);
                     return JsonDeserialize<GetAllDTO>(response);
@@ -93,10 +92,9 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
-                    string response = client.UploadString(ENGINE_API + "cloneEpisode?name=" + name + "&episodeId=" + id+
-                        "&initDate=" + DateTime.Now.Ticks, "&finishDate=" + DateTime.Now.Ticks, "POST");
+                    string response = client.UploadString(ENGINE_API + "cloneEpisode?name=" + name + "&episodeId=" + id, "POST");
                     return JsonDeserialize<EpisodeEngineDTO>(response);
                 }
             }
@@ -110,7 +108,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(ENGINE_API + "deleteAllScoreByEpisodeId?episodeId=" + episodeId); //, "GET");
                     return JsonDeserialize<List<EpisodeEngineDTO>>(response);
@@ -126,7 +124,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "search/findByGameIdAndActive" + "?size=" + pageSize + "&page=" + pageIndex + "&gameId=" + gameId + "&active=" + isActive);
                     return JsonDeserialize<GetAllDTO>(response);
@@ -143,7 +141,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "search/findByGameIdAndActive/" + "?gameId=" + gameId + "&active=" + active);
                     GetAllDTO all = JsonDeserialize<GetAllDTO>(response);
@@ -161,7 +159,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "search/findByGameId/" + "?gameId=" + gameId + "&page=" + pageIndex + "&size=" + pageSize);
                     GetAllDTO all = JsonDeserialize<GetAllDTO>(response);
@@ -179,7 +177,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(ENGINE_API + "resultsByEpisodeIdAndMetricId" + "?episodeId=" + episodeId + "&metricId=" + metricId + "&page=" + pageIndex + "&size=" + pageSize);
                     return JsonDeserialize<GetAllDTO>(response);
@@ -195,7 +193,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(ENGINE_API + "episodeByPlayerId" + "?playerId=" + playerId + "&gameId=" + gameId + "&active=" + active);
                     return JsonDeserialize<List<EpisodeEngineDTO>>(response);
@@ -211,7 +209,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(ENGINE_API + "countPlayersByEpisodeId?episodeId=" + episodeId);
                     return JsonDeserialize<long>(response);
@@ -227,7 +225,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     /*string response = */
                     client.DownloadString(ENGINE_API + "deleteAllScoreByEpisodeId?episodeId=" + episodeId);

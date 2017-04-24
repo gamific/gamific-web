@@ -33,6 +33,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                    Text = episode.Name
                                };
 
+            ViewBag.Grafic_itens = changeVisibilityGraph();
+
             ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
             ViewBag.State = state;
@@ -40,16 +42,26 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return View("Index");
         }
 
+        private bool changeVisibilityGraph()
+        {
+            bool active = false;
+            
+            ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, ParamEntity.GRAFICO_PRODUTOS);
+
+            if (grafics != null && grafics.Value == "1" )
+            {
+                active = true;
+            }
+
+            return active;
+            
+        }
+
         [Route("getCampaignsWithIds")]
         [HttpGet]
         public ContentResult GetCampaignsWithIds()
         {
             List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
-
-            if (episodesFilter.Count < 1)
-            {
-                GetCampaignsModal();
-            }
 
             foreach (EpisodeEngineDTO episode in episodesFilter)
             {
@@ -83,21 +95,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
             else
             {
                 episodesRtn = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 1000).List.episode;
-
-                int i = 0;
-                foreach (EpisodeEngineDTO episode in episodesRtn)
-                {
-                    if (i > 6)
-                    {
-                        episode.checkedFlag = false;
-                    }
-                    else
-                    {
-                        episode.checkedFlag = true;
-                    }
-                    episodesFilter.Add(episode);
-                    i++;
-                }
             }
 
             return PartialView("_CampaignsFilter", episodesRtn);
@@ -115,11 +112,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             List<string> rtn = new List<string>();
 
-            if (episodesFilter.Count < 1)
-            {
-                GetCampaignsModal();
-            }
-
             foreach (EpisodeEngineDTO episode in episodesFilter)
             {
                 if (rtn.Count > 7)
@@ -135,7 +127,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            return Content(JsonConvert.SerializeObject(rtn), "application/json");
+            return Content(JsonConvert.SerializeObject(episodesFilter), "application/json");
         }
 
         [Route("loadMorrisByEpisode/{metricId}/{episodeId}")]
@@ -159,25 +151,22 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             foreach (ItemEngineDTO item in items)
             {
-                if (item.Name != null)
+                MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
+
+                morrisDTO.label = item.Name.Substring(0, 11) + "...";
+                morrisDTO.value = double.Parse(item.Value.ToString("n2"));
+
+                colors.Add(colorsToAdd[i]);
+
+                dto.products.Add(morrisDTO);
+
+                if (i >= colorsToAdd.Count)
                 {
-                    MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
-
-                    morrisDTO.label = item.Name;
-                    morrisDTO.value = double.Parse(item.Value.ToString("n2"));
-
-                    colors.Add(colorsToAdd[i]);
-
-                    dto.products.Add(morrisDTO);
-
-                    if (i >= colorsToAdd.Count)
-                    {
-                        i = 0;
-                    }
-                    else
-                    {
-                        i++;
-                    }
+                    i = 0;
+                }
+                else
+                {
+                    i++;
                 }
             }
 
@@ -207,26 +196,22 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             foreach (ItemEngineDTO item in items)
             {
+                MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
 
-                if (item.Name != null)
+                morrisDTO.label = item.Name.Substring(0, 11) + "...";
+                morrisDTO.value = double.Parse(item.Value.ToString("n2"));
+
+                colors.Add(colorsToAdd[i]);
+
+                dto.products.Add(morrisDTO);
+
+                if (i >= colorsToAdd.Count)
                 {
-                    MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
-
-                    morrisDTO.label = item.Name;
-                    morrisDTO.value = double.Parse(item.Value.ToString("n2"));
-
-                    colors.Add(colorsToAdd[i]);
-
-                    dto.products.Add(morrisDTO);
-
-                    if (i >= colorsToAdd.Count)
-                    {
-                        i = 0;
-                    }
-                    else
-                    {
-                        i++;
-                    }
+                    i = 0;
+                }
+                else
+                {
+                    i++;
                 }
             }
 
@@ -256,25 +241,22 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             foreach (ItemEngineDTO item in items)
             {
-                if (item.Name != null)
+                MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
+
+                morrisDTO.label = item.Name.Substring(0, 11) + "...";
+                morrisDTO.value = double.Parse(item.Value.ToString("n2"));
+
+                colors.Add(colorsToAdd[i]);
+
+                dto.products.Add(morrisDTO);
+
+                if (i >= colorsToAdd.Count)
                 {
-                    MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
-
-                    morrisDTO.label = item.Name;
-                    morrisDTO.value = double.Parse(item.Value.ToString("n2"));
-
-                    colors.Add(colorsToAdd[i]);
-
-                    dto.products.Add(morrisDTO);
-
-                    if (i >= colorsToAdd.Count)
-                    {
-                        i = 0;
-                    }
-                    else
-                    {
-                        i++;
-                    }
+                    i = 0;
+                }
+                else
+                {
+                    i++;
                 }
             }
 
@@ -295,11 +277,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
             MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
 
             List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
-
-            if (episodesFilter.Count < 1)
-            {
-                GetCampaignsModal();
-            }
 
             foreach (EpisodeEngineDTO episode in episodesFilter)
             {
@@ -352,10 +329,15 @@ namespace Vlast.Gamific.Web.Controllers.Public
         public ContentResult GetChartResults(string metricId)
         {
             ChartResultDTO chartDTO = new ChartResultDTO();
+
             chartDTO.Positions = new List<List<int>>();
+
             MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
+
             List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
+
             int i = 0;
+
             foreach (EpisodeEngineDTO episode in episodes)
             {
                 List<int> point = new List<int>();
@@ -365,6 +347,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
                 goals = GoalRepository.Instance.GetByEpisodeId(episode.Id);
                 long playersCount = EpisodeEngineService.Instance.GetCountPlayersByEpisodeId(episode.Id);
+
                 results   = (from result in results
                         join goal in goals
                         on result.MetricId equals goal.ExternalMetricId into rg
@@ -379,7 +362,9 @@ namespace Vlast.Gamific.Web.Controllers.Public
                             PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0),
                             IsAverage = result.IsAverage
                         }).ToList();
+
                 int resultInt = 0;
+
                 if (results != null)
                 {
                     foreach (CardEngineDTO result in results)
@@ -387,12 +372,15 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         resultInt += result.TotalPoints;
                     }
                 }
+
                 point.Add(i);
                 point.Add(resultInt);
                 chartDTO.Positions.Add(point);
                 i++;
             }
+
             chartDTO.MetricName = metric.Name;
+
             return Content(JsonConvert.SerializeObject(chartDTO), "application/json");
         }
         */

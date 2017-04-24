@@ -56,7 +56,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "/search/findByGameId?gameId=" + gameId);
                     return JsonDeserialize<GoalEngineDTO>(response);
@@ -72,7 +72,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "/search/findByTeamId?teamId=" + teamId);
                     return JsonDeserialize<GetAllDTO>(response);
@@ -88,7 +88,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "/search/findByMetricIdAndRunId?metricId=" + metricId + "&runId=" + runId);
                     return JsonDeserialize<GoalEngineDTO>(response);
@@ -104,10 +104,26 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + "search/findByRunId?runId=" + runId);
                     return JsonDeserialize<List<GoalEngineDTO>>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public GetAllDTO GetByRunId(string runId, string email)
+        {
+            try
+            {
+                using (WebClient client = GetClient(email))
+                {
+                    string response = client.DownloadString(path + "search/findByRunId?runId=" + runId);
+                    return JsonDeserialize<GetAllDTO>(response);
                 }
             }
             catch (Exception e)

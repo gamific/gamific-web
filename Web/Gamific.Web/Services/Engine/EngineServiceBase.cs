@@ -35,18 +35,28 @@ namespace Vlast.Gamific.Web.Services.Engine
 
 
 
-        protected WebClient GetClient
+        protected WebClient GetClient()
         {
-            get
-            {
-                WebClient client = new WebClient();
-                client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                client.Headers[HttpRequestHeader.Accept] = "application/json";
-                client.Encoding = System.Text.Encoding.UTF8;
-                client.Headers[HttpRequestHeader.Authorization] = "Basic " + GetEncodedEmail;
+            WebClient client = new WebClient();
+            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+            client.Headers[HttpRequestHeader.Accept] = "application/json";
+            client.Encoding = System.Text.Encoding.UTF8;
+            client.Headers[HttpRequestHeader.Authorization] = "Basic " + GetEncodedEmail;
 
-                return client;
-            }
+            return client;
+        }
+
+        protected WebClient GetClient(string email)
+        {
+            WebClient client = new WebClient();
+            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+            client.Headers[HttpRequestHeader.Accept] = "application/json";
+            client.Encoding = System.Text.Encoding.UTF8;
+
+            string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+            client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+
+            return client;   
         }
 
         protected string JsonSerialize<T>(ref T obj)
@@ -63,7 +73,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             return JsonConvert.DeserializeObject<T>(json,
                                                    new JsonSerializerSettings
                                                    {
-                                                       NullValueHandling = NullValueHandling.Ignore
+                                                       NullValueHandling = NullValueHandling.Ignore,
                                                    });
         }
 
@@ -76,7 +86,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.UploadString(path, "POST", JsonSerialize(ref dto));
                     return JsonDeserialize<T>(response);
@@ -114,7 +124,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string response = client.DownloadString(path + id);
                     return JsonDeserialize<T>(response);
@@ -150,7 +160,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     return client.UploadString(path + id, "DELETE", "");    
                 }
@@ -165,7 +175,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     
                     string response = client.DownloadString(path + "?size=" + pageSize + "&page=" + pageIndex);
@@ -205,7 +215,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient)
+                using (WebClient client = GetClient())
                 {
                     string responce = client.DownloadString(path + "search/findByGameId?gameId=" + gameId + "&size=" + size + "&page=" + page);
                     return JsonDeserialize<GetAllDTO>(responce);
