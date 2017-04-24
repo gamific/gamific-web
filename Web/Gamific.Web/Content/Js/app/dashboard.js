@@ -520,7 +520,7 @@ if (metricToInitialize) {
             async: true,
             dataType: 'json',
             success: function (d) {
-                values.push({
+                values1.push({
                     metricId: metricToInitialize,
                     label: d.MetricName,
                     data: d.Positions,
@@ -530,7 +530,7 @@ if (metricToInitialize) {
                     color: generateColor()
                 })
 
-                plot = $.plotAnimator($("#statistics-chart"), values, properties);
+                plot = $.plotAnimator($("#statistics-chart"), values1, properties);
 
                 $("#statistics-chart").bind("plothover", function (event, pos, item) {
                     if (item) {
@@ -747,7 +747,7 @@ function initializeChart(metricId, checked) {
                         var x = item.datapoint[0],
                             y = item.datapoint[1];
 
-                        $("#tooltip").html('<h1 style="color: #418bca">' + months[x - 1] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
+                        $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
                           .css({ top: item.pageY - 30, left: item.pageX + 5 })
                           .fadeIn(200);
                     } else {
@@ -791,6 +791,7 @@ function initializeChart(metricId, checked) {
                 //hideLoading();
             }, 1000);
         }
+    } else {
     }
 
 }
@@ -921,11 +922,15 @@ function onSuccessSaveFilter(data) {
     $('#entity-edit-modal').modal('hide');
     var metricSelectedList = $('.metricsChart');
 
+    values = [];
+
     var i;
     for (i = 0; i < metricSelectedList.length; i++) {
         if (metricSelectedList[i].checked) {
             var value = metricSelectedList[i].value;
-            initializeChart(value, true);
+            window.setTimeout(function () {
+                initializeChart(value, true);
+            }, 3000);
         }
     }
 }

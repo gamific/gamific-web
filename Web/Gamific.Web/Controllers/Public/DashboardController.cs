@@ -46,6 +46,11 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
 
+            if (episodesFilter.Count < 1)
+            {
+                GetCampaignsModal();
+            }
+
             foreach (EpisodeEngineDTO episode in episodesFilter)
             {
                 if (episodes.Count > 7)
@@ -78,6 +83,21 @@ namespace Vlast.Gamific.Web.Controllers.Public
             else
             {
                 episodesRtn = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 1000).List.episode;
+
+                int i = 0;
+                foreach (EpisodeEngineDTO episode in episodesRtn)
+                {
+                    if (i > 6)
+                    {
+                        episode.checkedFlag = false;
+                    }
+                    else
+                    {
+                        episode.checkedFlag = true;
+                    }
+                    episodesFilter.Add(episode);
+                    i++;
+                }
             }
 
             return PartialView("_CampaignsFilter", episodesRtn);
@@ -95,6 +115,11 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             List<string> rtn = new List<string>();
 
+            if (episodesFilter.Count < 1)
+            {
+                GetCampaignsModal();
+            }
+
             foreach (EpisodeEngineDTO episode in episodesFilter)
             {
                 if (rtn.Count > 7)
@@ -110,7 +135,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            return Content(JsonConvert.SerializeObject(episodesFilter), "application/json");
+            return Content(JsonConvert.SerializeObject(rtn), "application/json");
         }
 
         [Route("loadMorrisByEpisode/{metricId}/{episodeId}")]
@@ -231,7 +256,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             foreach (ItemEngineDTO item in items)
             {
-                if (item.Name != null) { 
+                if (item.Name != null)
+                {
                     MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
 
                     morrisDTO.label = item.Name;
@@ -269,6 +295,11 @@ namespace Vlast.Gamific.Web.Controllers.Public
             MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
 
             List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
+
+            if (episodesFilter.Count < 1)
+            {
+                GetCampaignsModal();
+            }
 
             foreach (EpisodeEngineDTO episode in episodesFilter)
             {
