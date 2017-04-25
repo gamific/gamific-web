@@ -25,6 +25,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [Route("")]
         public ActionResult Index(int state = 1)
         {
+            episodesFilter = new List<EpisodeEngineDTO>();
             GetAllDTO all = EpisodeEngineService.Instance.GetByGameIdAndActive(CurrentFirm.ExternalId, 1);
             ViewBag.Episodes = from episode in all.List.episode
                                select new SelectListItem
@@ -45,16 +46,16 @@ namespace Vlast.Gamific.Web.Controllers.Public
         private bool changeVisibilityGraph()
         {
             bool active = false;
-            
+
             ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, ParamEntity.GRAFICO_PRODUTOS);
 
-            if (grafics != null && grafics.Value == "1" )
+            if (grafics != null && grafics.Value == "1")
             {
                 active = true;
             }
 
             return active;
-            
+
         }
 
         [Route("getCampaignsWithIds")]
@@ -62,6 +63,11 @@ namespace Vlast.Gamific.Web.Controllers.Public
         public ContentResult GetCampaignsWithIds()
         {
             List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
+
+            if (episodesFilter.Count < 1)
+            {
+                GetCampaignsModal();
+            }
 
             foreach (EpisodeEngineDTO episode in episodesFilter)
             {
@@ -95,6 +101,21 @@ namespace Vlast.Gamific.Web.Controllers.Public
             else
             {
                 episodesRtn = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 1000).List.episode;
+
+                int i = 0;
+                foreach (EpisodeEngineDTO episode in episodesRtn)
+                {
+
+                    if (episodesFilter.Count < 7)
+                    {
+                        episode.checkedFlag = true;
+                    }
+
+                    episodesFilter.Add(episode);
+
+                    i++;
+                }
+
             }
 
             return PartialView("_CampaignsFilter", episodesRtn);
@@ -112,6 +133,11 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             List<string> rtn = new List<string>();
 
+            if (episodesFilter.Count < 1)
+            {
+                GetCampaignsModal();
+            }
+
             foreach (EpisodeEngineDTO episode in episodesFilter)
             {
                 if (rtn.Count > 7)
@@ -127,7 +153,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            return Content(JsonConvert.SerializeObject(episodesFilter), "application/json");
+            return Content(JsonConvert.SerializeObject(rtn), "application/json");
         }
 
         [Route("loadMorrisByEpisode/{metricId}/{episodeId}")]
@@ -154,6 +180,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
 
                 morrisDTO.label = item.Name.Substring(0, 11) + "...";
+                morrisDTO.label2 = item.Name;
                 morrisDTO.value = double.Parse(item.Value.ToString("n2"));
 
                 colors.Add(colorsToAdd[i]);
@@ -199,6 +226,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
 
                 morrisDTO.label = item.Name.Substring(0, 11) + "...";
+                morrisDTO.label2 = item.Name;
                 morrisDTO.value = double.Parse(item.Value.ToString("n2"));
 
                 colors.Add(colorsToAdd[i]);
@@ -244,6 +272,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
 
                 morrisDTO.label = item.Name.Substring(0, 11) + "...";
+                morrisDTO.label2 = item.Name;
                 morrisDTO.value = double.Parse(item.Value.ToString("n2"));
 
                 colors.Add(colorsToAdd[i]);
@@ -277,6 +306,11 @@ namespace Vlast.Gamific.Web.Controllers.Public
             MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
 
             List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
+
+            if (episodesFilter.Count < 1)
+            {
+                GetCampaignsModal();
+            }
 
             foreach (EpisodeEngineDTO episode in episodesFilter)
             {

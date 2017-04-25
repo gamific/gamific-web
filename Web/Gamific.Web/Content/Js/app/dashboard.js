@@ -849,7 +849,7 @@ function loadMorris(type) {
 
                 var z;
                 for (z = 0; z < data.products.length; z++) {
-                    $("#productsList").append('<li class="morrisLi"><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label + '<small>' + data.products[z].value + '</small></li>');
+                    $("#productsList").append('<li class="morrisLi"><span style="border-color: ' + data.colors[z] + '" class="badge badge-outline" ></span>' + data.products[z].label2 + '<small>' + data.products[z].value + '</small></li>');
                 }
             },
             error: function (data) {
