@@ -72,13 +72,13 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-        public GetAllDTO GetByGameIdAndActiveIsTrue(string gameId, int pageIndex = 0, int pageSize = 10)
+        public GetAllDTO GetByGameIdAndActiveIsTrue(string gameId, int pageIndex = 0, int pageSize = 10, string column = "initDate", string order = "asc")
         {
             try
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "search/findByGameIdAndActiveIsTrue/" + "?gameId=" + gameId + "&page=" + pageIndex + "&size=" + pageSize);
+                    string response = client.DownloadString(path + "search/findByGameIdAndActiveIsTrue/" + "?gameId=" + gameId + "&page=" + pageIndex + "&size=" + pageSize + "&sort=" + column + "," + order);
                     return JsonDeserialize<GetAllDTO>(response);
                 }
             }
@@ -120,13 +120,13 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-        public GetAllDTO FindByGameIdAndActive(string gameId, int isActive, int pageIndex = 0, int pageSize = 10)
+        public GetAllDTO FindByGameIdAndActive(string gameId, int isActive, int pageIndex = 0, int pageSize = 10, string column = "initDate", string order = "desc")
         {
             try
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "search/findByGameIdAndActive" + "?size=" + pageSize + "&page=" + pageIndex + "&gameId=" + gameId + "&active=" + isActive);
+                    string response = client.DownloadString(path + "search/findByGameIdAndActive" + "?size=" + pageSize + "&page=" + pageIndex + "&gameId=" + gameId + "&active=" + isActive + "&sort=" + column + "," + order);
                     return JsonDeserialize<GetAllDTO>(response);
                 }
             }
@@ -137,15 +137,14 @@ namespace Vlast.Gamific.Web.Services.Engine
         }
 
 
-        public GetAllDTO GetByGameIdAndActive(string gameId, int active)
+        public GetAllDTO GetByGameIdAndActive(string gameId, int active, string column = "initDate", string order = "desc")
         {
             try
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "search/findByGameIdAndActive/" + "?gameId=" + gameId + "&active=" + active);
+                    string response = client.DownloadString(path + "search/findByGameIdAndActive/" + "?gameId=" + gameId + "&active=" + active + "&sort=" + column + "," + order);
                     GetAllDTO all = JsonDeserialize<GetAllDTO>(response);
-                    all.List.episode = all.List.episode.OrderBy(x => x.initDate).ToList();
                     return all;
                 }
             }
@@ -155,15 +154,14 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-        public GetAllDTO GetByGameId(string gameId, int pageIndex = 0, int pageSize = 10 )
+        public GetAllDTO GetByGameId(string gameId, int pageIndex = 0, int pageSize = 10, string column = "initDate", string order = "asc")
         {
             try
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "search/findByGameId/" + "?gameId=" + gameId + "&page=" + pageIndex + "&size=" + pageSize);
+                    string response = client.DownloadString(path + "search/findByGameId/" + "?gameId=" + gameId + "&page=" + pageIndex + "&size=" + pageSize + "&sort=" + column + "," + order);
                     GetAllDTO all = JsonDeserialize<GetAllDTO>(response);
-                    all.List.episode = all.List.episode.OrderBy(x => x.initDate).ToList();
                     return all;
                 }
             }

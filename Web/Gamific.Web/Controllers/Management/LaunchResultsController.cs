@@ -365,9 +365,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 EpisodeEngineService.Instance.DeleteAllScoreByEpisodeId(episodeId);
             }
-
-
-            /*
+            
             if (CurrentFirm.ExternalId == "5885f7593a87786bec6ca6fd")
             {
                 return SaveResultArchiveSolBebidas(resultsArchive, episodeId);
@@ -376,7 +374,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 return SaveResultArchiveStandard(resultsArchive, episodeId);
             }
-            */
+            
 
             return Json(new { Success = false }, JsonRequestBehavior.DenyGet);
         }

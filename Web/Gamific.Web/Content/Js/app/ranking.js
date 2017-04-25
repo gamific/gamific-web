@@ -29,7 +29,7 @@ function refreshDropDownEpisodes(currentId) {
             $("#dropDownEpisodes").empty();
             var episodes = JSON.parse(data);
 
-            for (var i = episodes.length - 1; i >= 0 ; i--) {
+            for (var i = 0; i < episodes.length ; i++) {
                 var selected = "";
                 if (currentId == undefined || currentId == episodes[i].id) {
                     selected = "selected";

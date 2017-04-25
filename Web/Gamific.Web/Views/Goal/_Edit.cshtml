@@ -14,6 +14,8 @@
                         foreach (var item in Model)
                         {
                             <label class="col-sm-12 col-md-12 col-xs-6" style="font-size:100%">@item.MetricName</label>
+                            <input type="hidden" value="@item.MetricName" id="GoalList[@i].MetricName" name="GoalList[@i].MetricName" />
+                            <input type="hidden" value="@item.MetricIcon" id="GoalList[@i].MetricIcon" name="GoalList[@i].MetricIcon" />
                             <input type="hidden" value="@item.RunId" id="GoalList[@i].RunId" name="GoalList[@i].RunId"/>
                             <input type="hidden" value="@item.Id" id="GoalList[@i].Id" name="GoalList[@i].Id" />
                             <input type="hidden" value="@item.MetricId" id="GoalList[@i].MetricId" name="GoalList[@i].MetricId"/>
