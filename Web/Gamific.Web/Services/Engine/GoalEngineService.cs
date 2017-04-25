@@ -58,7 +58,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "/search/findByGameId?gameId=" + gameId);
+                    string response = client.DownloadString(path + "search/findByGameId?gameId=" + gameId);
                     return JsonDeserialize<GoalEngineDTO>(response);
                 }
             }
@@ -74,7 +74,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "/search/findByTeamId?teamId=" + teamId);
+                    string response = client.DownloadString(path + "search/findByTeamId?teamId=" + teamId);
                     return JsonDeserialize<GetAllDTO>(response);
                 }
             }
