@@ -913,7 +913,9 @@ function loadMorris(type) {
 }
 
 $(document).ready(function () {
-    loadMorris(1);
+    if (window.location.pathname.search("detalhes") == -1) {
+        loadMorris(1);
+    }
 });
 
 function onSuccessSaveFilter(data) {
