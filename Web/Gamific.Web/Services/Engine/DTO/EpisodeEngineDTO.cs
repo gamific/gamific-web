@@ -39,11 +39,11 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("xpReward")]
         public int? XpReward { get; set; }
 
-        [Required(ErrorMessage = "A data inicial é obrigatório.")]
+        [Required(ErrorMessage = "A data inicial é obrigatória.")]
         [JsonProperty("initDate")]
         public long initDate { get; set; }
 
-        [Required(ErrorMessage = "A data final é obrigatório.")]
+        [Required(ErrorMessage = "A data final é obrigatória.")]
         [JsonProperty("finishDate")]
         public long finishDate { get; set; }
 
