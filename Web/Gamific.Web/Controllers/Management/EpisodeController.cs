@@ -73,11 +73,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [HttpPost]
         public ActionResult NewClone(String name, String id)
         {
-            EpisodeEngineDTO episode = EpisodeEngineService.Instance.Clone(name, id);
+            long initDate = DateTime.Now.Ticks;
 
-            episode.initDate = episode.initDateAux.Ticks;
+            long finishDate = DateTime.Now.Ticks;
 
-            episode.finishDate = episode.finishDateAux.Ticks;
+            EpisodeEngineDTO episode = EpisodeEngineService.Instance.Clone(name, id, initDate, finishDate);
 
             return new EmptyResult();
         }

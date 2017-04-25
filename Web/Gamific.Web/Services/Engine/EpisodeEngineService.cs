@@ -88,13 +88,13 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-        public EpisodeEngineDTO Clone(string name, string id)
+        public EpisodeEngineDTO Clone(string name, string id, long initDate, long finishDate)
         {
             try
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.UploadString(ENGINE_API + "cloneEpisode?name=" + name + "&episodeId=" + id, "POST");
+                    string response = client.UploadString(ENGINE_API + "cloneEpisode?name=" + name + "&episodeId=" + id + "&initDate=" + initDate + "&finishDate=" + finishDate, "POST");
                     return JsonDeserialize<EpisodeEngineDTO>(response);
                 }
             }

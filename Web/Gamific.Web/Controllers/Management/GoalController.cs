@@ -323,8 +323,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("cadastrarArquivoMeta/{episodeId}")]
         public ActionResult CreateGoalArchive(string episodeId)
         {
-
-            ViewBag.EpisodeId = episodeId;
             ViewBag.Episodes = GetEpisodesToSelect(episodeId);
 
             return PartialView("_EditAll");
