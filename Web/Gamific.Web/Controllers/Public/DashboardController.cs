@@ -202,9 +202,9 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return Content(JsonConvert.SerializeObject(dto), "application/json");
         }
 
-        [Route("loadMorrisByRun/{metricId}/{runId}")]
+        [Route("loadMorrisByRun/{metricId}/{playerId}/{teamId}")]
         [HttpGet]
-        public ContentResult LoadMorrisByRun(string metricId, string runId)
+        public ContentResult LoadMorrisByRun(string metricId, string playerId, string teamId)
         {
             MorrisDTO dto = new MorrisDTO
             {
@@ -215,6 +215,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 "#FF0000", "#2F4F4F", "#8B4513", "#808000", "#FFA500", "#7FFFD4", "#87CEFA", "#FF69B4", "#FF00FF", "#7CFC00", "#BC8F8F", "#4682B4", "#006400", "#7B68EE" };
 
             List<ItemEngineDTO> items = new List<ItemEngineDTO>();
+
+            string runId;
+
+            runId = RunEngineService.Instance.GetRunByPlayerAndTeamId(playerId, teamId).Id;
 
             items = ItemEngineService.Instance.FindByRun(metricId, runId);
 

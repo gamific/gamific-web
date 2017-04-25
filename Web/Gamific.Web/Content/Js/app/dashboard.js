@@ -887,7 +887,7 @@ function loadMorris(type) {
 
     if (type == 3) {
         $.ajax({
-            url: "/public/dashboard/loadMorrisByRun/" + metricId + "/" + runId,
+            url: "/public/dashboard/loadMorrisByRun/" + metricId + "/" + runId + "/" + teamId,
             async: false,
             type: "GET",
             success: function (data) {
