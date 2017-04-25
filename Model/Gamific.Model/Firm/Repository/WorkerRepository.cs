@@ -283,8 +283,7 @@ namespace Vlast.Gamific.Model.Firm.Repository
                 var query = from worker in context.Workers
                             from profile in context.Profiles
                             from wt in context.WorkerTypes
-                            where worker.Status == GenericStatus.ACTIVE
-                            && ExternalIds.Contains(worker.ExternalId)
+                            where ExternalIds.Contains(worker.ExternalId)
                             && worker.UserId == profile.Id
                             && worker.WorkerTypeId == wt.Id
                             select new WorkerDTO

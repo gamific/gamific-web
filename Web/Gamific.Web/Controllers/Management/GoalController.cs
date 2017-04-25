@@ -64,8 +64,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = all.List.run.Count(),
-                        RecordsFiltered = all.List.run.Count(),
+                        RecordsTotal = workers.Count(),
+                        RecordsFiltered = workers.Count(),
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderBy(item => item[index]).ToArray()
                     };
                 }
@@ -74,8 +74,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = all.List.run.Count(),
-                        RecordsFiltered = all.List.run.Count(),
+                        RecordsTotal = workers.Count(),
+                        RecordsFiltered = workers.Count(),
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderByDescending(item => item[index]).ToArray()
                     };
                 }
@@ -143,8 +143,25 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 List<GoalEngineDTO> goals = new List<GoalEngineDTO>();
                 foreach (MetricEngineDTO metric in metrics)
                 {
-                    GoalEngineDTO goal = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
-                    goals.Add(goal);
+                    try
+                    {
+                        GoalEngineDTO goal = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
+                        goals.Add(goal);
+                    }
+                    catch(Exception ex)
+                    {
+                        GoalEngineDTO goal = new GoalEngineDTO
+                        {
+                            Goal = 0,
+                            MetricId = metric.Id,
+                            RunId = run.Id,
+                            MetricIcon = metric.Icon,
+                            MetricName = metric.Name,
+                        };
+                        goals.Add(goal);
+                        Logger.LogException(ex);
+                    }
+
                 }
                 
 
@@ -246,7 +263,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             };
                             GoalEngineService.Instance.CreateOrUpdate(goalEngine);
                         }
-                        else if (goal.Goal >= 0)
+                        else if (goal.Goal > 0)
                         {
                             GoalEngineDTO goalEngine = GoalEngineService.Instance.GetByRunIdAndMetricId(goal.RunId, goal.MetricId);
                             goalEngine.Goal = goal.Goal;
@@ -323,8 +340,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("cadastrarArquivoMeta/{episodeId}")]
         public ActionResult CreateGoalArchive(string episodeId)
         {
-
-            ViewBag.EpisodeId = episodeId;
             ViewBag.Episodes = GetEpisodesToSelect(episodeId);
 
             return PartialView("_EditAll");
@@ -587,7 +602,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         }
 
                         goalEngineDTO.Goal = Int32.Parse(row[3].Value.ToString());
-                        GoalEngineService.Instance.CreateOrUpdate(goalEngineDTO);
+                        goalEngineDTO = GoalEngineService.Instance.CreateOrUpdate(goalEngineDTO);
                     }
                 }
 
