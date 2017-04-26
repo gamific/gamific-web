@@ -82,7 +82,7 @@ $('#dropDownTeams').change(function () {
 
 function refreshDropDownEpisodes(currentId) {
     $.ajax({
-        url: "/admin/lancarResultados/buscarEpisodios",
+        url: "/admin/metas/buscarEpisodios",
         async: false,
         type: "GET",
         success: function (data) {

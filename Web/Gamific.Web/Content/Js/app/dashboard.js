@@ -30,9 +30,7 @@ function refreshDropDownEpisodes(state, currentId) {
             $("#dropDownEpisodes").empty();
             var episodes = JSON.parse(data);
 
-            //for (var i = 0; i < episodes.length; i++) {
-            for (var i = episodes.length - 1; i >= 0 ; i--) {
-
+            for (var i = 0; i < episodes.length; i++) {
                 var selected = "";
                 if (currentId == episodes[i].id) {
                     selected = "selected";
@@ -887,7 +885,7 @@ function loadMorris(type) {
 
     if (type == 3) {
         $.ajax({
-            url: "/public/dashboard/loadMorrisByRun/" + metricId + "/" + runId,
+            url: "/public/dashboard/loadMorrisByRun/" + metricId + "/" + runId + "/" + teamId,
             async: false,
             type: "GET",
             success: function (data) {
@@ -915,7 +913,9 @@ function loadMorris(type) {
 }
 
 $(document).ready(function () {
-    loadMorris(1);
+    if (window.location.pathname.search("detalhes") == -1) {
+        loadMorris(1);
+    }
 });
 
 function onSuccessSaveFilter(data) {
