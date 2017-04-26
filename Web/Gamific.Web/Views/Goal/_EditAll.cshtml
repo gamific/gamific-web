@@ -2,9 +2,19 @@
     <div id="modal-panel">
         <div class="modal-dialog modal-xlg">
             <div class="modal-content">
+
                 <div class="modal-header">
-                    <h4 class="modal-title" id="cadastrarResultadoLabel"><br class="Apple-interchange-newline">Lançar meta</h4>
+                    <!--<h4 class="modal-title" id="cadastrarResultadoLabel"><br class="Apple-interchange-newline">Lançar meta</h4>-->
+                    <div class="form-group" id="sendArchive" style="">
+                        <div class="col-sm-8 col-md-8">
+                            <h4 class="modal-title" id="cadastrarResultadoLabel" style="font-size:25px;"><br class="Apple-interchange-newline">Lançar meta</h4>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <a id="downloadArchive" class="btn btn-default sing-up-button" href="/admin/metas/baixarPlanilhaMeta/@ViewBag.EpisodeId" onclick="" title="Baixar planilha de metas"><i class="fa fa-download"></i> Baixar Modelo</a>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="modal-body" id="edit-modal-body">
                     <input type="hidden" name="episode" id="episode" value="@ViewBag.Episodes" />
                     @Html.AntiForgeryToken()
@@ -13,7 +23,7 @@
                     </div>
                     
 
-                    <div class="col-xs-12" style="top:7px;">
+                    <div class="col-xs-12" style="top:20px;">
                         @Html.Label("Selecione uma Campanha*")
                         <div class="form-group">
                             <select class="form-control" name="episodeId">
@@ -26,16 +36,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="sendArchive" style="">
-                        <div class="col-xs-12 modal-div">
-                            <a id="downloadArchive" class="btn btn-default sing-up-button" href="/admin/metas/baixarPlanilhaMeta/@ViewBag.EpisodeId" onclick="" title="Baixar planilha de metas"><i class="fa fa-download"></i> Baixar Modelo</a>
-                        </div>
-                    </div>
 
-
-
-                    <div class="form-group" id="sendArchive" style="">
-                        <div class="col-xs-12 modal-div">
+                    <div class="form-group" id="sendArchive" >
+                        <div class="col-xs-12 modal-div" style="top:12px;">
                             <input class="btn btn-default sing-up-button" type="file" id="goalArchive" name="goalArchive" />
                         </div>
                     </div>

@@ -15,9 +15,8 @@
                 </div>
 
                 <div class="modal-body" id="edit-modal-body" >
-                    <!--<input type="hidden" name="clean" id="clean" value="@ViewBag.Clean" />-->
+                    <!--<input type="hidden" name="clean" id="clean" value="ViewBag.Clean" />-->
                     <input type="hidden" name="episode" id="episode" value="@ViewBag.Episodes" />
-                    <input type="hidden" name="episodeId" id="episodeId" value="@ViewBag.EpisodeId" />
                     @Html.AntiForgeryToken()
                     <div class="row">
                         @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
@@ -30,22 +29,12 @@
                             <select class="form-control" name="episodeId">
                                 @foreach (SelectListItem Episode in ViewBag.Episodes)
                                 {
-                                    if (Episode.Value == ViewBag.EpisodeId && ViewBag.EpisodeId != null)
-                                    {
                                         <option value="@Episode.Value" selected="selected">@Episode.Text</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@Episode.Value">@Episode.Text</option>
-                                    }
                                 }
                             </select>
                         </div>
                     </div>
 
-                    
-
-                    
                     
                     <div class="form-group" id="sendArchive" >
                         <div class="col-xs-12 modal-div" style="top:12px;">
