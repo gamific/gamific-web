@@ -438,6 +438,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             ViewBag.EpisodeId = episodeId;
             ViewBag.TeamId = teamId;
             ViewBag.PlayerId = playerId;
+            ViewBag.Grafic_itens = changeVisibilityGraph();
 
 
             return View("Index");
