@@ -204,7 +204,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = all.PageInfo.totalElements,
                         RecordsFiltered = all.PageInfo.totalElements,
-                        Data = all.List.episode.Select(r => new string[] { r.Name, (dateInit = new DateTime(r.initDate)).ToString("dd/MM/yyyy") , (dateFinish = new DateTime (r.finishDate)).ToString("dd/MM/yyyy"), r.XpReward.ToString(), r.Active == true ? "Sim" : "Não", r.sendEmail == true ? "Sim" : "Não", r.Id }).ToArray().OrderBy(item => item[index]).ToArray()
+                        Data = all.List.episode.Select(r => new string[] { r.Name, (dateInit = new DateTime(r.initDate)).ToString("dd/MM/yyyy") , (dateFinish = new DateTime (r.finishDate)).ToString("dd/MM/yyyy"), r.XpReward.ToString(), r.Active == true ? "Sim" : "Não", r.sendEmail == true ? "Sim" : "Não", r.Id }).ToArray().ToArray() //.OrderBy(item => item[index]).ToArray()
 
                     };
                     
