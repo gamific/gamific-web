@@ -1,9 +1,207 @@
-﻿#load-login {
+﻿/*
+    #load-login {
     z-index:999; 
     position:absolute; 
     top: 48%; 
     left: 48%;
 }
+#background-load{
+    width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 999;
+  background: #e1e1e1;
+  opacity: 0.8;
+}
+
+*/
+
+
 #color-w{
     color:white;
 }
+
+
+
+#loading {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 999;
+}
+#loading #preloader {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  top: calc(50% - 50px);
+  /* text-align: center; */
+  margin: 0 auto;
+}
+#loading #preloader:after {
+  content: "Carregando Gamific...";
+  /* Text under the circles */
+  position: absolute;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  color: #ffffff;/*#4d515f;*/
+  letter-spacing: 1px;
+  font-family: Montserrat, "Helvetica Neue", "Lucida Grande", Arial, Verdana, sans-serif;
+  top: 100px;
+  width: 100%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  text-align: center;
+}
+#loading #preloader span {
+  position: absolute;
+  border: 8px solid #00ff21;/*#28B428;*/
+  border-top: 8px solid transparent;
+  border-radius: 999px;
+}
+#loading #preloader span:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  left: calc(50% - 40px);
+  -webkit-animation: spin-1 1s infinite ease;
+  -moz-animation: spin-1 1s infinite ease;
+  animation: spin-1 1s infinite ease;
+}
+#loading #preloader span:nth-child(2) {
+  top: 20px;
+  left: calc(50% - 20px);
+  width: 40px;
+  height: 40px;
+  -webkit-animation: spin-2 1s infinite ease;
+  -moz-animation: spin-2 1s infinite ease;
+  animation: spin-2 1s infinite ease;
+}
+
+@-webkit-keyframes spin-1 {
+  0% {
+    -webkit-transform: rotate(360deg);
+    opacity: 1;
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+    opacity: 0.5;
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    opacity: 1;
+  }
+}
+@-moz-keyframes spin-1 {
+  0% {
+    -moz-transform: rotate(360deg);
+    opacity: 1;
+  }
+  50% {
+    -moz-transform: rotate(180deg);
+    opacity: 0.5;
+  }
+  100% {
+    -moz-transform: rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes spin-1 {
+  0% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+    opacity: 0.5;
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes spin-2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    opacity: 0.5;
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    opacity: 0.5;
+  }
+}
+@-moz-keyframes spin-2 {
+  0% {
+    -moz-transform: rotate(0deg);
+    opacity: 0.5;
+  }
+  50% {
+    -moz-transform: rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    opacity: 0.5;
+  }
+}
+@keyframes spin-2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    opacity: 0.5;
+  }
+  50% {
+    /* -webkit-transform: rotate(180deg); */
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    /* transform: rotate(180deg); */
+    /* opacity: 1; */
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+    opacity: 0.5;
+  }
+}
+
+
+#loading #preloader span:nth-child(2) {
+    top: 20px;
+    left: calc(50% - 20px);
+    width: 40px;
+    height: 40px;
+    -webkit-animation: spin-2 1s infinite ease;
+    -moz-animation: spin-2 1s infinite ease;
+    animation: spin-2 1s infinite ease;
+}
+
+#loading #preloader span {
+    position: absolute;
+    border: 8px solid #00ff21;/*#28B428;*/
+    border-top: 8px solid transparent;
+    border-radius: 999px;
+}
+
