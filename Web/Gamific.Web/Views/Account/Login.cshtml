@@ -6,13 +6,24 @@
 }
 
 <body class="bg-1">
+
+    
     <div id="wrap">
         <div class="row">
             <div id="content" class="col-md-12 full-page login">
-                <a id="load-login" hidden >
-                    <img id="Loading" src="~/Content/Images/public/loading.gif" style="display: block;" width="50" />
+                <a id="load-login" hidden>
+                    <div id="">
+                        <div id="loading">
+                            <div id="preloader">
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<img id="Loading" src="~/Content/Images/public/loading.gif" style="display: block;" width="50" />-->
                 </a>
-                <div class="inside-block">
+                <div id="invisible" class="inside-block">
                     <a href="/">
                         <img src="~/Content/img/logo.png" style="width: 100%;" alt="" class="logo" />
                     </a>
@@ -64,6 +75,7 @@
     <script>
         $('#button').click(function () {
             $('#load-login').show();
+            $('#invisible').hide();
             //$("input").prop('disabled', true);
         });   
 
