@@ -352,6 +352,9 @@
     <Compile Include="Services\Engine\TeamEngineService.cs" />
     <Compile Include="Services\Media\ImageAPIController.cs" />
     <Compile Include="Services\Public\RaceAPIController.cs" />
+    <Compile Include="Services\Push\DTO\NotificationLogDTO.cs" />
+    <Compile Include="Services\Push\DTO\NotificationPushDTO.cs" />
+    <Compile Include="Services\Push\NotificationPushService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Controllers\Util\JQueryDataTableRequest.cs" />
   </ItemGroup>

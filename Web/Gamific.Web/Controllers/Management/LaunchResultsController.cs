@@ -25,6 +25,9 @@ using Vlast.Gamific.Model.Account.Domain;
 using System.Diagnostics;
 using Vlast.Broker.EMAIL;
 using Vlast.Util.Parameter;
+using Vlast.Gamific.Web.Services.Push;
+using Vlast.Gamific.Web.Services.Push.DTO;
+using Vlast.Gamific.Model.Account.DTO;
 
 namespace Vlast.Gamific.Web.Controllers.Management
 {
@@ -165,21 +168,45 @@ namespace Vlast.Gamific.Web.Controllers.Management
             long time = dateTime.Ticks;
 
             float valorVendas = 0f;
-            if (CurrentFirm.ExternalId == "5880a1743a87783b4f0ba709")
+
+            string gameId = CurrentFirm.ExternalId;
+            if (gameId == "5880a1743a87783b4f0ba709") //pelegrini
             {
                 valorVendas = resultList.Where(x => x.Name == "VENDAS").Select(y => y.Points).FirstOrDefault();
             }
-            
 
+            bool flag = false;
             foreach (RunMetricEngineDTO result in resultList)
             {
                 if (result.Points > 0)
                 {
+                    flag = true;
                     result.Score = 0;
                     result.RunId = runId;
                     result.Date = time;
                     result.ArithmeticMultiplier = valorVendas > 0 ? valorVendas : 1;
                     RunMetricEngineService.Instance.CreateOrUpdate(result);
+                }
+            }
+
+            if (gameId == "58e623fe3a877804f5b6bf22" && flag == true) //duplov
+            {
+                List<AccountDevicesDTO> devices = AccountDevicesRepository.Instance.FindAllByGameId(gameId);
+
+                PlayerEngineDTO player = PlayerEngineService.Instance.GetById(resultList.First().PlayerId);
+                string message = player.Nick + " está acelerando, veja seus novos resultados!";
+
+                foreach (AccountDevicesDTO device in devices)
+                {
+                    NotificationPushDTO notification = new NotificationPushDTO
+                    {
+                        Token = device.Notification_Token,
+                        PlayerId = device.External_User_Id,
+                        Message = message,
+                        Title = "Gamific - Novos Resultados"
+                    };
+
+                    NotificationPushService.Instance.SendPush(notification);
                 }
             }
 
