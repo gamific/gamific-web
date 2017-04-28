@@ -245,6 +245,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             //ViewBag.Clean = "false";
             ViewBag.Episodes = GetEpisodesToSelect(episodeId);
+            ViewBag.EpisodeId = episodeId;
 
             return PartialView("_ResultsArchive");
         }

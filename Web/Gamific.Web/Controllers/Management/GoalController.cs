@@ -341,6 +341,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult CreateGoalArchive(string episodeId)
         {
             ViewBag.Episodes = GetEpisodesToSelect(episodeId);
+            ViewBag.EpisodeId = episodeId;
 
             return PartialView("_EditAll");
         }
