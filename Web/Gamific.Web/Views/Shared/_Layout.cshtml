@@ -33,9 +33,10 @@
             <div class="navbar navbar-default navbar-fixed-top navbar-transparent-black mm-fixed-top collapsed" role="navigation" id="navbar">
                 <!-- Marca -->
                 <div class="navbar-header col-md-2">
+                    <input id="close" value="@ViewBag.close" hidden/>
                     <a class="navbar-brand" href="/">
                     </a>
-                    <div class="sidebar-collapse">
+                    <div class="sidebar-collapse" id="closed">
                         <a href="#">
                             <i class="fa fa-bars"></i>
                         </a>
@@ -261,3 +262,29 @@
 </body>
 
 </html>
+
+<script>
+    /*$(document).ready(function(){
+
+        if($('#close').val()){
+            $("#sidebar, #navbar").toggleClass("collapsed"),
+            $("#navigation").find(".dropdown.open").removeClass("open"),
+            $("#navigation").find(".dropdown-menu.animated").removeClass("animated"),
+            $("#sidebar > li.collapsed").removeClass("collapsed"),
+            isMobile.any()?$("#content").css($("#sidebar").hasClass("collapsed")?{paddingLeft:"55px",display:"block"}:{paddingLeft:"265px",display:"none"}):$("#sidebar").hasClass("collapsed")?$(window).width()<1024?$("#content").animate({left:"0px"},150):$("#content").animate({paddingLeft:"55px"},150):$(window).width()<1024?$("#content").animate({left:"210px"},150):$("#content").animate({paddingLeft:"265px"},150)
+        }
+    });
+    
+    $('#closed').on('click', function () {
+        console.log($('#close').val());
+        if ($('#close').val())
+        {
+            $('#close').val() = false;
+        }
+        else
+        {
+            $('#close').val() = true;
+        }
+    });*/
+    
+</script>
