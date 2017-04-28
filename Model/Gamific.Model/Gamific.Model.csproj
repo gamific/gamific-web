@@ -63,11 +63,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\Domain\AccountDevicesEntity.cs" />
     <Compile Include="Account\Domain\UserProfileEntity.cs" />
     <Compile Include="Account\Domain\UserRoleEntity.cs" />
     <Compile Include="Account\Domain\UserAccountEntity.cs" />
+    <Compile Include="Account\DTO\AccountDevicesDTO.cs" />
     <Compile Include="Account\DTO\Enums.cs" />
     <Compile Include="Account\DTO\PasswordDTO.cs" />
+    <Compile Include="Account\Repository\AccountDevicesRepository.cs" />
     <Compile Include="Account\Repository\AccountRepository.cs" />
     <Compile Include="Account\Repository\UserProfileRepository.cs" />
     <Compile Include="Firm\Domain\ParamEntity.cs" />
