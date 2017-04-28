@@ -279,6 +279,7 @@
     <Compile Include="Controllers\Management\LaunchResultsController.cs" />
     <Compile Include="Controllers\Management\MetricController.cs" />
     <Compile Include="Controllers\Management\ParamController.cs" />
+    <Compile Include="Controllers\Management\PushNotificationController.cs" />
     <Compile Include="Controllers\Management\VideoController.cs" />
     <Compile Include="Controllers\Management\Model\IconsDTO.cs" />
     <Compile Include="Controllers\Management\TopicHelpController.cs" />
@@ -501,6 +502,7 @@
       <DependentUpon>Metric.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\app\param.js" />
+    <Content Include="Content\Js\app\pushNotification.js" />
     <Content Include="Content\Js\app\race.min.js">
       <DependentUpon>race.js</DependentUpon>
     </Content>
@@ -759,6 +761,7 @@
     <Content Include="Views\Goal\_EditAll.cshtml" />
     <Content Include="Views\Goal\_EditTeam.cshtml" />
     <Content Include="Views\Dashboard\_CampaignsFilter.cshtml" />
+    <Content Include="Views\PushNotification\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

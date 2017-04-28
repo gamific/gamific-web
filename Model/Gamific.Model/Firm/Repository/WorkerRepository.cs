@@ -57,6 +57,25 @@ namespace Vlast.Gamific.Model.Firm.Repository
             return query.ToList();
         }
 
+
+        /// <summary>
+        /// Query para consulta externa
+        /// </summary>
+        /// <returns></returns>
+        public List<WorkerEntity> GetAll(int i)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from sc in context.Workers
+                            select sc;
+
+                return query.ToList();
+            }
+                
+
+            
+        }
+
         /*
         /// <summary>
         /// Busca todos funcionarios ativos de uma empresa

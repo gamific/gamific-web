@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
+using Vlast.Gamific.Model.Account.Domain;
+using Vlast.Gamific.Model.Account.Repository;
 using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
 using Vlast.Gamific.Model.Firm.Repository;
@@ -14,6 +16,39 @@ namespace Vlast.Gamific.Web.Controllers.Util
 {
     public class ScriptsMigration : BaseController
     {
+        static public void SaveWorld()
+        {
+            List<WorkerEntity> workers = WorkerRepository.Instance.GetAll(1);
+
+            foreach(WorkerEntity worker in workers)
+            {
+                try
+                {
+                    PlayerEngineDTO player = PlayerEngineService.Instance.GetById(worker.ExternalId, "rubens");
+
+                    UserProfileEntity user = new UserProfileEntity()
+                    {
+                        CPF = player.Cpf,
+                        Id = worker.UserId,
+                        Email = player.Email,
+                        LastUpdate = DateTime.Now,
+                        Name = player.Nick,
+                        Phone = "99999999"
+                    };
+
+                    UserProfileRepository.Instance.CreateUserProfile(user);
+                }
+                catch(Exception e)
+                {
+                    Debug.Print(e.Message + " - " + worker.Id + "\n");
+                }
+
+
+
+            }
+
+        }
+
         public void MigrationGoalToEngine()
         {
             List<GameEngineDTO> games = GameEngineService.Instance.GetAll(0,10000).List.game;

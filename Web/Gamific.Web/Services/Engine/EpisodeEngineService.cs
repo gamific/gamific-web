@@ -33,6 +33,11 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        internal GetAllDTO GetByGameIdAndActive(object externalId, int state)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Services
