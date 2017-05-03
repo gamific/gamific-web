@@ -428,7 +428,6 @@ function onSucessSaveResult() {
 }
 
 var values = [];
-var values1 = [];
 var plot;
 var metricToInitialize = $('#metricToInitialize').val();
 if (metricToInitialize) {
@@ -518,7 +517,7 @@ if (metricToInitialize) {
             async: true,
             dataType: 'json',
             success: function (d) {
-                values1.push({
+                values.push({
                     metricId: metricToInitialize,
                     label: d.MetricName,
                     data: d.Positions,
@@ -528,7 +527,7 @@ if (metricToInitialize) {
                     color: generateColor()
                 })
 
-                plot = $.plotAnimator($("#statistics-chart"), values1, properties);
+                plot = $.plotAnimator($("#statistics-chart"), values, properties);
 
                 $("#statistics-chart").bind("plothover", function (event, pos, item) {
                     if (item) {
@@ -662,7 +661,7 @@ function initializeChart(metricId, checked) {
         if (checked) {
             $.ajax({
                 url: "/public/dashboard/loadChart/" + metricId,
-                async: true,
+                async: false,
                 dataType: 'json',
                 success: function (d) {
                     values.push({
@@ -927,10 +926,14 @@ function onSuccessSaveFilter(data) {
     var i;
     for (i = 0; i < metricSelectedList.length; i++) {
         if (metricSelectedList[i].checked) {
-            var value = metricSelectedList[i].value;
-            window.setTimeout(function () {
-                initializeChart(value, true);
-            }, 3000);
+            if (i > 0) {
+                metricSelectedList[i].checked = false;
+            } else {
+                var value = metricSelectedList[i].value;
+                window.setTimeout(function () {
+                    initializeChart(value, true);
+                }, 2000);
+            }
         }
     }
 }
