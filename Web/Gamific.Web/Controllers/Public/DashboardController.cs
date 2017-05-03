@@ -20,7 +20,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
     {
 
         List<string> colorsToAdd = new List<string> { "#151F31", "#4D535A", "#0F65E7", "#AAC6DA", "#5789CA", "#1373C9", "#88C3BB", "#40ACFF",
-                "#53B0A6", "#20614D", "#1B5B67", "#4D776D", "#FFA500", "#7FFFD4", "#87CEFA", "#FF69B4", "#FF00FF", "#7CFC00", "#BC8F8F", "#4682B4", "#006400", "#7B68EE" };
+                "#53B0A6", "#20614D", "#1B5B67", "#4D776D", "#FFA500", "#7FFFD4", "#87CEFA", "#FF69B4", "#FF00FF", "#7CFC00", "#BC8F8F", "#4682B4", "#006400",
+            "#7B68EE", "#151F31", "#4D535A", "#0F65E7", "#AAC6DA", "#5789CA", "#1373C9", "#88C3BB", "#40ACFF" };
 
         public static List<EpisodeEngineDTO> episodesFilter = new List<EpisodeEngineDTO>();
 
