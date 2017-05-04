@@ -33,6 +33,11 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        internal GetAllDTO GetByGameIdAndActive(object externalId, int state)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Services
@@ -171,13 +176,13 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-        public GetAllDTO resultsByEpisodeIdAndMetricId(string episodeId, string metricId, int pageIndex = 0, int pageSize = 10)
+        public GetAllDTO resultsByEpisodeIdAndMetricId(string episodeId, string metricId, int pageIndex = 0, int pageSize = 10, string column = "date", string order = "desc")
         {
             try
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(ENGINE_API + "resultsByEpisodeIdAndMetricId" + "?episodeId=" + episodeId + "&metricId=" + metricId + "&page=" + pageIndex + "&size=" + pageSize);
+                    string response = client.DownloadString(ENGINE_API + "resultsByEpisodeIdAndMetricId" + "?episodeId=" + episodeId + "&metricId=" + metricId + "&page=" + pageIndex + "&size=" + pageSize + "&sort=" + column + "," + order);
                     return JsonDeserialize<GetAllDTO>(response);
                 }
             }

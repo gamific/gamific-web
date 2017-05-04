@@ -776,20 +776,30 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     if (!string.IsNullOrWhiteSpace(row[0].ToString()) && !string.IsNullOrWhiteSpace(row[1].ToString()) && !string.IsNullOrWhiteSpace(row[2].ToString()) && !string.IsNullOrWhiteSpace(row[3].ToString()))
                     {
-                        result.Ceiling = metric.Ceiling;
-                        result.Date = Convert.ToDateTime(row[2].ToString()).Ticks;
-                        result.Description = metric.Description;
-                        result.Floor = metric.Floor;
-                        result.MetricId = metric.Id;
-                        result.Multiplier = metric.Multiplier;
-                        result.Name = metric.Name;
-                        result.Points = int.Parse(row[3].ToString());
-                        result.Score = 0;
-                        result.Xp = metric.Xp;
-                        result.RunId = run.Id;
-                        result.PlayerId = worker.ExternalId;
+                        try
+                        {
+                            result.Ceiling = metric.Ceiling;
+                            result.Date = Convert.ToDateTime(row[2].ToString()).Ticks;
+                            result.Description = metric.Description;
+                            result.Floor = metric.Floor;
+                            result.MetricId = metric.Id;
+                            result.Multiplier = metric.Multiplier;
+                            result.Name = metric.Name;
+                            result.Points = int.Parse(row[3].ToString());
+                            result.Score = 0;
+                            result.Xp = metric.Xp;
+                            result.RunId = run.Id;
+                            result.PlayerId = worker.ExternalId;
 
-                        RunMetricEngineService.Instance.CreateOrUpdate(result);
+                            RunMetricEngineService.Instance.CreateOrUpdate(result);
+                        }
+                        catch(Exception e)
+                        {
+                            errors += "O formato das colunas 'Periodo' ou 'Resultado' estão errados. Linha: " + line + "<br/>";
+                            countErrors++;
+                            continue;
+                        }
+
                     }
                 }
 

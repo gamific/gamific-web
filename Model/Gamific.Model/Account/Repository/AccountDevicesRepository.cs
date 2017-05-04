@@ -48,7 +48,10 @@ namespace Vlast.Gamific.Model.Account.Repository
             using (ModelContext context = new ModelContext())
             {
                 var query = from devices in context.AccountDevices
-                            where devices.External_User_Id == playerId
+                            from worker in context.Workers
+                            where worker.Status == GenericStatus.ACTIVE
+                            && devices.External_User_Id == playerId
+                            && devices.External_User_Id == worker.ExternalId
                             select devices;
 
                

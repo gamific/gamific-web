@@ -279,6 +279,7 @@
     <Compile Include="Controllers\Management\LaunchResultsController.cs" />
     <Compile Include="Controllers\Management\MetricController.cs" />
     <Compile Include="Controllers\Management\ParamController.cs" />
+    <Compile Include="Controllers\Management\PushNotificationController.cs" />
     <Compile Include="Controllers\Management\VideoController.cs" />
     <Compile Include="Controllers\Management\Model\IconsDTO.cs" />
     <Compile Include="Controllers\Management\TopicHelpController.cs" />
@@ -422,7 +423,6 @@
     <Content Include="Content\Images\public\favicon-32x32.png" />
     <Content Include="Content\Images\public\favicon-96x96.png" />
     <Content Include="Content\Images\public\favicon.ico" />
-    <Content Include="Content\Images\public\loading.gif" />
     <Content Include="Content\Images\logo-interno.png" />
     <Content Include="Content\Images\public\ms-icon-144x144.png" />
     <Content Include="Content\Images\public\ms-icon-150x150.png" />
@@ -501,6 +501,7 @@
       <DependentUpon>Metric.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\app\param.js" />
+    <Content Include="Content\Js\app\pushNotification.js" />
     <Content Include="Content\Js\app\race.min.js">
       <DependentUpon>race.js</DependentUpon>
     </Content>
@@ -671,7 +672,6 @@
     <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="Content\Js\lib\jquery-1.10.2.min.map" />
     <Content Include="Content\Js\lib\jquery-1.11.1.min.map" />
-    <Content Include="Views\favicon.ico" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -759,6 +759,7 @@
     <Content Include="Views\Goal\_EditAll.cshtml" />
     <Content Include="Views\Goal\_EditTeam.cshtml" />
     <Content Include="Views\Dashboard\_CampaignsFilter.cshtml" />
+    <Content Include="Views\PushNotification\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
