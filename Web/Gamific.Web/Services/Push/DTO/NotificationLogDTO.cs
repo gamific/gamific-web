@@ -9,21 +9,27 @@ namespace Vlast.Gamific.Web.Services.Push.DTO
     public class NotificationLogDTO
     {
         [JsonProperty("multicast_id")]
-        public float MulticastId { get; set; }
+        public float Multicast_Id { get; set; }
 
         [JsonProperty("success")]
         public string Success { get; set; }
 
         [JsonProperty("canonical_ids")]
-        public string CanonicalIds { get; set; }
+        public string Canonical_Ids { get; set; }
 
         [JsonProperty("results")]
-        public Result Results { get; set; }
+        public List<Result> Results { get; set; }
 
         public class Result
         {
             [JsonProperty("message_id")]
-            List<string> message_id { get; set; }
+            public string Message_id { get; set; }
+
+            [JsonProperty("registration_id")]
+            public string registration_id { get; set; }
+
+            [JsonProperty("error")]
+            public string error { get; set; }
         }
     }
 }

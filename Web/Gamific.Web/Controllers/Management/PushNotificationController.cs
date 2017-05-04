@@ -158,11 +158,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             if(checkedIds == null)
             {
-                return Json("Selecione os destinatarios.", JsonRequestBehavior.DenyGet);
+                return Json(new { text = "Selecione os destinatarios.", error = true }, JsonRequestBehavior.DenyGet);
             }
             else if(message == "" || title == "")
             {
-                return Json("Escreva uma mensagem e um titulo.", JsonRequestBehavior.DenyGet);
+                return Json(new { text = "Escreva uma mensagem e um titulo.", error = true }, JsonRequestBehavior.DenyGet);
             }
 
             List<NotificationPushDTO> notifications = new List<NotificationPushDTO>();
@@ -184,7 +184,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         };
 
                         notifications.Add(notification);
-                        NotificationPushService.Instance.SendPush(notification);
                     }
                 }
             }
@@ -209,14 +208,28 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             };
 
                             notifications.Add(notification);
-
-                            NotificationPushService.Instance.SendPush(notification);
                         }
                     }
                 }
             }
 
-            return null;
+            int countErrors = 0;
+            int countSuccess = 0;
+
+            foreach(NotificationPushDTO notification in notifications)
+            {
+                NotificationLogDTO notificationLog = NotificationPushService.Instance.SendPush(notification);
+                if(notificationLog.Success == "0")
+                {
+                    countErrors++;
+                }
+                else
+                {
+                    countSuccess++;
+                }
+            }
+
+            return Json(new { text = countSuccess + " notificações foram enviadas com sucesso!    " + countErrors + " falharam ao serem enviadas!", error = false });
         }
 
         [Route("getAllPlayerIdsFromTeam/{teamId}")]
