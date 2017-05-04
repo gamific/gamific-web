@@ -148,6 +148,17 @@ function SubmitNotification()
         checkedsList.push(key);
     });
 
+    var message = $("#messageNotification").val();
+    var title = $("#titleNotification").val();
+
+    $("#messageNotification").val('');
+    $("#titleNotification").val('');
+
+    checkedMap.clear();
+
+    $('#notificationDataTable').dataTable().fnDestroy();
+    loadNotificationDataTable();
+
     $.ajax({
         url: "/admin/notificacoes/send",
         async: true,
@@ -156,14 +167,21 @@ function SubmitNotification()
         {
             "teamId": $("#dropDownTeams").val(),
             "checkedIds": checkedsList,
-            "message": $("#messageNotification").val(),
-            "title": $("#titleNotification").val()
+            "message": message,
+            "title": title
         },
-        success: function (data, teste, test1) {
-            alertMessage("Notificações enviados com sucesso.", "success");
+        success: function (message, teste) {
+
+            if (message.error == false) {
+                alertMessage(message.text, "success");
+            }
+            else {
+                alertMessage(message.text, "danger");
+            }
+            
         },
         error: function (data) {
-            alertMessage(data, "danger");
+            alertMessage("Erro ao enviar mensagens.", "danger");
         }
     });
 }

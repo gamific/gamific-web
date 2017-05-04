@@ -192,11 +192,11 @@
                                                 </a>
                                             </li>
 
-                                            <!--<li id="Notificacoes" class="hidden-xs">
+                                            <li id="Notificacoes" class="hidden-xs">
                                                 <a href="/admin/notificacoes/">
                                                     <i class="fa fa-paper-plane"></i>Enviar Notificações
                                                 </a>
-                                            </li>-->
+                                            </li>
 
 
                                             <!--<li id="CadastrarAjuda" class="hidden-xs">
@@ -269,9 +269,10 @@
 </html>
 
 <script>
-    /*$(document).ready(function(){
-
-        if($('#close').val()){
+    /*$(document).ready(function () {
+        
+        console.log("entrou 1 valor: " + $('#close').val());
+        //if ($('#close').val()) {
             $("#sidebar, #navbar").toggleClass("collapsed"),
             $("#navigation").find(".dropdown.open").removeClass("open"),
             $("#navigation").find(".dropdown-menu.animated").removeClass("animated"),
@@ -280,16 +281,20 @@
         }
     });
     
-    $('#closed').on('click', function () {
-        console.log($('#close').val());
+    function fecha(){
         if ($('#close').val())
         {
-            $('#close').val() = false;
+            $('#close').val(false);
         }
         else
         {
-            $('#close').val() = true;
+            $('#close').val(true);
         }
+    };
+
+
+    $('#closed').on('click', function () {
+        fecha();
     });*/
     
 </script>
