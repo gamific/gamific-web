@@ -334,6 +334,86 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return Json(null, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// Carrega um datatable com todas as equipes do episodio ordenados por Score
+        /// </summary>
+        /// <param name="jqueryTableRequest"></param>
+        /// <returns></returns>
+        [Route("search")]
+        public ActionResult Search(JQueryDataTableRequest jqueryTableRequest, string episodeId, string teamId, string metricId)
+        {
+            GetAllDTO all;
+
+            if (metricId == "empty")
+            {
+                metricId = "";
+            }
+
+            if (jqueryTableRequest != null)
+            {
+                if (teamId != "empty")
+                {
+                    all = RunEngineService.Instance.GetAllRunScore(teamId, metricId, jqueryTableRequest.Page);
+                    List<PlayerEngineDTO> players = (from run in all.List.run select PlayerEngineService.Instance.GetById(run.PlayerId)).ToList();
+
+                    all.List.result = (from run in all.List.run
+                                       from player in players
+                                       where run.PlayerId == player.Id
+                                       select new ResultEngineDTO
+                                       {
+                                           Id = player.Id,
+                                           Nick = player.Nick,
+                                           Score = run.Score,
+                                           LogoId = player.LogoId
+                                       }).ToList();
+                }
+                else
+                {
+                    all = TeamEngineService.Instance.GetAllTeamScoreByEpisodeId(episodeId, metricId, jqueryTableRequest.Page);
+                    all.List.result = (from team in all.List.team
+                                       select new ResultEngineDTO
+                                       {
+                                           Id = team.Id,
+                                           Nick = team.Nick,
+                                           Score = team.Score,
+                                           LogoId = team.LogoId
+                                       }).ToList();
+                }
+
+                int index = 0;
+                if (jqueryTableRequest.Order != null)
+                {
+                    index = Int32.Parse(jqueryTableRequest.Order);
+                }
+                JQueryDataTableResponse response = null;
+
+                if (jqueryTableRequest.Type == null || jqueryTableRequest.Type.Equals("asc"))
+                {
+                    response = new JQueryDataTableResponse()
+                    {
+                        Draw = jqueryTableRequest.Draw,
+                        RecordsTotal = all.PageInfo.totalElements,
+                        RecordsFiltered = all.PageInfo.totalElements,
+                        Data = all.List.result.Select(t => new string[] { jqueryTableRequest.Page.ToString(), t.Nick + ";" + t.LogoId + ";" + t.Id, t.Score.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
+                    };
+                }
+                else
+                {
+                    response = new JQueryDataTableResponse()
+                    {
+                        Draw = jqueryTableRequest.Draw,
+                        RecordsTotal = all.PageInfo.totalElements,
+                        RecordsFiltered = all.PageInfo.totalElements,
+                        Data = all.List.result.Select(t => new string[] { jqueryTableRequest.Page.ToString(), t.Nick + ";" + t.LogoId + ";" + t.Id, t.Score.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
+                    };
+                }
+
+                return new DataContractResult() { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
     }
