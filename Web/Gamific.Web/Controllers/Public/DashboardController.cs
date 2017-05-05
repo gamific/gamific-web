@@ -42,7 +42,9 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             ViewBag.Grafic_itens = changeVisibilityGraph();
 
-            ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+            //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+
+            ViewBag.Metrics =  MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0,100).List.metric;
 
             ViewBag.State = state;
 
@@ -445,7 +447,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
 
-            ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+            //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+            ViewBag.Metrics = MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0, 100).List.metric;
             ViewBag.State = episode.Active == true ? 1 : 0;
             ViewBag.EpisodeId = episodeId;
             ViewBag.TeamId = teamId;
