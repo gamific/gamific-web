@@ -160,6 +160,40 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return Content(JsonConvert.SerializeObject(rtn), "application/json");
         }
 
+        [Route("loadBarChart")]
+        [HttpPost]
+        public ContentResult LoadBarChart(List<string> metricsIds)
+        {
+            List<BarDTO> bars = new List<BarDTO>();
+
+            List<string> episodesIds = new List<string>();
+
+            foreach (EpisodeEngineDTO item in episodesFilter)
+            {
+                episodesIds.Add(item.Id);
+            }
+
+            //bars = CardEngineService.Instance.EpisodesAndMetrics(episodesIds, metricsIds);
+
+            BarDTO dto = new BarDTO();
+
+            BarPointDTO dto1 = new BarPointDTO();
+
+            dto.EpisodeName = "teste";
+
+            dto1.MetricName = "teste1";
+
+            dto1.MetricResult = 10;
+
+            dto.Points = new List<BarPointDTO>();
+
+            dto.Points.Add(dto1);
+
+            bars.Add(dto);
+
+            return Content(JsonConvert.SerializeObject(bars), "application/json");
+        }
+
         [Route("loadMorrisByEpisode/{metricId}/{episodeId}")]
         [HttpGet]
         public ContentResult LoadMorrisByEpisode(string metricId, string episodeId)

@@ -5,6 +5,20 @@
 $('#dropDownEpisodes').change(function () {
     refreshDropDownTeams($(this).val());
     loadMorris(1);
+
+    var metrics = $('.metricsChart');
+
+    var i;
+    for(i = 0; i < metrics.length; i++){
+        metrics[i].checked = false;
+    }
+
+    var id = '#chart-' + metricToInitialize;
+
+    $(id).attr("checked", true);
+
+    initializeChart(metricToInitialize, true);
+
 });
 
 $('#dropDownTeams').change(function () {
@@ -582,18 +596,23 @@ if (metricToInitialize) {
 function initializeChart(metricId, checked) {
     // showLoading();
 
-    var campaignsNames;
+    var campaign;
+
+    var campaignId = $('#dropDownEpisodes').val();
+
+    if(campaignId && campaignId.length > 0){
+    
+    }
 
     $.ajax({
-        url: "/public/dashboard/getCampaigns",
+        url: "/admin/campanhas/getCampaignById/" + campaignId,
         async: false,
         dataType: 'json',
         success: function (d) {
-            campaignsNames = d;
+            campaign = d;
         }
     });
 
-    if (campaignsNames.length > 0) {
         var y = [];
 
         $.ajax({
@@ -788,9 +807,6 @@ function initializeChart(metricId, checked) {
                 //hideLoading();
             }, 1000);
         }
-    } else {
-    }
-
 }
 
 function generateRandomNumber(inferior, superior) {
@@ -915,29 +931,71 @@ $(document).ready(function () {
     if (window.location.pathname.search("detalhes") == -1) {
         loadMorris(1);
     }
+    loadBarChart();
 });
 
 function onSuccessSaveFilter(data) {
     $('#entity-edit-modal').modal('hide');
-    var metricSelectedList = $('.metricsChart');
 
-    values = [];
-
-    var i;
-    for (i = 0; i < metricSelectedList.length; i++) {
-        if (metricSelectedList[i].checked) {
-            if (i > 0) {
-                metricSelectedList[i].checked = false;
-            } else {
-                var value = metricSelectedList[i].value;
-                window.setTimeout(function () {
-                    initializeChart(value, true);
-                }, 2000);
-            }
-        }
-    }
+    loadBarChart();
 }
 
 function onFailureSaveFilter(data) {
 
+}
+
+function loadBarChart() {
+
+    $('#bar-chart').empty()
+
+    var metrics = $('.barChart');
+    var metricsIds = [];
+
+    if (metrics.length > 0) {
+        var z;
+        for (z = 0; z < metrics.length; z++) {
+            if (metrics.checked) {
+                metricsIds.push(metrics[z].value);
+            }
+        }
+    } else {
+        metricsIds.push($('#metricToInitializeBar').val());
+    }
+
+    $.ajax({
+        url: "/public/dashboard/loadBarChart",
+        data: { metricsIds: metricsIds },
+        async: false,
+        type: "POST",
+        success: function (data) {
+
+            var barData = [];
+            var labels = [];
+
+            var i;
+            for (i = 0; i < data.length; i++) {
+                var w;
+                var labels1 = [];
+                barElement = { episodeName: data[i].EpisodeName }
+                for (w = 0; w < data[i].Points.length; w++) {
+                    labels1.push(data[i].Points[w].MetricName);
+                    var metricName = data[i].Points[w].MetricName;
+                    barElement[metricName] = data[i].Points[w].MetricResult;
+                }
+                labels = labels1;
+                barData.push(barElement);
+            }
+
+            Morris.Bar({
+                element: 'bar-chart',
+                data: barData,
+                xkey: 'episodeName',
+                ykeys: labels,
+                labels: labels
+            });
+        },
+        error: function (data) {
+            alert(data);
+        }
+    });
 }

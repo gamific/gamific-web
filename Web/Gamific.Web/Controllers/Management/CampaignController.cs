@@ -24,6 +24,36 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             return View();
         }
+
+        [Route("getCampaignById/{campaignId}")]
+        [HttpGet]
+        public ContentResult GetCampaign(string campaignId)
+        {
+            List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
+
+            if (episodesFilter.Count < 1)
+            {
+                GetCampaignsModal();
+            }
+
+            foreach (EpisodeEngineDTO episode in episodesFilter)
+            {
+                if (episodes.Count > 7)
+                {
+                    break;
+                }
+                else
+                {
+                    if (episode.checkedFlag)
+                    {
+                        episodes.Add(episode);
+                    }
+                }
+            }
+
+            return Content(JsonConvert.SerializeObject(episodes), "application/json");
+        }
+
         /**
         /// <summary>
         /// Abre o modal de associação de equipes com a campanha

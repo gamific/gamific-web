@@ -293,7 +293,9 @@
     <Compile Include="Controllers\Public\MobileApiController.cs" />
     <Compile Include="Controllers\Public\AboutController.cs" />
     <Compile Include="Controllers\Public\DashboardController.cs" />
+    <Compile Include="Controllers\Public\Model\BarPointDTO.cs" />
     <Compile Include="Controllers\Public\Model\ChartResultDTO.cs" />
+    <Compile Include="Controllers\Public\Model\BarDTO.cs" />
     <Compile Include="Controllers\Public\Model\MorrisPropertyDTO.cs" />
     <Compile Include="Controllers\Public\Model\MorrisDTO.cs" />
     <Compile Include="Controllers\Public\Model\RankingFilterDTO.cs" />
