@@ -27,38 +27,43 @@ namespace Vlast.Gamific.Web.Jobs
         /// <returns></returns>
         public async override void Run()
         {
-            
+
             //Send(new EmailSupportDTO { Msg = "Bom dia", Category = "", Subject = "Testes Gamific" }, "igorgarantes@gmail.com");
-            
-                //GetAllDTO players = PlayerEngineService.Instance.GetByGameId(game.Id);
 
-                //GetAllDTO episodes = EpisodeEngineService.Instance.GetByGameIdAndActive(game.Id, 1);
+            //GetAllDTO players = PlayerEngineService.Instance.GetByGameId(game.Id);
 
-                List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
-                episodes.Add(new EpisodeEngineDTO("58e3708a3a8778588098a82b", "5880a1743a87783b4f0ba709"));
+            //GetAllDTO episodes = EpisodeEngineService.Instance.GetByGameIdAndActive(game.Id, 1);
 
-                foreach (EpisodeEngineDTO episode in episodes)
+            string dayOfWeek = DateTime.Now.ToString("ddd");
+            List<EpisodeEngineDTO> episodes;
+            //episodes.Add(new EpisodeEngineDTO("58e3708a3a8778588098a82b", "5880a1743a87783b4f0ba709"));
+
+            GetAllDTO allEpisodes = EpisodeEngineService.Instance.GetAll(0, 100000);
+
+            episodes = allEpisodes.List.episode.Where(x => x.Active == true && x.sendEmail == true && x.DaysOfWeek.Split(',').Contains(dayOfWeek)).ToList();
+
+            foreach (EpisodeEngineDTO episode in episodes)
+            {
+                List<string> emails = new List<string>();
+                GetAllDTO teams = TeamEngineService.Instance.FindByEpisodeId(episode.Id, email);
+                GameEngineDTO game = GameEngineService.Instance.GetById(episode.GameId, email);
+
+                foreach (TeamEngineDTO team in teams.List.team)
                 {
-                    List<string> emails = new List<string>();
-                    GetAllDTO teams = TeamEngineService.Instance.FindByEpisodeId(episode.Id, email);
-                    GameEngineDTO game = GameEngineService.Instance.GetById(episode.GameId, email);
+                    GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(team.Id, email);
 
-                    foreach (TeamEngineDTO team in teams.List.team)
+                    foreach (RunEngineDTO run in runs.List.run)
                     {
-                        GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(team.Id, email);
-
-                        foreach (RunEngineDTO run in runs.List.run)
+                        WorkerDTO worker = WorkerRepository.Instance.GetWorkerDTOByExternalId(run.PlayerId);
+                        if (worker != null && (worker.ProfileName == Profiles.LIDER || worker.ProfileName == Profiles.JOGADOR))
                         {
-                            WorkerDTO worker = WorkerRepository.Instance.GetWorkerDTOByExternalId(run.PlayerId);
-                            if (worker != null && (worker.ProfileName == Profiles.LIDER || worker.ProfileName == Profiles.JOGADOR))
-                            {
-                                string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
-                                Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
-                                Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
-                            }
+                            string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
+                            Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
+                            Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
                         }
                     }
                 }
+            }
                 
             
             

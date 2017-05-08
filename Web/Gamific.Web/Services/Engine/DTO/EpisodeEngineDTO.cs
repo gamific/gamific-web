@@ -69,5 +69,8 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
 
         [JsonProperty("checked")]
         public bool checkedFlag { get; set; }
+
+        [JsonProperty("daysOfWeek")]
+        public string DaysOfWeek { get; set; }
     }
 }
