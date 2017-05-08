@@ -34,80 +34,80 @@
     <input hidden type="text" value="@ViewBag.PlayerId" id="PlayerId" />
 
     <div id="wrap">
-        <div class="">
+
             <!-- Conteúdo -->
-            <div class="main">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12">
+        <div class="main">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
 
-                        <section class="tile transparent" id="Filters">
-                            <div class="tile-header color transparent-black textured rounded-corners ">
-                                <div class="hidden-xs">
-                                    Filtros
-                                    <br />
-                                    <br />
+                    <section class="tile transparent" id="Filters">
+                        <div class="tile-header color transparent-black textured rounded-corners ">
+                            <div class="hidden-xs">
+                                Filtros
+                                <br />
+                                <br />
 
-                                </div>
+                            </div>
 
-                                <div class="row">
-                                    <div class="form-group">
-                                        <div class="col-xs-12 col-sm-6 col-md-3">
-                                            <div class="hidden-xs">
-                                                <div class="col-xs-12">
-                                                    Estado
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <select class="chosen-select chosen-transparent form-control" id="dropDownState">
-                                                        <option value="1">Ativo</option>
-                                                        <option value="0">Inativo</option>
-                                                    </select>
-                                                </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-sm-6 col-md-3">
+                                        <div class="hidden-xs">
+                                            <div class="col-xs-12">
+                                                Estado
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <select class="chosen-select chosen-transparent form-control" id="dropDownState">
+                                                    <option value="1">Ativo</option>
+                                                    <option value="0">Inativo</option>
+                                                </select>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-xs-12 col-sm-6 col-md-3">
-                                            <div class="">
-                                                <div class="col-xs-12">
-                                                    Campanha
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <select class="chosen-select chosen-transparent form-control" id="dropDownEpisodes"></select>
-                                                </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-3">
+                                        <div class="">
+                                            <div class="col-xs-12">
+                                                Campanha
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <select class="chosen-select chosen-transparent form-control" id="dropDownEpisodes"></select>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-xs-12 col-sm-6 col-md-3">
-                                            <div class="">
-                                                <div class="col-xs-12">
-                                                    Equipe
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <select class="chosen-select chosen-transparent form-control" id="dropDownTeams"></select>
-                                                </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-3">
+                                        <div class="">
+                                            <div class="col-xs-12">
+                                                Equipe
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <select class="chosen-select chosen-transparent form-control" id="dropDownTeams"></select>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-xs-12 col-sm-6 col-md-3">
-                                            <div>
-                                                <div class="col-xs-12">
-                                                    Metrica
-                                                </div>
-                                                <div class="col-xs-12">
-                                                    <select class="chosen-select chosen-transparent form-control" id="dropDownMetrics">
-                                                        <option value="empty">Todas</option>
-                                                    </select>
-                                                </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-3">
+                                        <div>
+                                            <div class="col-xs-12">
+                                                Metrica
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <select class="chosen-select chosen-transparent form-control" id="dropDownMetrics">
+                                                    <option value="empty">Todas</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
-                        </section>
-                    </div>
+                        </div>
+
+                    </section>
                 </div>
             </div>
+
 
             <div class="row">
                 <div class="col-md-12">
@@ -137,46 +137,99 @@
                 </div>
             </div>
 
-        </div>
 
-        <div class="row">
-            <div class="tile-header transparent col-md-12" style="border-bottom: 1px solid rgba(255, 255, 255, 0.3); ">
-                <h1 style="color:#ffffff; font-size: 24px;">Ranking Jogador</h1>
-            </div>
-            <div style="padding-top:80px;">
-                <div class="col-md-6">
-                    <div class="tile transparent">
-                        <div class="tile-body color transparent-black rounded-corners">
-                            <div class="podiumContainerPlayers" id="podiumContainerPlayers" style="min-width: 100%; height: 100%; min-height:445px; margin: 0 auto"></div>
-                        </div>
-                        <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
-                        </div>
-                    </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                <div class="tile-header transparent col-md-12">
+                    <h1 style="color:#ffffff;">Ranking</h1>
                 </div>
-                <div class="col-md-6">
-                    <div class="tile transparent">
-                        <div class="tile-body color transparent-black rounded-corners">
-                            <div class="">
-                                <table id="rankingDataTablePlayers" class="table table-striped" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Nome</th>
-                                            <th>Equipe</th>
-                                            <th>Score</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
+                <div class="bs-example">
+                    <ul class="nav nav-tabs tab-v">
+                        <li class="active"><a data-toggle="tab" href="#teamRanking">Equipe</a></li>
+                        <li><a data-toggle="tab" href="#playerRanking">Geral</a></li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div id="teamRanking" class="tab-pane fade in active">
+
+                            <div class="row" style="padding-top:5px;">
+                                <div class="col-md-6">
+                                    <div class="tile transparent">
+                                        <div class="tile-body color transparent-black rounded-corners">
+                                            <div class="podiumContainer" id="podiumContainer" style="min-width: 100%; height: 100%; min-height:445px; margin: 0 auto"></div>
+                                        </div>
+                                        <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="tile transparent">
+                                        <div class="tile-body color transparent-black rounded-corners">
+                                            <div class="">
+                                                <table id="rankingDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Nome</th>
+                                                            <th>Score</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+
                         </div>
-                        <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                        <div id="playerRanking" class="tab-pane fade">
+
+                            <div class="row" style="padding-top:5px;">
+                                <div class="col-md-6">
+                                    <div class="tile transparent">
+                                        <div class="tile-body color transparent-black rounded-corners">
+                                            <div class="podiumContainerPlayers" id="podiumContainerPlayers" style="min-width: 100%; height: 100%; min-height:445px; margin: 0 auto"></div>
+                                        </div>
+                                        <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="tile transparent">
+                                        <div class="tile-body color transparent-black rounded-corners">
+                                            <div class="">
+                                                <table id="rankingDataTablePlayers" class="table table-striped" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Nome</th>
+                                                            <th>Equipe</th>
+                                                            <th>Score</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+
                     </div>
+                </div>
                 </div>
             </div>
         </div>
-
     </div>
     <script type="text/javascript">
 

@@ -299,7 +299,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         {
                             GoalEngineService.Instance.CreateOrUpdate(goal);
                         }
-                        else if (!string.IsNullOrWhiteSpace(goal.Id) && goal.Goal > 0)
+                        else if (!string.IsNullOrWhiteSpace(goal.Id))
                         {
                             GoalEngineService.Instance.CreateOrUpdate(goal);
                         }

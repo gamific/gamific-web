@@ -53,7 +53,7 @@ namespace Vlast.Gamific.Web.Services.Engine
                 client.Encoding = System.Text.Encoding.UTF8;
                 string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
                 client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
-                string response = client.DownloadString(path + "search/findByTeamId/?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
+                string response = client.DownloadString(path + "search/findByTeamId?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
                 return JsonDeserialize<GetAllDTO>(response);
                 
             }
@@ -69,7 +69,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "search/findByTeamId/?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
+                    string response = client.DownloadString(path + "search/findByTeamId?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
                     return JsonDeserialize<GetAllDTO>(response);
                 }
             }
@@ -107,7 +107,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "search/findByTeamIdAndPlayerId/?teamId=" + teamId + "&playerId=" + playerId);
+                    string response = client.DownloadString(path + "search/findByTeamIdAndPlayerId?teamId=" + teamId + "&playerId=" + playerId);
                     return JsonDeserialize<RunEngineDTO>(response);
                 }
             }
@@ -123,7 +123,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient(email))
                 {
-                    string response = client.DownloadString(path + "search/findByTeamIdAndPlayerId/?teamId=" + teamId + "&playerId=" + playerId);
+                    string response = client.DownloadString(path + "search/findByTeamIdAndPlayerId?teamId=" + teamId + "&playerId=" + playerId);
                     return JsonDeserialize<RunEngineDTO>(response);
                 }
             }
@@ -139,7 +139,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient(email))
                 {
-                    string response = client.DownloadString(path + "search/findByTeamIdAndPlayerId/?teamId=" + teamId + "&playerId=" + playerId);
+                    string response = client.DownloadString(path + "search/findByTeamIdAndPlayerId?teamId=" + teamId + "&playerId=" + playerId);
                     return JsonDeserialize<RunEngineDTO>(response);
                 }
             }

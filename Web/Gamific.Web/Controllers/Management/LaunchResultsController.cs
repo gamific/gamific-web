@@ -100,6 +100,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             ViewBag.Player = PlayerEngineService.Instance.GetById(playerId);
             ViewBag.Now = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.Run = RunEngineService.Instance.GetRunByPlayerAndTeamId(playerId, teamId);
+            ViewBag.Items = GetItensToSelect();
 
             List<WorkerTypeMetricDTO> metricsWorkerType = WorkerTypeMetricRepository.Instance.GetAllFromWorkerByPlayerId(playerId);
 
@@ -159,13 +160,27 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return Json(JsonConvert.SerializeObject(all.List.team), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        [Route("changeItem")]
+        public void changeItem(string itemId)
+        {
+            ViewBag.itemSelect = itemId;
+        }
 
         [Route("salvar")]
         [HttpPost]
-        public ActionResult Save(List<RunMetricEngineDTO> resultList, string runId, string date)
+        public ActionResult Save(List<RunMetricEngineDTO> resultList, string runId, string date, string itemId)
         {
             DateTime dateTime = Convert.ToDateTime(date);
             long time = dateTime.Ticks;
+            ItemEngineDTO itemEngine = null;
+
+            try {
+                itemEngine = ItemEngineService.Instance.GetById(itemId);
+            } catch(Exception e)
+            {
+                itemEngine = null;
+            }
 
             float valorVendas = 0f;
 
@@ -184,6 +199,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     result.Score = 0;
                     result.RunId = runId;
                     result.Date = time;
+                    if (itemEngine != null) { 
+                        result.ItemId = itemEngine.Id;
+                        result.ItemName = itemEngine.Name;
+                    }
                     result.ArithmeticMultiplier = valorVendas > 0 ? valorVendas : 1;
                     RunMetricEngineService.Instance.CreateOrUpdate(result);
                 }
@@ -839,6 +858,28 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             Text = episode.Name,
                             Value = episode.Id,
                             Selected = episode.Id == selected
+                        };
+
+            if (query == null)
+            {
+                return new List<SelectListItem>();
+            }
+
+            return query.ToList();
+        }
+
+        private List<SelectListItem> GetItensToSelect(string selected = null)
+        {
+            GetAllDTO itens;
+
+            itens = ItemEngineService.Instance.GetByGameId(CurrentFirm.ExternalId);
+
+            var query = from item in itens.List.item
+                        select new SelectListItem
+                        {
+                            Text = item.Name,
+                            Value = item.Id,
+                            Selected = item.Id == selected
                         };
 
             if (query == null)
