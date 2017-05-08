@@ -115,7 +115,7 @@ namespace Vlast.Gamific.Web
                         "~/Content/css/morris.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/rickshaw.min.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/gamific.css", new CssRewriteUrlTransform()).Include(
-                          "~/Content/css/datepicker2.css", new CssRewriteUrlTransform()).Include(
+                        "~/Content/css/datepicker2.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/bootstrap-dialog.min.css", new CssRewriteUrlTransform()
                         ));
 

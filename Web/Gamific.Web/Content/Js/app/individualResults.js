@@ -4,11 +4,39 @@
 
 $('#dropDownEpisodes').change(function () {
     refreshDropDownTeams($(this).val());
+    $('#rankingDataTablePlayers').dataTable().fnDestroy();
+    loadRankingDataTablePlayer();
 });
 
 $('#dropDownTeams').change(function () {
     refreshCardResults($("#dropDownEpisodes").val(), $("#dropDownTeams").val());
+    loadRankingDataTable();
 });
+
+$('#dropDownMetrics').change(function () {
+    $('#rankingDataTable').dataTable().fnDestroy();
+    loadRankingDataTable();
+    $('#rankingDataTablePlayers').dataTable().fnDestroy();
+    loadRankingDataTablePlayer();
+});
+
+$(document).ready(function () {
+    $.ajax({
+        url: "/public/resultadosIndividuais/buscarMetricas",
+        async: false,
+        type: "GET",
+        success: function (data) {
+            var metrics = JSON.parse(data);
+
+            for (var i = 0; i < metrics.length; i++) {
+                $("#dropDownMetrics").append($("<option value='" + metrics[i].id + "'>" + metrics[i].name + "</option>"));
+            }
+        },
+        error: function () {
+            $("#dropDownMetrics").empty();
+        }
+    });
+})
 
 function refreshDropDownEpisodes(state, currentId) {
     $.ajax({
@@ -42,6 +70,9 @@ function refreshDropDownEpisodes(state, currentId) {
                 $("#dropDownTeams").append($("<option value=''>Vazio</option>"));
                 $('#div-cards').empty();
             }
+
+            $('#rankingDataTablePlayers').dataTable().fnDestroy();
+            loadRankingDataTablePlayer();
         },
         error: function () {
             $("#dropDownEpisodes").empty();
@@ -75,6 +106,8 @@ function refreshDropDownTeams(episodeId, currentId) {
                 $("#dropDownTeams").append($("<option value='" + teams[i].id + "'" + selected + " >" + teams[i].nick + "</option>"));
             }
 
+            $('#rankingDataTable').dataTable().fnDestroy();
+            loadRankingDataTable();
 
             refreshCardResults($("#dropDownEpisodes").val(), $("#dropDownTeams").val());
         },
@@ -258,3 +291,418 @@ function onSucessSaveResult() {
     //$('#MetricResultsDataTable').dataTable().fnDestroy();
     //LoadMetricResultsDataTable();
 }
+
+function loadRankingDataTablePlayer() {
+    table = $('#rankingDataTablePlayers').dataTable({
+        "serverSide": true,
+        "ajax": "/public/resultadosIndividuais/searchPlayers?episodeId=" + $('#dropDownEpisodes').val() + "&metricId=" + $('#dropDownMetrics').val(),
+        "processing": true,
+        "ordering": true,
+        "scrollY": "300px",
+        "scrollCollapse": true,
+        "deferRender": true,
+        "lengthChange": false,
+        "language": {
+            "emptyTable": "Não foram encontrados resultados.",
+            "paginate": {
+                "previous": '<i class="fa fa-angle-left"></i>',
+                "next": '<i class="fa fa-angle-right"></i>'
+            }
+        },
+        "dom": '<"newtoolbar">rtip',
+        "fnServerParams": function (aoData) {
+        },
+        "columnDefs": [
+                {
+                    "width": "10%",
+                    "targets": 0,
+                    "orderable": true,
+                    "searchable": true,
+                    "render": function (data, type, row, meta) {
+                        var links = ((meta.row + 1) + (10 * data)) + "°";
+
+                        return links;
+                    }
+                },
+                {
+                    "width": "40%",
+                    "targets": 1,
+                    "orderable": true,
+                    "searchable": true,
+                    "render": function (data, type, row, meta) {
+                        var ref;
+                        if ($('#userProfile').val() == "JOGADOR") {
+                            ref = "#";
+                        }
+                        else {
+                            ref = "/public/dashboard/" + $('#dropDownEpisodes').val() + "/" + data.split(";")[3] + "/" + data.split(";")[2];
+                        }
+
+                        var links = "<a href='" + ref + "'>" + data.split(";")[0] + "</a>";
+
+                        links += " <input id='posicaoPlayers" + (meta.row + 1) + "' value='" + data + "' hidden/>"
+
+                        return links;
+                    }
+                },
+                {
+                    "width": "35%",
+                    "targets": 2,
+                    "orderable": true,
+                    "searchable": true,
+                },
+                {
+                    "width": "15%",
+                    "targets": 3,
+                    "orderable": true,
+                    "searchable": true,
+                }
+        ],
+        "initComplete": function (settings, json) {
+            loadChartsPlayers();
+        }
+    });
+};
+
+function loadRankingDataTable() {
+    table = $('#rankingDataTable').dataTable({
+        "serverSide": true,
+        "ajax": "/public/resultadosIndividuais/search?episodeId=" + $('#dropDownEpisodes').val() + "&teamId=" + $("#dropDownTeams").val() + "&metricId=" + $('#dropDownMetrics').val(),
+        "processing": true,
+        "ordering": true,
+        "scrollY": "300px",
+        "scrollCollapse": true,
+        "deferRender": true,
+        "lengthChange": false,
+        "language": {
+            "emptyTable": "Não foram encontrados resultados.",
+            "paginate": {
+                "previous": '<i class="fa fa-angle-left"></i>',
+                "next": '<i class="fa fa-angle-right"></i>'
+            }
+        },
+        "dom": '<"newtoolbar">rtip',
+        "fnServerParams": function (aoData) {
+        },
+        "columnDefs": [
+                {
+                    "width": "10%",
+                    "targets": 0,
+                    "orderable": true,
+                    "searchable": true,
+                    "render": function (data, type, row, meta) {
+                        var links = ((meta.row + 1) + (10 * data)) + "°";
+
+                        return links;
+                    }
+                },
+                {
+                    "width": "45%",
+                    "targets": 1,
+                    "orderable": true,
+                    "searchable": true,
+                    "render": function (data, type, row, meta) {
+                        var ref;
+                        if ($('#userProfile').val() == "JOGADOR") {
+                            ref = "#";
+                        }
+                        else if ($('#dropDownTeams').val() != 'empty') {
+                            ref = "/public/dashboard/" + $('#dropDownEpisodes').val() + "/" + $('#dropDownTeams').val() + "/" + data.split(";")[2];
+                        }
+                        else {
+                            ref = "/public/dashboard/" + $('#dropDownEpisodes').val() + "/" + data.split(";")[2] + "/" + "empty";
+                        }
+
+                        var links = "<a href='" + ref + "'>" + data.split(";")[0] + "</a>";
+
+                        links += " <input id='posicao" + (meta.row + 1) + "' value='" + data + "' hidden/>"
+
+                        return links;
+                    }
+                },
+                {
+                    "width": "45%",
+                    "targets": 2,
+                    "orderable": true,
+                    "searchable": true,
+                }
+        ],
+        "initComplete": function (settings, json) {
+            loadCharts();
+        }
+    });
+};
+
+function loadChartsPlayers() {
+
+    var logoPath = "";
+    $.ajax({
+        url: window.location.origin + "/apiMedia/imagePath",
+        async: false,
+        type: "GET",
+        success: function (data) {
+            logoPath = data;
+        }
+    });
+
+    var firstInput = $("#posicaoPlayers1").val();
+    var secondInputs = $("#posicaoPlayers2").val();
+    var thirdInput = $("#posicaoPlayers3").val();
+
+    if (firstInput) {
+        var first = firstInput.split(";")[0];
+        var firstLogo = firstInput.split(";")[1];
+    } else {
+        var first = "1°";
+        var firstLogo = "#";
+    }
+
+    if (secondInputs) {
+        var second = secondInputs.split(";")[0];
+        var secondLogo = secondInputs.split(";")[1];
+    } else {
+        var second = "2°";
+        var secondLogo = "#";
+    }
+
+    if (thirdInput) {
+        var third = thirdInput.split(";")[0];
+        var thirdLogo = thirdInput.split(";")[1];
+    } else {
+        var third = "3°";
+        var thirdLogo = "#";
+    }
+
+    var dataPodium = [];
+    if (secondInputs != undefined) {
+        dataPodium.push([second.length > 10 ? second.substring(0, 10) + "..." : second, 2]);
+    }
+    if (firstInput != undefined) {
+        dataPodium.push([first.length > 10 ? first.substring(0, 10) + "..." : first, 3]);
+    }
+    if (thirdInput != undefined) {
+        dataPodium.push([third.length > 10 ? third.substring(0, 10) + "..." : third, 1]);
+    }
+
+    $('#podiumContainerPlayers').highcharts({
+        chart: {
+            type: 'column',
+            spacingTop: 60,
+            style: {
+                fontFamily: '"Segoe UI", Roboto, sans-serif'
+            },
+            backgroundColor: 'rgba(255,255,255,0)'
+        },
+        title: {
+            text: ' '
+        },
+        xAxis: {
+            categories: false,
+            lineWidth: 0,
+            minorGridLineWidth: 0,
+            lineColor: 'transparent',
+            labels: {
+                enabled: false
+            },
+            minorTickLength: 0,
+            tickLength: 0
+        },
+        yAxis: {
+            min: 0,
+            gridLineWidth: 0,
+            title: {
+                text: false
+            },
+            labels: {
+                enabled: false
+            }
+        },
+        legend: {
+            enabled: false
+
+        },
+        credits: {
+            enabled: false
+        },
+        tooltip: false,
+        plotOptions: {
+            column: {
+                pointPadding: -0.05,
+                borderWidth: 0
+            },
+            series: {
+                color: '#FFF',
+                borderRadius: 6
+            }
+        },
+
+
+
+        series: [{
+            name: ' ',
+            data: dataPodium,
+            dataLabels: {
+                enabled: true,
+                color: '#95ceff',
+                align: 'center',
+                x: 3,
+                y: 72,
+                useHTML: true,
+                overflow: false,
+                crop: false,
+                formatter: function () {
+                    if (4 - this.y == 1 && firstInput != undefined) {
+                        return '<div class="podiumChart dimencionament" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'' + logoPath + firstLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span class="colore-name"; style="font-family: \'Segoe UI\', Roboto, sans-serif; font-size: 14px; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
+                    }
+                    if (4 - this.y == 2 && secondInputs != undefined) {
+                        return '<div class="podiumChart dimencionament" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'' + logoPath + secondLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span class="colore-name"; style="font-family: \'Segoe UI\', Roboto, sans-serif; font-size: 14px; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
+                    }
+                    if (4 - this.y == 3 && thirdInput != undefined) {
+                        return '<div class="podiumChart dimencionament" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'' + logoPath + thirdLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span class="colore-name"; style="font-family: \'Segoe UI\', Roboto, sans-serif; font-size: 14px; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
+                    }
+                },
+                style: {
+                    fontSize: '50px',
+                    fontFamily: '"Segoe UI", Roboto, sans-serif'
+                }
+            }
+        }]
+    });
+};
+
+function loadCharts() {
+
+    var logoPath = "";
+    $.ajax({
+        url: window.location.origin + "/apiMedia/imagePath",
+        async: false,
+        type: "GET",
+        success: function (data) {
+            logoPath = data;
+        }
+    });
+
+    var firstInput = $("#posicao1").val();
+    var secondInputs = $("#posicao2").val();
+    var thirdInput = $("#posicao3").val();
+
+    if (firstInput) {
+        var first = firstInput.split(";")[0];
+        var firstLogo = firstInput.split(";")[1];
+    } else {
+        var first = "1°";
+        var firstLogo = "#";
+    }
+
+    if (secondInputs) {
+        var second = secondInputs.split(";")[0];
+        var secondLogo = secondInputs.split(";")[1];
+    } else {
+        var second = "2°";
+        var secondLogo = "#";
+    }
+
+    if (thirdInput) {
+        var third = thirdInput.split(";")[0];
+        var thirdLogo = thirdInput.split(";")[1];
+    } else {
+        var third = "3°";
+        var thirdLogo = "#";
+    }
+
+    var dataPodium = [];
+    if (secondInputs != undefined) {
+        dataPodium.push([second.length > 10 ? second.substring(0, 10) + "..." : second, 2]);
+    }
+    if (firstInput != undefined) {
+        dataPodium.push([first.length > 10 ? first.substring(0, 10) + "..." : first, 3]);
+    }
+    if (thirdInput != undefined) {
+        dataPodium.push([third.length > 10 ? third.substring(0, 10) + "..." : third, 1]);
+    }
+
+    $('#podiumContainer').highcharts({
+        chart: {
+            type: 'column',
+            spacingTop: 60,
+            style: {
+                fontFamily: '"Segoe UI", Roboto, sans-serif'
+            },
+            backgroundColor: 'rgba(255,255,255,0)'
+        },
+        title: {
+            text: ' '
+        },
+        xAxis: {
+            categories: false,
+            lineWidth: 0,
+            minorGridLineWidth: 0,
+            lineColor: 'transparent',
+            labels: {
+                enabled: false
+            },
+            minorTickLength: 0,
+            tickLength: 0
+        },
+        yAxis: {
+            min: 0,
+            gridLineWidth: 0,
+            title: {
+                text: false
+            },
+            labels: {
+                enabled: false
+            }
+        },
+        legend: {
+            enabled: false
+
+        },
+        credits: {
+            enabled: false
+        },
+        tooltip: false,
+        plotOptions: {
+            column: {
+                pointPadding: -0.05,
+                borderWidth: 0
+            },
+            series: {
+                color: '#FFF',
+                borderRadius: 6
+            }
+        },
+
+
+
+        series: [{
+            name: ' ',
+            data: dataPodium,
+            dataLabels: {
+                enabled: true,
+                color: '#95ceff',
+                align: 'center',
+                x: 3,
+                y: 72,
+                useHTML: true,
+                overflow: false,
+                crop: false,
+                formatter: function () {
+                    if (4 - this.y == 1 && firstInput != undefined) {
+                        return '<div class="podiumChart dimencionament" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'' + logoPath + firstLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span class="colore-name"; style="font-family: \'Segoe UI\', Roboto, sans-serif; font-size: 14px; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
+                    }
+                    if (4 - this.y == 2 && secondInputs != undefined) {
+                        return '<div class="podiumChart dimencionament" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'' + logoPath + secondLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span class="colore-name"; style="font-family: \'Segoe UI\', Roboto, sans-serif; font-size: 14px; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
+                    }
+                    if (4 - this.y == 3 && thirdInput != undefined) {
+                        return '<div class="podiumChart dimencionament" title="' + (4 - this.y) + 'º lugar"> <div class="podiumImg podiumPosition' + (4 - this.y) + '" style="background-image: url(\'' + logoPath + thirdLogo + '\')" ></div><span style="width: 100%; text-align: center;display: inline-block;"><span class="colore-name"; style="font-family: \'Segoe UI\', Roboto, sans-serif; font-size: 14px; text-shadow: none; font-weight: normal;">' + this.key + '</span> <br>' + '<span class="podiumLabel podiumLabelPosition' + (4 - this.y) + '">' + (4 - this.y) + 'º</span></span></div>';
+                    }
+                },
+                style: {
+                    fontSize: '50px',
+                    fontFamily: '"Segoe UI", Roboto, sans-serif'
+                }
+            }
+        }]
+    });
+};

@@ -579,7 +579,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 LogoId = worker.LogoId,
                                 Cpf = request.Cpf,
                                 Email = request.Email,
-                                LogoPath = CurrentURL + worker.LogoId
+                                LogoPath = CurrentURL + worker.LogoId,
+                                Active = true
                             };
 
 

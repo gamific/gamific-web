@@ -425,7 +425,6 @@
     <Content Include="Content\Images\public\favicon-32x32.png" />
     <Content Include="Content\Images\public\favicon-96x96.png" />
     <Content Include="Content\Images\public\favicon.ico" />
-    <Content Include="Content\Images\public\loading.gif" />
     <Content Include="Content\Images\logo-interno.png" />
     <Content Include="Content\Images\public\ms-icon-144x144.png" />
     <Content Include="Content\Images\public\ms-icon-150x150.png" />
@@ -675,7 +674,6 @@
     <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="Content\Js\lib\jquery-1.10.2.min.map" />
     <Content Include="Content\Js\lib\jquery-1.11.1.min.map" />
-    <Content Include="Views\favicon.ico" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

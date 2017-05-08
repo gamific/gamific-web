@@ -72,90 +72,114 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="tile transparent">
+                <div class="transparent">
                     <div class="tile-header transparent">
-                        <h1>Ranking</h1>
+                        <h1 style="color:#ffffff">Ranking</h1>
                     </div>
                 </div>
             </div>
         </div>
 
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="tile transparent">
-                    <div class="tile-body color transparent-black rounded-corners">
-                        <div class="podiumContainer" id="podiumContainer" style="min-width: 100%; height: 100%; min-height:445px; margin: 0 auto"></div>
-                    </div>
-                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="tile transparent">
-                    <div class="tile-body color transparent-black rounded-corners">
-                        <div class="">
-                            <table id="rankingDataTable" class="table table-striped" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Nome</th>
-                                        <th>Score</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+        <div class="bs-example">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#sectionA">Equipe </a></li>
+                <li><a data-toggle="tab" href="#sectionB">Geral</a></li>
+                
+            </ul>
+            <div class="tab-content">
+                <div id="sectionA" class="tab-pane fade in active">
+                    
+                    <div class="row" style="padding-top:5px;">
+                        <div class="col-md-6">
+                            <div class="tile transparent">
+                                <div class="tile-body color transparent-black rounded-corners">
+                                    <div class="podiumContainer" id="podiumContainer" style="min-width: 100%; height: 100%; min-height:445px; margin: 0 auto"></div>
+                                </div>
+                                <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="tile transparent">
+                                <div class="tile-body color transparent-black rounded-corners">
+                                    <div class="">
+                                        <table id="rankingDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Nome</th>
+                                                    <th>Score</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
-                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="tile transparent">
-                    <div class="tile-header transparent">
-                        <h1>Ranking Jogador</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="tile transparent">
-                    <div class="tile-body color transparent-black rounded-corners">
-                        <div class="podiumContainerPlayers" id="podiumContainerPlayers" style="min-width: 100%; height: 100%; min-height:445px; margin: 0 auto"></div>
-                    </div>
-                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="tile transparent">
-                    <div class="tile-body color transparent-black rounded-corners">
-                        <div class="">
-                            <table id="rankingDataTablePlayers" class="table table-striped" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Nome</th>
-                                        <th>Equipe</th>
-                                        <th>Score</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                <div id="sectionB" class="tab-pane fade">
+                    <div class="row" style="padding-top:5px;">
+                        <div class="col-md-6">
+                            <div class="tile transparent">
+                                <div class="tile-body color transparent-black rounded-corners">
+                                    <div class="podiumContainerPlayers" id="podiumContainerPlayers" style="min-width: 100%; height: 100%; min-height:445px; margin: 0 auto"></div>
+                                </div>
+                                <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="tile transparent">
+                                <div class="tile-body color transparent-black rounded-corners">
+                                    <div class="">
+                                        <table id="rankingDataTablePlayers" class="table table-striped" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Nome</th>
+                                                    <th>Equipe</th>
+                                                    <th>Score</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
-                    </div>
+
                 </div>
+                
             </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
+
+
+        
 
 
     </div>
@@ -190,6 +214,7 @@
                 $('#Filters').hide();
             }
         }
+
     </script>
 </div>
 <script src="http://code.highcharts.com/highcharts.js"></script>

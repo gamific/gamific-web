@@ -15,7 +15,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         protected static object _syncRoot = new Object();
         private static volatile ItemEngineService instance;
 
-        private ItemEngineService() : base(ENGINE_API + "item") { }
+        private ItemEngineService() : base(ENGINE_API + "item/") { }
 
         public static ItemEngineService Instance
         {
@@ -58,7 +58,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "/search/findByNameAndGameId?gameId=" + gameId + "&name=" + name);
+                    string response = client.DownloadString(path + "search/findByNameAndGameId?gameId=" + gameId + "&name=" + name);
                     return JsonDeserialize<ItemEngineDTO>(response);
                 }
             }

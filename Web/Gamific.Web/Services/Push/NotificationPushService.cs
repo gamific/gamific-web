@@ -75,8 +75,7 @@ namespace Vlast.Gamific.Web.Services.Push
                 {
 
                     string response = client.DownloadString(NotificationPushURL + "sendpush" + "?token=" + notification.Token + "&msg=" + notification.Message + "&title=" + notification.Title + "&playerId=" + notification.PlayerId);
-                    //return JsonDeserialize<NotificationLogDTO>(response);
-                    return null;
+                    return JsonDeserialize<NotificationLogDTO>(response);
                 }
             }
             catch (Exception e)

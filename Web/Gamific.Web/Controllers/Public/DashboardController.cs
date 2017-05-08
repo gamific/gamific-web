@@ -21,7 +21,9 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
         List<string> colorsToAdd = new List<string> { "#151F31", "#4D535A", "#0F65E7", "#AAC6DA", "#5789CA", "#1373C9", "#88C3BB", "#40ACFF",
                 "#53B0A6", "#20614D", "#1B5B67", "#4D776D", "#FFA500", "#7FFFD4", "#87CEFA", "#FF69B4", "#FF00FF", "#7CFC00", "#BC8F8F", "#4682B4", "#006400",
-            "#7B68EE", "#151F31", "#4D535A", "#0F65E7", "#AAC6DA", "#5789CA", "#1373C9", "#88C3BB", "#40ACFF" };
+            "#7B68EE", "#151F31", "#4D535A", "#0F65E7", "#AAC6DA", "#5789CA", "#1373C9", "#88C3BB", "#40ACFF" ,  "#151F31", "#4D535A", "#0F65E7", "#AAC6DA", "#5789CA", "#1373C9", "#88C3BB", "#40ACFF",
+                "#53B0A6", "#20614D", "#1B5B67", "#4D776D", "#FFA500", "#7FFFD4", "#87CEFA", "#FF69B4", "#FF00FF", "#7CFC00", "#BC8F8F", "#4682B4", "#006400",
+            "#7B68EE", "#151F31", "#4D535A", "#0F65E7", "#AAC6DA", "#5789CA", "#1373C9", "#88C3BB", "#40ACFF"};
 
         public static List<EpisodeEngineDTO> episodesFilter = new List<EpisodeEngineDTO>();
 
@@ -40,7 +42,9 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             ViewBag.Grafic_itens = changeVisibilityGraph();
 
-            ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+            //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+
+            ViewBag.Metrics =  MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0,100).List.metric;
 
             ViewBag.State = state;
 
@@ -225,7 +229,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
                     dto.products.Add(morrisDTO);
 
-                    if (i >= colorsToAdd.Count)
+                    if (i > colorsToAdd.Count)
                     {
                         i = 0;
                     }
@@ -276,7 +280,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
                     dto.products.Add(morrisDTO);
 
-                    if (i >= colorsToAdd.Count)
+                    if (i > colorsToAdd.Count)
                     {
                         i = 0;
                     }
@@ -477,7 +481,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
 
-            ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+            //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+            ViewBag.Metrics = MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0, 100).List.metric;
             ViewBag.State = episode.Active == true ? 1 : 0;
             ViewBag.EpisodeId = episodeId;
             ViewBag.TeamId = teamId;
@@ -708,7 +713,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
 
                 List<WorkerDTO> workers = all.List == null ? new List<WorkerDTO>() : WorkerRepository.Instance.GetWorkerDTOByListExternalId(all.List.runMetric.Select(i => i.PlayerId).ToList());
-                GetAllDTO itens = ItemEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 10000);
+                GetAllDTO itens = ItemEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 1000, 0);
 
 
                 if (all.List != null)

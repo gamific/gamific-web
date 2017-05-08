@@ -23,12 +23,25 @@ $('#dropDownEpisodes').change(function () {
 
 $('#dropDownTeams').change(function () {
     refreshDropDownWorkers($(this).val());
-    loadMorris(2);
+
+    if ($("#dropDownTeams").val() == "empty") {
+        loadMorris(1);
+    } else {
+        loadMorris(2);
+    }
+
 });
 
 $('#dropDownWorkers').change(function () {
+
     refreshCardResults($("#dropDownEpisodes").val(), $("#dropDownTeams").val(), $("#dropDownWorkers").val());
-    loadMorris(3);
+    if ($("#dropDownWorkers").val() == "empty") {
+        loadMorris(2);
+    } else {
+        loadMorris(3);
+    }
+    
+
 });
 
 function refreshDropDownEpisodes(state, currentId) {
