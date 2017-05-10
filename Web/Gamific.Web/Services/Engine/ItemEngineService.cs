@@ -116,6 +116,21 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public void CloseById(string id)
+        {
+            try
+            {
+                using (WebClient client = GetClient())
+                {
+                    string response = client.UploadString(ENGINE_API + "item/" + id, "DELETE", "");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         #endregion
     }
 }
