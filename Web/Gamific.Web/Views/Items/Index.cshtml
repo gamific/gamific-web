@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#Items").addClass("active");
+</script>
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-book"></i> Cadastro de Itens</h2>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div id="registermetrics" class="table-toolbar-left">
+                            <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/items/cadastrar" title="Cadastrar nova Campanha" onclick="loadData();showEntityModal(this); return false;"><i class="fa fa-plus"></i> Cadastrar novo Item</a>
+                        </div>
+                        <div class="">
+                            <table id="itemsDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Valor</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
+
+<script src="~/Content/Js/app/Items.js"></script>
