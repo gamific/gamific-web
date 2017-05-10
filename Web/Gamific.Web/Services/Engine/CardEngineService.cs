@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
+using Vlast.Gamific.Model.Firm.DTO;
 using Vlast.Gamific.Web.Controllers.Public.Model;
 
 namespace Vlast.Gamific.Web.Services.Engine.DTO
@@ -167,7 +168,6 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
 
                 string response = client.DownloadString(path + "playerCards?gameId=" + gameId + "&teamId=" + teamId + "&playerId=" + playerId);
                 return JsonDeserialize<List<CardEngineDTO>>(response);
-
             }
             catch (Exception e)
             {
@@ -191,19 +191,44 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             }
         }
 
-        public List<BarDTO> EpisodesAndMetrics(List<string> episodesIds, List<string> metricsIds)
+        public List<BarDTO> EpisodesAndMetrics(List<EpisodeEngineDTO> episodes, List<MetricEngineDTO> metrics)
+        {
+            using (WebClient client = GetClient())
+            {
+                try
+                {
+
+                    BarParamDTO dto = new BarParamDTO();
+
+                    dto.Episodes = episodes;
+                    dto.Metrics = metrics;
+
+                    string response = client.UploadString(ENGINE_API + "graphicbars", "POST", JsonSerialize(ref dto));
+
+                    return JsonDeserialize<List<BarDTO>>(response);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
+
+        public ChartResultDTO GameAndMetricAndPeriod(string gameId, List<string> metricIds, long initDate, long finishDate)
         {
             using (WebClient client = GetClient())
             {
                 try
                 {
                     var reqparm = new System.Collections.Specialized.NameValueCollection();
-                    reqparm.Add("episodesIds", JsonSerialize(ref episodesIds));
-                    reqparm.Add("metricsIds", JsonSerialize(ref metricsIds));
+                    reqparm.Add("gameId", JsonSerialize(ref gameId));
+                    reqparm.Add("metrics", JsonSerialize(ref metricIds));
+                    reqparm.Add("initDate", JsonSerialize(ref initDate));
+                    reqparm.Add("finishDate", JsonSerialize(ref finishDate));
 
-                    byte[] response = client.UploadValues(ENGINE_API + "graphicbars", "POST", reqparm);
+                    byte[] response = client.UploadValues(ENGINE_API + "graphicLineWebByDate", "POST", reqparm);
 
-                    return JsonDeserialize<List<BarDTO>>(System.Text.Encoding.UTF8.GetString(response));
+                    return JsonDeserialize<ChartResultDTO>(System.Text.Encoding.UTF8.GetString(response));
                 }
                 catch (Exception e)
                 {

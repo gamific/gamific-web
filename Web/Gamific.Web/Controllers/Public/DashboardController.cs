@@ -172,12 +172,14 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             List<string> episodesIds = new List<string>();
 
-            foreach (EpisodeEngineDTO item in episodesFilter)
+            List<MetricEngineDTO> metrics = new List<MetricEngineDTO>();
+
+            foreach (string item in metricsIds)
             {
-                episodesIds.Add(item.Id);
+                metrics.Add(MetricEngineService.Instance.GetById(item));
             }
 
-            bars = CardEngineService.Instance.EpisodesAndMetrics(episodesIds, metricsIds);
+            bars = CardEngineService.Instance.EpisodesAndMetrics(episodesFilter, metrics);
 
             return Content(JsonConvert.SerializeObject(bars), "application/json");
         }
@@ -333,7 +335,17 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             ChartResultDTO chartDTO = new ChartResultDTO();
 
-            //chama servico miller
+            List<string> metricIds = new List<string>();
+
+            metricIds.Add(metricId);
+
+            EpisodeEngineDTO episodeObj = EpisodeEngineService.Instance.GetById(campaignId);
+
+            DateTime initDateFormatted = DateTime.Parse(initDate);
+
+            DateTime finishDateFormatted = DateTime.Parse(endDate);
+
+            chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(episodeObj.GameId, metricIds, initDateFormatted.Ticks, finishDateFormatted.Ticks);
 
             foreach (EpisodeEngineDTO episode in chartDTO.Entries)
             {

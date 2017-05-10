@@ -934,7 +934,6 @@ $(document).ready(function () {
     if (window.location.pathname.search("detalhes") == -1) {
         loadMorris(1);
     }
-    loadBarChart();
 });
 
 function onSuccessSaveFilter(data) {
@@ -957,7 +956,7 @@ function loadBarChart() {
     if (metrics.length > 0) {
         var z;
         for (z = 0; z < metrics.length; z++) {
-            if (metrics.checked) {
+            if (metrics[z].checked) {
                 metricsIds.push(metrics[z].value);
             }
         }

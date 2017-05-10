@@ -330,6 +330,7 @@
     <Compile Include="Services\Account\TokenHandler\JWTHandler.cs" />
     <Compile Include="Services\Engine\DTO\CardEngineDTO.cs" />
     <Compile Include="Services\Engine\CardEngineService.cs" />
+    <Compile Include="Services\Engine\DTO\BarParamDTO.cs" />
     <Compile Include="Services\Engine\DTO\GameEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\GetAllDTO.cs" />
     <Compile Include="Services\Engine\DTO\EpisodeEngineDTO.cs" />
