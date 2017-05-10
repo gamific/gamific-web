@@ -156,8 +156,7 @@
                                 <div class="col-xs-12 col-sm-12">
                                     <div class="">
                                         <div class="col-xs-12">
-                                            <h1 style="color:white !important; font:25px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;">Evolução</h1>
-                                            <a style="font-size:25px; padding-left:45px;" class="fa fa-filter" href="/public/dashboard/getCampaignsModal" onclick="showEntityModal(this); return false;" title="Mudar Filtros."></a>
+                                            <h1 style="color:white !important; font:25px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;">Evolução Campanhas por Período</h1>
                                         </div>
                                     </div>
                                 </div>
@@ -211,6 +210,78 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 pull-left">
                                     <div id="statistics-chart" class="chart statistics" style="height: 250px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- /grafico hisograma -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <section class="tile transparent">
+                        <div class="tile-header color transparent-black textured rounded-top-corners">
+                            <div class="controls">
+                                <a href="index.html#" class="minimize"><i class="fa fa-chevron-down"></i></a>
+                                <a href="index.html#" class="remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                            <h1 style="color:white !important; font:25px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;">Resultados Campanhas</h1>
+                                            <a style="font-size:25px; padding-left:45px;" class="fa fa-filter" href="/public/dashboard/getCampaignsModal" onclick="showEntityModal(this); return false;" title="Mudar Filtros."></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                            <h4 style="color:white !important; font:18px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;" class="underline text-left">Comparativo de Campanhas Geral</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile-widget color transparent-black textured">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 pull-right">
+                                    <div id="metricsBar">
+                                        <ul class="list-unstyled metric-menu">
+                                            <li class="title">
+                                                <h5 style="font:15px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;">Métricas:</h5>
+                                            </li>
+
+                                            @if (ViewBag.Metrics.Count > 0)
+                                            {
+                                                foreach (MetricEngineDTO metric in ViewBag.Metrics)
+                                                {
+                                                    <li>
+                                                        <div>
+                                                            <label>
+                                                                <input style="width:14px !important; height:auto !important" type="checkbox" value="@metric.Id" class="checkbox-div barChart" onclick="loadBarChart();" />
+
+                                                                <span style="color:white; font-size:14px !important">
+                                                                    @metric.Name
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                }
+                                            }
+
+                                        </ul>
+
+                                        @if (ViewBag.Metrics.Count > 0)
+                                        {
+                                            <input type="checkbox" value="@ViewBag.Metrics[0].Id" hidden checked id="metricToInitializeBar" />
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 pull-left">
+                                    <div id="bar-chart"></div>
                                 </div>
                             </div>
                         </div>
@@ -279,8 +350,6 @@
                     </section>
                 </div>
             </div>
-
-
 
         </div>
 

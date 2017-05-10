@@ -1,15 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using System.Web.Mvc;
 using Vlast.Gamific.Model.Firm.Domain;
-using Vlast.Gamific.Model.Firm.DTO;
 using Vlast.Gamific.Model.Firm.Repository;
-using Vlast.Gamific.Model.School.DTO;
-using Vlast.Gamific.Web.Controllers.Management.Model;
-using Vlast.Util.Data;
-using Vlast.Util.Instrumentation;
+using Vlast.Gamific.Web.Services.Engine;
+using Vlast.Gamific.Web.Services.Engine.DTO;
 
 namespace Vlast.Gamific.Web.Controllers.Management
 {
@@ -24,6 +20,17 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             return View();
         }
+
+        [Route("getCampaignById/{campaignId}")]
+        [HttpGet]
+        public ContentResult GetCampaign(string campaignId)
+        {
+
+            EpisodeEngineDTO rtn = EpisodeEngineService.Instance.GetById(campaignId);
+
+            return Content(JsonConvert.SerializeObject(rtn), "application/json");
+        }
+
         /**
         /// <summary>
         /// Abre o modal de associação de equipes com a campanha

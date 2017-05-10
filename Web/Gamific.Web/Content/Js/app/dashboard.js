@@ -5,6 +5,20 @@
 $('#dropDownEpisodes').change(function () {
     refreshDropDownTeams($(this).val());
     loadMorris(1);
+
+    var metrics = $('.metricsChart');
+
+    var i;
+    for (i = 0; i < metrics.length; i++) {
+        metrics[i].checked = false;
+    }
+
+    var id = '#chart-' + metricToInitialize;
+
+    $(id).attr("checked", true);
+
+    initializeChart(metricToInitialize, true);
+
 });
 
 $('#dropDownTeams').change(function () {
@@ -26,7 +40,7 @@ $('#dropDownWorkers').change(function () {
     } else {
         loadMorris(3);
     }
-    
+
 
 });
 
@@ -443,7 +457,8 @@ function onSucessSaveResult() {
 var values = [];
 var plot;
 var metricToInitialize = $('#metricToInitialize').val();
-if (metricToInitialize) {
+//if (metricToInitialize) {
+if (1==2) {
 
     var id = '#chart-' + metricToInitialize;
 
@@ -595,92 +610,84 @@ if (metricToInitialize) {
 function initializeChart(metricId, checked) {
     // showLoading();
 
-    var campaignsNames;
+    var campaignId = $('#dropDownEpisodes').val();
+
+    var campaign;
 
     $.ajax({
-        url: "/public/dashboard/getCampaigns",
+        url: "/admin/campanhas/getCampaignById/" + campaignId,
         async: false,
         dataType: 'json',
         success: function (d) {
-            campaignsNames = d;
+            campaign = d;
         }
     });
 
-    if (campaignsNames.length > 0) {
-        var y = [];
+    if (campaignId && campaignId.length > 0) {
 
-        $.ajax({
-            url: "/public/dashboard/getCampaignsWithIds",
-            async: false,
-            dataType: 'json',
-            success: function (d) {
-                if (d.length > 0) {
-                    for (var i = 0; i < d.length; i++) {
-                        var z = [i, d[i].name.substr(0, 7) + "..."];
-                        y.push(z);
-                    }
-                }
-            }
-        });
+        var initialDate = moment([2007, 5, 30]);
 
-        var properties = {
-
-            xaxis: {
-
-                tickLength: 0,
-                tickDecimals: 0,
-                min: 0,
-                ticks: y,
-
-                font: {
-                    lineHeight: 24,
-                    weight: "300",
-                    color: "#ffffff",
-                    size: 14
-                }
-            },
-
-            yaxis: {
-                ticks: 4,
-                tickDecimals: 0,
-                tickColor: "rgba(255,255,255,.3)",
-
-                font: {
-                    lineHeight: 13,
-                    weight: "300",
-                    color: "#ffffff"
-                }
-            },
-
-            grid: {
-                borderWidth: {
-                    top: 0,
-                    right: 0,
-                    bottom: 1,
-                    left: 1
-                },
-                borderColor: 'rgba(255,255,255,.3)',
-                margin: 0,
-                minBorderMargin: 0,
-                labelMargin: 20,
-                hoverable: true,
-                clickable: true,
-                mouseActiveRadius: 6
-            },
-
-            legend: { show: false }
-        };
+        var endDate = moment([2007, 6, 1]);
 
         if (checked) {
             $.ajax({
-                url: "/public/dashboard/loadChart/" + metricId,
+                url: "/public/dashboard/loadChart/" + metricId + "/" + campaignId + "/" + initialDate + "/" + endDate,
                 async: false,
                 dataType: 'json',
                 success: function (d) {
+
+                    var properties = {
+
+                        xaxis: {
+
+                            tickLength: 0,
+                            tickDecimals: 0,
+                            min: 0,
+                            ticks: d.PositionsX,
+
+                            font: {
+                                lineHeight: 24,
+                                weight: "300",
+                                color: "#ffffff",
+                                size: 14
+                            }
+                        },
+
+                        yaxis: {
+                            ticks: 4,
+                            tickDecimals: 0,
+                            tickColor: "rgba(255,255,255,.3)",
+
+                            font: {
+                                lineHeight: 13,
+                                weight: "300",
+                                color: "#ffffff"
+                            }
+                        },
+
+                        grid: {
+                            borderWidth: {
+                                top: 0,
+                                right: 0,
+                                bottom: 1,
+                                left: 1
+                            },
+                            borderColor: 'rgba(255,255,255,.3)',
+                            margin: 0,
+                            minBorderMargin: 0,
+                            labelMargin: 20,
+                            hoverable: true,
+                            clickable: true,
+                            mouseActiveRadius: 6
+                        },
+
+                        legend: { show: false }
+                    };
+
                     values.push({
                         metricId: metricId,
-                        label: d.MetricName,
-                        data: d.Positions,
+                        label: d.Name,
+                        data: d.PositionsY,
                         lines: { show: true, lineWidth: 3 },
                         points: { show: true, fill: true, radius: 6, fillColor: "rgba(0,0,0,.5)", lineWidth: 2 },
                         shadowSize: 0,
@@ -694,7 +701,7 @@ function initializeChart(metricId, checked) {
                             var x = item.datapoint[0],
                                 y = item.datapoint[1];
 
-                            $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
+                            $("#tooltip").html('<h1 style="color: #418bca">' + campaign.name + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
                               .css({ top: item.pageY - 30, left: item.pageX + 5 })
                               .fadeIn(200);
                         } else {
@@ -757,7 +764,7 @@ function initializeChart(metricId, checked) {
                         var x = item.datapoint[0],
                             y = item.datapoint[1];
 
-                        $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
+                        $("#tooltip").html('<h1 style="color: #418bca">' + campaign.name + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
                           .css({ top: item.pageY - 30, left: item.pageX + 5 })
                           .fadeIn(200);
                     } else {
@@ -801,7 +808,6 @@ function initializeChart(metricId, checked) {
                 //hideLoading();
             }, 1000);
         }
-    } else {
     }
 
 }
@@ -932,25 +938,66 @@ $(document).ready(function () {
 
 function onSuccessSaveFilter(data) {
     $('#entity-edit-modal').modal('hide');
-    var metricSelectedList = $('.metricsChart');
 
-    values = [];
-
-    var i;
-    for (i = 0; i < metricSelectedList.length; i++) {
-        if (metricSelectedList[i].checked) {
-            if (i > 0) {
-                metricSelectedList[i].checked = false;
-            } else {
-                var value = metricSelectedList[i].value;
-                window.setTimeout(function () {
-                    initializeChart(value, true);
-                }, 2000);
-            }
-        }
-    }
+    loadBarChart();
 }
 
 function onFailureSaveFilter(data) {
 
+}
+
+function loadBarChart() {
+
+    $('#bar-chart').empty()
+
+    var metrics = $('.barChart');
+    var metricsIds = [];
+
+    if (metrics.length > 0) {
+        var z;
+        for (z = 0; z < metrics.length; z++) {
+            if (metrics[z].checked) {
+                metricsIds.push(metrics[z].value);
+            }
+        }
+    } else {
+        metricsIds.push($('#metricToInitializeBar').val());
+    }
+
+    $.ajax({
+        url: "/public/dashboard/loadBarChart",
+        data: { metricsIds: metricsIds },
+        async: false,
+        type: "POST",
+        success: function (data) {
+
+            var barData = [];
+            var labels = [];
+
+            var i;
+            for (i = 0; i < data.length; i++) {
+                var w;
+                var labels1 = [];
+                barElement = { episodeName: data[i].EpisodeName }
+                for (w = 0; w < data[i].Points.length; w++) {
+                    labels1.push(data[i].Points[w].MetricName);
+                    var metricName = data[i].Points[w].MetricName;
+                    barElement[metricName] = data[i].Points[w].MetricResult;
+                }
+                labels = labels1;
+                barData.push(barElement);
+            }
+
+            Morris.Bar({
+                element: 'bar-chart',
+                data: barData,
+                xkey: 'episodeName',
+                ykeys: labels,
+                labels: labels
+            });
+        },
+        error: function (data) {
+            alert(data);
+        }
+    });
 }
