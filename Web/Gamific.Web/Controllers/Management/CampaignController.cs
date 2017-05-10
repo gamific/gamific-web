@@ -1,15 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using System.Web.Mvc;
 using Vlast.Gamific.Model.Firm.Domain;
-using Vlast.Gamific.Model.Firm.DTO;
 using Vlast.Gamific.Model.Firm.Repository;
-using Vlast.Gamific.Model.School.DTO;
-using Vlast.Gamific.Web.Controllers.Management.Model;
-using Vlast.Util.Data;
-using Vlast.Util.Instrumentation;
+using Vlast.Gamific.Web.Services.Engine;
+using Vlast.Gamific.Web.Services.Engine.DTO;
 
 namespace Vlast.Gamific.Web.Controllers.Management
 {
@@ -29,29 +25,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [HttpGet]
         public ContentResult GetCampaign(string campaignId)
         {
-            List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
 
-            if (episodesFilter.Count < 1)
-            {
-                GetCampaignsModal();
-            }
+            EpisodeEngineDTO rtn = EpisodeEngineService.Instance.GetById(campaignId);
 
-            foreach (EpisodeEngineDTO episode in episodesFilter)
-            {
-                if (episodes.Count > 7)
-                {
-                    break;
-                }
-                else
-                {
-                    if (episode.checkedFlag)
-                    {
-                        episodes.Add(episode);
-                    }
-                }
-            }
-
-            return Content(JsonConvert.SerializeObject(episodes), "application/json");
+            return Content(JsonConvert.SerializeObject(rtn), "application/json");
         }
 
         /**

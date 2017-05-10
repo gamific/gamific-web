@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
+using Vlast.Gamific.Web.Controllers.Public.Model;
 
 namespace Vlast.Gamific.Web.Services.Engine.DTO
 {
@@ -112,8 +113,8 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
                 client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
 
                 string response = client.DownloadString(path + "teamCards?gameId=" + gameId + "&teamId=" + teamId);
-                    return JsonDeserialize<List<CardEngineDTO>>(response);
-                
+                return JsonDeserialize<List<CardEngineDTO>>(response);
+
             }
             catch (Exception e)
             {
@@ -153,7 +154,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             }
         }
 
-        public List<CardEngineDTO> PlayerAuth(string gameId, string teamId, string playerId,  string email)
+        public List<CardEngineDTO> PlayerAuth(string gameId, string teamId, string playerId, string email)
         {
             try
             {
@@ -165,8 +166,8 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
                 client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
 
                 string response = client.DownloadString(path + "playerCards?gameId=" + gameId + "&teamId=" + teamId + "&playerId=" + playerId);
-                    return JsonDeserialize<List<CardEngineDTO>>(response);
-                
+                return JsonDeserialize<List<CardEngineDTO>>(response);
+
             }
             catch (Exception e)
             {
@@ -174,7 +175,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             }
         }
 
-        public GetAllDTO IndividualResultsByPlayerId(string playerId, string episodeId ,string gameId)
+        public GetAllDTO IndividualResultsByPlayerId(string playerId, string episodeId, string gameId)
         {
             try
             {
@@ -187,6 +188,27 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        public List<BarDTO> EpisodesAndMetrics(List<string> episodesIds, List<string> metricsIds)
+        {
+            using (WebClient client = GetClient())
+            {
+                try
+                {
+                    var reqparm = new System.Collections.Specialized.NameValueCollection();
+                    reqparm.Add("episodesIds", JsonSerialize(ref episodesIds));
+                    reqparm.Add("metricsIds", JsonSerialize(ref metricsIds));
+
+                    byte[] response = client.UploadValues(ENGINE_API + "graphicbars", "POST", reqparm);
+
+                    return JsonDeserialize<List<BarDTO>>(System.Text.Encoding.UTF8.GetString(response));
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
         }
 

@@ -44,7 +44,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
-            ViewBag.Metrics =  MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0,100).List.metric;
+            ViewBag.Metrics = MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0, 100).List.metric;
 
             ViewBag.State = state;
 
@@ -177,23 +177,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 episodesIds.Add(item.Id);
             }
 
-            //bars = CardEngineService.Instance.EpisodesAndMetrics(episodesIds, metricsIds);
-
-            BarDTO dto = new BarDTO();
-
-            BarPointDTO dto1 = new BarPointDTO();
-
-            dto.EpisodeName = "teste";
-
-            dto1.MetricName = "teste1";
-
-            dto1.MetricResult = 10;
-
-            dto.Points = new List<BarPointDTO>();
-
-            dto.Points.Add(dto1);
-
-            bars.Add(dto);
+            bars = CardEngineService.Instance.EpisodesAndMetrics(episodesIds, metricsIds);
 
             return Content(JsonConvert.SerializeObject(bars), "application/json");
         }
@@ -207,7 +191,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 products = new List<MorrisPropertyDTO>()
             };
 
-           
+
             List<ItemEngineDTO> items = new List<ItemEngineDTO>();
 
             items = ItemEngineService.Instance.FindByEpisode(metricId, episodeId);
@@ -254,7 +238,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 products = new List<MorrisPropertyDTO>()
             };
 
-          
+
             List<ItemEngineDTO> items = new List<ItemEngineDTO>();
 
             string runId;
@@ -305,7 +289,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 products = new List<MorrisPropertyDTO>()
             };
 
-          
+
             List<ItemEngineDTO> items = new List<ItemEngineDTO>();
 
             items = ItemEngineService.Instance.FindByTeam(metricId, teamId);
@@ -315,7 +299,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             foreach (ItemEngineDTO item in items)
             {
-                if(item.Name != null) { 
+                if (item.Name != null)
+                {
                     MorrisPropertyDTO morrisDTO = new MorrisPropertyDTO();
 
                     morrisDTO.label = item.Name;
@@ -342,65 +327,31 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return Content(JsonConvert.SerializeObject(dto), "application/json");
         }
 
-        [Route("loadChart/{metricId}")]
+        [Route("loadChart/{metricId}/{campaignId}/{initDate}/{endDate}")]
         [HttpGet]
-        public ContentResult GetChartResults(string metricId)
+        public ContentResult GetChartResults(string metricId, string campaignId, string initDate, string endDate)
         {
-            ChartResultDTO chartDTO = new ChartResultDTO
+            ChartResultDTO chartDTO = new ChartResultDTO();
+
+            //chama servico miller
+
+            foreach (EpisodeEngineDTO episode in chartDTO.Entries)
             {
-                Positions = new List<List<int>>()
-            };
+                List<string> x = new List<string>();
 
-            MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
+                List<string> y = new List<string>();
 
-            List<EpisodeEngineDTO> episodes = new List<EpisodeEngineDTO>();
+                x.Add(episode.Id);
+                x.Add(episode.Name);
 
-            if (episodesFilter.Count < 1)
-            {
-                GetCampaignsModal();
+                y.Add(episode.Id);
+                y.Add(episode.Value.ToString());
+
+                chartDTO.PositionsX = new List<List<string>>();
+                chartDTO.PositionsY = new List<List<string>>();
+                chartDTO.PositionsX.Add(x);
+                chartDTO.PositionsY.Add(y);
             }
-
-            foreach (EpisodeEngineDTO episode in episodesFilter)
-            {
-                if (episodes.Count > 7)
-                {
-                    break;
-                }
-                else
-                {
-                    if (episode.checkedFlag)
-                    {
-                        episodes.Add(episode);
-                    }
-                }
-            }
-
-            int i = 0;
-            foreach (EpisodeEngineDTO episode in episodes)
-            {
-                List<int> point = new List<int>();
-
-                List<CardEngineDTO> results = new List<CardEngineDTO>();
-
-                results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
-
-                if (results[0] != null)
-                {
-                    point.Add(i);
-                    point.Add((int)results[0].TotalPoints);
-                    chartDTO.Positions.Add(point);
-
-                }
-                else
-                {
-                    point.Add(i);
-                    point.Add(0);
-                    chartDTO.Positions.Add(point);
-                }
-                i++;
-            }
-
-            chartDTO.MetricName = metric.Name;
 
             return Content(JsonConvert.SerializeObject(chartDTO), "application/json");
         }

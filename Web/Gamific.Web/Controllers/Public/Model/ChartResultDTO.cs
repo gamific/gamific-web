@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using Vlast.Gamific.Web.Services.Engine.DTO;
 
 namespace Vlast.Gamific.Web.Controllers.Public.Model
 {
@@ -7,8 +9,22 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
     /// </summary>
     public class ChartResultDTO
     {
-        public List<List<int>> Positions { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
 
-        public string MetricName { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("positionsX")]
+        public List<List<string>> PositionsX { get; set; }
+
+        [JsonProperty("positionsY")]
+        public List<List<string>> PositionsY { get; set; }
+
+        [JsonProperty("entries")]
+        public List<EpisodeEngineDTO> Entries { get; set; }
     }
 }

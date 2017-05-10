@@ -9,7 +9,7 @@ $('#dropDownEpisodes').change(function () {
     var metrics = $('.metricsChart');
 
     var i;
-    for(i = 0; i < metrics.length; i++){
+    for (i = 0; i < metrics.length; i++) {
         metrics[i].checked = false;
     }
 
@@ -40,7 +40,7 @@ $('#dropDownWorkers').change(function () {
     } else {
         loadMorris(3);
     }
-    
+
 
 });
 
@@ -457,7 +457,8 @@ function onSucessSaveResult() {
 var values = [];
 var plot;
 var metricToInitialize = $('#metricToInitialize').val();
-if (metricToInitialize) {
+//if (metricToInitialize) {
+if (1==2) {
 
     var id = '#chart-' + metricToInitialize;
 
@@ -609,13 +610,9 @@ if (metricToInitialize) {
 function initializeChart(metricId, checked) {
     // showLoading();
 
-    var campaign;
-
     var campaignId = $('#dropDownEpisodes').val();
 
-    if(campaignId && campaignId.length > 0){
-    
-    }
+    var campaign;
 
     $.ajax({
         url: "/admin/campanhas/getCampaignById/" + campaignId,
@@ -626,80 +623,71 @@ function initializeChart(metricId, checked) {
         }
     });
 
-        var y = [];
+    if (campaignId && campaignId.length > 0) {
 
-        $.ajax({
-            url: "/public/dashboard/getCampaignsWithIds",
-            async: false,
-            dataType: 'json',
-            success: function (d) {
-                if (d.length > 0) {
-                    for (var i = 0; i < d.length; i++) {
-                        var z = [i, d[i].name.substr(0, 7) + "..."];
-                        y.push(z);
-                    }
-                }
-            }
-        });
+        var initialDate = moment([2007, 5, 30]);
 
-        var properties = {
-
-            xaxis: {
-
-                tickLength: 0,
-                tickDecimals: 0,
-                min: 0,
-                ticks: y,
-
-                font: {
-                    lineHeight: 24,
-                    weight: "300",
-                    color: "#ffffff",
-                    size: 14
-                }
-            },
-
-            yaxis: {
-                ticks: 4,
-                tickDecimals: 0,
-                tickColor: "rgba(255,255,255,.3)",
-
-                font: {
-                    lineHeight: 13,
-                    weight: "300",
-                    color: "#ffffff"
-                }
-            },
-
-            grid: {
-                borderWidth: {
-                    top: 0,
-                    right: 0,
-                    bottom: 1,
-                    left: 1
-                },
-                borderColor: 'rgba(255,255,255,.3)',
-                margin: 0,
-                minBorderMargin: 0,
-                labelMargin: 20,
-                hoverable: true,
-                clickable: true,
-                mouseActiveRadius: 6
-            },
-
-            legend: { show: false }
-        };
+        var endDate = moment([2007, 6, 1]);
 
         if (checked) {
             $.ajax({
-                url: "/public/dashboard/loadChart/" + metricId,
+                url: "/public/dashboard/loadChart/" + metricId + "/" + campaignId + "/" + initialDate + "/" + endDate,
                 async: false,
                 dataType: 'json',
                 success: function (d) {
+
+                    var properties = {
+
+                        xaxis: {
+
+                            tickLength: 0,
+                            tickDecimals: 0,
+                            min: 0,
+                            ticks: d.PositionsX,
+
+                            font: {
+                                lineHeight: 24,
+                                weight: "300",
+                                color: "#ffffff",
+                                size: 14
+                            }
+                        },
+
+                        yaxis: {
+                            ticks: 4,
+                            tickDecimals: 0,
+                            tickColor: "rgba(255,255,255,.3)",
+
+                            font: {
+                                lineHeight: 13,
+                                weight: "300",
+                                color: "#ffffff"
+                            }
+                        },
+
+                        grid: {
+                            borderWidth: {
+                                top: 0,
+                                right: 0,
+                                bottom: 1,
+                                left: 1
+                            },
+                            borderColor: 'rgba(255,255,255,.3)',
+                            margin: 0,
+                            minBorderMargin: 0,
+                            labelMargin: 20,
+                            hoverable: true,
+                            clickable: true,
+                            mouseActiveRadius: 6
+                        },
+
+                        legend: { show: false }
+                    };
+
                     values.push({
                         metricId: metricId,
-                        label: d.MetricName,
-                        data: d.Positions,
+                        label: d.Name,
+                        data: d.PositionsY,
                         lines: { show: true, lineWidth: 3 },
                         points: { show: true, fill: true, radius: 6, fillColor: "rgba(0,0,0,.5)", lineWidth: 2 },
                         shadowSize: 0,
@@ -713,7 +701,7 @@ function initializeChart(metricId, checked) {
                             var x = item.datapoint[0],
                                 y = item.datapoint[1];
 
-                            $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
+                            $("#tooltip").html('<h1 style="color: #418bca">' + campaign.name + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
                               .css({ top: item.pageY - 30, left: item.pageX + 5 })
                               .fadeIn(200);
                         } else {
@@ -776,7 +764,7 @@ function initializeChart(metricId, checked) {
                         var x = item.datapoint[0],
                             y = item.datapoint[1];
 
-                        $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
+                        $("#tooltip").html('<h1 style="color: #418bca">' + campaign.name + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
                           .css({ top: item.pageY - 30, left: item.pageX + 5 })
                           .fadeIn(200);
                     } else {
@@ -820,6 +808,8 @@ function initializeChart(metricId, checked) {
                 //hideLoading();
             }, 1000);
         }
+    }
+
 }
 
 function generateRandomNumber(inferior, superior) {
