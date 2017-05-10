@@ -416,6 +416,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 return SaveResultArchiveSolBebidas(resultsArchive, episodeId);
             }
+            else if(CurrentFirm.ExternalId == "588602233a87786bec6ca703")
+            {
+                return SaveResultArchiveSyngenta(resultsArchive, episodeId);
+            }
             else
             {
                 return SaveResultArchiveStandard(resultsArchive, episodeId);
@@ -425,7 +429,187 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return Json(new { Success = false }, JsonRequestBehavior.DenyGet);
         }
 
-        
+
+
+        /// <summary>
+        /// Salva as informações do resultado via arquivo
+        /// </summary>
+        /// <param name="resultsArchive"></param>
+        /// <returns></returns>
+        //[Route("salvarResultadoArquivo")]
+        //[HttpPost]
+        //[CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
+        private ActionResult SaveResultArchiveSyngenta(HttpPostedFileBase resultsArchive, string episodeId)
+        {
+            string errors = "Quantidade de erros: {0}<br/>Última linha lida: {1}<br/>";
+            int line = 1;
+            int countErrors = 0;
+            int countEmptyLines = 0;
+
+            string gameId = CurrentFirm.ExternalId;
+
+            int CODIGO_TERRITORIO = 0;
+            int RESPONSAVEL = 1;
+            int EMAIL = 2;
+            int REG = 3;
+            int PROMOxISNT = 4;
+            int DIA = 5;
+            int CULTURA = 6;
+            int NOME_PADRAO = 7;
+            int TOTAL = 8;
+            
+            try
+            {
+                resultsArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), resultsArchive.FileName));
+
+                string path = Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(resultsArchive.FileName));
+
+                var archive = new ExcelQueryFactory(path);
+
+                var rows = from x in archive.WorksheetRange("A1", "I" + rowsCount, "Plan1")
+                           select x;
+
+                foreach (var row in rows)
+                {
+                    line++;
+
+                    if (countEmptyLines >= 3)
+                    {
+                        break;
+                    }
+
+                    if (row[0] == null || row[0].ToString().Equals("") || row[1] == null || row[1].ToString().Equals(""))
+                    {
+                        countEmptyLines++;
+                        continue;
+                    }
+
+                    countEmptyLines = 0;
+
+                    if (row[TOTAL].ToString().Equals("0"))
+                    {
+                        continue;
+                    }
+
+                    RunMetricEngineDTO result = new RunMetricEngineDTO();
+                    MetricEngineDTO metric = new MetricEngineDTO();
+                    TeamEngineDTO team = new TeamEngineDTO();
+                    RunEngineDTO run = new RunEngineDTO();
+
+                    try
+                    {
+                        metric = MetricEngineService.Instance.GetDTOByGameAndName(gameId, row[NOME_PADRAO].ToString());
+                    }
+                    catch (Exception e)
+                    {
+                        errors += "Erro na coluna 2 da linha " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+                    UserProfileEntity user = UserProfileRepository.Instance.GetByEmail(row[EMAIL].ToString());
+
+                    if (user == null)
+                    {
+                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+                    WorkerEntity worker = WorkerRepository.Instance.GetByUserId((int)user.Id);
+
+                    if (worker == null)
+                    {
+                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+                    try
+                    {
+                        team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId, row[REG]);
+                    }
+                    catch (Exception e)
+                    {
+                        errors += "Erro na coluna 5 da linha " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+                    try
+                    {
+                        run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);
+                    }
+                    catch (Exception e)
+                    {
+                        errors += "Jogador " + user.Name + " não está cadastrado no time " + team.Nick + ". Linha: " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+                    float oldResult;
+
+                    try
+                    {
+                        oldResult = RunMetricEngineService.Instance.findByRunIdAndMetricId(run.Id, metric.Id, 0, 100000).List.runMetric.Sum(x => x.Points);
+                    }
+                    catch (Exception e)
+                    {
+                        oldResult = 0;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(row[0].ToString()) && !string.IsNullOrWhiteSpace(row[1].ToString()) && !string.IsNullOrWhiteSpace(row[2].ToString()) && !string.IsNullOrWhiteSpace(row[3].ToString()))
+                    {
+                        try
+                        {
+                            result.Ceiling = metric.Ceiling;
+                            result.Date = Convert.ToDateTime(row[DIA].ToString()).Ticks;
+                            result.Description = metric.Description;
+                            result.Floor = metric.Floor;
+                            result.MetricId = metric.Id;
+                            result.Multiplier = metric.Multiplier;
+                            result.Name = metric.Name;
+                            result.Points = int.Parse(row[TOTAL].ToString()) - oldResult;
+                            result.Score = 0;
+                            result.Xp = metric.Xp;
+                            result.RunId = run.Id;
+                            result.PlayerId = worker.ExternalId;
+
+                            if(result.Points > 0)
+                            {
+                                RunMetricEngineService.Instance.CreateOrUpdate(result);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            errors += "O formato das colunas 'Periodo' ou 'Resultado' estão errados. Linha: " + line + "<br/>";
+                            countErrors++;
+                            continue;
+                        }
+
+                    }
+                }
+
+                errors = string.Format(errors, countErrors, line);
+
+                string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
+                string subject = countErrors >= 1 ? "Erros ao subir planilha de resultados" : "O lançamento de resultados foi um sucesso.";
+                subject = CurrentFirm.FirmName + ": " + subject;
+                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { emailFrom, CurrentUserProfile.Email }, errors);
+
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+
+                //ModelState.AddModelError("", "Ocorreu um erro ao tentar salvar os resultados.");
+
+                return Json(new { Success = false, Exception = ex.Message }, JsonRequestBehavior.DenyGet);
+            }
+        }
+
+
         //Sol bebidas
         /// <summary>
         /// Salva as informações do resultado via arquivo

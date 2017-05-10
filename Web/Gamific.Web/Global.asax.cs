@@ -8,6 +8,8 @@ using System.Web.Routing;
 using Vlast.Gamific.Web.Jobs;
 using Vlast.Gamific.Web.Controllers.Util;
 using Vlast.Gamific.Web.Services.Push;
+using System.Threading;
+using System.Globalization;
 
 namespace Vlast.Gamific.Web
 {
@@ -33,7 +35,7 @@ namespace Vlast.Gamific.Web
                 BundleTable.EnableOptimizations = true;
             }
 
-            //rankingJob.Init(new TimeSpan(9, 36, 0));
+            //rankingJob.Init(new TimeSpan(13, 6, 0));
 
             //ScriptsMigration.MigrationEmailToEngine();
 

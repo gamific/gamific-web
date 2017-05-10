@@ -15,7 +15,7 @@ namespace Vlast.Gamific.Web.Jobs
         public async void Start()
         {
             canStop = false;
-            DateTime nextRun = DateTime.Now.AddHours(23.9f);
+            DateTime nextRun = DateTime.Now;//DateTime.Now.AddHours(23.9f);
 
             while (!canStop)
             {

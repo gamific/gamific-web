@@ -175,7 +175,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             try
             {
-                using (WebClient client = GetClient())
+                using (WebClient client = GetClient("rubens"))
                 {
                     
                     string response = client.DownloadString(path + "?size=" + pageSize + "&page=" + pageIndex);

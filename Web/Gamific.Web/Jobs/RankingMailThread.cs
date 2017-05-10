@@ -12,6 +12,7 @@ using Vlast.Gamific.Model.Firm.Repository;
 using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
 using System.Collections;
+using System.Globalization;
 
 namespace Vlast.Gamific.Web.Jobs
 {
@@ -33,6 +34,7 @@ namespace Vlast.Gamific.Web.Jobs
             //GetAllDTO players = PlayerEngineService.Instance.GetByGameId(game.Id);
 
             //GetAllDTO episodes = EpisodeEngineService.Instance.GetByGameIdAndActive(game.Id, 1);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 
             string dayOfWeek = DateTime.Now.ToString("ddd");
             List<EpisodeEngineDTO> episodes;
@@ -40,7 +42,7 @@ namespace Vlast.Gamific.Web.Jobs
 
             GetAllDTO allEpisodes = EpisodeEngineService.Instance.GetAll(0, 100000);
 
-            episodes = allEpisodes.List.episode.Where(x => x.Active == true && x.sendEmail == true && x.DaysOfWeek.Split(',').Contains(dayOfWeek)).ToList();
+            episodes = allEpisodes.List.episode.Where(x => x.Active == true && x.sendEmail == true && (x.DaysOfWeek != null ? x.DaysOfWeek.Split(',').Contains(dayOfWeek.ToLower()) : false)).ToList();
 
             foreach (EpisodeEngineDTO episode in episodes)
             {
@@ -59,7 +61,7 @@ namespace Vlast.Gamific.Web.Jobs
                         {
                             string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
                             Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
-                            Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
+                            //Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
                         }
                     }
                 }
