@@ -276,6 +276,7 @@
     <Compile Include="Controllers\Account\Model\AccountViewModels.cs" />
     <Compile Include="Controllers\Account\Model\IdentityModels.cs" />
     <Compile Include="Controllers\Management\EpisodeController.cs" />
+    <Compile Include="Controllers\Management\ItemsController.cs" />
     <Compile Include="Controllers\Management\LaunchResultsController.cs" />
     <Compile Include="Controllers\Management\MetricController.cs" />
     <Compile Include="Controllers\Management\ParamController.cs" />
@@ -492,6 +493,7 @@
     <Content Include="Content\Js\app\individualResults.min.js">
       <DependentUpon>individualResults.js</DependentUpon>
     </Content>
+    <Content Include="Content\Js\app\Items.js" />
     <Content Include="Content\Js\app\launchResults.js" />
     <Content Include="Content\Js\app\launchResults.min.js">
       <DependentUpon>launchResults.js</DependentUpon>
@@ -760,6 +762,8 @@
     <Content Include="Views\Goal\_EditTeam.cshtml" />
     <Content Include="Views\Dashboard\_CampaignsFilter.cshtml" />
     <Content Include="Views\PushNotification\Index.cshtml" />
+    <Content Include="Views\Items\Index.cshtml" />
+    <Content Include="Views\Items\_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
