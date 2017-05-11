@@ -144,7 +144,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = all.PageInfo.totalElements,
                         RecordsFiltered = all.PageInfo.totalElements,
-                        Data = all.List.item.Select(r => new string[] { r.Name, r.Value.ToString(), r.Id }).ToArray().ToArray() //.OrderBy(item => item[index]).ToArray()
+                        Data = all.List.item.Select(r => new string[] { r.Name, r.Id }).ToArray().ToArray() //.OrderBy(item => item[index]).ToArray()
 
                     };
 
@@ -156,7 +156,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = all.PageInfo.totalElements,
                         RecordsFiltered = all.PageInfo.totalElements,
-                        Data = all.List.item.Select(r => new string[] { r.Name, r.Value.ToString(), r.Id }).ToArray().OrderByDescending(item => item[index]).ToArray()
+                        Data = all.List.item.Select(r => new string[] { r.Name, r.Id }).ToArray().OrderByDescending(item => item[index]).ToArray()
 
                     };
                 }
