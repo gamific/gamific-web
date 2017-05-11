@@ -52,6 +52,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 }).ToList();
             }
 
+            if(episode.DaysOfWeek == null || episode.Active == false)
+            {
+                episode.DaysOfWeek = "";
+            }
+
             return PartialView("_edit", episode);
         }
 
