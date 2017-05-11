@@ -211,14 +211,14 @@ namespace Vlast.Gamific.Web.Services.Engine
         }
 
 
-        public GetAllDTO GetByGameId(string gameId, int pageIndex = 0, int pageSize = 10)
+        public GetAllDTO GetByGameId(string gameId, int pageIndex = 0, int pageSize = 10, string colum = "name", string order = "asc")
         {
             try
             {
                 using (WebClient client = GetClient())
                 {
                     string responce = client.DownloadString(path + "/search/findByGameId?gameId=" + gameId + "&size=" + pageSize 
-                        + "&page=" + pageIndex);
+                        + "&page=" + pageIndex + "&sort=" + colum + "," + order );
                     return JsonDeserialize<GetAllDTO>(responce);
                 }
             }
