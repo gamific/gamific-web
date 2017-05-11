@@ -7,36 +7,40 @@
         <div class="modal-dialog modal-xlg">
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" title="Fechar" id="btn_close_modal" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="launchResultsLabel"><br class="Apple-interchange-newline" />@ViewBag.Player.Nick</h4>
                 </div>
                 <div class="modal-body" id="edit-modal-body">
                    
-                   
                     
-                     @if(Model != null)
+
+                    
+                    @if(Model != null)
                     {
                         <input class="form-control" type="datetime" value="@ViewBag.Now" id="Date" name="Date"/>
 
                         <input type="hidden" id="RunId" name="RunId"  value="@ViewBag.Run.Id"/>
 
-                        <div class="col-xs-10" style="top:20px;">
-                            @Html.Label("Selecione um Item*")
+                        
+                            
                             <div class="form-group">
+                            @if (ViewBag.Items.Count != 0)
+                            {
+                                @Html.Label("Selecione um Item*")
                                 <select class="form-control" name="itemId">
                                     @foreach (SelectListItem Item in ViewBag.Items)
                                     {
                                         <option value="@Item.Value" selected="selected">@Item.Text</option>
                                     }
                                 </select>
+                            }
                             </div>
-                        </div>
 
-
-                         int i = 0;
-                         foreach (var item in Model)
-                         {
+                        int i = 0;
+                        foreach (var item in Model)
+                        {
                             <input type="hidden" value="@item.Id" id="ResultList[@i].Id" name="ResultList[@i].MetricId" />
-                            <input type="hidden" value="@item.Ceiling" id="ResultList[@i].Ceiling" name="ResultList[@i].Ceiling"/>
+                            <input type="hidden" value="@item.Ceiling" id="ResultList[@i].Ceiling" name="ResultList[@i].Ceiling" />
                             <input type="hidden" value="@item.GameId" id="ResultList[@i].GameId" name="ResultList[@i].GameId" />
                             <input type="hidden" value="@item.Description" id="ResultList[@i].Description" name="ResultList[@i].Description" />
                             <input type="hidden" value="@item.Floor" id="ResultList[@i].Floor" name="ResultList[@i].Floor" />
@@ -45,13 +49,15 @@
                             <input type="hidden" value="@ViewBag.Player.Id" id="ResultList[@i].PlayerId" name="ResultList[@i].PlayerId" />
                             <input type="hidden" value="@ViewBag.RunId" id="ResultList[@i].RunId" name="ResultList[@i].RunId" />
                             <input type="hidden" value="@item.Name" id="ResultList[@i].Name" name="ResultList[@i].Name" />
-                          
+
 
                             <label class="col-sm-12 col-md-12 col-xs-6" style="font-size:100%">@item.Name</label>
                             <input type="number" min="0" value="0" class="form-control col-sm-3" id="ResultList[@i].Points" name="ResultList[@i].Points" />
                             i++;
-                        }
+                            }
+                        
                     }
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
