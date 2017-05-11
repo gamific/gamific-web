@@ -331,38 +331,41 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
         [Route("loadChart/{metricId}/{campaignId}/{initDate}/{endDate}")]
         [HttpGet]
-        public ContentResult GetChartResults(string metricId, string campaignId, string initDate, string endDate)
+        public ContentResult GetChartResults(string metricId, string campaignId, long initDate, long endDate)
         {
             ChartResultDTO chartDTO = new ChartResultDTO();
 
-            List<string> metricIds = new List<string>();
-
-            metricIds.Add(metricId);
-
             EpisodeEngineDTO episodeObj = EpisodeEngineService.Instance.GetById(campaignId);
 
-            DateTime initDateFormatted = DateTime.Parse(initDate);
+            List<MetricEngineDTO> metrics = new List<MetricEngineDTO>();
 
-            DateTime finishDateFormatted = DateTime.Parse(endDate);
+            metrics.Add(MetricEngineService.Instance.GetById(metricId));
 
-            chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(episodeObj.GameId, metricIds, initDateFormatted.Ticks, finishDateFormatted.Ticks);
+            DateTime initDT = DateTime.Now;
 
+            DateTime endDT = DateTime.Now;
+
+            chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(episodeObj.GameId, metrics, initDT.AddDays(-5).Ticks, endDT.Ticks);
+
+            chartDTO.PositionsX = new List<List<int>>();
+            chartDTO.PositionsY = new List<List<int>>();
+
+            int i = 0;
             foreach (EpisodeEngineDTO episode in chartDTO.Entries)
             {
-                List<string> x = new List<string>();
+                List<int> x = new List<int>();
 
-                List<string> y = new List<string>();
+                List<int> y = new List<int>();
 
-                x.Add(episode.Id);
-                x.Add(episode.Name);
+                x.Add(i);
+                x.Add(int.Parse(episode.Name.Split('/')[0]));
 
-                y.Add(episode.Id);
-                y.Add(episode.Value.ToString());
+                y.Add(i);
+                y.Add((int)Math.Round(episode.Value));
 
-                chartDTO.PositionsX = new List<List<string>>();
-                chartDTO.PositionsY = new List<List<string>>();
                 chartDTO.PositionsX.Add(x);
                 chartDTO.PositionsY.Add(y);
+                i++;
             }
 
             return Content(JsonConvert.SerializeObject(chartDTO), "application/json");

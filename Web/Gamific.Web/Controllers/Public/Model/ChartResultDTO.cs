@@ -19,10 +19,10 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
         public string Type { get; set; }
 
         [JsonProperty("positionsX")]
-        public List<List<string>> PositionsX { get; set; }
+        public List<List<int>> PositionsX { get; set; }
 
         [JsonProperty("positionsY")]
-        public List<List<string>> PositionsY { get; set; }
+        public List<List<int>> PositionsY { get; set; }
 
         [JsonProperty("entries")]
         public List<EpisodeEngineDTO> Entries { get; set; }
