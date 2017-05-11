@@ -19,6 +19,7 @@ using Vlast.Gamific.Web.Services.Engine;
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Vlast.Util.Data;
 
 namespace Vlast.Gamific.Web.Controllers.Account
 {
@@ -178,7 +179,9 @@ namespace Vlast.Gamific.Web.Controllers.Account
                 Device = model.tipoDispositivo
             });
 
-            if (result.AuthStatus == AuthStatus.OK)
+            WorkerEntity worker = WorkerRepository.Instance.GetByUserId(result.UserId);
+
+            if (result.AuthStatus == AuthStatus.OK && worker.Status == GenericStatus.ACTIVE)
             {
                 var claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.Sid, result.UserId.ToString()));
@@ -202,7 +205,7 @@ namespace Vlast.Gamific.Web.Controllers.Account
 
                 if (!isSystemAdmin)
                 {
-                    WorkerEntity worker = WorkerRepository.Instance.GetByUserId(result.UserId);
+                    //WorkerEntity worker = WorkerRepository.Instance.GetByUserId(result.UserId);
                     WorkerTypeEntity profile = WorkerTypeRepository.Instance.GetById(worker.WorkerTypeId);
                     claims.Add(new Claim(ClaimTypes.Role, profile.ProfileName.ToString()));
                 }
