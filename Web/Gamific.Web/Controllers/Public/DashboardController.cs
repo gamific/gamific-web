@@ -347,27 +347,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(episodeObj.GameId, metrics, initDT.AddDays(-5).Ticks, endDT.Ticks);
 
-            chartDTO.PositionsX = new List<List<int>>();
-            chartDTO.PositionsY = new List<List<int>>();
-
-            int i = 0;
-            foreach (EpisodeEngineDTO episode in chartDTO.Entries)
-            {
-                List<int> x = new List<int>();
-
-                List<int> y = new List<int>();
-
-                x.Add(i);
-                x.Add(int.Parse(episode.Name.Split('/')[0]));
-
-                y.Add(i);
-                y.Add((int)Math.Round(episode.Value));
-
-                chartDTO.PositionsX.Add(x);
-                chartDTO.PositionsY.Add(y);
-                i++;
-            }
-
             return Content(JsonConvert.SerializeObject(chartDTO), "application/json");
         }
 
