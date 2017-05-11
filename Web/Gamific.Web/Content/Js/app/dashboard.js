@@ -625,9 +625,9 @@ function initializeChart(metricId, checked) {
 
     if (campaignId && campaignId.length > 0) {
 
-        var initialDate = moment([2007, 5, 30]);
+        var initialDate = moment([2017, 3, 1]);
 
-        var endDate = moment([2007, 6, 1]);
+        var endDate = moment([2017, 5, 10]);
 
         if (checked) {
             $.ajax({
@@ -643,7 +643,7 @@ function initializeChart(metricId, checked) {
                             tickLength: 0,
                             tickDecimals: 0,
                             min: 0,
-                            ticks: d.PositionsX,
+                            ticks: d.positionsX,
 
                             font: {
                                 lineHeight: 24,
@@ -687,7 +687,7 @@ function initializeChart(metricId, checked) {
                     values.push({
                         metricId: metricId,
                         label: d.Name,
-                        data: d.PositionsY,
+                        data: d.positionsY,
                         lines: { show: true, lineWidth: 3 },
                         points: { show: true, fill: true, radius: 6, fillColor: "rgba(0,0,0,.5)", lineWidth: 2 },
                         shadowSize: 0,

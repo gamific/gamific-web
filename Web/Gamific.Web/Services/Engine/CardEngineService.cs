@@ -214,21 +214,23 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             }
         }
 
-        public ChartResultDTO GameAndMetricAndPeriod(string gameId, List<string> metricIds, long initDate, long finishDate)
+        public ChartResultDTO GameAndMetricAndPeriod(string gameId, List<MetricEngineDTO> metrics, long initDate, long finishDate)
         {
             using (WebClient client = GetClient())
             {
                 try
                 {
-                    var reqparm = new System.Collections.Specialized.NameValueCollection();
-                    reqparm.Add("gameId", JsonSerialize(ref gameId));
-                    reqparm.Add("metrics", JsonSerialize(ref metricIds));
-                    reqparm.Add("initDate", JsonSerialize(ref initDate));
-                    reqparm.Add("finishDate", JsonSerialize(ref finishDate));
 
-                    byte[] response = client.UploadValues(ENGINE_API + "graphicLineWebByDate", "POST", reqparm);
+                    ChartParamDTO dto = new ChartParamDTO();
 
-                    return JsonDeserialize<ChartResultDTO>(System.Text.Encoding.UTF8.GetString(response));
+                    dto.FinishDate = finishDate;
+                    dto.InitDate = initDate;
+                    dto.Metrics = metrics;
+                    dto.GameId = gameId;
+
+                    string response = client.UploadString(ENGINE_API + "graphicLineWebByDate", "POST", JsonSerialize(ref dto));
+
+                    return JsonDeserialize<ChartResultDTO>(response);
                 }
                 catch (Exception e)
                 {
