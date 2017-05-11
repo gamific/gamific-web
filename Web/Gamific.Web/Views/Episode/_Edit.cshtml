@@ -8,6 +8,7 @@
         @Html.HiddenFor(model => model.initDate );
         @Html.HiddenFor(model => model.finishDate );
         @Html.HiddenFor(model => model.GameId);
+        @Html.HiddenFor(model => model.DaysOfWeek);
     </span>
 
 
@@ -58,8 +59,16 @@
                             <label style="font-size:larger;">
                                 Enviar email:
                                 @Html.CheckBoxFor(model => model.sendEmail, Model.sendEmail)
-                               
                             </label>
+                            <div id="daysOfWeek">
+                                <input type="checkbox" id="mon" name="mon" value="mon" onchange="CheckChange('mon')">Segunda 
+                                <input type="checkbox" id="tue" name="tue" value="tue" onchange="CheckChange('tue')">Terça 
+                                <input type="checkbox" id="wed" name="wed" value="wed" onchange="CheckChange('wed')">Quarta 
+                                <input type="checkbox" id="thu" name="thu" value="thu" onchange="CheckChange('thu')">Quinta 
+                                <input type="checkbox" id="fri" name="fri" value="fri" onchange="CheckChange('fri')">Sexta 
+                                <input type="checkbox" id="sat" name="sat" value="sat" onchange="CheckChange('sat')">Sábado 
+                                <input type="checkbox" id="sun" name="sun" value="sun" onchange="CheckChange('sun')">Domingo 
+                            </div>
                         </div>
                     </div>
 
@@ -105,5 +114,30 @@
         changeYear: true
     });
     //$("#finishDateAux").datepicker("setDate", currentDate);
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        if (!$('#sendEmail').is(':checked')) {
+            $('#daysOfWeek').hide();
+        }
+
+        var daysOfWeek = $('#DaysOfWeek').val().split(',');
+
+        daysOfWeek.forEach(function (value, key) {
+            $('#' + value).prop('checked', true);
+        });
+    });
+
+    $('#sendEmail').change(function () {
+        if ($('#sendEmail').is(':checked')) {
+            $('#daysOfWeek').show();
+        }
+        else {
+            $('#daysOfWeek').hide();
+        }
+    });
+
 </script>
 

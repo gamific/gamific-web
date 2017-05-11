@@ -26,13 +26,13 @@
                 "searchable": true
             },
             {
-                "width": "25%",
+                "width": "40%",
                 "targets": 1,
                 "orderable": true,
                 "searchable": true
             },
             {
-                "width": "25%",
+                "width": "10%",
                 "targets": 2,
                 "orderable": false,
                 "searchable": false,
