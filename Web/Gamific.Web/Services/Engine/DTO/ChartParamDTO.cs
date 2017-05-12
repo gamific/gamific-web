@@ -16,7 +16,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         public string GameId { get; set; }
 
         [JsonProperty("metrics")]
-        public List<MetricEngineDTO> Metrics { get; set; }
+        public List<string> Metrics { get; set; }
 
         [JsonProperty("initDate")]
         public long InitDate { get; set; }

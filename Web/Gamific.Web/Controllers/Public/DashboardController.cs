@@ -168,6 +168,12 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpPost]
         public ContentResult LoadBarChart(List<string> metricsIds)
         {
+
+            if (episodesFilter.Count < 1)
+            {
+                GetCampaignsModal();
+            }
+
             List<BarDTO> bars = new List<BarDTO>();
 
             List<string> episodesIds = new List<string>();
@@ -329,25 +335,33 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return Content(JsonConvert.SerializeObject(dto), "application/json");
         }
 
-        [Route("loadChart/{metricId}/{campaignId}/{initDate}/{endDate}")]
-        [HttpGet]
-        public ContentResult GetChartResults(string metricId, string campaignId, long initDate, long endDate)
+        [Route("loadChart")]
+        [HttpPost]
+        public ContentResult GetChartResults(List<string> metricsIds, string campaignId, string initDate, string endDate)
         {
-            ChartResultDTO chartDTO = new ChartResultDTO();
+
+            List<ChartResultDTO> rtn = new List<ChartResultDTO>();
 
             EpisodeEngineDTO episodeObj = EpisodeEngineService.Instance.GetById(campaignId);
 
-            List<MetricEngineDTO> metrics = new List<MetricEngineDTO>();
+            DateTime initDT = DateTime.Parse(initDate);
 
-            metrics.Add(MetricEngineService.Instance.GetById(metricId));
+            DateTime endDT = DateTime.Parse(endDate);
 
-            DateTime initDT = DateTime.Now;
+            foreach (string item in metricsIds)
+            {
+                ChartResultDTO chartDTO = new ChartResultDTO();
 
-            DateTime endDT = DateTime.Now;
+                List<string> metricParam = new List<string>();
 
-            chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(episodeObj.GameId, metrics, initDT.AddDays(-5).Ticks, endDT.Ticks);
+                metricParam.Add(item);
 
-            return Content(JsonConvert.SerializeObject(chartDTO), "application/json");
+                chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(episodeObj.GameId, metricParam, initDT.Ticks, endDT.Ticks);
+
+                rtn.Add(chartDTO);
+            }
+
+            return Content(JsonConvert.SerializeObject(rtn), "application/json");
         }
 
         /*

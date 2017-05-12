@@ -214,7 +214,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             }
         }
 
-        public ChartResultDTO GameAndMetricAndPeriod(string gameId, List<MetricEngineDTO> metrics, long initDate, long finishDate)
+        public ChartResultDTO GameAndMetricAndPeriod(string gameId, List<string> metrics, long initDate, long finishDate)
         {
             using (WebClient client = GetClient())
             {

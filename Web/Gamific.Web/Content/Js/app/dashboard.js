@@ -454,187 +454,58 @@ function onSucessSaveResult() {
     //LoadMetricResultsDataTable();
 }
 
-var values = [];
-var plot;
-var metricToInitialize = $('#metricToInitialize').val();
-//if (metricToInitialize) {
-if (1 == 2) {
+function initializeChart() {
 
-    var id = '#chart-' + metricToInitialize;
-
-    $(id).attr("checked", true);
-
-    var campaignsNames;
-
-    $.ajax({
-        url: "/public/dashboard/getCampaigns",
-        async: false,
-        dataType: 'json',
-        success: function (d) {
-            campaignsNames = d;
-        }
-    });
-
-    if (campaignsNames.length > 0) {
-        var y = [];
-
-        $.ajax({
-            url: "/public/dashboard/getCampaignsWithIds",
-            async: false,
-            dataType: 'json',
-            success: function (d) {
-                if (d.length > 0) {
-                    for (var i = 0; i < d.length; i++) {
-                        var z = [i, d[i].name.substr(0, 7) + "..."];
-                        y.push(z);
-                    }
-                }
-            }
-        });
-
-        var properties = {
-
-            xaxis: {
-
-                tickLength: 0,
-                tickDecimals: 0,
-                min: 0,
-                ticks: y,
-
-                font: {
-                    lineHeight: 24,
-                    weight: "300",
-                    color: "#ffffff",
-                    size: 14
-                }
-            },
-
-            yaxis: {
-                ticks: 4,
-                tickDecimals: 0,
-                tickColor: "rgba(255,255,255,.3)",
-
-                font: {
-                    lineHeight: 13,
-                    weight: "300",
-                    color: "#ffffff"
-                }
-            },
-
-            grid: {
-                borderWidth: {
-                    top: 0,
-                    right: 0,
-                    bottom: 1,
-                    left: 1
-                },
-                borderColor: 'rgba(255,255,255,.3)',
-                margin: 0,
-                minBorderMargin: 0,
-                labelMargin: 20,
-                hoverable: true,
-                clickable: true,
-                mouseActiveRadius: 6
-            },
-
-            legend: { show: false }
-        };
-
-        $.ajax({
-            url: "/public/dashboard/loadChart/" + metricToInitialize,
-            async: true,
-            dataType: 'json',
-            success: function (d) {
-                values.push({
-                    metricId: metricToInitialize,
-                    label: d.MetricName,
-                    data: d.Positions,
-                    lines: { show: true, lineWidth: 3 },
-                    points: { show: true, fill: true, radius: 6, fillColor: "rgba(0,0,0,.5)", lineWidth: 2 },
-                    shadowSize: 0,
-                    color: generateColor()
-                })
-
-                plot = $.plotAnimator($("#statistics-chart"), values, properties);
-
-                $("#statistics-chart").bind("plothover", function (event, pos, item) {
-                    if (item) {
-                        var x = item.datapoint[0],
-                            y = item.datapoint[1];
-
-                        $("#tooltip").html('<h1 style="color: #418bca">' + campaignsNames[x] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
-                          .css({ top: item.pageY - 30, left: item.pageX + 5 })
-                          .fadeIn(200);
-                    } else {
-                        $("#tooltip").hide();
-                    }
-                });
-
-                $("<div id='tooltip'></div>").css({
-                    position: "absolute",
-                    padding: "10px 20px",
-                    "background-color": "#ffffff",
-                    "z-index": "99999"
-                }).appendTo("body");
-
-                $(window).resize(function () {
-                    plot.resize();
-                    plot.setupGrid();
-                    plot.draw();
-                });
-
-                $('#mmenu').on(
-                  "opened.mm",
-                  function () {
-                      plot.resize();
-                      plot.setupGrid();
-                      plot.draw();
-                  }
-                );
-
-                $('#mmenu').on(
-                  "closed.mm",
-                  function () {
-                      plot.resize();
-                      plot.setupGrid();
-                      plot.draw();
-                  }
-                );
-
-            }
-        });
-    }
-
-}
-
-function initializeChart(metricId, checked) {
+    $('#statistics-chart').empty();
 
     var campaignId = $('#dropDownEpisodes').val();
 
-    var initialDate = moment([2017, 3, 1]);
+    var metrics = $('.metricsChart');
 
-    var endDate = moment([2017, 5, 10]);
+    var metricsIds = [];
+
+    var n;
+    for (n = 0; n < metrics.length; n++) {
+        if (metrics[n].checked) {
+            metricsIds.push(metrics[n].value);
+        }
+    }
+
+    var metricToInitialize = $('#metricToInitialize').val();
+
+    if (metricsIds.length == 0) {
+        metricsIds.push(metricToInitialize);
+    }
+
+    var initDate = $('#InitialDate').val();
+
+    var endDate = $('#FinishDate').val();
 
     if (campaignId && campaignId.length > 0) {
 
         $.ajax({
-            url: "/public/dashboard/loadChart/" + metricId + "/" + campaignId + "/" + initialDate + "/" + endDate,
+            url: "/public/dashboard/loadChart",
             async: false,
+            data: { metricsIds: metricsIds, campaignId: campaignId, initDate: initDate, endDate: endDate },
+            type: "POST",
             dataType: 'json',
             success: function (data) {
                 var lineData = [];
                 var metricNameList = [];
                 var colors = [];
 
-                var i;
-                for (i = 0; i < data.entries.length; i++) {
-                    var metricName = data.name;
-                    metricNameList.push(metricName);
+                var w;
+                for (w = 0; w < data.length; w++) {
+                    var i;
 
-                    var lineElement = { period: data.entries[i].name }
-                    lineElement[metricName] = data.entries[i].value;
-                    lineData.push(lineElement);
+                    for (i = 0; i < data[w].entries.length; i++) {
+                        var metricName = data[w].entries[i].description;
+                        metricNameList.push(metricName);
 
+                        var lineElement = { period: data[w].entries[i].name }
+                        lineElement[metricName] = data[w].entries[i].value;
+                        lineData.push(lineElement);
+                    }
                     colors.push(generateColor());
                 }
 
@@ -655,7 +526,9 @@ function initializeChart(metricId, checked) {
                 };
 
                 config.element = 'statistics-chart';
+
                 Morris.Line(config);
+
             }
         });
 
@@ -784,6 +657,8 @@ function loadMorris(type) {
 $(document).ready(function () {
     if (window.location.pathname.search("detalhes") == -1) {
         loadMorris(1);
+        loadBarChart();
+        initializeChart();
     }
 });
 
@@ -799,7 +674,7 @@ function onFailureSaveFilter(data) {
 
 function loadBarChart() {
 
-    $('#bar-chart').empty()
+    $('#bar-chart').empty();
 
     var metrics = $('.barChart');
     var metricsIds = [];
@@ -844,7 +719,8 @@ function loadBarChart() {
                 data: barData,
                 xkey: 'episodeName',
                 ykeys: labels,
-                labels: labels
+                labels: labels,
+                hideHover: 'auto'
             });
         },
         error: function (data) {
@@ -852,3 +728,34 @@ function loadBarChart() {
         }
     });
 }
+
+//var currentDate = new Date();
+//var dateInitial = moment($("#InitialDate").val(), "DD/MM/YYYY HH:mm:SS").toDate();
+//var dateEnd = moment($("#EndDate").val(), "DD/MM/YYYY HH:mm:SS").toDate();
+
+$('#InitialDate').datepicker({
+    language: 'pt-BR',
+    changeMonth: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    selectOtherYears: true,
+    changeYear: true,
+    onSelect: function (value, date) {
+        $("#InitialDate").hide();
+    }
+});
+
+
+
+$('#FinishDate').datepicker({
+    language: 'pt-BR',
+    changeMonth: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    selectOtherYears: true,
+    changeYear: true,
+    onSelect: function (value, date) {
+        $("#FinishDate").hide();
+    }
+});
+

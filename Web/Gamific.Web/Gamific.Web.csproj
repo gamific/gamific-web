@@ -294,6 +294,8 @@
     <Compile Include="Controllers\Public\MobileApiController.cs" />
     <Compile Include="Controllers\Public\AboutController.cs" />
     <Compile Include="Controllers\Public\DashboardController.cs" />
+    <Compile Include="Controllers\Public\Model\LinePointDTO.cs" />
+    <Compile Include="Controllers\Public\Model\LineDTO.cs" />
     <Compile Include="Controllers\Public\Model\BarPointDTO.cs" />
     <Compile Include="Controllers\Public\Model\ChartResultDTO.cs" />
     <Compile Include="Controllers\Public\Model\BarDTO.cs" />

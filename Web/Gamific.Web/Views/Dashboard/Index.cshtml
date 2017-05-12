@@ -157,6 +157,8 @@
                                     <div class="">
                                         <div class="col-xs-12">
                                             <h1 style="color:white !important; font:25px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;">Evolução Campanhas por Período</h1>
+                                            <i style="padding-left: 10px; padding-right:10px;" class="fa fa-calendar" title="Data Inicial."><input type="text" id="InitialDate" class="form-control" /></i>
+                                            <i class="fa fa-calendar" title="Data Final."><input type="text" id="FinishDate" class="form-control" /></i>
                                         </div>
                                     </div>
                                 </div>
@@ -188,7 +190,7 @@
                                                     <li>
                                                         <div>
                                                             <label>
-                                                                <input style="width:14px !important; height:auto !important" type="checkbox" value="@metric.Id" id="chart-@metric.Id" class="checkbox-div metricsChart" onclick="initializeChart(this.value, this.checked);" />
+                                                                <input style="width:14px !important; height:auto !important" type="checkbox" value="@metric.Id" id="chart-@metric.Id" class="checkbox-div metricsChart" onclick="initializeChart();" />
 
                                                                 <span style="color:white; font-size:14px !important">
                                                                     @metric.Name
