@@ -18,12 +18,6 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
         [JsonProperty("type")]
         public string Type { get; set; }
 
-        [JsonProperty("positionsX")]
-        public List<List<int>> PositionsX { get; set; }
-
-        [JsonProperty("positionsY")]
-        public List<List<int>> PositionsY { get; set; }
-
         [JsonProperty("entries")]
         public List<EpisodeEngineDTO> Entries { get; set; }
     }

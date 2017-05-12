@@ -458,7 +458,7 @@ var values = [];
 var plot;
 var metricToInitialize = $('#metricToInitialize').val();
 //if (metricToInitialize) {
-if (1==2) {
+if (1 == 2) {
 
     var id = '#chart-' + metricToInitialize;
 
@@ -608,206 +608,57 @@ if (1==2) {
 }
 
 function initializeChart(metricId, checked) {
-    // showLoading();
 
     var campaignId = $('#dropDownEpisodes').val();
 
-    var campaign;
+    var initialDate = moment([2017, 3, 1]);
 
-    $.ajax({
-        url: "/admin/campanhas/getCampaignById/" + campaignId,
-        async: false,
-        dataType: 'json',
-        success: function (d) {
-            campaign = d;
-        }
-    });
+    var endDate = moment([2017, 5, 10]);
 
     if (campaignId && campaignId.length > 0) {
 
-        var initialDate = moment([2017, 3, 1]);
+        $.ajax({
+            url: "/public/dashboard/loadChart/" + metricId + "/" + campaignId + "/" + initialDate + "/" + endDate,
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                var lineData = [];
+                var metricNameList = [];
+                var colors = [];
 
-        var endDate = moment([2017, 5, 10]);
+                var i;
+                for (i = 0; i < data.entries.length; i++) {
+                    var metricName = data.name;
+                    metricNameList.push(metricName);
 
-        if (checked) {
-            $.ajax({
-                url: "/public/dashboard/loadChart/" + metricId + "/" + campaignId + "/" + initialDate + "/" + endDate,
-                async: false,
-                dataType: 'json',
-                success: function (d) {
+                    var lineElement = { period: data.entries[i].name }
+                    lineElement[metricName] = data.entries[i].value;
+                    lineData.push(lineElement);
 
-                    var properties = {
-
-                        xaxis: {
-
-                            tickLength: 0,
-                            tickDecimals: 0,
-                            min: 0,
-                            ticks: d.positionsX,
-
-                            font: {
-                                lineHeight: 24,
-                                weight: "300",
-                                color: "#ffffff",
-                                size: 14
-                            }
-                        },
-
-                        yaxis: {
-                            ticks: 4,
-                            tickDecimals: 0,
-                            tickColor: "rgba(255,255,255,.3)",
-
-                            font: {
-                                lineHeight: 13,
-                                weight: "300",
-                                color: "#ffffff"
-                            }
-                        },
-
-                        grid: {
-                            borderWidth: {
-                                top: 0,
-                                right: 0,
-                                bottom: 1,
-                                left: 1
-                            },
-                            borderColor: 'rgba(255,255,255,.3)',
-                            margin: 0,
-                            minBorderMargin: 0,
-                            labelMargin: 20,
-                            hoverable: true,
-                            clickable: true,
-                            mouseActiveRadius: 6
-                        },
-
-                        legend: { show: false }
-                    };
-
-                    values.push({
-                        metricId: metricId,
-                        label: d.Name,
-                        data: d.positionsY,
-                        lines: { show: true, lineWidth: 3 },
-                        points: { show: true, fill: true, radius: 6, fillColor: "rgba(0,0,0,.5)", lineWidth: 2 },
-                        shadowSize: 0,
-                        color: generateColor()
-                    })
-
-                    plot = $.plotAnimator($("#statistics-chart"), values, properties);
-
-                    $("#statistics-chart").bind("plothover", function (event, pos, item) {
-                        if (item) {
-                            var x = item.datapoint[0],
-                                y = item.datapoint[1];
-
-                            $("#tooltip").html('<h1 style="color: #418bca">' + campaign.name + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
-                              .css({ top: item.pageY - 30, left: item.pageX + 5 })
-                              .fadeIn(200);
-                        } else {
-                            $("#tooltip").hide();
-                        }
-                    });
-
-                    $("<div id='tooltip'></div>").css({
-                        position: "absolute",
-                        padding: "10px 20px",
-                        "background-color": "#ffffff",
-                        "z-index": "99999"
-                    }).appendTo("body");
-
-                    $(window).resize(function () {
-                        plot.resize();
-                        plot.setupGrid();
-                        plot.draw();
-                    });
-
-                    $('#mmenu').on(
-                      "opened.mm",
-                      function () {
-                          plot.resize();
-                          plot.setupGrid();
-                          plot.draw();
-                      }
-                    );
-
-                    $('#mmenu').on(
-                      "closed.mm",
-                      function () {
-                          plot.resize();
-                          plot.setupGrid();
-                          plot.draw();
-                      }
-                    );
-
-                    window.setTimeout(function () {
-                        //hideLoading();
-                    }, 1000);
+                    colors.push(generateColor());
                 }
-            });
-        } else {
-            var i;
 
-            for (i = 0; i < values.length; i++) {
-                if (values[i].metricId == metricId) {
-                    values.splice(i, 1);
-                }
+                var config = {
+                    data: lineData,
+                    xkey: 'period',
+                    ykeys: [metricNameList[0]],
+                    labels: [metricNameList[0]],
+                    parseTime: false,
+                    fillOpacity: 0.6,
+                    hideHover: 'auto',
+                    behaveLikeLine: true,
+                    resize: true,
+                    pointFillColors: ['#ffffff'],
+                    pointStrokeColors: ['black'],
+                    continuousLine: true,
+                    lineColors: [colors]
+                };
+
+                config.element = 'statistics-chart';
+                Morris.Line(config);
             }
+        });
 
-            if (values.length == 0) {
-                plot.destroy();
-            } else {
-                plot = $.plotAnimator($("#statistics-chart"), values, properties);
-
-                $("#statistics-chart").bind("plothover", function (event, pos, item) {
-                    if (item) {
-                        var x = item.datapoint[0],
-                            y = item.datapoint[1];
-
-                        $("#tooltip").html('<h1 style="color: #418bca">' + campaign.name + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
-                          .css({ top: item.pageY - 30, left: item.pageX + 5 })
-                          .fadeIn(200);
-                    } else {
-                        $("#tooltip").hide();
-                    }
-                });
-
-                $("<div id='tooltip'></div>").css({
-                    position: "absolute",
-                    padding: "10px 20px",
-                    "background-color": "#ffffff",
-                    "z-index": "99999"
-                }).appendTo("body");
-
-                $(window).resize(function () {
-                    plot.resize();
-                    plot.setupGrid();
-                    plot.draw();
-                });
-
-                $('#mmenu').on(
-                  "opened.mm",
-                  function () {
-                      plot.resize();
-                      plot.setupGrid();
-                      plot.draw();
-                  }
-                );
-
-                $('#mmenu').on(
-                  "closed.mm",
-                  function () {
-                      plot.resize();
-                      plot.setupGrid();
-                      plot.draw();
-                  }
-                );
-
-            }
-            window.setTimeout(function () {
-                //hideLoading();
-            }, 1000);
-        }
     }
 
 }
