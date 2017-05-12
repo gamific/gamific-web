@@ -6,18 +6,7 @@ $('#dropDownEpisodes').change(function () {
     refreshDropDownTeams($(this).val());
     loadMorris(1);
 
-    var metrics = $('.metricsChart');
-
-    var i;
-    for (i = 0; i < metrics.length; i++) {
-        metrics[i].checked = false;
-    }
-
-    var id = '#chart-' + metricToInitialize;
-
-    $(id).attr("checked", true);
-
-    initializeChart(metricToInitialize, true);
+    initializeChart();
 
 });
 
@@ -40,7 +29,6 @@ $('#dropDownWorkers').change(function () {
     } else {
         loadMorris(3);
     }
-
 
 });
 
@@ -474,11 +462,11 @@ function initializeChart() {
     var metricToInitialize = $('#metricToInitialize').val();
 
     if (metricsIds.length == 0) {
-        metricsIds.push(metricToInitialize);
-
         var id = '#chart-' + metricToInitialize;
 
-        $(id).attr("checked", true);
+        $(id).click();
+
+        return;
     }
 
     var initDate = $('#InitialDate').val();
@@ -693,11 +681,10 @@ function loadBarChart() {
     }
 
     if (metricsIds.length <= 0) {
-        metricsIds.push($('#metricToInitializeBar').val());
-
         var id = '#bar-' + $('#metricToInitializeBar').val();
 
-        $(id).attr("checked", true);
+        $(id).click();
+        return;
     }
 
     $.ajax({
