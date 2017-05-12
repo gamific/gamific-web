@@ -344,8 +344,14 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             EpisodeEngineDTO episodeObj = EpisodeEngineService.Instance.GetById(campaignId);
 
-            DateTime initDT = DateTime.Parse(initDate);
+            if(initDate == null || initDate.Length == 0)
+            {
+                DateTime initDT = DateTime.Parse(initDate);
+            }
+            else { 
 
+            DateTime initDT = DateTime.Parse(initDate);
+            }
             DateTime endDT = DateTime.Parse(endDate);
 
             foreach (string item in metricsIds)

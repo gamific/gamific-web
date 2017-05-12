@@ -720,7 +720,10 @@ function loadBarChart() {
                 xkey: 'episodeName',
                 ykeys: labels,
                 labels: labels,
-                hideHover: 'auto'
+                hideHover: 'auto',
+                resize: true,
+                gridTextColor: 'white',
+                grid: true
             });
         },
         error: function (data) {
@@ -734,6 +737,7 @@ function loadBarChart() {
 //var dateEnd = moment($("#EndDate").val(), "DD/MM/YYYY HH:mm:SS").toDate();
 
 $('#InitialDate').datepicker({
+
     language: 'pt-BR',
     changeMonth: true,
     showOtherMonths: true,
@@ -743,6 +747,7 @@ $('#InitialDate').datepicker({
     onSelect: function (value, date) {
         $("#InitialDate").hide();
     }
+
 });
 
 
