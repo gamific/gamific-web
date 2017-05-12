@@ -177,6 +177,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return Redirect("/admin/metas");
         }
 
+
+
         [Route("editarEquipe/{teamId}/{episodeId}")]
         public ActionResult EditTeam(string teamId, string episodeId)
         {
@@ -471,16 +473,193 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return File(ms.ToArray(), "application/vnd.ms-excel");
         }
 
+        [Route("salvarArquivoMeta")]
+        [HttpPost]
+        [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
+        public ActionResult SaveGoalArchive(HttpPostedFileBase goalArchive, string episodeId)
+        {
+            if (CurrentFirm.ExternalId == "588602233a87786bec6ca703") //Syngenta
+            {
+                return SaveGoalArchiveSyngenta(goalArchive, episodeId);
+            }
+            else
+            {
+                return SaveGoalArchive(goalArchive, episodeId);
+            }
+
+
+            return Json(new { Success = false }, JsonRequestBehavior.DenyGet);
+        }
+
+
         /// <summary>
         /// Salva as informações do resultado via arquivo
         /// </summary>
         /// <param name="goalArchive"></param>
         /// <param name="episodeId"></param>
         /// <returns></returns>
-        [Route("salvarArquivoMeta")]
-        [HttpPost]
-        [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
-        public ActionResult SaveGoalArchive(HttpPostedFileBase goalArchive, string episodeId)
+        private ActionResult SaveGoalArchiveSyngenta(HttpPostedFileBase goalArchive, string episodeId)
+        {
+            string errors = "Quantidade de erros: {0}<br/>Última linha lida: {1}<br/>";
+            int line = 1;
+            int countErrors = 0;
+            int countEmptyLines = 0;
+
+            int CODIGO_TERRITORIO = 0;
+            int RESPONSAVEL = 1;
+            int EMAIL = 2;
+            int REG = 3;
+            int PROMOxISNT = 4;
+            int DIA = 5;
+            int CULTURA = 6;
+            int NOME_PADRAO = 7;
+            int TOTAL = 8;
+
+            try
+            {
+                goalArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), goalArchive.FileName));
+
+                string path = Path.Combine(Server.MapPath("~/App_Data"), goalArchive.FileName);
+
+                var archive = new ExcelQueryFactory(path);
+
+                var rows = from x in archive.WorksheetRange("A1", "I" + rowsCount, "META")
+                           select x;
+
+                foreach (var row in rows)
+                {
+                    line++;
+
+                    if (countEmptyLines >= 3)
+                    {
+                        break;
+                    }
+
+                    if (row[0] == null || row[0].ToString().Equals("") || row[1] == null || row[1].ToString().Equals(""))
+                    {
+                        countEmptyLines++;
+                        continue;
+                    }
+
+                    countEmptyLines = 0;
+
+                    if (row[TOTAL].ToString().Equals("0"))
+                    {
+                        continue;
+                    }
+
+                    MetricEngineDTO metric = new MetricEngineDTO();
+                    TeamEngineDTO team = new TeamEngineDTO();
+                    RunEngineDTO run = new RunEngineDTO();
+
+
+
+                    try
+                    {
+                        metric = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, row[NOME_PADRAO].ToString());
+                    }
+                    catch (Exception e)
+                    {
+                        errors += "Erro na coluna 2 da linha " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+                    UserProfileEntity user = UserProfileRepository.Instance.GetByEmail(row[EMAIL].Value.ToString());
+
+                    if (user == null)
+                    {
+                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+                    WorkerEntity worker = WorkerRepository.Instance.GetByUserId(int.Parse(user.Id.ToString()));
+
+                    if (worker == null)
+                    {
+                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+                    try
+                    {
+                        team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId, row[REG].Value.ToString());
+                    }
+                    catch (Exception e)
+                    {
+                        errors += "Erro na coluna 3 da linha " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+                    try
+                    {
+                        run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);
+                    }
+                    catch (Exception e)
+                    {
+                        errors += "Jogador " + user.Name + " não está cadastrado no time " + team.Nick + ". Linha: " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+
+                    if (!string.IsNullOrWhiteSpace(row[0].ToString()) && !string.IsNullOrWhiteSpace(row[1].ToString()) && !string.IsNullOrWhiteSpace(row[2].ToString()) && !string.IsNullOrWhiteSpace(row[3].ToString()))
+                    {
+                        GoalEngineDTO goalEngineDTO;
+
+
+                        try
+                        {
+                            goalEngineDTO = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
+                            goalEngineDTO.Goal = Int32.Parse(row[3].Value.ToString());
+                        }
+                        catch (Exception e)
+                        {
+                            goalEngineDTO = new GoalEngineDTO
+                            {
+                                RunId = run.Id,
+                                MetricId = metric.Id,
+                                MetricIcon = metric.Icon,
+                                MetricName = metric.Name,
+                                Goal = Int32.Parse(row[TOTAL].Value.ToString()),
+                                ItemId = "",
+                                Percentage = 0
+                            };
+                        }
+
+                        goalEngineDTO = GoalEngineService.Instance.CreateOrUpdate(goalEngineDTO);
+                    }
+                }
+
+                errors = string.Format(errors, countErrors, line);
+
+                string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
+                string subject = countErrors >= 1 ? "Erros ao subir planilha de metas" : "O lançamento de metas foi um sucesso.";
+                subject = CurrentFirm.FirmName + ": " + subject;
+                bool r = EmailDispatcher.SendEmail(emailFrom, subject, new List<string>() { emailFrom, CurrentUserProfile.Email }, errors);
+
+                return Json(new { Success = true }, JsonRequestBehavior.DenyGet);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+
+                return Json(new { Success = false }, JsonRequestBehavior.DenyGet);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Salva as informações do resultado via arquivo
+        /// </summary>
+        /// <param name="goalArchive"></param>
+        /// <param name="episodeId"></param>
+        /// <returns></returns>
+        private ActionResult SaveGoalArchiveDefault(HttpPostedFileBase goalArchive, string episodeId)
         {
             string errors = "Quantidade de erros: {0}<br/>Última linha lida: {1}<br/>";
             int line = 1;

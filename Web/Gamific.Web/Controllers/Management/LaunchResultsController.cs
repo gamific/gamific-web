@@ -412,11 +412,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 EpisodeEngineService.Instance.DeleteAllScoreByEpisodeId(episodeId);
             }
             
-            if (CurrentFirm.ExternalId == "5885f7593a87786bec6ca6fd")
+            if (CurrentFirm.ExternalId == "5885f7593a87786bec6ca6fd")//Sol Bebidas
             {
                 return SaveResultArchiveSolBebidas(resultsArchive, episodeId);
             }
-            else if(CurrentFirm.ExternalId == "588602233a87786bec6ca703")
+            else if(CurrentFirm.ExternalId == "588602233a87786bec6ca703") //Syngenta
             {
                 return SaveResultArchiveSyngenta(resultsArchive, episodeId);
             }
@@ -466,7 +466,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 var archive = new ExcelQueryFactory(path);
 
-                var rows = from x in archive.WorksheetRange("A1", "I" + rowsCount, "Plan1")
+                var rows = from x in archive.WorksheetRange("A1", "I" + rowsCount, "REALIZADO")
                            select x;
 
                 foreach (var row in rows)
