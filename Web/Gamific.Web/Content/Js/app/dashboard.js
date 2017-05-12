@@ -475,6 +475,10 @@ function initializeChart() {
 
     if (metricsIds.length == 0) {
         metricsIds.push(metricToInitialize);
+
+        var id = '#chart-' + metricToInitialize;
+
+        $(id).attr("checked", true);
     }
 
     var initDate = $('#InitialDate').val();
@@ -658,7 +662,6 @@ $(document).ready(function () {
     if (window.location.pathname.search("detalhes") == -1) {
         loadMorris(1);
         loadBarChart();
-        initializeChart();
     }
 });
 
@@ -686,8 +689,14 @@ function loadBarChart() {
                 metricsIds.push(metrics[z].value);
             }
         }
-    } else {
+    }
+
+    if (metricsIds.length <= 0) {
         metricsIds.push($('#metricToInitializeBar').val());
+
+        var id = '#bar-' + $('#metricToInitializeBar').val();
+
+        $(id).attr("checked", true);
     }
 
     $.ajax({

@@ -185,7 +185,17 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 metrics.Add(MetricEngineService.Instance.GetById(item));
             }
 
-            bars = CardEngineService.Instance.EpisodesAndMetrics(episodesFilter, metrics);
+            List<EpisodeEngineDTO> episodesParam = new List<EpisodeEngineDTO>();
+
+            foreach (EpisodeEngineDTO item in episodesFilter)
+            {
+                if (item.checkedFlag)
+                {
+                    episodesParam.Add(item);
+                }
+            }
+
+            bars = CardEngineService.Instance.EpisodesAndMetrics(episodesParam, metrics);
 
             return Content(JsonConvert.SerializeObject(bars), "application/json");
         }
@@ -344,6 +354,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             EpisodeEngineDTO episodeObj = EpisodeEngineService.Instance.GetById(campaignId);
 
+            List<string> episodesParam = new List<string>();
+
+            episodesParam.Add(campaignId);
+
             DateTime initDT = DateTime.Parse(initDate);
 
             DateTime endDT = DateTime.Parse(endDate);
@@ -356,7 +370,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
                 metricParam.Add(item);
 
-                chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(episodeObj.GameId, metricParam, initDT.Ticks, endDT.Ticks);
+                chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(episodesParam, episodeObj.GameId, metricParam, initDT.Ticks, endDT.Ticks);
 
                 rtn.Add(chartDTO);
             }
