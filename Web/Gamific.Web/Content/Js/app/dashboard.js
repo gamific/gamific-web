@@ -662,6 +662,7 @@ $(document).ready(function () {
     if (window.location.pathname.search("detalhes") == -1) {
         loadMorris(1);
         loadBarChart();
+        initializeChart();
     }
 });
 

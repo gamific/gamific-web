@@ -358,9 +358,25 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             episodesParam.Add(campaignId);
 
-            DateTime initDT = DateTime.Parse(initDate);
+            DateTime initDT;
+            if (initDate == null || initDate.Length == 0)
+            {
+                initDT = DateTime.Now.AddDays(-10);
+            }
+            else
+            {
+                initDT = DateTime.Parse(initDate);
+            }
 
-            DateTime endDT = DateTime.Parse(endDate);
+            DateTime endDT;
+            if (endDate == null || endDate.Length == 0)
+            {
+                endDT = DateTime.Now;
+            }
+            else
+            {
+                endDT = DateTime.Parse(endDate);
+            }
 
             foreach (string item in metricsIds)
             {
