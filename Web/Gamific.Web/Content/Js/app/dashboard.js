@@ -732,13 +732,11 @@ function loadBarChart() {
     });
 }
 
-//var currentDate = new Date();
-//var dateInitial = moment($("#InitialDate").val(), "DD/MM/YYYY HH:mm:SS").toDate();
-//var dateEnd = moment($("#EndDate").val(), "DD/MM/YYYY HH:mm:SS").toDate();
 
 $('#InitialDate').datepicker({
 
     language: 'pt-BR',
+    setDate: new Date(),
     changeMonth: true,
     showOtherMonths: true,
     selectOtherMonths: true,
@@ -751,9 +749,10 @@ $('#InitialDate').datepicker({
 });
 
 
-
 $('#FinishDate').datepicker({
+
     language: 'pt-BR',
+    setDate: new Date(),
     changeMonth: true,
     showOtherMonths: true,
     selectOtherMonths: true,
@@ -762,5 +761,7 @@ $('#FinishDate').datepicker({
     onSelect: function (value, date) {
         $("#FinishDate").hide();
     }
+
 });
+
 

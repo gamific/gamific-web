@@ -344,15 +344,25 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             EpisodeEngineDTO episodeObj = EpisodeEngineService.Instance.GetById(campaignId);
 
-            if(initDate == null || initDate.Length == 0)
+            DateTime initDT ;
+            if (initDate == null || initDate.Length == 0)
             {
-                DateTime initDT = DateTime.Parse(initDate);
+                initDT = DateTime.Now.AddDays(-10);
+            } else { 
+                 initDT = DateTime.Parse(initDate);
             }
-            else { 
 
-            DateTime initDT = DateTime.Parse(initDate);
+            DateTime endDT ;
+            if (endDate == null || endDate.Length == 0)
+            {
+                 endDT = DateTime.Now;
             }
-            DateTime endDT = DateTime.Parse(endDate);
+            else
+            {
+                 endDT = DateTime.Parse(endDate);
+            }
+
+            
 
             foreach (string item in metricsIds)
             {
