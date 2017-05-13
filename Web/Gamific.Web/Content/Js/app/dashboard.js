@@ -490,31 +490,43 @@ function initializeChart() {
                 for (w = 0; w < data.length; w++) {
                     var i;
 
-                    for (i = 0; i < data[w].entries.length; i++) {
-                        var metricName = data[w].entries[i].description;
-                        metricNameList.push(metricName);
+                    var lineElement = {}
 
-                        var lineElement = { period: data[w].entries[i].name }
-                        lineElement[metricName] = data[w].entries[i].value;
-                        lineData.push(lineElement);
+                    lineElement['period'] = data[w].Period;
+
+                    for (i = 0; i < data[w].Points.length; i++) {
+                        var metricName = data[w].Points[i].MetricName;
+
+                        var o;
+                        var found = false;
+                        for (o = 0; o < metricNameList.length; o++) {
+                            if (metricNameList[o] == metricName) {
+                                found = true;
+                            }
+                        }
+
+                        if (!found) {
+                            metricNameList.push(metricName);
+                            colors.push(generateColor());
+                        }
+
+                        lineElement[metricName] = data[w].Points[i].Value;
+
                     }
-                    colors.push(generateColor());
+                    lineData.push(lineElement);
+
                 }
 
                 var config = {
                     data: lineData,
                     xkey: 'period',
-                    ykeys: [metricNameList[0]],
-                    labels: [metricNameList[0]],
+                    ykeys: [metricNameList.slice(0).reverse()],
+                    labels: [metricNameList.slice(0).reverse()],
                     parseTime: false,
-                    fillOpacity: 0.6,
                     hideHover: 'auto',
-                    behaveLikeLine: true,
                     resize: true,
-                    pointFillColors: ['#ffffff'],
-                    pointStrokeColors: ['black'],
                     continuousLine: true,
-                    lineColors: [colors]
+                    colors: [colors]
                 };
 
                 config.element = 'statistics-chart';

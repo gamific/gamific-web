@@ -378,6 +378,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 endDT = DateTime.Parse(endDate);
             }
 
+            List<string> periods = new List<string>();
+
             foreach (string item in metricsIds)
             {
                 ChartResultDTO chartDTO = new ChartResultDTO();
@@ -388,10 +390,45 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
                 chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(episodesParam, episodeObj.GameId, metricParam, initDT.Ticks, endDT.Ticks);
 
+                foreach (EpisodeEngineDTO entrie in chartDTO.Entries)
+                {
+                    if (!periods.Contains(entrie.Name))
+                    {
+                        periods.Add(entrie.Name);
+                    }
+                }
+
                 rtn.Add(chartDTO);
             }
 
-            return Content(JsonConvert.SerializeObject(rtn), "application/json");
+            List<LineDTO> linesDTO = new List<LineDTO>();
+
+            foreach (string period in periods)
+            {
+
+                LineDTO line = new LineDTO();
+
+                line.Period = period;
+
+                foreach (ChartResultDTO item in rtn)
+                {
+
+                    var query = from entrie in item.Entries
+                                where entrie.Name.Equals(period)
+                                select new LinePointDTO
+                                {
+                                    MetricName = item.Name,
+                                    Value = entrie.Value,
+                                };
+
+                    line.Points.Add(query.FirstOrDefault());
+                }
+
+                linesDTO.Add(line);
+
+            }
+
+            return Content(JsonConvert.SerializeObject(linesDTO), "application/json");
         }
 
         /*
