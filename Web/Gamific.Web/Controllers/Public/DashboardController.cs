@@ -42,7 +42,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             ViewBag.Grafic_itens = changeVisibilityGraph();
 
-            //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+           // ViewBag.Metrics = MetricEngineService.Instance.GetDTOByMetricResults(all.List.episode[0].Id);
 
             ViewBag.Metrics = MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0, 100).List.metric;
 
@@ -614,6 +614,21 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             return Json(JsonConvert.SerializeObject(all.List.episode), JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// Busca as metricas de um episodio
+        /// </summary>
+        /// <returns></returns>
+        [Route("buscarMetricasPorCampanha/{episodeId}")]
+        [HttpGet]
+        public ActionResult GetMetrics(string episodeId)
+        {
+            List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetMetricsWithResultsByEpisodeId(episodeId);
+
+            return Json(JsonConvert.SerializeObject(metrics), JsonRequestBehavior.AllowGet);
+        }
+
+
 
         /// <summary>
         /// Busca os times

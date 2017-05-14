@@ -3,6 +3,7 @@
 });
 
 $('#dropDownEpisodes').change(function () {
+    //loadMetricList();
     refreshDropDownTeams($(this).val());
     loadMorris(1);
 
@@ -31,6 +32,41 @@ $('#dropDownWorkers').change(function () {
     }
 
 });
+
+
+function loadMetricList() {
+    $.ajax({
+        url: "/public/dashboard/buscarMetricasPorCampanha/" + $('#dropDownEpisodes').val(),
+        async: false,
+        type: "GET",
+        success: function (data) {
+            var metrics = JSON.parse(data);
+
+            $('#PorPeriodo').empty();
+            $('#PorCampanha').empty();
+
+            for (var i = 0; i < metrics.length; i++) {
+                var metricBox =
+                    " <li class='title'> " + 
+                    "                            <h5 style='font:15px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;'>Comparativo:</h5>" + 
+                     + " </li>" +
+                     "<li>" +
+                    "<div>" +
+                        "<label>" +
+                            "<input style='width:14px !important; height:auto !important' type='checkbox' value='" + metrics[i].id + "' class='checkbox-div barChart' onclick='loadBarChart();' />" +
+                                "<span style='color:white; font-size:14px !important'>" +
+                                    metrics[i].name +
+                                "</span>" +
+                        "</label>" +
+                    "</div>" +
+                "</li>";
+
+                $('#PorPeriodo').append(metricBox);
+                $('#PorCampanha').append(metricBox);
+            }
+        }
+    });
+}
 
 function refreshDropDownEpisodes(state, currentId) {
     $.ajax({
@@ -659,6 +695,7 @@ function loadMorris(type) {
 }
 
 $(document).ready(function () {
+    loadMetricList();
     if (window.location.pathname.search("detalhes") == -1) {
         loadMorris(1);
         loadBarChart();

@@ -94,6 +94,21 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public List<MetricEngineDTO> GetMetricsWithResultsByEpisodeId(string episodeId)
+        {
+            try
+            {
+                using (WebClient client = GetClient())
+                {
+                    string response = client.DownloadString(ENGINE_API + "findMetricsWithResults?episodeId=" + episodeId);
+                    return JsonDeserialize<List<MetricEngineDTO>>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
         #endregion
     }
 }
