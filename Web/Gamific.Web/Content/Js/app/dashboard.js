@@ -19,6 +19,8 @@ $('#dropDownTeams').change(function () {
         loadMorris(2);
     }
 
+    initializeChart();
+
 });
 
 $('#dropDownWorkers').change(function () {
@@ -29,6 +31,8 @@ $('#dropDownWorkers').change(function () {
     } else {
         loadMorris(3);
     }
+
+    initializeChart();
 
 });
 
@@ -447,6 +451,8 @@ function initializeChart() {
     $('#statistics-chart').empty();
 
     var campaignId = $('#dropDownEpisodes').val();
+    var teamId = $('#dropDownTeams').val();
+    var workerId = $('#dropDownWorkers').val();
 
     var metrics = $('.metricsChart');
 
@@ -478,13 +484,12 @@ function initializeChart() {
         $.ajax({
             url: "/public/dashboard/loadChart",
             async: false,
-            data: { metricsIds: metricsIds, campaignId: campaignId, initDate: initDate, endDate: endDate },
+            data: { metricsIds: metricsIds, campaignId: campaignId, teamId: teamId, workerId: workerId, initDate: initDate, endDate: endDate },
             type: "POST",
             dataType: 'json',
             success: function (data) {
                 var lineData = [];
                 var metricNameList = [];
-                var colors = [];
 
                 var w;
                 for (w = 0; w < data.length; w++) {
@@ -507,7 +512,6 @@ function initializeChart() {
 
                         if (!found) {
                             metricNameList.push(metricName);
-                            colors.push(generateColor());
                         }
 
                         lineElement[metricName] = data[w].Points[i].Value;
@@ -520,13 +524,12 @@ function initializeChart() {
                 var config = {
                     data: lineData,
                     xkey: 'period',
-                    ykeys: [metricNameList.slice(0).reverse()],
-                    labels: [metricNameList.slice(0).reverse()],
+                    ykeys: metricNameList,
+                    labels: metricNameList,
                     parseTime: false,
                     hideHover: 'auto',
                     resize: true,
-                    continuousLine: true,
-                    colors: [colors]
+                    continuousLine: true
                 };
 
                 config.element = 'statistics-chart';
@@ -567,6 +570,8 @@ function loadMorris(type) {
     // 1 = episode
     // 2 = team
     // 3 = run
+
+    $('#products').empty();
 
     $('#morrisType').val(type);
 
@@ -741,9 +746,9 @@ function loadBarChart() {
     });
 }
 
+var currentDate = new Date();
 
 $('#InitialDate').datepicker({
-
     language: 'pt-BR',
     setDate: new Date(),
     changeMonth: true,
@@ -754,12 +759,11 @@ $('#InitialDate').datepicker({
     onSelect: function (value, date) {
         $("#InitialDate").hide();
     }
-
 });
 
+$("#InitialDate").datepicker("setDate", currentDate);
 
 $('#FinishDate').datepicker({
-
     language: 'pt-BR',
     setDate: new Date(),
     changeMonth: true,
@@ -770,7 +774,6 @@ $('#FinishDate').datepicker({
     onSelect: function (value, date) {
         $("#FinishDate").hide();
     }
-
 });
 
-
+$("#FinishDate").datepicker("setDate", currentDate);

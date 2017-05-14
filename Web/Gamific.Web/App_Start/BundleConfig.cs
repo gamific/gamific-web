@@ -100,6 +100,7 @@ namespace Vlast.Gamific.Web
             }
             bundles.Add(new StyleBundle("~/Content/LayoutStyle").Include(
                         "~/Content/css/bootstrap.min.css", new CssRewriteUrlTransform()).Include(
+                        "~/Content/css/datepicker.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/animate.min.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/dataTables.responsive.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/dataTables.bootstrap.css", new CssRewriteUrlTransform()).Include(
@@ -115,7 +116,6 @@ namespace Vlast.Gamific.Web
                         "~/Content/css/morris.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/rickshaw.min.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/gamific.css", new CssRewriteUrlTransform()).Include(
-                        "~/Content/css/datepicker2.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/bootstrap-dialog.min.css", new CssRewriteUrlTransform()
                         ));
 

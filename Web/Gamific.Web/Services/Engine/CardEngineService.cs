@@ -214,7 +214,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             }
         }
 
-        public ChartResultDTO GameAndMetricAndPeriod(List<string> episodesParam, string gameId, List<string> metrics, long initDate, long finishDate)
+        public ChartResultDTO GameAndMetricAndPeriod(List<string> runners, List<string> episodesParam, string gameId, List<string> metrics, long initDate, long finishDate)
         {
             using (WebClient client = GetClient())
             {
@@ -228,6 +228,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
                     dto.Metrics = metrics;
                     dto.GameId = gameId;
                     dto.Episodes = episodesParam;
+                    dto.Runners = runners;
 
                     string response = client.UploadString(ENGINE_API + "graphicLineWebByDate", "POST", JsonSerialize(ref dto));
 
