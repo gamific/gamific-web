@@ -21,6 +21,9 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("episodes")]
         public List<string> Episodes { get; set; }
 
+        [JsonProperty("runners")]
+        public List<string> Runners { get; set; }
+
         [JsonProperty("initDate")]
         public long InitDate { get; set; }
 

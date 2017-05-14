@@ -3,7 +3,6 @@
 });
 
 $('#dropDownEpisodes').change(function () {
-    //loadMetricList();
     refreshDropDownTeams($(this).val());
     loadMorris(1);
 
@@ -20,6 +19,8 @@ $('#dropDownTeams').change(function () {
         loadMorris(2);
     }
 
+    initializeChart();
+
 });
 
 $('#dropDownWorkers').change(function () {
@@ -31,42 +32,9 @@ $('#dropDownWorkers').change(function () {
         loadMorris(3);
     }
 
+    initializeChart();
+
 });
-
-
-function loadMetricList() {
-    $.ajax({
-        url: "/public/dashboard/buscarMetricasPorCampanha/" + $('#dropDownEpisodes').val(),
-        async: false,
-        type: "GET",
-        success: function (data) {
-            var metrics = JSON.parse(data);
-
-            $('#PorPeriodo').empty();
-            $('#PorCampanha').empty();
-
-            for (var i = 0; i < metrics.length; i++) {
-                var metricBox =
-                    " <li class='title'> " + 
-                    "                            <h5 style='font:15px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;'>Comparativo:</h5>" + 
-                     + " </li>" +
-                     "<li>" +
-                    "<div>" +
-                        "<label>" +
-                            "<input style='width:14px !important; height:auto !important' type='checkbox' value='" + metrics[i].id + "' class='checkbox-div barChart' onclick='loadBarChart();' />" +
-                                "<span style='color:white; font-size:14px !important'>" +
-                                    metrics[i].name +
-                                "</span>" +
-                        "</label>" +
-                    "</div>" +
-                "</li>";
-
-                $('#PorPeriodo').append(metricBox);
-                $('#PorCampanha').append(metricBox);
-            }
-        }
-    });
-}
 
 function refreshDropDownEpisodes(state, currentId) {
     $.ajax({
@@ -483,6 +451,8 @@ function initializeChart() {
     $('#statistics-chart').empty();
 
     var campaignId = $('#dropDownEpisodes').val();
+    var teamId = $('#dropDownTeams').val();
+    var workerId = $('#dropDownWorkers').val();
 
     var metrics = $('.metricsChart');
 
@@ -514,13 +484,12 @@ function initializeChart() {
         $.ajax({
             url: "/public/dashboard/loadChart",
             async: false,
-            data: { metricsIds: metricsIds, campaignId: campaignId, initDate: initDate, endDate: endDate },
+            data: { metricsIds: metricsIds, campaignId: campaignId, teamId: teamId, workerId: workerId, initDate: initDate, endDate: endDate },
             type: "POST",
             dataType: 'json',
             success: function (data) {
                 var lineData = [];
                 var metricNameList = [];
-                var colors = [];
 
                 var w;
                 for (w = 0; w < data.length; w++) {
@@ -543,7 +512,6 @@ function initializeChart() {
 
                         if (!found) {
                             metricNameList.push(metricName);
-                            colors.push(generateColor());
                         }
 
                         lineElement[metricName] = data[w].Points[i].Value;
@@ -556,13 +524,12 @@ function initializeChart() {
                 var config = {
                     data: lineData,
                     xkey: 'period',
-                    ykeys: [metricNameList.slice(0).reverse()],
-                    labels: [metricNameList.slice(0).reverse()],
+                    ykeys: metricNameList,
+                    labels: metricNameList,
                     parseTime: false,
                     hideHover: 'auto',
                     resize: true,
-                    continuousLine: true,
-                    colors: [colors]
+                    continuousLine: true
                 };
 
                 config.element = 'statistics-chart';
@@ -603,6 +570,8 @@ function loadMorris(type) {
     // 1 = episode
     // 2 = team
     // 3 = run
+
+    $('#products').empty();
 
     $('#morrisType').val(type);
 
@@ -695,7 +664,6 @@ function loadMorris(type) {
 }
 
 $(document).ready(function () {
-    loadMetricList();
     if (window.location.pathname.search("detalhes") == -1) {
         loadMorris(1);
         loadBarChart();
@@ -778,9 +746,9 @@ function loadBarChart() {
     });
 }
 
+var currentDate = new Date();
 
 $('#InitialDate').datepicker({
-
     language: 'pt-BR',
     setDate: new Date(),
     changeMonth: true,
@@ -791,12 +759,11 @@ $('#InitialDate').datepicker({
     onSelect: function (value, date) {
         $("#InitialDate").hide();
     }
-
 });
 
+$("#InitialDate").datepicker("setDate", currentDate);
 
 $('#FinishDate').datepicker({
-
     language: 'pt-BR',
     setDate: new Date(),
     changeMonth: true,
@@ -807,7 +774,6 @@ $('#FinishDate').datepicker({
     onSelect: function (value, date) {
         $("#FinishDate").hide();
     }
-
 });
 
-
+$("#FinishDate").datepicker("setDate", currentDate);

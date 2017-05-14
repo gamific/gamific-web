@@ -42,7 +42,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             ViewBag.Grafic_itens = changeVisibilityGraph();
 
-           // ViewBag.Metrics = MetricEngineService.Instance.GetDTOByMetricResults(all.List.episode[0].Id);
+            //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
             ViewBag.Metrics = MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0, 100).List.metric;
 
@@ -347,7 +347,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
         [Route("loadChart")]
         [HttpPost]
-        public ContentResult GetChartResults(List<string> metricsIds, string campaignId, string initDate, string endDate)
+        public ContentResult GetChartResults(List<string> metricsIds, string campaignId, string teamId, string workerId, string initDate, string endDate)
         {
 
             List<ChartResultDTO> rtn = new List<ChartResultDTO>();
@@ -378,6 +378,27 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 endDT = DateTime.Parse(endDate);
             }
 
+            List<string> runners = new List<string>();
+
+            if (!string.IsNullOrEmpty(teamId) && !teamId.Equals("empty"))
+            {
+                if (!string.IsNullOrEmpty(workerId) && !workerId.Equals("empty"))
+                {
+                    RunEngineDTO run = RunEngineService.Instance.GetByEpisodeIdAndPlayerId(campaignId, workerId);
+
+                    runners.Add(run.Id);
+                }
+                else
+                {
+                    List<RunEngineDTO> runnersObj = RunEngineService.Instance.GetRunsByTeamId(teamId, 0, 1000).List.run;
+
+                    foreach (RunEngineDTO run in runnersObj)
+                    {
+                        runners.Add(run.Id);
+                    }
+                }
+            }
+
             List<string> periods = new List<string>();
 
             foreach (string item in metricsIds)
@@ -388,7 +409,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
                 metricParam.Add(item);
 
-                chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(episodesParam, episodeObj.GameId, metricParam, initDT.Ticks, endDT.Ticks);
+                chartDTO = CardEngineService.Instance.GameAndMetricAndPeriod(runners, episodesParam, episodeObj.GameId, metricParam, initDT.Ticks, endDT.Ticks);
 
                 foreach (EpisodeEngineDTO entrie in chartDTO.Entries)
                 {
@@ -614,21 +635,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             return Json(JsonConvert.SerializeObject(all.List.episode), JsonRequestBehavior.AllowGet);
         }
-
-        /// <summary>
-        /// Busca as metricas de um episodio
-        /// </summary>
-        /// <returns></returns>
-        [Route("buscarMetricasPorCampanha/{episodeId}")]
-        [HttpGet]
-        public ActionResult GetMetrics(string episodeId)
-        {
-            List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetMetricsWithResultsByEpisodeId(episodeId);
-
-            return Json(JsonConvert.SerializeObject(metrics), JsonRequestBehavior.AllowGet);
-        }
-
-
 
         /// <summary>
         /// Busca os times
