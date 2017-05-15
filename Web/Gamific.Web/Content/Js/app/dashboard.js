@@ -741,15 +741,7 @@ function loadMorris(type) {
 
 }
 
-$(document).ready(function () {
-    loadMetricList();
 
-    if (window.location.pathname.search("detalhes") == -1) {
-        loadMorris(1);
-        loadBarChart();
-        initializeChart();
-    }
-});
 
 function onSuccessSaveFilter(data) {
     $('#entity-edit-modal').modal('hide');

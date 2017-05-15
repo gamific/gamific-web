@@ -75,11 +75,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ActionResult GetMetrics(string episodeId)
         {
-            if(episodeId != null && episodeId.Equals("undefined" ))
-            {
-                return null;
-            }
-
             List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetMetricsWithResultsByEpisodeId(episodeId);
 
             var lineQuery = from m in metrics
@@ -659,18 +654,23 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ActionResult SearchPlayers(string teamId)
         {
-            GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId, 0, 10000);
+            List<SelectListItem> workersList = new List<SelectListItem>();
+            if (teamId != "empty")
+            {
+                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId, 0, 10000);
+                TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
 
-            List<string> externalIds = (from run in all.List.run select run.PlayerId).ToList();
+                List<string> externalIds = (from run in all.List.run where run.PlayerId != team.MasterPlayerId select run.PlayerId).ToList();
 
-            List<WorkerDTO> workers = WorkerRepository.Instance.GetDTOFromListExternalId(externalIds);
+                List<WorkerDTO> workers = WorkerRepository.Instance.GetDTOFromListExternalId(externalIds);
 
-            List<SelectListItem> workersList = (from worker in workers
-                                                select new SelectListItem
-                                                {
-                                                    Value = worker.ExternalId,
-                                                    Text = worker.Name
-                                                }).ToList();
+                workersList = (from worker in workers
+                                                    select new SelectListItem
+                                                    {
+                                                        Value = worker.ExternalId,
+                                                        Text = worker.Name
+                                                    }).ToList();
+            }
 
             return Json(JsonConvert.SerializeObject(workersList), JsonRequestBehavior.AllowGet);
         }

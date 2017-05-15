@@ -78,6 +78,5 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
 
         [JsonProperty("daysOfWeek")]
         public string DaysOfWeek { get; set; }
-
     }
 }

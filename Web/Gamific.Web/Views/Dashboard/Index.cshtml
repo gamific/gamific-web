@@ -302,7 +302,6 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-
             dashBoardLoad($('#state').val(), $('#EpisodeId').val(), $('#TeamId').val(), $('#PlayerId').val());
             $(window).resize(function () {
                 if ($('header').width() <= 768) {
@@ -310,7 +309,14 @@
                 }
             });
 
-            hideGraficProducts();
+
+            loadMetricList();
+
+            if (window.location.pathname.search("detalhes") == -1) {
+                loadMorris(1);
+                loadBarChart();
+                initializeChart();
+            }
 
         });
 
