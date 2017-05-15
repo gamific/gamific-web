@@ -40,6 +40,7 @@
     <input hidden type="text" value="@ViewBag.TeamId" id="TeamId" />
     <input hidden type="text" value="@ViewBag.PlayerId" id="PlayerId" />
     <input hidden type="text" value="@ViewBag.Grafic_itens" id="Grafic_itens" />
+    <input hidden type="text" value="@ViewBag.Grafic_stogram" id="Grafic_stogram" />
 
     <div id="wrap">
         <div class="row">
@@ -192,7 +193,7 @@
             </div>
 
             <!-- /grafico hisograma -->
-            <div class="row">
+            <div class="row" id="grafic_histogramo">
                 <div class="col-lg-12 col-md-12">
                     <section class="tile transparent">
                         <div class="tile-header color transparent-black textured rounded-top-corners">
@@ -311,6 +312,7 @@
             });
 
             hideGraficProducts();
+            hideGraficStogram();
 
         });
 
@@ -330,9 +332,14 @@
         }
 
         function hideGraficProducts() {
-            console.log(!$('#Grafic_itens').val());
             if (!$('#Grafic_itens').val()) {
                 $('#grafic_products').hide();
+            }
+        }
+
+        function hideGraficStogram() {
+            if (!$('#Grafic_stogram').val()) {
+                $('#grafic_histogramo').hide();
             }
         }
     </script>

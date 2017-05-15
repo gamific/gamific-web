@@ -42,6 +42,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             ViewBag.Grafic_itens = changeVisibilityGraph();
 
+            ViewBag.Grafic_stogram = changeVisibilityGraphStogram();
+
             //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
 
             ViewBag.Metrics = MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0, 100).List.metric;
@@ -56,6 +58,21 @@ namespace Vlast.Gamific.Web.Controllers.Public
             bool active = false;
 
             ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, ParamEntity.GRAFICO_PRODUTOS);
+
+            if (grafics != null && grafics.Value == "1")
+            {
+                active = true;
+            }
+
+            return active;
+
+        }
+
+        private bool changeVisibilityGraphStogram()
+        {
+            bool active = false;
+
+            ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, ParamEntity.GRAFICO_HISTOGRAMO);
 
             if (grafics != null && grafics.Value == "1")
             {
