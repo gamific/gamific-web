@@ -12,6 +12,8 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
 
         public string Period { get; set; }
 
+        public long dateLong { get; set; }
+
         public List<LinePointDTO> Points { get; set; }
 
     }

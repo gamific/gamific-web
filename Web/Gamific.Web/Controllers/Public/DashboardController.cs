@@ -75,7 +75,18 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ActionResult GetMetrics(string episodeId)
         {
+            if(episodeId != null && episodeId.Equals("undefined" ))
+            {
+                return null;
+            }
+
             List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetMetricsWithResultsByEpisodeId(episodeId);
+
+            var lineQuery = from m in metrics
+                            orderby m.Multiplier descending
+                            select m;
+
+            metrics = lineQuery.ToList();
 
             return Json(JsonConvert.SerializeObject(metrics), JsonRequestBehavior.AllowGet);
         }
@@ -442,6 +453,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             List<LineDTO> linesDTO = new List<LineDTO>();
 
+           
+
             foreach (string period in periods)
             {
 
@@ -460,12 +473,34 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                     Value = entrie.Value
                                 };
 
-                    line.Points.Add(query.FirstOrDefault());
+                    if (query.ToList().Count <= 0)
+                    {
+                        LinePointDTO linePoint = new LinePointDTO();
+                        linePoint.MetricName = item.Name;
+                        linePoint.Value = 0;
+
+                        line.Points.Add(linePoint);
+                    } else
+                    {
+                        line.Points.Add(query.FirstOrDefault());
+                    }
+
+                  
                 }
 
                 linesDTO.Add(line);
 
             }
+
+            foreach(LineDTO aux in  linesDTO)
+            {
+                aux.dateLong = Convert.ToDateTime(aux.Period).Ticks;
+            }
+
+            var lineQuery = from line in linesDTO orderby line.dateLong
+                            select line;
+
+            linesDTO = lineQuery.ToList();
 
             return Content(JsonConvert.SerializeObject(linesDTO), "application/json");
         }
