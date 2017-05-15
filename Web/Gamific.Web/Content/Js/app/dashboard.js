@@ -3,6 +3,8 @@
 });
 
 $('#dropDownEpisodes').change(function () {
+
+    loadMetricList();
     refreshDropDownTeams($(this).val());
     loadMorris(1);
 
@@ -20,7 +22,6 @@ $('#dropDownTeams').change(function () {
     }
 
     initializeChart();
-
 });
 
 $('#dropDownWorkers').change(function () {
@@ -156,6 +157,82 @@ function refreshDropDownWorkers(teamId, currentId) {
         }
     });
 }
+
+function loadMetricList() {
+    $.ajax({
+        url: "/public/dashboard/buscarMetricasPorCampanha/" + $('#dropDownEpisodes').val(),
+        async: false,
+        type: "GET",
+        success: function (data) {
+            var metrics = JSON.parse(data);
+
+            $('#metrics').empty();
+           
+            var metricBox =
+                  " <ul class='list-unstyled metric-menu'>" +
+                                        " <li class='title' >" +
+                                             " <h5 style='font:15px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;'>Comparativo:</h5>" +
+                                        "   </li>" ;
+            var aux = "";
+            
+            for (var i = 0; i < metrics.length; i++) {
+                
+                var metricBox2 =
+                    "<li>" +
+                    "<div>" +
+                        "<label>" +
+                            " <input style='width:14px !important; height:auto !important' type='checkbox' value='" + metrics[i].id + "' id='chart-" + metrics[i].id + "' class='checkbox-div metricsChart' onclick='initializeChart();' / >" +
+                               "<span style='color:white; font-size:14px !important'>" +
+                                    metrics[i].name +
+                                "</span>" +
+                        "</label>" +
+                    "</div>" +
+                "</li>";
+              
+
+               aux += ''  + metricBox2;
+            }
+            metricBox = metricBox + aux + " </ul> ";
+
+            metricBox += "<input type='checkbox' value='" + metrics[0].id + "' hidden checked id='metricToInitialize' /> ";
+
+            $('#metrics').append(metricBox);
+
+
+            $('#metricsBar').empty();
+
+             metricBox =
+                  " <ul class='list-unstyled metric-menu'>" +
+                                        " <li class='title' >" +
+                                             " <h5 style='font:15px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;'>Comparativo:</h5>" +
+                                        "   </li>";
+             aux = "";
+
+            for (var i = 0; i < metrics.length; i++) {
+
+                 metricBox2 =
+                    "<li>" +
+                    "<div>" +
+                        "<label>" +
+                            " <input style='width:14px !important; height:auto !important' type='checkbox' value='" + metrics[i].id + "' id='bar-" + metrics[i].id + "' class='checkbox-div barChart' onclick='loadBarChart();' / >" +
+                               "<span style='color:white; font-size:14px !important'>" +
+                                    metrics[i].name +
+                                "</span>" +
+                        "</label>" +
+                    "</div>" +
+                "</li>";
+
+                aux += '' + metricBox2;
+            }
+            metricBox = metricBox + aux + " </ul> ";
+
+            metricBox += "<input type='checkbox' value='" + metrics[0].id + "' hidden checked id='metricToInitializeBar' /> ";
+
+            $('#metricsBar').append(metricBox);
+        }
+    });
+}
+
 
 function refreshCardResults(episodeId, teamId, playerId) {
     $('#div-cards').empty();
@@ -528,6 +605,7 @@ function initializeChart() {
                     labels: metricNameList,
                     parseTime: false,
                     hideHover: 'auto',
+                    gridTextColor: 'white',
                     resize: true,
                     continuousLine: true
                 };
@@ -664,6 +742,8 @@ function loadMorris(type) {
 }
 
 $(document).ready(function () {
+    loadMetricList();
+
     if (window.location.pathname.search("detalhes") == -1) {
         loadMorris(1);
         loadBarChart();

@@ -66,6 +66,20 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
         }
 
+
+        /// <summary>
+        /// Busca as metricas de um episodio
+        /// </summary>
+        /// <returns></returns>
+        [Route("buscarMetricasPorCampanha/{episodeId}")]
+        [HttpGet]
+        public ActionResult GetMetrics(string episodeId)
+        {
+            List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetMetricsWithResultsByEpisodeId(episodeId);
+
+            return Json(JsonConvert.SerializeObject(metrics), JsonRequestBehavior.AllowGet);
+        }
+
         [Route("getCampaignsWithIds")]
         [HttpGet]
         public ContentResult GetCampaignsWithIds()
@@ -378,6 +392,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 endDT = DateTime.Parse(endDate);
             }
 
+
+            initDT = DateTime.Now.AddMonths(-6);
+            endDT = DateTime.Now.AddDays(1);
+
             List<string> runners = new List<string>();
 
             if (!string.IsNullOrEmpty(teamId) && !teamId.Equals("empty"))
@@ -435,11 +453,11 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 {
 
                     var query = from entrie in item.Entries
-                                where entrie.Name.Equals(period)
+                                where entrie.Name.Equals(period) 
                                 select new LinePointDTO
                                 {
                                     MetricName = item.Name,
-                                    Value = entrie.Value,
+                                    Value = entrie.Value
                                 };
 
                     line.Points.Add(query.FirstOrDefault());
