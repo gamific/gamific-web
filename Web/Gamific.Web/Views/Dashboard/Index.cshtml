@@ -281,12 +281,14 @@
                                         <select class="form-control" name="metricMorris" id="metricMorris">
                                             @{
                                                 int i;
-                                                <option value="@ViewBag.Metrics[0].Id">@ViewBag.Metrics[0].Name</option>
-                                                for (i = 1; i < @ViewBag.Metrics.Count; i++)
+                                                if (ViewBag.Metrics != null)
                                                 {
-                                                    <option value="@ViewBag.Metrics[i].Id">@ViewBag.Metrics[i].Name</option>
+                                                    <option value="@ViewBag.Metrics[0].Id">@ViewBag.Metrics[0].Name</option>
+                                                    for (i = 0; i < @ViewBag.Metrics.Count; i++)
+                                                    {
+                                                        <option value="@ViewBag.Metrics[i].Id">@ViewBag.Metrics[i].Name</option>
+                                                    }
                                                 }
-
                                             }
                                         </select>
                                     </div>
@@ -301,7 +303,10 @@
         </div>
 
     </div>
-    <script type="text/javascript">
+</body>
+</html>
+<script src="~/Content/Js/app/dashboard.js" charset="iso-8859-1"></script>
+<script type="text/javascript">
 
         $(document).ready(function () {
 
@@ -316,18 +321,7 @@
             hideGraficStogram();
             hideGraficEvolution();
 
-            loadMetricList();
-
-            if (window.location.pathname.search("detalhes") == -1) {
-                loadMorris(1);
-                loadBarChart();
-                initializeChart();
-            }
-
         });
-
-
-
 
         function hideFilters() {
             if ($('#Filters').is(":visible")) {
@@ -362,10 +356,8 @@
             }
         }
 
-    </script>
-</body>
-</html>
+</script>
 
-<script src="~/Content/Js/app/dashboard.js" charset="iso-8859-1"></script>
+
 
 <div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />

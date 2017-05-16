@@ -33,22 +33,34 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             episodesFilter = new List<EpisodeEngineDTO>();
             GetAllDTO all = EpisodeEngineService.Instance.GetByGameIdAndActive(CurrentFirm.ExternalId, 1);
-            ViewBag.Episodes = from episode in all.List.episode
-                               select new SelectListItem
-                               {
-                                   Value = episode.Id.ToString(),
-                                   Text = episode.Name
-                               };
 
-            ViewBag.Grafic_itens = changeVisibilityGraph();
+            if (all.List.episode != null && all.List.episode.Count != 0)
+            {
 
-            ViewBag.Grafic_stogram = changeVisibilityGraphStogram();
+                ViewBag.Episodes = from episode in all.List.episode
+                                   select new SelectListItem
+                                   {
+                                       Value = episode.Id.ToString(),
+                                       Text = episode.Name
+                                   };
 
-            ViewBag.Grafic_evolution = changeVisibilityGraphEvolution();
+                ViewBag.Grafic_itens = changeVisibilityGraph();
 
-            //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+                ViewBag.Grafic_stogram = changeVisibilityGraphStogram();
 
-            ViewBag.Metrics = MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0, 100).List.metric;
+                ViewBag.Grafic_evolution = changeVisibilityGraphEvolution();
+
+                //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+
+                ViewBag.Metrics = MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0, 100).List.metric;
+            }
+            else
+            {
+                ViewBag.Grafic_itens = false;
+                ViewBag.Grafic_stogram = false;
+                ViewBag.Grafic_evolution = false;
+                //ViewBag.Metrics = new List<MetricEngineDTO>();
+            }
 
             ViewBag.State = state;
 
@@ -109,13 +121,23 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ActionResult GetMetrics(string episodeId)
         {
-            List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetMetricsWithResultsByEpisodeId(episodeId);
+            List<MetricEngineDTO> metrics;
+            
+            if(episodeId != "empty")
+            {
+                metrics = MetricEngineService.Instance.GetMetricsWithResultsByEpisodeId(episodeId);
 
-            var lineQuery = from m in metrics
-                            orderby m.Multiplier descending
-                            select m;
+                var lineQuery = from m in metrics
+                                orderby m.Multiplier descending
+                                select m;
 
-            metrics = lineQuery.ToList();
+                metrics = lineQuery.ToList();
+            }
+            else
+            {
+                metrics = new List<MetricEngineDTO>();
+            }
+
 
             return Json(JsonConvert.SerializeObject(metrics), JsonRequestBehavior.AllowGet);
         }
@@ -757,19 +779,26 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ActionResult SearchResults(string episodeId, string teamId, string playerId)
         {
-            List<CardEngineDTO> results = new List<CardEngineDTO>();
+            List<CardEngineDTO> results;
 
-            if (playerId != "empty" && playerId != "")
+            try
             {
-                results = CardEngineService.Instance.Player(CurrentFirm.ExternalId, teamId, playerId);
+                if (playerId != "empty" && playerId != "")
+                {
+                    results = CardEngineService.Instance.Player(CurrentFirm.ExternalId, teamId, playerId);
+                }
+                else if (teamId != "empty" && teamId != "")
+                {
+                    results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId);
+                }
+                else
+                {
+                    results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episodeId);
+                }
             }
-            else if (teamId != "empty" && teamId != "")
+            catch(Exception e)
             {
-                results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId);
-            }
-            else
-            {
-                results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episodeId);
+                results = new List<CardEngineDTO>();
             }
 
             return Json(JsonConvert.SerializeObject(results), JsonRequestBehavior.AllowGet);

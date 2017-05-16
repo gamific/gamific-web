@@ -3,8 +3,7 @@
 });
 
 $('#dropDownEpisodes').change(function () {
-
-    loadMetricList();
+    //loadMetricList();
     refreshDropDownTeams($(this).val());
     loadMorris(1);
 
@@ -40,7 +39,7 @@ $('#dropDownWorkers').change(function () {
 function refreshDropDownEpisodes(state, currentId) {
     $.ajax({
         url: "/public/dashboard/buscarEpisodios",
-        async: false,
+        async: true,
         type: "GET",
         data:
         {
@@ -48,6 +47,7 @@ function refreshDropDownEpisodes(state, currentId) {
         },
         success: function (data) {
             $("#dropDownEpisodes").empty();
+
             var episodes = JSON.parse(data);
 
             for (var i = 0; i < episodes.length; i++) {
@@ -58,20 +58,21 @@ function refreshDropDownEpisodes(state, currentId) {
                 $("#dropDownEpisodes").append($("<option value='" + episodes[i].id + "'" + selected + " >" + episodes[i].name + "</option>"));
             }
 
-            if (currentId == "" || currentId == undefined) {
-                refreshDropDownTeams($('#dropDownEpisodes').val());
-            }
-
             if (episodes.length <= 0) {
                 $("#dropDownEpisodes").empty();
                 $("#dropDownTeams").empty();
                 $("#dropDownWorkers").empty();
-                $("#dropDownEpisodes").append($("<option value=''>Vazio</option>"));
-                $("#dropDownTeams").append($("<option value=''>Vazio</option>"));
-                $("#dropDownWorkers").append($("<option value=''>Vazio</option>"));
+                $("#dropDownEpisodes").append($("<option value='empty'>Vazio</option>"));
+                $("#dropDownTeams").append($("<option value='empty'>Vazio</option>"));
+                $("#dropDownWorkers").append($("<option value='empty'>Vazio</option>"));
                 $('#div-cards').empty();
             }
 
+            loadMetricList();
+
+            if (currentId == "" || currentId == undefined) {
+                refreshDropDownTeams($('#dropDownEpisodes').val());
+            }
         },
         error: function () {
             $("#dropDownEpisodes").empty();
@@ -82,7 +83,7 @@ function refreshDropDownEpisodes(state, currentId) {
 function refreshDropDownTeams(episodeId, currentId) {
     $.ajax({
         url: "/public/dashboard/buscarEquipes",
-        async: false,
+        async: true,
         type: "GET",
         data:
         {
@@ -113,7 +114,6 @@ function refreshDropDownTeams(episodeId, currentId) {
             if (currentId == "" || currentId == undefined) {
                 refreshDropDownWorkers($('#dropDownTeams').val());
             }
-
         },
         error: function () {
             $("#dropDownTeams").empty();
@@ -124,7 +124,7 @@ function refreshDropDownTeams(episodeId, currentId) {
 function refreshDropDownWorkers(teamId, currentId) {
     $.ajax({
         url: "/public/dashboard/buscarJogadores",
-        async: false,
+        async: true,
         type: "GET",
         data:
         {
@@ -159,9 +159,12 @@ function refreshDropDownWorkers(teamId, currentId) {
 }
 
 function loadMetricList() {
+
+    var teste = $("#dropDownEpisodes").val();
+
     $.ajax({
         url: "/public/dashboard/buscarMetricasPorCampanha/" + $('#dropDownEpisodes').val(),
-        async: false,
+        async: true,
         type: "GET",
         success: function (data) {
             var metrics = JSON.parse(data);
@@ -229,6 +232,12 @@ function loadMetricList() {
             metricBox += "<input type='checkbox' value='" + metrics[0].id + "' hidden checked id='metricToInitializeBar' /> ";
 
             $('#metricsBar').append(metricBox);
+
+            if (window.location.pathname.search("detalhes") == -1) {
+                loadMorris(1);
+                loadBarChart();
+                initializeChart();
+            }
         }
     });
 }
@@ -238,7 +247,7 @@ function refreshCardResults(episodeId, teamId, playerId) {
     $('#div-cards').empty();
     $.ajax({
         url: "/public/dashboard/buscarResultados",
-        async: false,
+        async: true,
         type: "GET",
         data:
         {

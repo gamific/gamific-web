@@ -118,7 +118,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                            LogoId = player.LogoId
                                        }).ToList();
                 }
-                else
+                else if(episodeId != "null")
                 {
                     all = TeamEngineService.Instance.GetAllTeamScoreByEpisodeId(episodeId, metricId, jqueryTableRequest.Page);
                     all.List.result = (from team in all.List.team
@@ -129,6 +129,13 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                            Score = team.Score,
                                            LogoId = team.LogoId
                                        }).ToList();
+                }
+                else
+                {
+                    all = new GetAllDTO();
+                    all.List = new GetAllDTO.Embedded();
+                    all.PageInfo = new GetAllDTO.Page();
+                    all.List.result = new List<ResultEngineDTO>();
                 }
                 
                 int index = 0;
@@ -182,16 +189,25 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 
                 all = RunEngineService.Instance.ScoreByEpisodeIdAndMetricId(episodeId, metricId == "empty" ? "" : metricId, jqueryTableRequest.Page);
 
-                foreach (RunEngineDTO run in all.List.run)
+                if(all.List != null)
                 {
-                    try
+                    foreach (RunEngineDTO run in all.List.run)
                     {
-                        run.LogoId = PlayerEngineService.Instance.GetById(run.PlayerId).LogoId;
+                        try
+                        {
+                            run.LogoId = PlayerEngineService.Instance.GetById(run.PlayerId).LogoId;
+                        }
+                        catch (Exception e)
+                        {
+                            run.LogoId = 0;
+                        }
                     }
-                    catch(Exception e)
-                    {
-                        run.LogoId = 0;
-                    }
+                }
+                else
+                {
+                    all.List = new GetAllDTO.Embedded();
+                    all.PageInfo = new GetAllDTO.Page();
+                    all.List.run = new List<RunEngineDTO>();
                 }
                 
 
