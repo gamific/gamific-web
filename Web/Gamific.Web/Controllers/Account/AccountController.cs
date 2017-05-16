@@ -181,7 +181,7 @@ namespace Vlast.Gamific.Web.Controllers.Account
 
             WorkerEntity worker = WorkerRepository.Instance.GetByUserId(result.UserId);
 
-            if (result.AuthStatus == AuthStatus.OK && worker.Status == GenericStatus.ACTIVE)
+            if (result.AuthStatus == AuthStatus.OK)
             {
                 var claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.Sid, result.UserId.ToString()));
