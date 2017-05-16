@@ -728,7 +728,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                                     }).ToList();
             }
 
-            return Json(JsonConvert.SerializeObject(workersList), JsonRequestBehavior.AllowGet);
+            return Json(JsonConvert.SerializeObject(workersList.OrderBy(x => x.Text).ToList()), JsonRequestBehavior.AllowGet);
         }
 
 
@@ -755,7 +755,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             GetAllDTO all = TeamEngineService.Instance.FindByEpisodeId(episodeId);
 
-            return Json(JsonConvert.SerializeObject(all.List.team), JsonRequestBehavior.AllowGet);
+            return Json(JsonConvert.SerializeObject(all.List.team.OrderBy(x => x.Nick).ToList()), JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
