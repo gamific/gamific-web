@@ -14,10 +14,10 @@ namespace Vlast.Gamific.Model.Firm.Domain
         public static string GRAFICO_PRODUTOS = "GRAFICO_PRODUTOS";
 
         [NotMapped]
-        public static string GRAFICO_HISTOGRAMO = "GRAFICO_HISTOGRAMO";
+        public static string GRAFICO_HISTOGRAMO = "GRAFICO_HISTOGRAMO";//grafico de barras
 
         [NotMapped]
-        public static string GRAFICO_EVOLUCAO = "GRAFICO_EVOLUCAO";
+        public static string GRAFICO_EVOLUCAO = "GRAFICO_EVOLUCAO";//grafico de linhas
 
         [Key]
         [DataMember(Name = "id")]
