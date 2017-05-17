@@ -25,7 +25,7 @@ namespace Vlast.Gamific.Web.Jobs
                     timeToRun.TotalMilliseconds - now.TimeOfDay.TotalMilliseconds);
 
                 Thread.Sleep(miliseconds);
-                if(DateTime.Now > nextRun)
+                //if(DateTime.Now > nextRun)
                 {
                     nextRun = DateTime.Now.AddHours(23.9f);
                     Run();
