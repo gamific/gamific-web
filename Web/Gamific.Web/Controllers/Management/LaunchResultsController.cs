@@ -284,7 +284,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             var worksheetResults = workbook.Worksheets[0];
 
-            rowsCount = 5000;
+            rowsCount = 40000;
 
             worksheetResults.Cells.HideColumns(5, 16384);
             worksheetResults.Cells.HideRows(rowsCount, 1048576);
@@ -418,7 +418,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             }
             else if(CurrentFirm.ExternalId == "588602233a87786bec6ca703") //Syngenta
             {
-                return SaveResultArchiveSyngenta(resultsArchive, episodeId);
+                return SaveResultArchiveSyngenta(resultsArchive);
             }
             else
             {
@@ -439,7 +439,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         //[Route("salvarResultadoArquivo")]
         //[HttpPost]
         //[CustomAuthorize(Roles = "WORKER,ADMINISTRADOR,SUPERVISOR DE CAMPANHA,SUPERVISOR DE EQUIPE")]
-        private ActionResult SaveResultArchiveSyngenta(HttpPostedFileBase resultsArchive, string episodeId)
+        private ActionResult SaveResultArchiveSyngenta(HttpPostedFileBase resultsArchive)
         {
             string errors = "Quantidade de erros: {0}<br/>Última linha lida: {1}<br/>";
             int line = 1;
@@ -525,9 +525,22 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         continue;
                     }
 
+                    EpisodeEngineDTO episode;
+
                     try
                     {
-                        team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId, row[REG]);
+                        episode = EpisodeEngineService.Instance.FindByGameIdAndName(gameId, row[CULTURA]);
+                    }
+                    catch (Exception e)
+                    {
+                        errors += "Erro na coluna 5 da linha " + line + "<br/>";
+                        countErrors++;
+                        continue;
+                    }
+
+                    try
+                    {
+                        team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episode.Id, row[REG]);
                     }
                     catch (Exception e)
                     {

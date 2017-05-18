@@ -224,6 +224,22 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public EpisodeEngineDTO FindByGameIdAndName(string gameId, string name)
+        {
+            try
+            {
+                using (WebClient client = GetClient())
+                {
+                    string response = client.DownloadString(path + "search/findByGameIdAndName?name=" + name + "&gameId=" + gameId);
+                    return JsonDeserialize<EpisodeEngineDTO>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public void DeleteAllScoreByEpisodeId(string episodeId) /* List<EpisodeEngineDTO> */
         {
             try
