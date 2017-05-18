@@ -90,7 +90,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 if (teamId != "empty")
                 {
-                    all = RunEngineService.Instance.GetRunsByTeamId(teamId, jqueryTableRequest.Page);
+                    all = RunEngineService.Instance.GetRunsByTeamId(teamId, jqueryTableRequest.Page, 1000);
                     List<PlayerEngineDTO> players = (from run in all.List.run select PlayerEngineService.Instance.GetById(run.PlayerId)).ToList();
 
                     all.List.result = (from run in all.List.run
@@ -107,7 +107,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 }
                 else
                 {
-                    all = TeamEngineService.Instance.FindByEpisodeIdAndGameId(episodeId, CurrentFirm.ExternalId, jqueryTableRequest.Page);
+                    all = TeamEngineService.Instance.FindByEpisodeIdAndGameId(episodeId, CurrentFirm.ExternalId, jqueryTableRequest.Page, 1000);
                     all.List.result = (from team in all.List.team
                                        select new ResultEngineDTO
                                        {

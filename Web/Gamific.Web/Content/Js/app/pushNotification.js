@@ -3,6 +3,8 @@
 $('#dropDownEpisodes').change(function () {
     checkedMap.clear();
     refreshDropDownTeams($(this).val());
+    $('#notificationDataTable').dataTable().fnDestroy();
+    loadNotificationDataTable();
 });
 
 $(document).ready(function () {
