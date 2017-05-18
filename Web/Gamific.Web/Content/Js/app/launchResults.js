@@ -203,7 +203,7 @@ function SubmitArchive() {
                 alertMessage("Resultados adicionados com sucesso.", "success");
             }
             else {
-                alertMessage("Não foi possivel adicionar todos os resultados.", "danger");
+                alertMessage(data.Exception, "danger");
             }
         },
         error: function () {
