@@ -3,7 +3,7 @@
 });
 
 $('#dropDownEpisodes').change(function () {
-    //loadMetricList();
+    loadMetricList();
     refreshDropDownTeams($(this).val());
     loadMorris(1);
 
