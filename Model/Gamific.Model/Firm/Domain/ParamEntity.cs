@@ -47,8 +47,5 @@ namespace Vlast.Gamific.Model.Firm.Domain
         [Required]
         public int UpdateBy { get; set; }
 
-
-
-
     }
 }
