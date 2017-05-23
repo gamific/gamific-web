@@ -484,9 +484,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
             }
             else
             {
-                return SaveGoalArchive(goalArchive, episodeId);
+                return SaveGoalArchiveDefault(goalArchive, episodeId);
             }
-
 
             return Json(new { Success = false }, JsonRequestBehavior.DenyGet);
         }
