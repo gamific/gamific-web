@@ -480,13 +480,12 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             if (CurrentFirm.ExternalId == "588602233a87786bec6ca703") //Syngenta
             {
-                return SaveGoalArchiveSyngenta(goalArchive, episodeId);
+                return SaveGoalArchiveSyngenta(goalArchive);
             }
             else
             {
-                return SaveGoalArchive(goalArchive, episodeId);
+                return SaveGoalArchiveDefault(goalArchive, episodeId);
             }
-
 
             return Json(new { Success = false }, JsonRequestBehavior.DenyGet);
         }
@@ -498,12 +497,14 @@ namespace Vlast.Gamific.Web.Controllers.Management
         /// <param name="goalArchive"></param>
         /// <param name="episodeId"></param>
         /// <returns></returns>
-        private ActionResult SaveGoalArchiveSyngenta(HttpPostedFileBase goalArchive, string episodeId)
+        private ActionResult SaveGoalArchiveSyngenta(HttpPostedFileBase goalArchive)
         {
             string errors = "Quantidade de erros: {0}<br/>Última linha lida: {1}<br/>";
             int line = 1;
             int countErrors = 0;
             int countEmptyLines = 0;
+
+            string gameId = CurrentFirm.ExternalId;
 
             int CODIGO_TERRITORIO = 0;
             int RESPONSAVEL = 1;
@@ -556,36 +557,44 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     try
                     {
-                        metric = MetricEngineService.Instance.GetDTOByGameAndName(CurrentFirm.ExternalId, row[NOME_PADRAO].ToString());
+                        metric = MetricEngineService.Instance.GetDTOByGameAndName(gameId, row[NOME_PADRAO].ToString());
                     }
                     catch (Exception e)
                     {
-                        errors += "Erro na coluna 2 da linha " + line + "<br/>";
+                        errors += "Erro na coluna " + (NOME_PADRAO + 1) + " da linha " + line + "<br/>";
                         countErrors++;
                         continue;
                     }
 
-                    UserProfileEntity user = UserProfileRepository.Instance.GetByEmail(row[EMAIL].Value.ToString());
+                    PlayerEngineDTO player;
 
-                    if (user == null)
+                    try
                     {
-                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        player = PlayerEngineService.Instance.GetByEmail(row[EMAIL].Value.ToString());
+                    }
+                    catch (Exception e)
+                    {
+                        errors += "Erro na coluna " + (EMAIL + 1) + " da linha " + line + "<br/>";
                         countErrors++;
                         continue;
                     }
 
-                    WorkerEntity worker = WorkerRepository.Instance.GetByUserId(int.Parse(user.Id.ToString()));
+                    EpisodeEngineDTO episode;
 
-                    if (worker == null)
+                    try
                     {
-                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        episode = EpisodeEngineService.Instance.FindByGameIdAndName(gameId, row[CULTURA]);
+                    }
+                    catch (Exception e)
+                    {
+                        errors += "Erro na coluna 5 da linha " + line + "<br/>";
                         countErrors++;
                         continue;
                     }
 
                     try
                     {
-                        team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episodeId, row[REG].Value.ToString());
+                        team = TeamEngineService.Instance.GetByEpisodeIdAndNick(episode.Id, row[REG].Value.ToString());
                     }
                     catch (Exception e)
                     {
@@ -596,11 +605,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     try
                     {
-                        run = RunEngineService.Instance.GetRunByPlayerAndTeamId(worker.ExternalId, team.Id);
+                        run = RunEngineService.Instance.GetRunByPlayerAndTeamId(player.Id, team.Id);
                     }
                     catch (Exception e)
                     {
-                        errors += "Jogador " + user.Name + " não está cadastrado no time " + team.Nick + ". Linha: " + line + "<br/>";
+                        errors += "Jogador " + player.Nick + " não está cadastrado no time " + team.Nick + ". Linha: " + line + "<br/>";
                         countErrors++;
                         continue;
                     }
@@ -614,7 +623,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         try
                         {
                             goalEngineDTO = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
-                            goalEngineDTO.Goal = Int32.Parse(row[3].Value.ToString());
+                            goalEngineDTO.Goal = Int32.Parse(row[TOTAL].Value.ToString());
                         }
                         catch (Exception e)
                         {

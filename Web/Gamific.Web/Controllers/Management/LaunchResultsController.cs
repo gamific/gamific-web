@@ -650,6 +650,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             int PERCENT_VALOR = 12;
             int VLR_MEDIO_OBJETIVO = 13;
             int VLR_MEDIO_REAL = 14;
+            int TIPO_PRODUTO = 15;
 
             EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
             string gameId = CurrentFirm.ExternalId;
@@ -665,9 +666,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
             int line = 1;
             int errorsCount = 0;
 
+            string productType = resultsArchive.FileName.Split(' ')[0];
+
             try
             {
-                metricFat = MetricEngineService.Instance.GetDTOByGameAndName(gameId, "FATURAMENTO");
+                metricFat = MetricEngineService.Instance.GetDTOByGameAndName(gameId, productType + " FATURAMENTO");
             }
             catch (Exception e)
             {
@@ -679,7 +682,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             try
             {
-                metricVol = MetricEngineService.Instance.GetDTOByGameAndName(gameId, "VOLUME");
+                metricVol = MetricEngineService.Instance.GetDTOByGameAndName(gameId, productType + " VOLUME");
             }
             catch (Exception e)
             {
@@ -691,13 +694,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             try
             {
-                EpisodeEngineService.Instance.DeleteAllScoreByEpisodeId(episodeId);
+                //EpisodeEngineService.Instance.DeleteAllScoreByEpisodeId(episodeId);
 
                 resultsArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), resultsArchive.FileName));
 
                 var archive = new ExcelQueryFactory(Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(resultsArchive.FileName)));
 
-                var rows = from x in archive.WorksheetRange("A1", "O" + rowsCount, "Sheet1") select x;
+                var rows = from x in archive.WorksheetRange("A1", "O" + rowsCount, "Plan1") select x;
 
                 float points;
 

@@ -61,14 +61,11 @@ namespace Vlast.Gamific.Web.Jobs
                         {
                             string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
                             Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
-                            //Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
+                            Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
                         }
                     }
                 }
             }
-                
-            
-            
         }
 
         public override void Init(TimeSpan timeToRun)
