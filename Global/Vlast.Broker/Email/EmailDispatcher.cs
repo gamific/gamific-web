@@ -11,7 +11,7 @@ using Amazon.SimpleEmail.Model;
 using System.Net.Mail;
 using System.IO;
 using System.Net.Mime;
- 
+
 
 namespace Vlast.Broker.EMAIL
 {
@@ -24,7 +24,7 @@ namespace Vlast.Broker.EMAIL
         /// <param name="msg"></param>
         /// <param name="phone"></param>
         /// <returns></returns>
-        public static bool SendEmail(string from, string subject, List<string> toList, string body, string fromDisplayName = null, byte[] attachment = null, string contentType = null)
+        public static bool SendEmail(string from, string subject, List<string> toList, string body, string fromDisplayName = null, MemoryStream attachment = null, string contentType = null)
         {
             bool sent = false;
             try
@@ -51,10 +51,12 @@ namespace Vlast.Broker.EMAIL
                 mailMessage.SubjectEncoding = Encoding.UTF8;
                 mailMessage.BodyEncoding = Encoding.UTF8;
                 mailMessage.IsBodyHtml = true;
-              
+
                 AlternateView htmlView = AlternateView.CreateAlternateViewFromString(body, Encoding.UTF8, "text/html");
-				htmlView.ContentType.CharSet = Encoding.UTF8.WebName;
+                htmlView.ContentType.CharSet = Encoding.UTF8.WebName;
                 mailMessage.AlternateViews.Add(htmlView);
+
+                mailMessage.Attachments.Add(new Attachment(attachment,new ContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")));
 
 
                 RawMessage rawMessage = new RawMessage();

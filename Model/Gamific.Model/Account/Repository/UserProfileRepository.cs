@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Vlast.Gamific.Model.Account.Domain;
 
@@ -66,6 +67,22 @@ namespace Vlast.Gamific.Model.Account.Repository
                             select sc;
 
                 return query.FirstOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Recupera todas as informações de um user profile
+        /// </summary>
+        /// <param name="userProfileId"></param>
+        /// <returns></returns>
+        public List<UserProfileEntity> GetAllUsers()
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from sc in context.Profiles
+                            select sc;
+
+                return query.ToList();
             }
         }
 

@@ -51,6 +51,19 @@ namespace Vlast.Gamific.Account.Model
                 return foundUserAccount.FirstOrDefault();
             }
         }
+        /// <summary>
+        /// Busca contas
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<UserAccountEntity> GetAll()
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var foundUserAccount = from c in context.Users select c;
+                return foundUserAccount.ToList();
+            }
+        }
 
         /// <summary>
         /// Cria uma conta de usuário

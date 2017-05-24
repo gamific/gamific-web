@@ -13,6 +13,14 @@ using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
 using System.Collections;
 using System.Globalization;
+using Vlast.Gamific.Model.Account.Domain;
+using Vlast.Gamific.Account.Model;
+using Aspose.Words.Lists;
+using System.Data;
+using System.IO;
+using Vlast.Broker.SNS.Model;
+using Aspose.Cells;
+using Vlast.Gamific.Model.Account.Repository;
 
 namespace Vlast.Gamific.Web.Jobs
 {
@@ -25,96 +33,179 @@ namespace Vlast.Gamific.Web.Jobs
         private string email = "rafael@gamific.com.br";
         public override void Init(TimeSpan timeToRun)
         {
-            RankingMailThread rankingThread = new RankingMailThread();
+            InternalReportThread ReportThread = new InternalReportThread();
 
-            rankingThread.timeToRun = timeToRun;
+            ReportThread.timeToRun = timeToRun;
 
-            Instance = new Thread(rankingThread.Start);
+            Instance = new Thread(ReportThread.Start);
             Instance.Start();
         }
 
         public async override void Run()
         {
 
-            //Send(new EmailSupportDTO { Msg = "Bom dia", Category = "", Subject = "Testes Gamific" }, "igorgarantes@gmail.com");
-
-            //GetAllDTO players = PlayerEngineService.Instance.GetByGameId(game.Id);
-
-            //GetAllDTO episodes = EpisodeEngineService.Instance.GetByGameIdAndActive(game.Id, 1);
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-
             string dayOfWeek = DateTime.Now.ToString("ddd");
-            List<EpisodeEngineDTO> episodes;
-            //episodes.Add(new EpisodeEngineDTO("58e3708a3a8778588098a82b", "5880a1743a87783b4f0ba709"));
+            //if (dayOfWeek == "mon") {// || dayOfWeek == "tue" || dayOfWeek == "wed") {
+                MemoryStream ms = CreateXls();
+                 Send(new EmailSupportDTO { Msg = "Olá", Category = "", Subject = "Contra-relatorio" }, "victor@duplov.com.br", ms);
 
-            GetAllDTO allEpisodes = EpisodeEngineService.Instance.GetAll(0, 100000);
-
-            episodes = allEpisodes.List.episode.Where(x => x.Active == true && x.sendEmail == true && (x.DaysOfWeek != null ? x.DaysOfWeek.Split(',').Contains(dayOfWeek.ToLower()) : false)).ToList();
-
-            foreach (EpisodeEngineDTO episode in episodes)
-            {
-                List<string> emails = new List<string>();
-                GetAllDTO teams = TeamEngineService.Instance.FindByEpisodeId(episode.Id, email);
-                GameEngineDTO game = GameEngineService.Instance.GetById(episode.GameId, email);
-
-                foreach (TeamEngineDTO team in teams.List.team)
-                {
-                    GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(team.Id, email);
-
-                    foreach (RunEngineDTO run in runs.List.run)
-                    {
-                        WorkerDTO worker = WorkerRepository.Instance.GetWorkerDTOByExternalId(run.PlayerId);
-                        if (worker != null && (worker.ProfileName == Profiles.LIDER || worker.ProfileName == Profiles.JOGADOR))
-                        {
-                            string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
-                            Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
-                            //Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
-                        }
-                    }
-                }
-            }
-
+            //}
 
 
         }
 
-        private string CreateDatesXls()
+        private void Send(EmailSupportDTO email, string emailTo, MemoryStream ms )
         {
-            UserAccountEntity accontEntity = AccontRepository.Instance.GetAll();
-            AccontDevicesEntity accontDeviceEntity = AccontRepository.instance.GetAllDevice();
+            string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
+            bool result = EmailDispatcher.SendEmail(emailFrom, email.Subject, new List<string>() { emailTo }, email.Msg ,"" , ms);
+        }
 
-            resultAcconts = (from e in accontEntity
-                      select new UserAccountEntity
-                      {
-                          Name = e.UserName,
-                          LastUpdate = e.LastUpdate,
-                          LastLogin = e.LastLogin
-                      }).ToList();
+        private MemoryStream CreateXls()
+        {
 
-            
+            List<UserAccountEntity> accontEntityResults = AccountRepository.Instance.GetAll();
+            List<AccountDevicesEntity> accontDeviceEntitys = AccountDevicesRepository.Instance.FindAll();
+            List<UserProfileEntity> userProfileEntitys = UserProfileRepository.Instance.GetAllUsers();
 
+            var workbook = new Workbook();
 
-           /* results = (from d in accontDeviceEntity
-                      select new AccontDevicesEntity
-                      {
-                          Name = d.UserName,
-                          Last_Update = d.Last_Update
-                      }).ToList();*/
+            var worksheetResults = workbook.Worksheets[0];
 
-            DataSet ds = new DataSet("New_DataSet");
-            DataTable dt = new DataTable("Table_Users_Web");
-            dt.Columns.Add("Nome");
-            dt.Columns.Add("Ultimo_Update");
-            dt.Columns.Add("Ultimo_Login");
+            int rowsCount = 40000;
 
-            foreach (string result in resultAcconts)
+            worksheetResults.Cells.HideColumns(5, 16384);
+            worksheetResults.Cells.HideRows(rowsCount, 1048576);
+            worksheetResults.Cells.StandardWidth = 35.0;
+
+            worksheetResults.Name = "Contra_Relatorio";
+
+            var cellsResults = worksheetResults.Cells;
+
+            cellsResults["A1"].PutValue("Nome");
+            cellsResults["B1"].PutValue("Email");
+            cellsResults["C1"].PutValue("Empresa");
+            cellsResults["D1"].PutValue("Web");
+            cellsResults["E1"].PutValue("Mobile");
+
+            var validations = worksheetResults.Validations;
+
+            var validationName = validations[validations.Add()];
+            validationName.Type = ValidationType.List;
+            validationName.Operator = OperatorType.Between;
+            validationName.InCellDropDown = true;
+            validationName.ShowError = true;
+            validationName.AlertStyle = ValidationAlertType.Stop;
+            CellArea areaName;
+            areaName.StartRow = 1;
+            areaName.EndRow = rowsCount;
+            areaName.StartColumn = 0;
+            areaName.EndColumn = 0;
+            validationName.AreaList.Add(areaName);
+
+            var validationEmail = validations[validations.Add()];
+            validationEmail.Type = ValidationType.TextLength;
+            validationEmail.Operator = OperatorType.None;
+            validationEmail.InCellDropDown = false;
+            validationEmail.ShowError = true;
+            validationEmail.AlertStyle = ValidationAlertType.Stop;
+            CellArea areaEmails;
+            areaEmails.StartRow = 1;
+            areaEmails.EndRow = rowsCount;
+            areaEmails.StartColumn = 1;
+            areaEmails.EndColumn = 1;
+            validationEmail.AreaList.Add(areaEmails);
+
+            var validationEmpresa = validations[validations.Add()];
+            validationEmpresa.Type = ValidationType.WholeNumber;
+            validationEmpresa.Operator = OperatorType.Between;
+            validationEmpresa.Formula1 = 0.ToString();
+            validationEmpresa.Formula2 = Int32.MaxValue.ToString();
+            validationEmpresa.InCellDropDown = false;
+            validationEmpresa.ShowError = true;
+            validationEmpresa.AlertStyle = ValidationAlertType.Stop;
+            CellArea areaEmpresa;
+            areaEmpresa.StartRow = 1;
+            areaEmpresa.EndRow = rowsCount;
+            areaEmpresa.StartColumn = 2;
+            areaEmpresa.EndColumn = 2;
+            validationEmpresa.AreaList.Add(areaEmpresa);
+
+            var validationWeb = validations[validations.Add()];
+            validationWeb.Type = ValidationType.Date;
+            validationWeb.Operator = OperatorType.Between;
+            DateTime firstDate = DateTime.MinValue;
+            validationWeb.Formula1 = firstDate.AddYears(1899).ToString().Split(' ')[0];
+            validationWeb.Formula2 = DateTime.Now.ToString().Split(' ')[0];
+            validationWeb.InCellDropDown = false;
+            validationWeb.ShowError = true;
+            validationWeb.AlertStyle = ValidationAlertType.Stop;
+            CellArea areaWeb;
+            areaWeb.StartRow = 1;
+            areaWeb.EndRow = rowsCount;
+            areaWeb.StartColumn = 3;
+            areaWeb.EndColumn = 3;
+            validationWeb.AreaList.Add(areaWeb);
+
+            var validationMobile = validations[validations.Add()];
+            validationMobile.Type = ValidationType.Date;
+            validationMobile.Operator = OperatorType.Between;
+            DateTime secondDate = DateTime.MinValue;
+            validationMobile.Formula1 = secondDate.AddYears(1899).ToString().Split(' ')[0];
+            validationMobile.Formula2 = DateTime.Now.ToString().Split(' ')[0];
+            validationMobile.InCellDropDown = false;
+            validationMobile.ShowError = true;
+            validationMobile.AlertStyle = ValidationAlertType.Stop;
+            CellArea areaMobile;
+            areaMobile.StartRow = 1;
+            areaMobile.EndRow = rowsCount;
+            areaMobile.StartColumn = 4;
+            areaMobile.EndColumn = 4;
+            validationMobile.AreaList.Add(areaMobile);
+
+            MemoryStream ms = new MemoryStream();
+
+            int row = 2;
+            foreach (UserProfileEntity userProfileEntity in userProfileEntitys)
             {
-                dt.Rows.Add(result.name, result.LastUpdate, result.LastLogin);
+                cellsResults["A" + row].PutValue(userProfileEntity.Name);
+                cellsResults["B" + row].PutValue(userProfileEntity.Email);
+
+
+                //empresa C
+                /*foreach (UserAccountEntity accontEntityResult in accontEntityResults)
+                {
+                    if (userProfileEntity.Email == accontEntityResult.UserName)
+                    {
+                        cellsResults["C" + row].PutValue(accontEntityResult.LastLogin);
+                        break;
+                    }
+                }*/
+
+                foreach (UserAccountEntity accontEntityResult in accontEntityResults)
+                {
+                    if(userProfileEntity.Email == accontEntityResult.UserName)
+                    {
+                        cellsResults["D" + row].PutValue(accontEntityResult.LastLogin);
+                        break;
+                    }
+                }
+
+                foreach (AccountDevicesEntity accontDeviceEntity in accontDeviceEntitys)
+                {
+                    if (accontDeviceEntity.Id.Equals(userProfileEntity.Id))
+                    {
+                        cellsResults["E" + row].PutValue(accontDeviceEntity.Last_Update);
+                        break;
+                    }
+                }
+                row++;
             }
 
             
+           ms = workbook.SaveToStream();
 
-            return null;
+
+            return ms;
         }
 
 

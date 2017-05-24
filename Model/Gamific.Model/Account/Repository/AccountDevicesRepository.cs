@@ -64,6 +64,23 @@ namespace Vlast.Gamific.Model.Account.Repository
         /// </summary>
         /// <param name="playerId"></param>
         /// <returns></returns>
+        public List<AccountDevicesEntity> FindAll()
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from devices in context.AccountDevices
+                            select devices;
+
+
+                return query.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Busca por playerId
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
         public List<AccountDevicesDTO> FindAllByGameId(string gameId)
         {
             using (ModelContext context = new ModelContext())
