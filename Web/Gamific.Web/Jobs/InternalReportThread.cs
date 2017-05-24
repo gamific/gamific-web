@@ -167,12 +167,13 @@ namespace Vlast.Gamific.Web.Jobs
             MemoryStream ms = new MemoryStream();
 
             int row = 2;
+            string util = "";
             foreach (UserProfileEntity userProfileEntity in userProfileEntitys)
             {
                 cellsResults["A" + row].PutValue(userProfileEntity.Name);
                 cellsResults["B" + row].PutValue(userProfileEntity.Email);
-
-
+                util = util + " " + userProfileEntity.Name;
+                util = util + " " + userProfileEntity.Email;
                 //empresa C
                 /*foreach (UserAccountEntity accontEntityResult in accontEntityResults)
                 {
@@ -188,6 +189,7 @@ namespace Vlast.Gamific.Web.Jobs
                     if(userProfileEntity.Email == accontEntityResult.UserName)
                     {
                         cellsResults["D" + row].PutValue(accontEntityResult.LastLogin);
+                        util = util + " " + accontEntityResult.LastLogin;
                         break;
                     }
                 }
@@ -197,19 +199,20 @@ namespace Vlast.Gamific.Web.Jobs
                     if (accontDeviceEntity.Id.Equals(userProfileEntity.Id))
                     {
                         cellsResults["E" + row].PutValue(accontDeviceEntity.Last_Update);
+                        util = util + " " + accontDeviceEntity.Last_Update;
                         break;
                     }
                 }
                 row++;
+                util = util + "<br>";
             }
-
             
-           ms = workbook.SaveToStream();
+            ms = workbook.SaveToStream();
 
-            Send(new EmailSupportDTO { Msg = "Olá", Category = "", Subject = "Contra-relatorio" },
-                "m3iller@gmail.com", ms, filename);
+            //Send(new EmailSupportDTO { Msg = "Olá", Category = "", Subject = "Contra-relatorio" },"m3iller@gmail.com", ms, filename);
+            Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" }, "victor@duplov.com.br", ms, filename);
 
-            
+
             return ms;
         }
 

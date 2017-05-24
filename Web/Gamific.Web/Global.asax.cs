@@ -39,7 +39,7 @@ namespace Vlast.Gamific.Web
 
             //
             // rankingJob.Init(new TimeSpan(11, 0, 0));
-            e.Init(new TimeSpan(11, 32, 0));
+            e.Init(new TimeSpan(13, 21, 0));
             
 
             //ScriptsMigration.MigrationEmailToEngine();
