@@ -47,17 +47,16 @@ namespace Vlast.Gamific.Web.Jobs
             string dayOfWeek = DateTime.Now.ToString("ddd");
             //if (dayOfWeek == "mon") {// || dayOfWeek == "tue" || dayOfWeek == "wed") {
                 MemoryStream ms = CreateXls();
-                 Send(new EmailSupportDTO { Msg = "Olá", Category = "", Subject = "Contra-relatorio" }, "victor@duplov.com.br", ms);
-
+               
             //}
 
 
         }
 
-        private void Send(EmailSupportDTO email, string emailTo, MemoryStream ms )
+        private void Send(EmailSupportDTO email, string emailTo, MemoryStream ms, string fileName )
         {
             string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
-            bool result = EmailDispatcher.SendEmail(emailFrom, email.Subject, new List<string>() { emailTo }, email.Msg ,"" , ms);
+            bool result = EmailDispatcher.SendEmail(emailFrom, email.Subject, new List<string>() { emailTo }, email.Msg, ms, fileName);
         }
 
         private MemoryStream CreateXls()
@@ -68,6 +67,9 @@ namespace Vlast.Gamific.Web.Jobs
             List<UserProfileEntity> userProfileEntitys = UserProfileRepository.Instance.GetAllUsers();
 
             var workbook = new Workbook();
+            
+            string filename = "Input" + DateTime.Now.ToString("yyyyMMdd_hhss") + ".xls";
+            workbook.FileName = filename;
 
             var worksheetResults = workbook.Worksheets[0];
 
@@ -204,7 +206,10 @@ namespace Vlast.Gamific.Web.Jobs
             
            ms = workbook.SaveToStream();
 
+            Send(new EmailSupportDTO { Msg = "Olá", Category = "", Subject = "Contra-relatorio" },
+                "m3iller@gmail.com", ms, filename);
 
+            
             return ms;
         }
 

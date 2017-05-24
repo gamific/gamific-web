@@ -24,7 +24,7 @@ namespace Vlast.Broker.EMAIL
         /// <param name="msg"></param>
         /// <param name="phone"></param>
         /// <returns></returns>
-        public static bool SendEmail(string from, string subject, List<string> toList, string body, string fromDisplayName = null, MemoryStream attachment = null, string contentType = null)
+        public static bool SendEmail(string from, string subject, List<string> toList, string body, MemoryStream attachment = null, string fileName = null,  string fromDisplayName = null, string contentType = null)
         {
             bool sent = false;
             try
@@ -56,8 +56,9 @@ namespace Vlast.Broker.EMAIL
                 htmlView.ContentType.CharSet = Encoding.UTF8.WebName;
                 mailMessage.AlternateViews.Add(htmlView);
 
-                mailMessage.Attachments.Add(new Attachment(attachment,new ContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")));
-
+                //mailMessage.Attachments.Add(new Attachment(attachment,new ContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")));
+                mailMessage.Attachments.Add(new System.Net.Mail.Attachment(attachment, fileName, MediaTypeNames.Application.Octet));
+               // mailMessage.Attachments.Add
 
                 RawMessage rawMessage = new RawMessage();
 
