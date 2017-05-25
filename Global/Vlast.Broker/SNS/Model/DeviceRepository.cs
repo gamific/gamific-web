@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Vlast.Util.Data;
 
@@ -117,8 +118,24 @@ namespace Vlast.Broker.SNS.Model
             return updateDevice;
         }
 
+        /// <summary>
+        /// Busca contas
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<DeviceEntity> GetAll()
+        {
+            using (BrokerModelContext context = new BrokerModelContext())
+            {
+                var query = from d in context.Devices
+                            where d.Status == GenericStatus.ACTIVE
+                            select d;
 
-        
+                return query.ToList();
+            }
+        }
+
+
 
         #endregion
     }

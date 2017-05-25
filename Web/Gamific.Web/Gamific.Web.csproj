@@ -321,6 +321,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Jobs\BaseThread.cs" />
+    <Compile Include="Jobs\InternalReportThread.cs" />
     <Compile Include="Jobs\RankingMailThread.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Account\AccountAPIController.cs" />
