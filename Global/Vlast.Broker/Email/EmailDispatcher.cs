@@ -58,7 +58,7 @@ namespace Vlast.Broker.EMAIL
 
                 //mailMessage.Attachments.Add(new Attachment(attachment,new ContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")));
                 mailMessage.Attachments.Add(new System.Net.Mail.Attachment(attachment, fileName, MediaTypeNames.Application.Octet));
-               // mailMessage.Attachments.Add
+                // mailMessage.Attachments.Add
 
                 RawMessage rawMessage = new RawMessage();
 
