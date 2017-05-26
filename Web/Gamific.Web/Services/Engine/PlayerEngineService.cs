@@ -108,6 +108,23 @@ namespace Vlast.Gamific.Web.Services.Engine
                 throw e;
             }
         }
+        public PlayerEngineDTO GetByEmail(string email , bool t)
+        {
+            try
+            {
+                using (WebClient client = GetClient(email))
+                {
+                    string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(email + ":" + ""));
+                    client.Headers[HttpRequestHeader.Authorization] = "Basic " + encoded;
+                    string response = client.DownloadString(path + "search/findByEmail?email=" + email);
+                    return JsonDeserialize<PlayerEngineDTO>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
         #endregion
     }

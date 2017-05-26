@@ -65,10 +65,10 @@ namespace Vlast.Gamific.Web.Jobs
             List<UserAccountEntity> accontEntityResults = AccountRepository.Instance.GetAll();
             List<AccountDevicesEntity> accontDeviceEntitys = AccountDevicesRepository.Instance.FindAll();
             List<UserProfileEntity> userProfileEntitys = UserProfileRepository.Instance.GetAllUsers();
-
-            var workbook = new Workbook();
-            
             string filename = "Input" + DateTime.Now.ToString("yyyyMMdd_hhss") + ".xls";
+            /*var workbook = new Workbook();
+            
+            
             workbook.FileName = filename;
 
             var worksheetResults = workbook.Worksheets[0];
@@ -163,57 +163,93 @@ namespace Vlast.Gamific.Web.Jobs
             areaMobile.StartColumn = 4;
             areaMobile.EndColumn = 4;
             validationMobile.AreaList.Add(areaMobile);
-
+            */
             MemoryStream ms = new MemoryStream();
+            //int row = 2;
 
-            int row = 2;
-            string util = "";
+            string util = "<table>";
+            util = util + "<tr> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> </tr>";
             foreach (UserProfileEntity userProfileEntity in userProfileEntitys)
             {
-                cellsResults["A" + row].PutValue(userProfileEntity.Name);
-                cellsResults["B" + row].PutValue(userProfileEntity.Email);
-                util = util + " " + userProfileEntity.Name;
-                util = util + " " + userProfileEntity.Email;
-                //empresa C
-                /*foreach (UserAccountEntity accontEntityResult in accontEntityResults)
+                util = util + "<tr>";
+                PlayerEngineDTO player = null;
+                AccountDevicesEntity device = null;
+                bool token = true;
+                try
                 {
-                    if (userProfileEntity.Email == accontEntityResult.UserName)
-                    {
-                        cellsResults["C" + row].PutValue(accontEntityResult.LastLogin);
-                        break;
-                    }
-                }*/
-
-                foreach (UserAccountEntity accontEntityResult in accontEntityResults)
+                   player = PlayerEngineService.Instance.GetByEmail(userProfileEntity.Email, true);
+                   
+                }
+                catch(Exception ex)
                 {
-                    if(userProfileEntity.Email == accontEntityResult.UserName)
-                    {
-                        cellsResults["D" + row].PutValue(accontEntityResult.LastLogin);
-                        util = util + " " + accontEntityResult.LastLogin;
-                        break;
-                    }
+                    token = false;
                 }
 
-                foreach (AccountDevicesEntity accontDeviceEntity in accontDeviceEntitys)
+                try
                 {
-                    if (accontDeviceEntity.Id.Equals(userProfileEntity.Id))
-                    {
-                        cellsResults["E" + row].PutValue(accontDeviceEntity.Last_Update);
-                        util = util + " " + accontDeviceEntity.Last_Update;
-                        break;
-                    }
+                    device = AccountDevicesRepository.Instance.FindByPlayerId(player.Id).OrderByDescending(x => x.Last_Update).First();
                 }
-                row++;
-                util = util + "<br>";
+                catch(Exception ex)
+                {
+                    device = null;
+                }
+
+
+                //cellsResults["A" + row].PutValue(userProfileEntity.Name);
+                //cellsResults["B" + row].PutValue(userProfileEntity.Email);
+                util = util + "<th>" + userProfileEntity.Name + "</th>";
+                util = util + "<th>" + userProfileEntity.Email + "</th>";
+
+                if (token)
+                {
+                    GameEngineDTO game = GameEngineService.Instance.GetById(player.GameId, player.Email);
+                    util = util + "<th>" + game.Name + "</th>"; 
+                }
+                else
+                {
+                    util = util + "<th>" + "------" + "</th>"; 
+                }
+
+
+
+
+
+                try
+                {
+                    //cellsResults["D" + row].PutValue(accontEntityResult.LastLogin);
+                    util = util + "<th>" + AccountRepository.Instance.FindByUserName(userProfileEntity.Email).LastLogin + "</th>";
+                }catch(Exception ex)
+                {
+                    util = util + "<th>" + "--------" + "</th>";
+                }
+
+
+
+                try
+                {
+                    //cellsResults["E" + row].PutValue(device.Last_Update);
+                    util = util + "<th>" + device.Last_Update + "</th>";
+                }
+                catch(Exception ex)
+                {
+                    //cellsResults["E" + row].PutValue("----");
+                    util = util + "<th>" + "-----" + "</th>";
+                }
+                        
+
+
+                //row++;
+                util = util + "</tr>";
             }
             
-            ms = workbook.SaveToStream();
+            //ms = workbook.SaveToStream();
 
-            //Send(new EmailSupportDTO { Msg = "Olá", Category = "", Subject = "Contra-relatorio" },"m3iller@gmail.com", ms, filename);
+            //Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" },"m3iller@gmail.com", ms, filename);
+            Send(new EmailSupportDTO { Msg = util, Category = "", Subject = "Contra-relatorio" }, "suporte@gamific.com.br", ms, filename);
             Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" }, "victor@duplov.com.br", ms, filename);
 
 
-            return ms;
+            return null; //ms;
         }
 
 
