@@ -45,10 +45,10 @@ namespace Vlast.Gamific.Web.Jobs
         {
 
             string dayOfWeek = DateTime.Now.ToString("ddd");
-            //if (dayOfWeek == "mon") {// || dayOfWeek == "tue" || dayOfWeek == "wed") {
+            if (dayOfWeek == "mon") { // || dayOfWeek == "tue" || dayOfWeek == "wed") {
                 MemoryStream ms = CreateXls();
                
-            //}
+            }
 
 
         }
@@ -187,7 +187,7 @@ namespace Vlast.Gamific.Web.Jobs
 
                 try
                 {
-                    device = AccountDevicesRepository.Instance.FindByPlayerId(player.Id).OrderByDescending(x => x.Last_Update).First();
+                    device = AccountDevicesRepository.Instance.FindByPlayerIdDescending(player.Id).First();
                 }
                 catch(Exception ex)
                 {
@@ -245,7 +245,7 @@ namespace Vlast.Gamific.Web.Jobs
             //ms = workbook.SaveToStream();
 
             //Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" },"m3iller@gmail.com", ms, filename);
-            Send(new EmailSupportDTO { Msg = util, Category = "", Subject = "Contra-relatorio" }, "suporte@gamific.com.br", ms, filename);
+            Send(new EmailSupportDTO { Msg = util, Category = "", Subject = "Contra-relatorio" }, "rafael@gamific.com.br", ms, filename);
             Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" }, "victor@duplov.com.br", ms, filename);
 
 
