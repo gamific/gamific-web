@@ -502,7 +502,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     }
                     catch (Exception e)
                     {
-                        errors += "Erro na coluna 2 da linha " + line + "<br/>";
+                        errors += "Erro na coluna " + (NOME_PADRAO + 1) + " da linha " + line + "<br/>";
                         countErrors++;
                         continue;
                     }
@@ -511,7 +511,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     if (user == null)
                     {
-                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        errors += "Erro na coluna " + (EMAIL + 1) + " da linha " + line + "<br/>";
                         countErrors++;
                         continue;
                     }
@@ -520,7 +520,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     if (worker == null)
                     {
-                        errors += "Erro na coluna 1 da linha " + line + "<br/>";
+                        errors += "Erro na coluna " + (EMAIL + 1) + " 1 da linha " + line + "<br/>";
                         countErrors++;
                         continue;
                     }
@@ -533,7 +533,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     }
                     catch (Exception e)
                     {
-                        errors += "Erro na coluna 5 da linha " + line + "<br/>";
+                        errors += "Erro na coluna " +(CULTURA + 1) + " da linha " + line + "<br/>";
                         countErrors++;
                         continue;
                     }
@@ -544,7 +544,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     }
                     catch (Exception e)
                     {
-                        errors += "Erro na coluna 5 da linha " + line + "<br/>";
+                        errors += "Erro na coluna " + (REG + 1) + " da linha " + line + "<br/>";
                         countErrors++;
                         continue;
                     }

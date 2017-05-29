@@ -60,6 +60,28 @@ namespace Vlast.Gamific.Model.Account.Repository
         }
 
         /// <summary>
+        /// Busca por playerId order decrecente
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public List<AccountDevicesEntity> FindByPlayerIdDescending(string playerId)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = (from devices in context.AccountDevices 
+                             from worker in context.Workers
+                             where worker.Status == GenericStatus.ACTIVE
+                             && devices.External_User_Id == playerId
+                             && devices.External_User_Id == worker.ExternalId
+                             select devices).OrderByDescending(x => x.Last_Update);
+
+
+
+                return query.ToList();
+            }
+        }
+
+        /// <summary>
         /// Busca por playerId
         /// </summary>
         /// <param name="playerId"></param>
