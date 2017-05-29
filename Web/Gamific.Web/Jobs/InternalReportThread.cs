@@ -66,7 +66,7 @@ namespace Vlast.Gamific.Web.Jobs
             List<AccountDevicesEntity> accontDeviceEntitys = AccountDevicesRepository.Instance.FindAll();
             List<UserProfileEntity> userProfileEntitys = UserProfileRepository.Instance.GetAllUsers();
             string filename = "Input" + DateTime.Now.ToString("yyyyMMdd_hhss") + ".xls";
-            /*var workbook = new Workbook();
+            var workbook = new Workbook();
             
             
             workbook.FileName = filename;
@@ -163,9 +163,8 @@ namespace Vlast.Gamific.Web.Jobs
             areaMobile.StartColumn = 4;
             areaMobile.EndColumn = 4;
             validationMobile.AreaList.Add(areaMobile);
-            */
-            MemoryStream ms = new MemoryStream();
-            //int row = 2;
+  
+            int row = 2;
 
             string util = "<table>";
             util = util + "<tr> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> </tr>";
@@ -195,8 +194,8 @@ namespace Vlast.Gamific.Web.Jobs
                 }
 
 
-                //cellsResults["A" + row].PutValue(userProfileEntity.Name);
-                //cellsResults["B" + row].PutValue(userProfileEntity.Email);
+                cellsResults["A" + row].PutValue(userProfileEntity.Name);
+                cellsResults["B" + row].PutValue(userProfileEntity.Email);
                 util = util + "<th>" + userProfileEntity.Name + "</th>";
                 util = util + "<th>" + userProfileEntity.Email + "</th>";
 
@@ -216,7 +215,7 @@ namespace Vlast.Gamific.Web.Jobs
 
                 try
                 {
-                    //cellsResults["D" + row].PutValue(accontEntityResult.LastLogin);
+                    cellsResults["D" + row].PutValue(AccountRepository.Instance.FindByUserName(userProfileEntity.Email).LastLogin);
                     util = util + "<th>" + AccountRepository.Instance.FindByUserName(userProfileEntity.Email).LastLogin + "</th>";
                 }catch(Exception ex)
                 {
@@ -227,26 +226,27 @@ namespace Vlast.Gamific.Web.Jobs
 
                 try
                 {
-                    //cellsResults["E" + row].PutValue(device.Last_Update);
+                    cellsResults["E" + row].PutValue(device.Last_Update);
                     util = util + "<th>" + device.Last_Update + "</th>";
                 }
                 catch(Exception ex)
                 {
-                    //cellsResults["E" + row].PutValue("----");
+                    cellsResults["E" + row].PutValue("----");
                     util = util + "<th>" + "-----" + "</th>";
                 }
                         
 
 
-                //row++;
+                row++;
                 util = util + "</tr>";
             }
-            
-            //ms = workbook.SaveToStream();
+
+            MemoryStream ms = workbook.SaveToStream();
 
             //Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" },"m3iller@gmail.com", ms, filename);
-            Send(new EmailSupportDTO { Msg = util, Category = "", Subject = "Contra-relatorio" }, "suporte@gamific.com.br", ms, filename);
-            Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" }, "victor@duplov.com.br", ms, filename);
+            //Send(new EmailSupportDTO { Msg = util, Category = "", Subject = "Contra-relatorio" }, "suporte@gamific.com.br", ms, filename);
+            //Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" }, "victor@duplov.com.br", ms, filename);
+            Send(new EmailSupportDTO { Msg = util, Category = "", Subject = "Contra-relatorio" }, "igorgarantes@gmail.com", ms, filename);
 
 
             return null; //ms;

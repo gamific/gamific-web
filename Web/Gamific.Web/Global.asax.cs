@@ -28,7 +28,7 @@ namespace Vlast.Gamific.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            //InternalReportThread e = new InternalReportThread();
+            
 
             string isMinify = Util.Parameter.ParameterCache.Get("MINIFY_COMPONENTES");
 
@@ -39,7 +39,8 @@ namespace Vlast.Gamific.Web
 
             //
             // rankingJob.Init(new TimeSpan(11, 0, 0));
-            //e.Init(new TimeSpan(12, 31, 0));
+            //InternalReportThread e = new InternalReportThread();
+            //e.Init(new TimeSpan(10, 34, 0));
             
 
             //ScriptsMigration.MigrationEmailToEngine();
