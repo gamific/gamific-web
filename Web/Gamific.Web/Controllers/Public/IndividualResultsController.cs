@@ -11,6 +11,8 @@ using System;
 using Vlast.Gamific.Model.School.DTO;
 using Vlast.Gamific.Web.Services.Engine;
 using Vlast.Gamific.Web.Services.Engine.DTO;
+using Vlast.Gamific.Account.Model;
+using Vlast.Gamific.Model.Account.Domain;
 
 namespace Vlast.Gamific.Web.Controllers.Public
 {
@@ -32,6 +34,9 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             ViewBag.State = state;
 
+            //CurrentWorker.LastUpdate = DateTime.UtcNow;
+            UserAccountEntity user = AccountRepository.Instance.GetByEmail(CurrentUserEmail);
+            AccountRepository.Instance.Update(user);
 
             return View("Index");
         }
