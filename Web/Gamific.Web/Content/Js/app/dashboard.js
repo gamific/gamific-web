@@ -1,4 +1,8 @@
-﻿$('#dropDownState').change(function () {
+﻿$("#dropDownItens").change(function () {
+    refreshCardResults($("#dropDownEpisodes").val(), $("#dropDownTeams").val(), $("#dropDownWorkers").val(), $("#dropDownItens").val());
+});
+
+$('#dropDownState').change(function () {
     refreshDropDownEpisodes($(this).val());
 });
 
@@ -25,7 +29,7 @@ $('#dropDownTeams').change(function () {
 
 $('#dropDownWorkers').change(function () {
 
-    refreshCardResults($("#dropDownEpisodes").val(), $("#dropDownTeams").val(), $("#dropDownWorkers").val());
+    refreshCardResults($("#dropDownEpisodes").val(), $("#dropDownTeams").val(), $("#dropDownWorkers").val(), $("#dropDownItens").val());
     if ($("#dropDownWorkers").val() == "empty") {
         loadMorris(2);
     } else {
@@ -149,11 +153,39 @@ function refreshDropDownWorkers(teamId, currentId) {
                 $("#dropDownWorkers").append($("<option value='" + workers[i].Value + "'" + selected + " >" + workers[i].Text + "</option>"));
             }
 
-            refreshCardResults($("#dropDownEpisodes").val(), $("#dropDownTeams").val(), $("#dropDownWorkers").val());
+            refreshCardResults($("#dropDownEpisodes").val(), $("#dropDownTeams").val(), $("#dropDownWorkers").val(), $("#dropDownItens").val());
 
         },
         error: function () {
             $("#dropDownWorkers").empty();
+        }
+    });
+}
+
+function refreshDropDownItens() {
+    $.ajax({
+        url: "/public/dashboard/buscarItens",
+        async: true,
+        type: "GET",
+        success: function (data) {
+
+            $("#dropDownItens").empty();
+            var itens = JSON.parse(data);
+
+            if (itens.length >= 1) {
+                $("#dropDownItens").append($("<option value='empty' selected>Todos</option>"));
+            }
+            else {
+                $("#dropDownItens").append($("<option value='empty' selected>Vazio</option>"));
+            }
+
+            for (var i = 0; i < itens.length; i++) {
+                $("#dropDownItens").append($("<option value='" + itens[i].id + "'>" + itens[i].name + "</option>"));
+            }
+
+        },
+        error: function () {
+            $("#dropDownItens").empty();
         }
     });
 }
@@ -243,7 +275,7 @@ function loadMetricList() {
 }
 
 
-function refreshCardResults(episodeId, teamId, playerId) {
+function refreshCardResults(episodeId, teamId, playerId, itemId) {
     $('#div-cards').empty();
     $.ajax({
         url: "/public/dashboard/buscarResultados",
@@ -253,7 +285,8 @@ function refreshCardResults(episodeId, teamId, playerId) {
         {
             "episodeId": episodeId,
             "teamId": teamId,
-            "playerId": playerId
+            "playerId": playerId,
+            "itemId": itemId
         },
         success: function (data) {
             var cardResults = JSON.parse(data);
@@ -517,6 +550,7 @@ function createProgressBar(id, percent) {
 }
 
 function dashBoardLoad(state, episodeId, teamId, playerId) {
+    refreshDropDownItens();
     refreshDropDownEpisodes(state, episodeId);
     if (teamId != "" && teamId != undefined) {
         refreshDropDownTeams(episodeId, teamId);

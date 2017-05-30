@@ -51,6 +51,28 @@ namespace Vlast.Gamific.Account.Model
                 return foundUserAccount.FirstOrDefault();
             }
         }
+
+        /// <summary>
+        /// Busca conta por email
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public UserAccountEntity GetByEmail(string email)
+        {
+            try
+            {
+                using (ModelContext context = new ModelContext())
+                {
+                    var foundUserAccount = from c in context.Users where c.UserName == email select c;
+                    return foundUserAccount.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            
+        }
         /// <summary>
         /// Busca contas
         /// </summary>
