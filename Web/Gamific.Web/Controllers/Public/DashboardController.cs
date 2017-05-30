@@ -10,6 +10,8 @@ using System;
 using Vlast.Gamific.Model.School.DTO;
 using Vlast.Gamific.Web.Services.Engine;
 using Vlast.Gamific.Web.Services.Engine.DTO;
+using Vlast.Gamific.Model.Account.Domain;
+using Vlast.Gamific.Account.Model;
 
 namespace Vlast.Gamific.Web.Controllers.Public
 {
@@ -63,6 +65,13 @@ namespace Vlast.Gamific.Web.Controllers.Public
             }
 
             ViewBag.State = state;
+
+
+
+            UserAccountEntity user = AccountRepository.Instance.GetByEmail(CurrentUserEmail);
+            AccountRepository.Instance.Update(user);
+
+
 
             return View("Index");
         }
@@ -639,6 +648,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
             ViewBag.TeamId = teamId;
             ViewBag.PlayerId = playerId;
             ViewBag.Grafic_itens = changeVisibilityGraph();
+            ViewBag.Grafic_stogram = changeVisibilityGraphStogram();
+            ViewBag.Grafic_evolution = changeVisibilityGraphEvolution();
 
 
             return View("Index");
@@ -698,7 +709,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-
+            
             return View("Index", filter);
         }
 

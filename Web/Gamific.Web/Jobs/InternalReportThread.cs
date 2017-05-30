@@ -246,7 +246,7 @@ namespace Vlast.Gamific.Web.Jobs
 
             //Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" },"m3iller@gmail.com", ms, filename);
             Send(new EmailSupportDTO { Msg = util, Category = "", Subject = "Contra-relatorio" }, "rafael@gamific.com.br", ms, filename);
-            Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" }, "victor@duplov.com.br", ms, filename);
+            //Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" }, "victor@duplov.com.br", ms, filename);
 
 
             return null; //ms;
