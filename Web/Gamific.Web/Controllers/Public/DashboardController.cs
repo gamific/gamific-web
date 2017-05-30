@@ -63,6 +63,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             }
 
             ViewBag.State = state;
+            ViewBag.GameId = CurrentFirm.ExternalId;
 
             return View("Index");
         }
@@ -640,6 +641,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             ViewBag.PlayerId = playerId;
             ViewBag.Grafic_itens = changeVisibilityGraph();
 
+            ViewBag.GameId = CurrentFirm.ExternalId;
 
             return View("Index");
         }
@@ -698,6 +700,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
+            ViewBag.GameId = CurrentFirm.ExternalId;
 
             return View("Index", filter);
         }
@@ -796,19 +799,21 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             List<CardEngineDTO> results;
 
+            itemId = itemId == "empty" || itemId == null ? "" : itemId;
+
             try
             {
                 if (playerId != "empty" && playerId != "")
                 {
-                    results = CardEngineService.Instance.Player(CurrentFirm.ExternalId, teamId, playerId, itemId == "empty" ? "" : itemId);
+                    results = CardEngineService.Instance.Player(CurrentFirm.ExternalId, teamId, playerId, itemId);
                 }
                 else if (teamId != "empty" && teamId != "")
                 {
-                    results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId, itemId == "empty" ? "" : itemId);
+                    results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId, itemId);
                 }
                 else
                 {
-                    results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episodeId, itemId == "empty" ? "" : itemId);
+                    results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episodeId, itemId);
                 }
             }
             catch(Exception e)
