@@ -18,5 +18,8 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("metrics")]
         public List<MetricEngineDTO> Metrics { get; set; }
 
+        [JsonProperty("runners")]
+        public List<RunEngineDTO> Runners { get; set; }
+
     }
 }

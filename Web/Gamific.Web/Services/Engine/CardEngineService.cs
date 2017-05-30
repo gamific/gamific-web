@@ -191,7 +191,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             }
         }
 
-        public List<BarDTO> EpisodesAndMetrics(List<EpisodeEngineDTO> episodes, List<MetricEngineDTO> metrics)
+        public List<BarDTO> EpisodesAndMetrics(List<EpisodeEngineDTO> episodes, List<MetricEngineDTO> metrics, List<RunEngineDTO> runners)
         {
             using (WebClient client = GetClient())
             {
@@ -202,6 +202,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
 
                     dto.Episodes = episodes;
                     dto.Metrics = metrics;
+                    dto.Runners = runners;
 
                     string response = client.UploadString(ENGINE_API + "graphicbars", "POST", JsonSerialize(ref dto));
 

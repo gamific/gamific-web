@@ -242,7 +242,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
         [Route("loadBarChart")]
         [HttpPost]
-        public ContentResult LoadBarChart(List<string> metricsIds)
+        public ContentResult LoadBarChart(List<string> metricsIds, string teamId, string workerId, string campaignId)
         {
 
             if (episodesFilter.Count < 1)
@@ -271,7 +271,23 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            bars = CardEngineService.Instance.EpisodesAndMetrics(episodesParam, metrics);
+            List<RunEngineDTO> runners = new List<RunEngineDTO>();
+
+            if (!string.IsNullOrEmpty(teamId) && !teamId.Equals("empty"))
+            {
+                if (!string.IsNullOrEmpty(workerId) && !workerId.Equals("empty"))
+                {
+                    RunEngineDTO run = RunEngineService.Instance.GetByEpisodeIdAndPlayerId(campaignId, workerId);
+
+                    runners.Add(run);
+                }
+                else
+                {
+                    runners = RunEngineService.Instance.GetRunsByTeamId(teamId, 0, 1000).List.run;
+                }
+            }
+
+            bars = CardEngineService.Instance.EpisodesAndMetrics(episodesParam, metrics, runners);
 
             return Content(JsonConvert.SerializeObject(bars), "application/json");
         }

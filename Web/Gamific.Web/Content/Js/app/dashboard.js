@@ -785,9 +785,13 @@ function loadBarChart() {
         return;
     }
 
+    var teamId = $('#dropDownTeams').val();
+    var campaignId = $('#dropDownEpisodes').val();
+    var workerId = $('#dropDownWorkers').val();
+
     $.ajax({
         url: "/public/dashboard/loadBarChart",
-        data: { metricsIds: metricsIds },
+        data: { metricsIds: metricsIds, teamId: teamId, workerId:workerId, campaignId:campaignId },
         async: false,
         type: "POST",
         success: function (data) {
