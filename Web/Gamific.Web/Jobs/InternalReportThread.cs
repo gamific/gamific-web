@@ -178,7 +178,7 @@ namespace Vlast.Gamific.Web.Jobs
                 try
                 {
                    player = PlayerEngineService.Instance.GetByEmail(userProfileEntity.Email, true);
-                   
+                   //player = PlayerEngineService.Instance.GetByEmail("leo@gamific.com.br", true);
                 }
                 catch(Exception ex)
                 {
@@ -195,12 +195,14 @@ namespace Vlast.Gamific.Web.Jobs
                 }
 
 
-                //cellsResults["A" + row].PutValue(userProfileEntity.Name);
-                //cellsResults["B" + row].PutValue(userProfileEntity.Email);
-                util = util + "<th>" + userProfileEntity.Name + "</th>";
-                util = util + "<th>" + userProfileEntity.Email + "</th>";
+            //cellsResults["A" + row].PutValue(userProfileEntity.Name);
+            //cellsResults["B" + row].PutValue(userProfileEntity.Email);
+            //util = util + "<th>" + userProfileEntity.Name + "</th>";
+            //util = util + "<th>" + userProfileEntity.Email + "</th>";
+            //util = util + "<th>" + player.Nick + "</th>";
+            //util = util + "<th>" + player.Email + "</th>";
 
-                if (token)
+            if (token)
                 {
                     GameEngineDTO game = GameEngineService.Instance.GetById(player.GameId, player.Email);
                     util = util + "<th>" + game.Name + "</th>"; 
@@ -217,7 +219,7 @@ namespace Vlast.Gamific.Web.Jobs
                 try
                 {
                     //cellsResults["D" + row].PutValue(accontEntityResult.LastLogin);
-                    util = util + "<th>" + AccountRepository.Instance.FindByUserName(userProfileEntity.Email).LastLogin + "</th>";
+                    util = util + "<th>" + AccountRepository.Instance.FindByUserName(player.Email).LastUpdate + "</th>";
                 }catch(Exception ex)
                 {
                     util = util + "<th>" + "--------" + "</th>";
