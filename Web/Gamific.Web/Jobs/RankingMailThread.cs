@@ -125,13 +125,13 @@ namespace Vlast.Gamific.Web.Jobs
             List<CardEngineDTO> results;
             if (perfil == Profiles.JOGADOR)
             {
-                results = CardEngineService.Instance.Player(gameId, team.Id, player.Id, email);
+                results = CardEngineService.Instance.PlayerWithEmail(gameId, team.Id, player.Id, email);
                 run = RunEngineService.Instance.GetRunByPlayerAndTeamId(player.Id, team.Id, email);
                 goals = GoalEngineService.Instance.GetByRunId(run.Id, email).List.goal;//GoalRepository.Instance.GetByRunId(run.Id);
             }
             else if(perfil == Profiles.LIDER)
             {
-                results = CardEngineService.Instance.Team(gameId, team.Id, email);
+                results = CardEngineService.Instance.TeamWithEmail(gameId, team.Id, email);
                 GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(team.Id, email);
                 List<string> runIds = all.List.run.Select(x => x.Id).ToList();
                 foreach(string runId in runIds)

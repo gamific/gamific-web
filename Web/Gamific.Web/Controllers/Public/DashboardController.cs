@@ -10,8 +10,6 @@ using System;
 using Vlast.Gamific.Model.School.DTO;
 using Vlast.Gamific.Web.Services.Engine;
 using Vlast.Gamific.Web.Services.Engine.DTO;
-using Vlast.Gamific.Model.Account.Domain;
-using Vlast.Gamific.Account.Model;
 
 namespace Vlast.Gamific.Web.Controllers.Public
 {
@@ -65,13 +63,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
             }
 
             ViewBag.State = state;
-
-
-
-            UserAccountEntity user = AccountRepository.Instance.GetByEmail(CurrentUserEmail);
-            AccountRepository.Instance.Update(user);
-
-
 
             return View("Index");
         }
@@ -648,8 +639,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
             ViewBag.TeamId = teamId;
             ViewBag.PlayerId = playerId;
             ViewBag.Grafic_itens = changeVisibilityGraph();
-            ViewBag.Grafic_stogram = changeVisibilityGraphStogram();
-            ViewBag.Grafic_evolution = changeVisibilityGraphEvolution();
 
 
             return View("Index");
@@ -709,7 +698,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            
+
             return View("Index", filter);
         }
 
@@ -757,6 +746,21 @@ namespace Vlast.Gamific.Web.Controllers.Public
         }
 
         /// <summary>
+        /// Busca os itens
+        /// </summary>
+        /// <returns></returns>
+        [Route("buscarItens")]
+        [HttpGet]
+        public ActionResult SearchItens()
+        {
+            GetAllDTO all = ItemEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 10000);
+
+            string teste = JsonConvert.SerializeObject(all.List.item);
+
+            return Json(JsonConvert.SerializeObject(all.List.item), JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// Busca os times
         /// </summary>
         /// <returns></returns>
@@ -788,7 +792,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         /// <returns></returns>
         [Route("buscarResultados")]
         [HttpGet]
-        public ActionResult SearchResults(string episodeId, string teamId, string playerId)
+        public ActionResult SearchResults(string episodeId, string teamId, string playerId, string itemId)
         {
             List<CardEngineDTO> results;
 
@@ -796,15 +800,15 @@ namespace Vlast.Gamific.Web.Controllers.Public
             {
                 if (playerId != "empty" && playerId != "")
                 {
-                    results = CardEngineService.Instance.Player(CurrentFirm.ExternalId, teamId, playerId);
+                    results = CardEngineService.Instance.Player(CurrentFirm.ExternalId, teamId, playerId, itemId == "empty" ? "" : itemId);
                 }
                 else if (teamId != "empty" && teamId != "")
                 {
-                    results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId);
+                    results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId, itemId == "empty" ? "" : itemId);
                 }
                 else
                 {
-                    results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episodeId);
+                    results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episodeId, itemId == "empty" ? "" : itemId);
                 }
             }
             catch(Exception e)
