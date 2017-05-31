@@ -1,0 +1,226 @@
+﻿@using Vlast.Gamific.Web.Services.Engine.DTO
+
+<div id="questionAssociate" class="main">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="rootwizard" class="panel">
+                <div class="modal-header">
+                    <button type="button" title="Fechar" id="btn_close_modal" class="close" onclick="hideDivMainAssociate()" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modalQuestionario">Criar novo questionário</h4>
+                </div>
+                <div class="panel-body nopadding color rounded-top-corners">
+                    <ul>
+                        <li><a id="link1" href="#tab1" data-toggle="tab">Escolha as Respostas</a></li>
+                        <li><a id="link2" href="#tab2" data-toggle="tab">Selecione a Ordem</a></li>
+                        <li><a id="link3" href="#tab3" data-toggle="tab">Resposta Correta</a></li>
+                        @*<li><a id="link4" href="#tab4" data-toggle="tab">Confirmação</a></li>*@
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div id="bar" class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-cyan animate-progress-bar"></div>
+                    </div>
+                    <form action="/admin/question/associate" class="form-horizontal" enctype="multipart/form-data" method="post">
+                        <div class="tab-content">
+                            <div class="tab-pane" id="tab1">
+                                <table id="questionAssociateDataTable" class="table" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Nome</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="tab2">
+                                <ol id="sortable" class='questionAssociate'></ol>
+                            </div>
+                            <div class="tab-pane" id="tab3">
+                                <table id="tableResposta" class="table dataTable no-footer" cellspacing="0" width="100%" role="grid" style="width: 100%;">
+                                    <thead>
+                                        <tr role="row">
+                                            <th tabindex="0" style="width: 10%;">Seleção</th>
+                                            <th tabindex="0" style="width: 10%;">Id</th>
+                                            <th style="width: 50%;">Descrição</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bodySelect">
+                                       
+                                    </tbody>
+                                </table>
+                            </div>
+                            @*<div class="tab-pane" id="tab4">
+                                <div style="display:none;">
+
+                                </div>
+                            </div>*@
+                        </div>
+                                <ol id="sortable" class='questionAssociated' style="display:none"></ol>
+                    </form>
+                </div>
+                <div class="panel-footer border-top color white rounded-bottom-corners nopadding">
+                    <ul class="pager pager-full wizard">
+                        <li class="previous"><a href="javascript:;"><i class="fa fa-arrow-left fa-lg"></i> Voltar</a></li>
+                        <li class="next"><a href="javascript:;">Avançar <i class="fa fa-arrow-right fa-lg"></i></a></li>
+                        <li id="questionButton" class="next finish" style="display:none; cursor:pointer">
+                            <a>
+                                <i class="fa fa-check fa-lg"></i> Cadastrar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+
+        var listToSend = [];
+
+        function prepareList() {
+            var associated = '.questionAssociated';
+            listToSend = [];
+            $.each($(associated + ' li'), function (item) {
+                var listAux = $(associated + ' li')[item].innerText.split('-');
+                var obj = {};
+                obj.id = $(listAux)[0].trim();
+                obj.description = $(listAux)[1].trim();
+                obj.idPrincipal = idPrincipal;
+                listToSend.push(obj);
+            });
+        }
+        $('#questionButton').click(function () {
+            $.each(listToSend, function (item) {
+                if ($('#ck_' + listToSend[item].id).prop('checked')) {
+                    listToSend[item].isRight = true;
+                } else {
+                    listToSend[item].isRight = false;
+                }
+            });
+           
+            $.ajax({
+                type: "POST",
+                url: "/admin/question/associate/",
+                data: JSON.stringify(listToSend),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    toastr.success('Registro associado com sucesso!', 'Sucesso');
+                }
+            });
+        });
+
+
+
+        function loadRightAnswers() {
+            $('#bodySelect').html('');
+            $.each(listToSend, function (item) {
+                $('#bodySelect').append(' <tr role="row" class="odd"> <td> <input type="checkbox" id="ck_' + listToSend[item].id + '"></td> <td>' + listToSend[item].id + '</td> <td>' + listToSend[item].description+'</td> </tr >');
+            });
+        }
+
+        function controls(index, selecionado, listaSelecionados, idEtapa2, idEtapa3) {
+            if (index === 1) {
+                $(idEtapa3 + ' li').remove();
+                $(idEtapa2 + ' li').remove();
+                for (var i = 0; i < length; i++) {
+
+                }
+                $.each(selecionado, function (indexFirst, valueFirs) {
+                    $.each(listaSelecionados, function (indexSecond, valueSecond) {
+                        if (valueFirs[0] === valueSecond[0]) {
+                            $(idEtapa2).append('<li>' + valueSecond[0] + ' - ' + valueSecond[1] + '</li>');
+                        }
+                    })
+                });
+            }
+
+            if (index === 2) {
+                $(idEtapa3 + ' li').remove();
+                var itemOrdenados = $("ol" + idEtapa2)[0].outerHTML;
+                $(idEtapa3).append(itemOrdenados);
+                prepareList();
+                loadRightAnswers();
+            }
+
+        }
+
+
+        //initialize form wizard
+        $('#rootwizard').bootstrapWizard({
+
+            'tabClass': 'nav nav-tabs tabdrop',
+            onTabShow: function (tab, navigation, index) {
+                var $total = navigation.find('li').not('.tabdrop').length;
+                var $current = index + 1;
+                var $percent = ($current / $total) * 100;
+                $('#rootwizard').find('#bar .progress-bar').css({ width: $percent + '%' });
+
+                // If it's the last tab then hide the last button and show the finish instead
+                if ($current >= $total) {
+                    $('#rootwizard').find('.pager .next').hide();
+                    $('#rootwizard').find('.pager .finish').show();
+                    $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                } else {
+                    $('#rootwizard').find('.pager .next').show();
+                    $('#rootwizard').find('.pager .finish').hide();
+                }
+            },
+            onNext: function (tab, navigation, index) {
+
+                var form = $('.form' + index)
+
+                form.parsley('validate');
+
+                tab.addClass('success');
+
+                controls(index, questionSelected, listQuestion, '.questionAssociate', '.questionAssociated');
+
+
+            },
+
+            onTabClick: function (tab, navigation, index) {
+                var form = $('.form' + (index + 1))
+
+                controls(index, questionSelected, listQuestion, '.questionAssociate', '.questionAssociated');
+
+                form.parsley('validate');
+
+                tab.addClass('success');
+
+
+            }
+
+        });
+
+        $('#rootwizard a[href="#tab1"]').tab('show')
+
+
+
+        $("#link1").click(function (event) {
+            event.stopImmediatePropagation();
+        });
+
+
+        $("#link2").click(function (event) {
+            event.stopImmediatePropagation();
+        });
+
+        $("#link3").click(function (event) {
+            event.stopImmediatePropagation();
+        });
+
+
+        // Initialize tabDrop
+        $('.tabdropQuestion').tabdrop({ text: '<i class="fa fa-th-list"></i>' });
+
+
+    })
+</script>
+<script src="~/Content/Js/app/questionAssociate.js"></script>

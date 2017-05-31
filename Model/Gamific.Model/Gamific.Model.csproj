@@ -73,12 +73,21 @@
     <Compile Include="Account\Repository\AccountDevicesRepository.cs" />
     <Compile Include="Account\Repository\AccountRepository.cs" />
     <Compile Include="Account\Repository\UserProfileRepository.cs" />
+    <Compile Include="Firm\Domain\GenericEntity.cs" />
+    <Compile Include="Firm\Domain\JsonPropertyAttribute.cs" />
     <Compile Include="Firm\Domain\ParamEntity.cs" />
     <Compile Include="Firm\Domain\MetricEntity.cs" />
     <Compile Include="Firm\Domain\DataEntity.cs" />
+    <Compile Include="Firm\Domain\AnswersEntity.cs" />
+    <Compile Include="Firm\Domain\QuestionAnswersEntity.cs" />
+    <Compile Include="Firm\Domain\QuestionAnsweredEntity.cs" />
+    <Compile Include="Firm\Domain\QuestionEntity.cs" />
+    <Compile Include="Firm\Domain\QuizCampaignEntity.cs" />
+    <Compile Include="Firm\Domain\QuizQuestionEntity.cs" />
     <Compile Include="Firm\Domain\SponsorTeamEntity.cs" />
     <Compile Include="Firm\Domain\TeamWorkerEntity.cs" />
     <Compile Include="Firm\Domain\ResultEntity.cs" />
+    <Compile Include="Firm\Domain\QuizEntity.cs" />
     <Compile Include="Firm\DTO\CarDTO.cs" />
     <Compile Include="Firm\DTO\Enums.cs" />
     <Compile Include="Firm\Domain\MessageEntity.cs" />
@@ -90,7 +99,14 @@
     <Compile Include="Firm\DTO\MetricDTO.cs" />
     <Compile Include="Firm\DTO\EngineTeamDTO.cs" />
     <Compile Include="Firm\DTO\WorkerTypeMetricDTO.cs" />
+    <Compile Include="Firm\Repository\GenericRepository.cs" />
+    <Compile Include="Firm\Repository\IGenericRepository.cs" />
     <Compile Include="Firm\Repository\ParamRepository.cs" />
+    <Compile Include="Firm\Repository\QuestionRepository.cs" />
+    <Compile Include="Firm\Repository\AnswerRepository.cs" />
+    <Compile Include="Firm\Repository\QuestionAnswerRepository.cs" />
+    <Compile Include="Firm\Repository\QuizCampaignRepository.cs" />
+    <Compile Include="Firm\Repository\QuizQuestionRepository.cs" />
     <Compile Include="Firm\Repository\VideoQuestionAnsweredRepository.cs" />
     <Compile Include="Firm\Repository\VideoQuestionRepository.cs" />
     <Compile Include="Firm\Repository\VideoRepository.cs" />
@@ -107,6 +123,7 @@
     <Compile Include="Firm\DTO\WorkerDTO.cs" />
     <Compile Include="Firm\Repository\DataRepository.cs" />
     <Compile Include="Firm\Domain\CampaignEntity.cs" />
+    <Compile Include="Firm\Repository\QuizRepository.cs" />
     <Compile Include="Firm\Repository\WorkerTypeMetricRepository.cs" />
     <Compile Include="Firm\Repository\WorkerTypeRepository.cs" />
     <Compile Include="Firm\Repository\TeamRepository.cs" />
@@ -153,10 +170,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Media\DTO\" />
+    <Folder Include="Vlast\Gamific\Model\Firm\Repository\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,49 @@
+﻿@model   Vlast.Gamific.Model.Firm.Domain.AnswersEntity
+
+@using (Ajax.BeginForm("Save", "Answer", new AjaxOptions { OnSuccess = "onSucessSaveAnswerToast", OnFailure = "onFailureSaveAnswerToast", UpdateTargetId = "modal-painel" }))
+
+{
+
+    @Html.HiddenFor(model => model.Id);
+
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" title="Fechar" id="btn_close_modal" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modalQuestionario">Criar nova Resposta</h4>
+                </div>
+                <div class="modal-body" id="edit-modal-body">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-12 modal-div">
+                            @Html.LabelFor(model => model.Name, "Nome de Identificação*:", new { @class = "col-sm-12 control-label" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                            @Html.ValidationMessageFor(model => model.Name, "O campo Nome da metrica é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-10 col-md-12 modal-div">
+                        @Html.LabelFor(model => model.Answer, "Resposta*:", new { @class = "col-sm-2 control-label" })
+                        @Html.EditorFor(model => model.Answer, new { htmlAttributes = new { @class = "form-control", @tabindex = "2" } })
+                    </div>
+                    <div class="col-sm-10 col-md-6 modal-div">
+                        @Html.LabelFor(model => model.status, "Ativo:", new { @class = "col-sm-8 control-label", @tabindex = "7" })
+                        @Html.CheckBoxFor(model => model.status, Model.status)
+                    </div>
+             
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+</script>
+

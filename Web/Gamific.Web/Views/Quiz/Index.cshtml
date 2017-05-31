@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $("#Questianario").addClass("active");
+</script>
+
+<div id="divMainAssociate" style="display:none">
+    
+</div>
+
+<div id="divMain">
+    <div class="pageheader">
+        <h2><i class="fa fa-object-group"></i> Cadastro de Questionário</h2>
+    </div>
+    <div class="main" style="height:1000px">
+        <div class="row">
+            <div style="background: #7d7d7e;color: white;padding: 10px;background-color: #999;color: #fff;box-shadow: 2px 2px 2px #131311;-webkit-box-shadow: 2px 2px 2px #020202;border-radius: 10px;">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse1" style="font-size: x-large;">Questinário</a>
+                    </h4>
+                </div>
+
+                <div id="collapse1" class="panel-collapse transparent collapse" >
+
+                    <div class="col-md-12">
+                        <br />
+                        <div class="tile transparent">
+                            <div class="tile-body color transparent-black rounded-corners">
+                                <div id="registermetrics" class="table-toolbar-left">
+                                    <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/quiz/cadastrar" title="Cadastrar nova metrica" onclick="showEntityModal(this); return false;"><i class="fa fa-plus"></i> Cadastrar novo questionário</a>
+                                </div>
+                                <div class="">
+                                    <table id="quizDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Nome</th>
+                                                <th>Qtd Perguntas</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div style="background: #7d7d7e;color: white;padding: 10px;background-color: #999;color: #fff;box-shadow: 2px 2px 2px #131311;-webkit-box-shadow: 2px 2px 2px #020202;border-radius: 10px;">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse2" class="collapsed" style="font-size: x-large;">Perguntas</a>
+                    </h4>
+                </div>
+
+                <div id="collapse2" class="panel-collapse transparent collapse" style="height: 0px;">
+
+                    <div class="col-md-12">
+                        <br />
+                        <div class="tile transparent">
+                            <div class="tile-body color transparent-black rounded-corners">
+                                <div id="registermetrics" class="table-toolbar-left">
+                                    <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/question/cadastrar" title="Cadastrar Perguntas" onclick="showEntityModal(this); return false;"><i class="fa fa-plus"></i> Cadastrar Perguntas</a>
+                                </div>
+                                <div class="">
+                                    <table id="questionDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Pergunta</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div style="background: #7d7d7e;color: white;padding: 10px;background-color: #999;color: #fff;box-shadow: 2px 2px 2px #131311;-webkit-box-shadow: 2px 2px 2px #020202;border-radius: 10px;">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse3" class="collapsed" style="font-size: x-large;">Respostas</a>
+                    </h4>
+                </div>
+
+                <div id="collapse3" class="panel-collapse transparent collapse" style="height: 0px;">
+
+                    <div class="col-md-12">
+                        <br />
+                        <div class="tile transparent">
+                            <div class="tile-body color transparent-black rounded-corners">
+                                <div id="registermetrics" class="table-toolbar-left">
+                                    <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/answer/cadastrar" title="Cadastrar nova metrica" onclick="showEntityModal(this); return false;"><i class="fa fa-plus"></i> Criar nova Resposta</h4>o</a>
+                                </div>
+                                <div class="">
+                                    <table id="anwserDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Identificação</th>
+                                                <th>Resposta</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
+<script>
+    var idPrincipal = 0;
+
+    $('#collapse1').addClass('in');
+    function hideDivMain() {
+        $('#divMain').hide();
+    }
+    function showDivMain() {
+        $('#divMain').show();
+    }
+    function hideDivMainAssociate() {
+        showDivMain();
+        $('#divMainAssociate').html("");
+        $('#divMainAssociate').hide();
+    }
+    function showDivQuizAssociate(id) {
+        idPrincipal = id;
+        hideDivMain();
+        $.get( '@Url.Action("paginaQuiz", new { id = 1 } )', function(data) {
+            $('#divMainAssociate').html(data);
+        });
+        $('#divMainAssociate').show();
+    }
+
+    function showDivEpisodeAssociate(id) {
+        idPrincipal = id;
+        hideDivMain();
+        $.get( '@Url.Action("paginaEpisode", new { id = 1 } )', function(data) {
+            $('#divMainAssociate').html(data);
+        });
+        $('#divMainAssociate').show();
+    }
+
+    function showDivQuizCompleteAssociate(id) {
+        idPrincipal = id;
+        hideDivMain();
+        $.get( '@Url.Action("paginaQuizComplete", new { id = 1 } )', function(data) {
+            $('#divMainAssociate').html(data);
+        });
+        $('#divMainAssociate').show();
+    }
+
+    function showDivQuestionComplete(id) {
+        idPrincipal = id;
+        hideDivMain();
+        $.get( '@Url.Action("paginaQuestionComplete", new { id = 1 } )', function(data) {
+            $('#divMainAssociate').html(data);
+        });
+        $('#divMainAssociate').show();
+    }
+
+    function showDivQuestionAssociate(id) {
+        idPrincipal = id;
+        hideDivMain();
+         $.get( '@Url.Action("paginaQuestion", new { id = 1 } )', function(data) {
+             $('#divMainAssociate').html(data);
+        });
+         $('#divMainAssociate').show();
+    }
+</script>
+<script src="~/Content/Js/app/quiz.js"></script>
+<script src="~/Content/Js/app/question.js"></script>
+<script src="~/Content/Js/app/answer.js"></script>

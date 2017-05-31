@@ -13,6 +13,50 @@
   border-radius: 3px;
   transition: border 0.2s linear 0s;
 }
+
+body.dragging, body.dragging * {
+    cursor: move !important;
+}
+
+.dragged {
+    position: absolute;
+    opacity: 0.5;
+    z-index: 2000;
+}
+
+ol.example li.placeholder {
+    position: relative;
+    /** More li styles **/
+}
+
+    ol.example li.placeholder:before {
+        position: absolute;
+        /** Define arrowhead **/
+    }
+
+#sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+    #sortable li {
+        margin: 0 3px 3px 3px;
+        padding: 0.4em;
+        padding-left: 1.5em;
+        font-size: 1.4em;
+        height: 29px;
+        background-color: #e5e5e5;
+        height: 39px;
+    }
+
+        #sortable li span {
+            position: absolute;
+            margin-left: -1.3em;
+        }
+
+
 .check-circle .bootstrap-checkbox{
   -webkit-border-radius: 99px;
   -moz-border-radius: 99px;

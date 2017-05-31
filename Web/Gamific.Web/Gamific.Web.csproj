@@ -191,6 +191,9 @@
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -241,8 +244,10 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MessagesActionFilter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -278,9 +283,13 @@
     <Compile Include="Controllers\Management\EpisodeController.cs" />
     <Compile Include="Controllers\Management\ItemsController.cs" />
     <Compile Include="Controllers\Management\LaunchResultsController.cs" />
+    <Compile Include="Controllers\Management\AnswerController.cs" />
+    <Compile Include="Controllers\Management\QuizAssociateController.cs" />
+    <Compile Include="Controllers\Management\QuizController.cs" />
     <Compile Include="Controllers\Management\MetricController.cs" />
     <Compile Include="Controllers\Management\ParamController.cs" />
     <Compile Include="Controllers\Management\PushNotificationController.cs" />
+    <Compile Include="Controllers\Management\QuestionController.cs" />
     <Compile Include="Controllers\Management\VideoController.cs" />
     <Compile Include="Controllers\Management\Model\IconsDTO.cs" />
     <Compile Include="Controllers\Management\TopicHelpController.cs" />
@@ -291,6 +300,7 @@
     <Compile Include="Controllers\Management\GoalController.cs" />
     <Compile Include="Controllers\Management\WorkerTypeMetricController.cs" />
     <Compile Include="Controllers\Media\MediaAPIController.cs" />
+    <Compile Include="Controllers\Public\ControllerExtensions.cs" />
     <Compile Include="Controllers\Public\MobileApiController.cs" />
     <Compile Include="Controllers\Public\AboutController.cs" />
     <Compile Include="Controllers\Public\DashboardController.cs" />
@@ -317,6 +327,9 @@
     <Compile Include="Controllers\Public\IndividualResultsController.cs" />
     <Compile Include="Controllers\Management\VideoQuestionController.cs" />
     <Compile Include="Controllers\Util\ScriptsMigration.cs" />
+    <Compile Include="Controllers\Util\ToastMessage.cs" />
+    <Compile Include="Controllers\Util\Toastr.cs" />
+    <Compile Include="Controllers\Util\ToastType.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -342,6 +355,8 @@
     <Compile Include="Services\Engine\DTO\GoalEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\ItemEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\Link.cs" />
+    <Compile Include="Services\Engine\DTO\ParserDTO.cs" />
+    <Compile Include="Services\Engine\DTO\QuizDTO.cs" />
     <Compile Include="Services\Engine\DTO\MetricEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\PlayerEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\ResultEngineDTO.cs" />
@@ -354,6 +369,12 @@
     <Compile Include="Services\Engine\GameEngineService.cs" />
     <Compile Include="Services\Engine\GoalEngineService.cs" />
     <Compile Include="Services\Engine\ItemEngineService.cs" />
+    <Compile Include="Services\Engine\QuestionService.cs" />
+    <Compile Include="Services\Engine\AnswerService.cs" />
+    <Compile Include="Services\Engine\QuestionAnswerService.cs" />
+    <Compile Include="Services\Engine\QuizCampaignService.cs" />
+    <Compile Include="Services\Engine\QuizQuestionService.cs" />
+    <Compile Include="Services\Engine\QuizService.cs" />
     <Compile Include="Services\Engine\MetricEngineService.cs" />
     <Compile Include="Services\Engine\PlayerEngineService.cs" />
     <Compile Include="Services\Engine\RunEngineService.cs" />
@@ -511,6 +532,11 @@
     </Content>
     <Content Include="Content\Js\app\param.js" />
     <Content Include="Content\Js\app\pushNotification.js" />
+    <Content Include="Content\Js\app\answer.js" />
+    <Content Include="Content\Js\app\question.js" />
+    <Content Include="Content\Js\app\questionAssociate.js" />
+    <Content Include="Content\Js\app\episodeAssociate.js" />
+    <Content Include="Content\Js\app\quizAssociate.js" />
     <Content Include="Content\Js\app\race.min.js">
       <DependentUpon>race.js</DependentUpon>
     </Content>
@@ -535,6 +561,25 @@
     <Content Include="Content\Js\app\video.min.js">
       <DependentUpon>video.js</DependentUpon>
     </Content>
+    <Content Include="Content\Js\app\quiz.js" />
+    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %282%29.js">
+      <DependentUpon>question.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29 - Cópia %282%29.js">
+      <DependentUpon>episodeAssociate.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29 - Cópia .js">
+      <DependentUpon>questionAssociate.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29.js">
+      <DependentUpon>quizAssociate.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\worker - Cópia .min - Cópia .js">
+      <DependentUpon>answer.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\worker - Cópia .min.js">
+      <DependentUpon>quiz.js</DependentUpon>
+    </Content>
     <Content Include="Content\Js\app\worker.min.js">
       <DependentUpon>worker.js</DependentUpon>
     </Content>
@@ -545,9 +590,13 @@
     <Content Include="Content\Js\app\workerTypeMetric.min.js">
       <DependentUpon>workerTypeMetric.js</DependentUpon>
     </Content>
-    <Content Include="Content\Js\lib\bootstrap-datepicker.js" />
+    <Content Include="Content\Js\lib\bootstrap-datepicker - Cópia .js" />
+    <Content Include="Content\Js\lib\bootstrap-datepicker - Cópia .min.js">
+      <DependentUpon>bootstrap-datepicker - Cópia .js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\lib\jquery-sortable-min.js" />
     <Content Include="Content\Js\lib\bootstrap-datepicker.min.js">
-      <DependentUpon>bootstrap-datepicker.js</DependentUpon>
+      <DependentUpon>jquery-sortable-min.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\lib\bootstrap-dialog.min.js" />
     <Content Include="Content\Js\lib\bootstrap-dropdown-multilevel.js" />
@@ -642,6 +691,8 @@
     <Content Include="Content\smoothness.css" />
     <Content Include="Content\Js\app\firm.js" />
     <Content Include="Content\Js\app\campaign.js" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="Content\Unity\Release\UnityLoader.js" />
     <Content Include="Content\Unity\TemplateData\favicon.ico" />
     <Content Include="Content\Unity\TemplateData\fullscreen.png" />
@@ -681,6 +732,9 @@
     <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="Content\Js\lib\jquery-1.10.2.min.map" />
     <Content Include="Content\Js\lib\jquery-1.11.1.min.map" />
+    <Content Include="scripts\toastr.js" />
+    <Content Include="scripts\toastr.min.js" />
+    <Content Include="Views\favicon.ico" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -704,23 +758,26 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ClassDiagram1.cd" />
+    <Content Include="App_Code\ToastrBuilder.cshtml" />
     <None Include="bundleconfig.json" />
     <Content Include="Content\Unity\Release\WebGL3.asm.jsgz" />
     <Content Include="Content\Unity\Release\WebGL3.datagz" />
     <Content Include="Content\Unity\Release\WebGL3.jsgz" />
     <Content Include="Content\Unity\Release\WebGL3.memgz" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Properties\PublishProfiles\Gamific Deploy.pubxml" />
     <Content Include="Views\Team\Index.cshtml" />
     <Content Include="Views\Chat\Index.cshtml" />
     <Content Include="Views\Firm\Index.cshtml" />
     <Content Include="Views\Worker\Index.cshtml" />
-    <Content Include="Views\Campaign\Index.cshtml" />
+    <Content Include="Views\Dashboard\Campaign\Index.cshtml" />
     <Content Include="Views\Firm\Create.cshtml" />
     <Content Include="Views\Firm\Show.cshtml" />
     <Content Include="Views\Team\_Edit.cshtml" />
     <Content Include="Views\Worker\_Edit.cshtml" />
     <Content Include="Views\Firm\Edit.cshtml" />
-    <Content Include="Views\Campaign\Edit.cshtml" />
+    <Content Include="Views\Dashboard\Campaign\Edit.cshtml" />
     <Content Include="Views\AccountProfile\Edit.cshtml" />
     <Content Include="Views\AccountProfile\PasswordEdit.cshtml" />
     <Content Include="Views\Help\Public.cshtml" />
@@ -730,7 +787,7 @@
     <Content Include="Views\Support\Index.cshtml" />
     <Content Include="Views\Team\ViewTeam.cshtml" />
     <Content Include="Views\Team\_AssociatePlayers.cshtml" />
-    <Content Include="Views\Campaign\_AssociateTeams.cshtml" />
+    <Content Include="Views\Dashboard\Campaign\_AssociateTeams.cshtml" />
     <Content Include="Views\TopicHelp\Index.cshtml" />
     <Content Include="Views\TopicHelp\_Edit.cshtml" />
     <Content Include="Views\Help\Index.cshtml" />
@@ -769,10 +826,22 @@
     <Content Include="Views\Goal\_EditTeam.cshtml" />
     <Content Include="Views\Dashboard\_CampaignsFilter.cshtml" />
     <Content Include="Views\PushNotification\Index.cshtml" />
+    <Content Include="Views\Shared\_Toastr.cshtml" />
+    <Content Include="Views\Quiz\_Edit.cshtml" />
+    <Content Include="Views\Quiz\Index.cshtml" />
+    <Content Include="Views\Answer\_Edit.cshtml" />
+    <Content Include="Views\Question\_Edit.cshtml" />
+    <Content Include="Views\Quiz\_QuizAssociate.cshtml" />
+    <Content Include="Views\Quiz\_QuestionAssociate.cshtml" />
+    <Content Include="Views\Quiz\_EpisodeAssociate.cshtml" />
+    <Content Include="Views\Quiz\_QuizComplete.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Items\_Edit.cshtml" />
+    <Content Include="Views\Quiz\_QuestionComplete.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\MessageControllerBase\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
