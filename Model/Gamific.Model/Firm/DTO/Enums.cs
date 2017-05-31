@@ -66,10 +66,14 @@ namespace Vlast.Gamific.Model.Firm.DTO
 
         [Display(Name = "ambulancia")]
         fa_ambulance
-
-
     }
 
+    public enum Params
+    {
+        GRAFICO_PRODUTOS,
+        GRAFICO_HISTOGRAMO,
+        GRAFICO_EVOLUCAO
+    }
 
     public enum Target3D
     {

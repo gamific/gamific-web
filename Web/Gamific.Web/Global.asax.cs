@@ -10,6 +10,7 @@ using Vlast.Gamific.Web.Controllers.Util;
 using Vlast.Gamific.Web.Services.Push;
 using System.Threading;
 using System.Globalization;
+using Vlast.Gamific.Model.Firm.DTO;
 
 namespace Vlast.Gamific.Web
 {
@@ -39,7 +40,7 @@ namespace Vlast.Gamific.Web
 
             //
             // rankingJob.Init(new TimeSpan(11, 0, 0));
-            
+
 
             //ScriptsMigration.MigrationEmailToEngine();
 

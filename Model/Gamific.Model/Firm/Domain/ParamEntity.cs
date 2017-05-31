@@ -10,14 +10,6 @@ namespace Vlast.Gamific.Model.Firm.Domain
     [DataContract]
     public class ParamEntity
     {
-        [NotMapped]
-        public static string GRAFICO_PRODUTOS = "GRAFICO_PRODUTOS";
-
-        [NotMapped]
-        public static string GRAFICO_HISTOGRAMO = "GRAFICO_HISTOGRAMO";//grafico de barras //HistogramAAAAAA
-
-        [NotMapped]
-        public static string GRAFICO_EVOLUCAO = "GRAFICO_EVOLUCAO";//grafico de linhas
 
         [Key]
         [DataMember(Name = "id")]

@@ -72,7 +72,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             bool active = false;
 
-            ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, ParamEntity.GRAFICO_PRODUTOS);
+            ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, Params.GRAFICO_PRODUTOS.ToString());
 
             if (grafics != null && grafics.Value == "1")
             {
@@ -87,7 +87,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             bool active = false;
 
-            ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, ParamEntity.GRAFICO_HISTOGRAMO);
+            ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, Params.GRAFICO_HISTOGRAMO.ToString());
 
             if (grafics != null && grafics.Value == "1")
             {
@@ -102,7 +102,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             bool active = false;
 
-            ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, ParamEntity.GRAFICO_EVOLUCAO);
+            ParamEntity grafics = ParamRepository.Instance.GetElementParam(CurrentFirm.ExternalId, Params.GRAFICO_EVOLUCAO.ToString());
 
             if (grafics != null && grafics.Value == "1")
             {
