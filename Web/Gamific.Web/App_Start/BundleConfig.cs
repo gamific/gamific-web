@@ -53,9 +53,11 @@ namespace Vlast.Gamific.Web
                             "~/Content/Js/app/gamific.min.js",
                             "~/Content/Js/lib/progressbar.min.js",
                             "~/Content/Js/lib/bootstrap-datepicker.js",
-                            "~/Content/Js/lib/bootstrap-dialog.min.js"
+                            "~/Content/Js/lib/bootstrap-dialog.min.js",
+                            "~/Content/Js/lib/jquery-sortable-min.js"
                             ));
             }
+
             else
             {
                 bundles.Add(new ScriptBundle("~/bundles/LayoutScripts").Include(
@@ -127,6 +129,11 @@ namespace Vlast.Gamific.Web
                     "~/Content/css/datepicker2.css", new CssRewriteUrlTransform()).Include(
                     "~/Content/css/minimal.css", new CssRewriteUrlTransform()
                     ));
+
+            bundles.Add(new StyleBundle("~/content/toastr", "http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css")
+                .Include("~/Content/toastr.css"));
+            bundles.Add(new ScriptBundle("~/bundles/toastr", "http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js")
+                .Include("~/Scripts/toastr.js"));
         }
     }
 }

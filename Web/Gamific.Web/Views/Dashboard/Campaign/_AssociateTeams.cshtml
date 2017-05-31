@@ -1,0 +1,44 @@
+﻿<div id="modal-panel">
+    <div class="modal-dialog modal-xlg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="associatePlayersLabel"><br class="Apple-interchange-newline">Adicionar Membros da Equipe</h4>
+            </div>
+            <div class="modal-body" id="edit-modal-body">
+                <div class="">
+                    <table id="associateTeamsDataTable" class="table table-striped" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="min-tablet"></th>
+                                <th class="min-tablet">Nome</th>
+                                <th class="min-tablet">Responsável</th>
+                                <th class="min-tablet">Meta</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeModal" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="addTeam();">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    loadTeamsToAssociate();
+</script>
+
+<script>
+    VMasker(document.getElementsByClassName('teamsGoalList')).maskMoney({
+        // Decimal precision -> "90"
+        precision: 2,
+        // Decimal separator -> ",90"
+        separator: ',',
+        // Number delimiter -> "12.345.678"
+        delimiter: '.',
+    });
+
+</script>

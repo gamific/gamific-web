@@ -11,21 +11,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <meta name="keywords" content="Gamific">
     <meta name="description" content="Gamific">
-
+    @Styles.Render("~/Content/toastr")
 
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- /#wrapper -->
     <!-- Core Scripts - Include with every page -->
     @Scripts.Render("~/bundles/LayoutScripts")
     @Styles.Render("~/Content/LayoutStyle")
+    @Scripts.Render("~/bundles/toastr")
+    @RenderSection("scripts", required: false)
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
 </head>
+@Html.Partial("_Toastr")
 <body class="bg-1">
-    <!-- Preloader -->
+    <!-- Preloader --> 
     <div class="mask"><div id="loader"></div></div>
     <!--/Preloader -->
     <div id="wrap">
@@ -186,12 +189,6 @@
                                                 </a>
                                             </li>
 
-                                            <li id="Items" class="hidden-xs">
-                                                <a href="/admin/items/">
-                                                    <i class="fa fa-book"></i> Produtos
-                                                </a>
-                                            </li>
-
                                             <li id="LancarResultados" class="hidden-xs">
                                                 <a href="/admin/lancarResultados/">
                                                     <i class="fa fa-rocket"></i> Lançar Resultados
@@ -262,7 +259,6 @@
             <div id="content" class="col-md-12">
 
                 @Html.Partial("_Messages")
-
                 @RenderBody()
             </div>
         </div>
@@ -275,10 +271,9 @@
 </html>
 
 <script>
-    /*$(document).ready(function () {
-        
-        console.log("entrou 1 valor: " + $('#close').val());
-        //if ($('#close').val()) {
+    /*$(document).ready(function(){
+
+        if($('#close').val()){
             $("#sidebar, #navbar").toggleClass("collapsed"),
             $("#navigation").find(".dropdown.open").removeClass("open"),
             $("#navigation").find(".dropdown-menu.animated").removeClass("animated"),
@@ -287,20 +282,16 @@
         }
     });
     
-    function fecha(){
+    $('#closed').on('click', function () {
+        console.log($('#close').val());
         if ($('#close').val())
         {
-            $('#close').val(false);
+            $('#close').val() = false;
         }
         else
         {
-            $('#close').val(true);
+            $('#close').val() = true;
         }
-    };
-
-
-    $('#closed').on('click', function () {
-        fecha();
     });*/
     
 </script>
