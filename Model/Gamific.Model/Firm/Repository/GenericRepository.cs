@@ -80,10 +80,17 @@ namespace Vlast.Gamific.Model.Firm.Repository
 
         public void delete(Func<TEntity, bool> predicate)
         {
-            ctx.Set<TEntity>()
-                .Where(predicate).ToList()
-                .ForEach(del => ctx.Set<TEntity>().Remove(del));
-            ctx.SaveChanges();
+            try
+            {
+                ctx.Set<TEntity>()
+                    .Where(predicate).ToList()
+                    .ForEach(del => ctx.Set<TEntity>().Remove(del));
+                ctx.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public void Dispose()

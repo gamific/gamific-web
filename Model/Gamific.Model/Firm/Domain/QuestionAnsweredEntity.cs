@@ -9,7 +9,7 @@ namespace Vlast.Gamific.Model.Firm.Domain
     /// <summary>
     /// Mapeia o questionário da empresa
     /// </summary>
-    [Table("firm_question_answered")]
+    [Table("Firm_Question_Answered")]
     [DataContract]
     public class QuestionAnsweredEntity
     {
