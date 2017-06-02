@@ -286,7 +286,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             rowsCount = 40000;
 
-            worksheetResults.Cells.HideColumns(5, 16384);
+            worksheetResults.Cells.HideColumns(6, 16384);
             worksheetResults.Cells.HideRows(rowsCount, 1048576);
             worksheetResults.Cells.StandardWidth = 35.0;
 
@@ -299,6 +299,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             cellsResults["C1"].PutValue("Período");
             cellsResults["D1"].PutValue("Resultado");
             cellsResults["E1"].PutValue("Equipe");
+            cellsResults["F1"].PutValue("Produto");
 
             List<string> metricsNames = new List<string>();
 
@@ -393,6 +394,19 @@ namespace Vlast.Gamific.Web.Controllers.Management
             areaTeam.StartColumn = 4;
             areaTeam.EndColumn = 4;
             validationTeam.AreaList.Add(areaTeam);
+
+            var validationProduct = validations[validations.Add()];
+            validationProduct.Type = ValidationType.TextLength;
+            validationProduct.Operator = OperatorType.None;
+            validationProduct.InCellDropDown = false;
+            validationProduct.ShowError = true;
+            validationProduct.AlertStyle = ValidationAlertType.Stop;
+            CellArea areaProducts;
+            areaProducts.StartRow = 1;
+            areaProducts.EndRow = rowsCount;
+            areaProducts.StartColumn = 5;
+            areaProducts.EndColumn = 5;
+            validationEmail.AreaList.Add(areaProducts);
 
             MemoryStream ms = new MemoryStream();
 
@@ -903,6 +917,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
             int countErrors = 0;
             int countEmptyLines = 0;
 
+            string gameId = CurrentFirm.ExternalId;
+
             try
             {
                 resultsArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), resultsArchive.FileName));
@@ -911,7 +927,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 var archive = new ExcelQueryFactory(path);
 
-                var rows = from x in archive.WorksheetRange("A1", "E" + rowsCount, "Results")
+                var rows = from x in archive.WorksheetRange("A1", "F" + rowsCount, "Results")
                            select x;
 
                 foreach (var row in rows)
@@ -992,6 +1008,24 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         continue;
                     }
 
+                    ItemEngineDTO item = new ItemEngineDTO
+                    {
+                        GameId = gameId,
+                        Name = row[5].ToString().Trim()
+                    };
+
+                    try
+                    {
+                        item = ItemEngineService.Instance.FindByNameAndGameId(item.Name, item.GameId);
+                    }
+                    catch (Exception e)
+                    {
+                        if(item.Name != "")
+                        {
+                            item = ItemEngineService.Instance.CreateOrUpdate(item);
+                        }
+                    }
+
 
                     if (!string.IsNullOrWhiteSpace(row[0].ToString()) && !string.IsNullOrWhiteSpace(row[1].ToString()) && !string.IsNullOrWhiteSpace(row[2].ToString()) && !string.IsNullOrWhiteSpace(row[3].ToString()))
                     {
@@ -1009,6 +1043,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             result.Xp = metric.Xp;
                             result.RunId = run.Id;
                             result.PlayerId = worker.ExternalId;
+                            result.ItemId = item.Id;
 
                             RunMetricEngineService.Instance.CreateOrUpdate(result);
                         }
