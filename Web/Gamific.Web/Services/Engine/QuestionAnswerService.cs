@@ -87,6 +87,36 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        ///<summary>
+        ///Atualiza questionário
+        /// </summary>
+        public void delete(int id)
+        {
+            try
+            {
+                QuestionAnswerRepository repository = new QuestionAnswerRepository();
+                repository.delete(x => x.Id == id);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+
+        public List<QuestionAnswersEntity> GetByQuestion(int questionId)
+        {
+            try
+            {
+                QuestionAnswerRepository repository = new QuestionAnswerRepository();
+                return repository.Get(x => x.IdQuestion == questionId).ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         #endregion
     }
 }

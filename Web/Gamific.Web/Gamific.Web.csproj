@@ -533,6 +533,7 @@
     <Content Include="Content\Js\app\pushNotification.js" />
     <Content Include="Content\Js\app\answer.js" />
     <Content Include="Content\Js\app\question.js" />
+    <Content Include="Content\Js\app\questionComplete.js" />
     <Content Include="Content\Js\app\questionAssociate.js" />
     <Content Include="Content\Js\app\episodeAssociate.js" />
     <Content Include="Content\Js\app\quizAssociate.js" />
@@ -563,6 +564,9 @@
     <Content Include="Content\Js\app\quiz.js" />
     <Content Include="Content\Js\app\worker - Cópia .min - Cópia %282%29.js">
       <DependentUpon>question.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29 - Cópia  - Cópia .js">
+      <DependentUpon>questionComplete.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29 - Cópia %282%29.js">
       <DependentUpon>episodeAssociate.js</DependentUpon>
