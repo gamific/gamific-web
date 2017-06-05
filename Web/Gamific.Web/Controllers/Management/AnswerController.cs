@@ -122,7 +122,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             try
             {
-                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
+                using ( TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
                     QuestionAnswerService.Instance.delete(id);
                     scope.Complete();

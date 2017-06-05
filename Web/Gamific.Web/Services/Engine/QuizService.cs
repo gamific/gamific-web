@@ -150,9 +150,9 @@ namespace Vlast.Gamific.Web.Services.Engine
                     DateLimit = item.DateLimit,
                     status = item.status,
                 };
-                QuestionRepository questionRepository = new QuestionRepository();
+                QuizQuestionRepository questionRepository = new QuizQuestionRepository();
 
-                to.QtdPerguntas = questionRepository.GetAllCount();
+                to.QtdPerguntas = questionRepository.Get(x => x.IdQuiz == item.Id).Count();
                 listTO.Add(to);
             }
 

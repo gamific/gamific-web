@@ -354,6 +354,7 @@
     <Compile Include="Services\Engine\DTO\GoalEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\ItemEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\Link.cs" />
+    <Compile Include="Services\Engine\DTO\QuizCompleteDTO.cs" />
     <Compile Include="Services\Engine\DTO\ParserDTO.cs" />
     <Compile Include="Services\Engine\DTO\QuizDTO.cs" />
     <Compile Include="Services\Engine\DTO\MetricEngineDTO.cs" />
@@ -533,6 +534,7 @@
     <Content Include="Content\Js\app\pushNotification.js" />
     <Content Include="Content\Js\app\answer.js" />
     <Content Include="Content\Js\app\question.js" />
+    <Content Include="Content\Js\app\quizComplete.js" />
     <Content Include="Content\Js\app\questionComplete.js" />
     <Content Include="Content\Js\app\questionAssociate.js" />
     <Content Include="Content\Js\app\episodeAssociate.js" />

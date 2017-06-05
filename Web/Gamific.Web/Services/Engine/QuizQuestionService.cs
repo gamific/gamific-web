@@ -81,6 +81,14 @@ namespace Vlast.Gamific.Web.Services.Engine
 
         }
 
+        public List<QuizQuestionEntity> getByAssociated(int idAssociated)
+        {
+            QuizQuestionRepository repository = new QuizQuestionRepository();
+            
+           return repository.Get(x => x.IdQuiz == idAssociated).OrderBy(o => o.Ordination).ToList();
+
+        }
+
 
         #endregion
     }

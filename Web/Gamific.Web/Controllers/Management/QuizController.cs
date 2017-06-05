@@ -209,6 +209,32 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
         }
 
+        [Route("complete/{id}")]
+        public ActionResult GetComplete(int id)
+        {
+
+            var toReturn = new List<QuizCompleteDTO>();
+
+            var questionAssociations = QuizQuestionService.Instance.getByAssociated(id);
+
+            foreach (var item in questionAssociations)
+            {
+                var to = new QuizCompleteDTO();
+
+                to.QuestionEntity = QuestionService.Instance.GetById(item.IdQuestion);
+                var answerAssociations = QuestionAnswerService.Instance.GetByQuestion(item.IdQuestion);
+                to.AnswersEntity = new List<AnswersEntity>();
+                foreach (var answer in answerAssociations)
+                {
+                    to.AnswersEntity.Add(AnswerService.Instance.GetById(answer.IdAnswer));
+                }
+
+                toReturn.Add(to);
+            }
+            return Json(toReturn, JsonRequestBehavior.AllowGet);
+
+        }
+
         [Route("search")]
         public ActionResult Search(JQueryDataTableRequest jqueryTableRequest)
         {
