@@ -15,7 +15,7 @@ namespace Vlast.Gamific.Model.Firm.Repository
         {
             using (ModelContext context = new ModelContext())
             {
-                var query = (from q in context.AnswersEntity where (q.FirmId == firmId && q.Name.Contains(search)) select q).OrderBy(x => x.Name).Skip(pageIndex * pageSize).Take(pageSize);
+                var query = (from q in context.AnswersEntity where (q.FirmId == firmId && (q.Name.Contains(search) || q.Answer.Contains(search))) select q).OrderBy(x => x.Name).Skip(pageIndex * pageSize).Take(pageSize);
 
                 return query.ToList();
             }

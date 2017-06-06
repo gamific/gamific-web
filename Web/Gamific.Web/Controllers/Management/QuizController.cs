@@ -215,6 +215,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             var toReturn = new List<QuizCompleteDTO>();
 
+            var quiz = QuizService.Instance.GetById(id);
             var questionAssociations = QuizQuestionService.Instance.getByAssociated(id);
 
             foreach (var item in questionAssociations)
@@ -222,6 +223,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 var to = new QuizCompleteDTO();
 
                 to.QuestionEntity = QuestionService.Instance.GetById(item.IdQuestion);
+                to.QuizEntity = quiz;
                 var answerAssociations = QuestionAnswerService.Instance.GetByQuestion(item.IdQuestion);
                 to.AnswersEntity = new List<AnswersEntity>();
                 foreach (var answer in answerAssociations)

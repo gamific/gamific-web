@@ -16,7 +16,7 @@ namespace Vlast.Gamific.Model.Firm.Domain
         public QuizEntity() { }
 
         public QuizEntity(int id, string name, string description, bool required, int idQuizQuestion, string createdBy,
-        DateTime initialDate, string quizProcess, int score, bool isMultiple, DateTime lastUpdate,
+        DateTime initialDate, int score, bool isMultiple, DateTime lastUpdate,
         string updatedBy, int firmId)
         {
             this.Id = id;
@@ -26,7 +26,6 @@ namespace Vlast.Gamific.Model.Firm.Domain
             this.CreatedBy = createdBy;
             this.IdQuizQuestion = idQuizQuestion;
             this.InitialDate = initialDate;
-            this.QuizProcess = quizProcess;
             this.Score = score;
             this.IsMultiple = isMultiple;
             this.LastUpdate = lastUpdate;
@@ -58,9 +57,6 @@ namespace Vlast.Gamific.Model.Firm.Domain
         [DataMember(Name = "initialDate")]
         public DateTime InitialDate { get; set; }
 
-        [DataMember(Name = "quizProcess")]
-        public String QuizProcess { get; set; }
-
         [DataMember(Name = "score")]
         public int Score { get; set; }
 
@@ -72,6 +68,10 @@ namespace Vlast.Gamific.Model.Firm.Domain
 
         [DataMember(Name = "updatedBy")]
         public string UpdatedBy { get; set; }
+
+
+        [DataMember(Name = "link")]
+        public string Link { get; set; }
 
         [DataMember(Name = "firmId")]
         [Required]
