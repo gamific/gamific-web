@@ -13,6 +13,8 @@ $('#dropDownEpisodes').change(function () {
 
     initializeChart();
 
+    loadBarChart();
+
 });
 
 $('#dropDownTeams').change(function () {
@@ -25,6 +27,8 @@ $('#dropDownTeams').change(function () {
     }
 
     initializeChart();
+
+    loadBarChart();
 });
 
 $('#dropDownWorkers').change(function () {
@@ -37,6 +41,8 @@ $('#dropDownWorkers').change(function () {
     }
 
     initializeChart();
+
+    loadBarChart();
 
 });
 

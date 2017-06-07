@@ -143,7 +143,6 @@ namespace Vlast.Gamific.Web.Services.Engine
                     IsMultiple = item.IsMultiple,
                     LastUpdate = item.LastUpdate,
                     Name = item.Name,
-                    QuizProcess = item.QuizProcess,
                     Required = item.Required,
                     Score = item.Score,
                     UpdatedBy = item.UpdatedBy,

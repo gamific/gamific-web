@@ -15,6 +15,9 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("AnswersEntity")]
         public List<AnswersEntity> AnswersEntity { get; set; }
 
+        [JsonProperty("QuizEntity")]
+        public QuizEntity QuizEntity { get; set; }
+
 
     }
 
