@@ -739,7 +739,6 @@
     <Content Include="Content\Js\lib\jquery-1.11.1.min.map" />
     <Content Include="scripts\toastr.js" />
     <Content Include="scripts\toastr.min.js" />
-    <Content Include="Views\favicon.ico" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
