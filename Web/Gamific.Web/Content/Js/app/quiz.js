@@ -5,8 +5,6 @@ function loadDataTableQuiz() {
         "ajax": "/admin/quiz/search/",
         "processing": true,
         "ordering": true,
-        "scrollY": 300,
-        "dom": "lfrti",
         "language": {
             "emptyTable": "Não foram encontrados resultados.",
             "paginate": {
