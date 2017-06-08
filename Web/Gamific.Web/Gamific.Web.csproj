@@ -843,6 +843,9 @@
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Items\_Edit.cshtml" />
     <Content Include="Views\Quiz\_QuestionComplete.cshtml" />
+    <Content Include="Views\Campaign\Edit.cshtml" />
+    <Content Include="Views\Campaign\Index.cshtml" />
+    <Content Include="Views\Campaign\_AssociateTeams.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\MessageControllerBase\" />

@@ -286,6 +286,27 @@ namespace Vlast.Gamific.Model.Firm.Repository
         }
 
         /// <summary>
+        /// Recupera todos os tipos associados a uma metrica por Id
+        /// </summary>
+        /// <param name="metricId"></param>
+        /// <returns></returns>
+        public List<WorkerTypeMetricEntity> GetAllWorkerTypesByMetricId(string metricId)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from wtm in context.WorkerTypeMetrics
+                            from wt in context.WorkerTypes
+                            where wtm.Status == GenericStatus.ACTIVE
+                            && wt.Status == GenericStatus.ACTIVE
+                            && wtm.MetricExternalId == metricId
+                            && wt.Id == wtm.WorkerTypeId
+                            select wtm;
+
+                return query.ToList();
+            }
+        }
+
+        /// <summary>
         /// Recupera uma associação de tipo de jogador e metrica pelo id
         /// </summary>
         /// <param name="workerTypeMetricId"></param>
@@ -296,6 +317,25 @@ namespace Vlast.Gamific.Model.Firm.Repository
             {
                 var query = from wtm in context.WorkerTypeMetrics
                             where wtm.Id == workerTypeMetricId
+                            && wtm.Status == GenericStatus.ACTIVE
+                            select wtm;
+
+                return query.FirstOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Recupera uma associação de tipo de jogador e metrica pelo id
+        /// </summary>
+        /// <param name="workerTypeMetricId"></param>
+        /// <returns></returns>
+        public WorkerTypeMetricEntity GetByWorkerTypeIdAndMetricId(int workerTypeId, string metricId)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from wtm in context.WorkerTypeMetrics
+                            where wtm.WorkerTypeId == workerTypeId
+                            && wtm.MetricExternalId == metricId
                             && wtm.Status == GenericStatus.ACTIVE
                             select wtm;
 
@@ -359,6 +399,21 @@ namespace Vlast.Gamific.Model.Firm.Repository
             }
 
             return updatedEntity;
+        }
+
+        /// <summary>
+        /// Remover uma funçao
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public void Remove(WorkerTypeMetricEntity workerTypeMetric)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                context.WorkerTypeMetrics.Attach(workerTypeMetric);
+                context.WorkerTypeMetrics.Remove(workerTypeMetric);
+                context.SaveChanges();
+            }
         }
 
         #endregion

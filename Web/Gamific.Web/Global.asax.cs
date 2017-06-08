@@ -38,8 +38,7 @@ namespace Vlast.Gamific.Web
                 BundleTable.EnableOptimizations = true;
             }
 
-            //
-            // rankingJob.Init(new TimeSpan(11, 0, 0));
+            //rankingJob.Init(new TimeSpan(13, 0, 0));
 
 
             //ScriptsMigration.MigrationEmailToEngine();

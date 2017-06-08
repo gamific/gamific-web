@@ -68,6 +68,106 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return View("Index");
         }
 
+        // GET: Dashboard
+        [Route("{episodeId}/{teamId}/{playerId}")]
+        public ActionResult Index(string episodeId, string teamId, string playerId)
+        {
+            GetAllDTO all = EpisodeEngineService.Instance.GetByGameIdAndActive(CurrentFirm.ExternalId, 1);
+
+            if(all.List.episode != null && all.List.episode.Count != 0)
+            {
+                ViewBag.Episodes = from ep in all.List.episode
+                                   select new SelectListItem
+                                   {
+                                       Value = ep.Id.ToString(),
+                                       Text = ep.Name
+                                   };
+
+                EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
+
+                //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+                ViewBag.Metrics = MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0, 100).List.metric;
+                ViewBag.State = episode.Active == true ? 1 : 0;
+                ViewBag.EpisodeId = episodeId;
+                ViewBag.TeamId = teamId;
+                ViewBag.PlayerId = playerId;
+                ViewBag.Grafic_itens = changeVisibilityGraph();
+                ViewBag.Grafic_stogram = changeVisibilityGraphStogram();
+                ViewBag.Grafic_evolution = changeVisibilityGraphEvolution();
+            }
+            else
+            {
+                ViewBag.Grafic_itens = false;
+                ViewBag.Grafic_stogram = false;
+                ViewBag.Grafic_evolution = false;
+            }
+
+            ViewBag.GameId = CurrentFirm.ExternalId;
+
+            return View("Index");
+        }
+
+        /*
+        /// <summary>
+        /// Preenche os campos automaticamente quando voltamos da tela de detalhes de uma metrica
+        /// </summary>
+        /// <returns></returns>
+        [Route("{teamId:int}/{workerId:int}/{workerTypeId:int}")]
+        public ActionResult Index(int teamId, int workerId, int workerTypeId)
+        {
+            PlayerEngineDTO player = PlayerEngineService.Instance.GetById("58ada8b13001c12f60c1460f");
+
+            List<WorkerTypeEntity> workerTypes = WorkerTypeRepository.Instance.GetAllFromFirm(CurrentFirm.Id);
+            ViewBag.WorkerTypes = from workerType in workerTypes
+                                  select new SelectListItem
+                                  {
+                                      Value = workerType.Id.ToString(),
+                                      Text = workerType.TypeName
+                                  };
+
+            DateTime endDate = DateTime.Now.AddDays(1);
+            DateTime initialDate = endDate.AddMonths(-1);
+
+            FilterResultDTO filter = new FilterResultDTO { InitialDate = initialDate.ToString("dd/MM/yyyy"), EndDate = endDate.ToString("dd/MM/yyyy") };
+
+            if (workerTypeId != 0)
+            {
+                ViewBag.WorkerTypeId = workerTypeId.ToString();
+
+                List<TeamEntity> teams = TeamRepository.Instance.GetAllFromWorkerType(workerTypeId);
+                ViewBag.Teams = from team in teams
+                                select new SelectListItem
+                                {
+                                    Value = team.Id.ToString(),
+                                    Text = team.TeamName
+                                };
+
+                if (teamId != 0)
+                {
+                    ViewBag.TeamId = teamId.ToString();
+
+                    List<WorkerDTO> workers = WorkerRepository.Instance.GetAllFromTeam(teamId);
+
+                    ViewBag.Workers = from worker in workers
+                                      select new SelectListItem
+                                      {
+                                          Value = worker.IdWorker.ToString(),
+                                          Text = worker.Name
+                                      };
+
+                    if (workerId != 0)
+                    {
+                        ViewBag.WorkerId = workerId.ToString();
+                    }
+                }
+            }
+
+            ViewBag.GameId = CurrentFirm.ExternalId;
+
+            return View("Index", filter);
+        }
+        */
+
         private bool changeVisibilityGraph()
         {
             bool active = false;
@@ -635,91 +735,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         }
         */
 
-        // GET: Dashboard
-        [Route("{episodeId}/{teamId}/{playerId}")]
-        public ActionResult Index(string episodeId, string teamId, string playerId)
-        {
-            GetAllDTO all = EpisodeEngineService.Instance.GetByGameIdAndActive(CurrentFirm.ExternalId, 1);
-            ViewBag.Episodes = from ep in all.List.episode
-                               select new SelectListItem
-                               {
-                                   Value = ep.Id.ToString(),
-                                   Text = ep.Name
-                               };
 
-            EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
-
-            //ViewBag.Metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
-            ViewBag.Metrics = MetricEngineService.Instance.GetAllDTOByGame(CurrentFirm.ExternalId, 0, 100).List.metric;
-            ViewBag.State = episode.Active == true ? 1 : 0;
-            ViewBag.EpisodeId = episodeId;
-            ViewBag.TeamId = teamId;
-            ViewBag.PlayerId = playerId;
-            ViewBag.Grafic_itens = changeVisibilityGraph();
-
-            ViewBag.GameId = CurrentFirm.ExternalId;
-
-            return View("Index");
-        }
-
-        /// <summary>
-        /// Preenche os campos automaticamente quando voltamos da tela de detalhes de uma metrica
-        /// </summary>
-        /// <returns></returns>
-        [Route("{teamId:int}/{workerId:int}/{workerTypeId:int}")]
-        public ActionResult Index(int teamId, int workerId, int workerTypeId)
-        {
-            PlayerEngineDTO player = PlayerEngineService.Instance.GetById("58ada8b13001c12f60c1460f");
-
-            List<WorkerTypeEntity> workerTypes = WorkerTypeRepository.Instance.GetAllFromFirm(CurrentFirm.Id);
-            ViewBag.WorkerTypes = from workerType in workerTypes
-                                  select new SelectListItem
-                                  {
-                                      Value = workerType.Id.ToString(),
-                                      Text = workerType.TypeName
-                                  };
-
-            DateTime endDate = DateTime.Now.AddDays(1);
-            DateTime initialDate = endDate.AddMonths(-1);
-
-            FilterResultDTO filter = new FilterResultDTO { InitialDate = initialDate.ToString("dd/MM/yyyy"), EndDate = endDate.ToString("dd/MM/yyyy") };
-
-            if (workerTypeId != 0)
-            {
-                ViewBag.WorkerTypeId = workerTypeId.ToString();
-
-                List<TeamEntity> teams = TeamRepository.Instance.GetAllFromWorkerType(workerTypeId);
-                ViewBag.Teams = from team in teams
-                                select new SelectListItem
-                                {
-                                    Value = team.Id.ToString(),
-                                    Text = team.TeamName
-                                };
-
-                if (teamId != 0)
-                {
-                    ViewBag.TeamId = teamId.ToString();
-
-                    List<WorkerDTO> workers = WorkerRepository.Instance.GetAllFromTeam(teamId);
-
-                    ViewBag.Workers = from worker in workers
-                                      select new SelectListItem
-                                      {
-                                          Value = worker.IdWorker.ToString(),
-                                          Text = worker.Name
-                                      };
-
-                    if (workerId != 0)
-                    {
-                        ViewBag.WorkerId = workerId.ToString();
-                    }
-                }
-            }
-
-            ViewBag.GameId = CurrentFirm.ExternalId;
-
-            return View("Index", filter);
-        }
 
         /// <summary>
         /// Busca os jogadores de um time

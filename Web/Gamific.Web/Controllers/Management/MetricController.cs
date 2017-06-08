@@ -23,6 +23,12 @@ namespace Vlast.Gamific.Web.Controllers.Management
     [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR")]
     public class MetricController : BaseController
     {
+        public class CheckBoxValue
+        {
+            public int Value { get; set; }
+            public bool Checked { get; set; }
+        }
+
         // GET: Metric
         [Route("")]
         public ActionResult Index()
@@ -42,6 +48,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 Value = i.ToString().Replace("_", "-")
             }).ToList();
 
+            ViewBag.WorkerTypes = WorkerTypeRepository.Instance.GetAllByGameId(CurrentFirm.ExternalId);
+
+            ViewBag.WorkerTypeMetrics = WorkerTypeMetricRepository.Instance.GetAllWorkerTypesByMetricId(metricId).Select(x => x.WorkerTypeId).ToList();
+
             return PartialView("_edit", metric);
         }
 
@@ -56,6 +66,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 Text = i.GetType().GetMember(i.ToString()).First().GetCustomAttribute<DisplayAttribute>().Name,
                 Value = i.ToString().Replace("_", "-")
             }).ToList();
+
+            ViewBag.WorkerTypes = WorkerTypeRepository.Instance.GetAllByGameId(CurrentFirm.ExternalId);
 
             return PartialView("_Edit", metric);
         }
@@ -115,7 +127,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
         [Route("salvar")]
         [HttpPost]
-        public ActionResult Save(MetricEngineDTO metric)
+        public ActionResult Save(MetricEngineDTO metric, List<CheckBoxValue> checkBoxes)
         {
             try
             {
@@ -127,6 +139,27 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 ValidateModel(metric);
 
                 MetricEngineDTO newMetric = MetricEngineService.Instance.CreateOrUpdate(metric);
+
+                List<int> workerTypeMetrics = WorkerTypeMetricRepository.Instance.GetAllWorkerTypesByMetricId(newMetric.Id).Select(x => x.WorkerTypeId).ToList();
+
+                foreach(CheckBoxValue checkBox in checkBoxes)
+                {
+                    if(checkBox.Checked && !workerTypeMetrics.Contains(checkBox.Value))
+                    {
+                        WorkerTypeMetricRepository.Instance.CreateWorkerTypeMetric(new WorkerTypeMetricEntity
+                        {
+                            MetricExternalId = metric.Id,
+                            Status = GenericStatus.ACTIVE,
+                            UpdatedBy = CurrentUserId,
+                            WorkerTypeId = checkBox.Value
+                        });
+                    }
+                    else if(!checkBox.Checked && workerTypeMetrics.Contains(checkBox.Value))
+                    {
+                        WorkerTypeMetricEntity toRemove = WorkerTypeMetricRepository.Instance.GetByWorkerTypeIdAndMetricId(checkBox.Value, newMetric.Id);
+                        WorkerTypeMetricRepository.Instance.Remove(toRemove);
+                    }
+                }
 
                 if(newMetric == null)
                 {
