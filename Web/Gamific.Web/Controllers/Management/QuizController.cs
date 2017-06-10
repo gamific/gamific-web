@@ -43,13 +43,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
         }
 
 
-        [Route("paginaQuiz")]
+        [Route("paginaQuiz") ]
         public ActionResult paginaQuiz()
         {
             return PartialView("_QuizAssociate");
         }
 
-        [Route("paginaEpisode")]
+        [Route("paginaEpisode") ]
         public ActionResult paginaEpisode()
         {
             return PartialView("_EpisodeAssociate");
@@ -65,6 +65,12 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult paginaQuestionComplete()
         {
             return PartialView("_QuestionComplete");
+        }
+
+        [Route("paginaEpisodeComplete")]
+        public ActionResult paginaEpisodeComplete()
+        {
+            return PartialView("_EpisodeComplete");
         }
 
         [Route("paginaQuestion")]

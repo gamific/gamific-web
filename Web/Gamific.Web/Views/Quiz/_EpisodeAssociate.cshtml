@@ -76,6 +76,7 @@
                     }
                 })
             });
+            hideDivMainAssociate();
             $.ajax({
                 type: "POST",
                 url: "/admin/quiz/episode/",
@@ -84,6 +85,9 @@
                 dataType: "json",
                 success: function (msg) {
                     toastr.success('Registro associado com sucesso!', 'Sucesso');
+                },
+                error: function (msg) {
+                    toastr.error('Erro ao associar', 'Error');
                 }
             });
         });
