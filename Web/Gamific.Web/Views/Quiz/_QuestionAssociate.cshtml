@@ -46,18 +46,16 @@
 
                                         </tr>
                                     </thead>
-                                    <tbody id="bodySelect">
-                                       
-                                    </tbody>
+                                    <tbody id="bodySelect"></tbody>
                                 </table>
                             </div>
                             @*<div class="tab-pane" id="tab4">
-                                <div style="display:none;">
+                                    <div style="display:none;">
 
-                                </div>
-                            </div>*@
+                                    </div>
+                                </div>*@
                         </div>
-                                <ol id="sortable" class='questionAssociated' style="display:none"></ol>
+                        <ol id="sortable" class='questionAssociated' style="display:none"></ol>
                     </form>
                 </div>
                 <div class="panel-footer border-top color white rounded-bottom-corners nopadding">
@@ -103,7 +101,8 @@
                     listToSend[item].isRight = false;
                 }
             });
-           
+            hideDivMainAssociate();
+
             $.ajax({
                 type: "POST",
                 url: "/admin/question/associate/",
@@ -112,6 +111,9 @@
                 dataType: "json",
                 success: function (msg) {
                     toastr.success('Registro associado com sucesso!', 'Sucesso');
+                },
+                error: function (msg) {
+                    toastr.error('Erro ao associar', 'Error');
                 }
             });
         });
@@ -121,7 +123,7 @@
         function loadRightAnswers() {
             $('#bodySelect').html('');
             $.each(listToSend, function (item) {
-                $('#bodySelect').append(' <tr role="row" class="odd"> <td> <input type="checkbox" id="ck_' + listToSend[item].id + '"></td> <td>' + listToSend[item].id + '</td> <td>' + listToSend[item].description+'</td> </tr >');
+                $('#bodySelect').append(' <tr role="row" class="odd"> <td> <input type="checkbox" id="ck_' + listToSend[item].id + '"></td> <td>' + listToSend[item].id + '</td> <td>' + listToSend[item].description + '</td> </tr >');
             });
         }
 

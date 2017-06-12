@@ -23,12 +23,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
     [CustomAuthorize(Roles = "WORKER,ADMINISTRADOR")]
     public class MetricController : BaseController
     {
-        public class CheckBoxValue
-        {
-            public int Value { get; set; }
-            public bool Checked { get; set; }
-        }
-
         // GET: Metric
         [Route("")]
         public ActionResult Index()

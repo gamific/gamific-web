@@ -1,4 +1,27 @@
 var checkedMap = new Map();
+var expanded = false;
+
+function showCheckboxes() {
+    var checkboxes = document.getElementById("checkboxes");
+    if (!expanded) {
+        checkboxes.style.display = "block";
+        expanded = true;
+    } else {
+        checkboxes.style.display = "none";
+        expanded = false;
+    }
+}
+
+function checkedChange(checkBox) {
+    if ($(checkBox).val() == "true"){
+        $(checkBox).val("false");
+    }
+    else {
+        $(checkBox).val("true");
+    }
+}
+
+
 
 function loadAssociatePlayersDataTable() {
     $('#associatePlayersDataTable').dataTable({
@@ -297,6 +320,11 @@ function checkBoxChange(value) {
 }
 
 function submitCreateTeam() {
+    if (expanded) {
+        checkboxes.style.display = "none";
+        expanded = false;
+    } 
+
     var formData = new FormData($('#formCreateTeam')[0]);
     $.ajax({
         url: "/admin/equipes/salvar/",
@@ -364,3 +392,35 @@ $(document).ready(function () {
 $('#dropDownEpisodes').change(function () {
     refreshDataTable();
 });
+
+function updateDropDownCheckBoxTeams()
+{
+    $("#checkboxes").empty();
+    $.ajax({
+        url: "/admin/equipes/getTeamsToSelect/" + $("#episodeId").val(),
+        type: "GET",
+        async: false,
+        dataType: "json",
+        success: function (data){
+            var teams = JSON.parse(data);
+            var subTeams = JSON.parse($("#subTeams").val());
+
+            var html = "";
+
+            for (var i = 0; i < teams.length; i++)
+            {
+                html += "<label>";
+                if (subTeams.indexOf(teams[i].Value) > -1) {
+                    html += "<input type='checkbox' name='checkBoxes[" + i + "].Checked' checked id='checkBoxes[" + i + "].Checked' onchange='checkedChange(this)' value='true' />" + teams[i].Text;
+                }
+                else {
+                    html += "<input type='checkbox' name='checkBoxes[" + i + "].Checked' id='checkBoxes[" + i + "].Checked' onchange='checkedChange(this)' value='false' />" + teams[i].Text;
+                }
+                html +=     "<input type='hidden' name='checkBoxes[" + i + "].Text' id='checkBoxes[" + i + "].Text' value='" + teams[i].Value + "'>";
+                html += "</label>";
+            }
+
+            $("#checkboxes").append(html);
+        }
+    });
+}

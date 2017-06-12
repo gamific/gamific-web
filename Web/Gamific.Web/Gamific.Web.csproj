@@ -534,6 +534,7 @@
     <Content Include="Content\Js\app\pushNotification.js" />
     <Content Include="Content\Js\app\answer.js" />
     <Content Include="Content\Js\app\question.js" />
+    <Content Include="Content\Js\app\episodeComplete.js" />
     <Content Include="Content\Js\app\quizComplete.js" />
     <Content Include="Content\Js\app\questionComplete.js" />
     <Content Include="Content\Js\app\questionAssociate.js" />
@@ -845,6 +846,7 @@
     <Content Include="Views\Campaign\Edit.cshtml" />
     <Content Include="Views\Campaign\Index.cshtml" />
     <Content Include="Views\Campaign\_AssociateTeams.cshtml" />
+    <Content Include="Views\Quiz\_EpisodeComplete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\MessageControllerBase\" />

@@ -54,6 +54,7 @@ function loadDataTableQuiz() {
                         " <a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/quiz/editar/" + id + "' title='Editar Questionario.'> </a> &nbsp; " +
                         " <a class='fa fa-clone' onclick='showDivEpisodeAssociate(\"" + id + "\")'" + id + "' title='Associar Campanhas'> </a>  &nbsp;" +
                         " <a class='fa fa-search-plus' onclick='showDivQuizCompleteAssociate(\"" + id + "\")'" + id + "' title='Visualizar Questionario'> </a>  &nbsp;" +
+                        " <a class='fa fa-road' onclick='showDivEpisodeComplete(\"" + id + "\")'" + id + "' title='Visualizar Campanhas'> </a>  &nbsp;" +
                         " <a class='fa fa-remove' href='#' onclick='removeClickMetric(\"" + id + "\",\"" + id + "\")' title='Remover Questionario.'> </a> ";
 
                     return links;
