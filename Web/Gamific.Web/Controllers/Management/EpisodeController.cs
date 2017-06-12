@@ -187,6 +187,46 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return  new EmptyResult();
         }
 
+
+        [Route("searchAssociate/{id}")]
+        public ActionResult SearchAssociate(JQueryDataTableRequest jqueryTableRequest, int id)
+        {
+
+            int index = jqueryTableRequest.Page;
+
+            var listAssociated = QuizCampaignService.Instance.getByAssociated(id);
+            var episodeList = new List<EpisodeEngineDTO>();
+            foreach (var item in listAssociated)
+            {
+                var episode = EpisodeEngineService.Instance.GetById(item.IdCampaign);
+                episode.Id = item.Id.ToString();
+                episodeList.Add(episode);
+            }
+            DateTime dateInit;
+            DateTime dateFinish;
+
+            if (jqueryTableRequest != null)
+            {
+
+                JQueryDataTableResponse response = null;
+
+                if (jqueryTableRequest.Type == null || jqueryTableRequest.Type.Equals("asc"))
+                {
+                    response = new JQueryDataTableResponse()
+                    {
+                        Draw = jqueryTableRequest.Draw,
+                        RecordsFiltered = episodeList.Count(),
+                        Data = episodeList.Select(r => new string[] { r.Id, r.Name, (dateInit = new DateTime(r.initDate)).ToString("dd/MM/yyyy"), (dateFinish = new DateTime(r.finishDate)).ToString("dd/MM/yyyy"), r.XpReward.ToString(), r.Active == true ? "Sim" : "Não", r.sendEmail == true ? "Sim" : "Não", r.Id }).ToArray().ToArray() //.OrderBy(item => item[index]).ToArray()
+
+                    };
+                }
+
+                return new DataContractResult() { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
+
         [Route("search")]
         public ActionResult Search(JQueryDataTableRequest jqueryTableRequest)
         {
@@ -234,7 +274,30 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
         }
 
-              [Route("searchWithID")]
+        [Route("associate/remover/{id}")]
+        public ActionResult RemoveAssociate(int id)
+        {
+            try
+            {
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
+                {
+                    QuizCampaignService.Instance.delete(id);
+                    scope.Complete();
+
+                    return Json(new { status = "sucess", message = "Registro removido com sucesso!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+
+                return Json(new { status = "error", message = "Ocorreu um problema!" });
+            }
+
+
+        }
+
+        [Route("searchWithID")]
         public ActionResult searchWithID(JQueryDataTableRequest jqueryTableRequest)
         {
             int index = 0;

@@ -186,6 +186,15 @@
         $('#divMainAssociate').show();
     }
 
+    function showDivEpisodeComplete(id) {
+        idPrincipal = id;
+        hideDivMain();
+        $.get( '@Url.Action("paginaEpisodeComplete", new { id = 1 } )', function(data) {
+            $('#divMainAssociate').html(data);
+        });
+        $('#divMainAssociate').show();
+    }
+
     function showDivQuestionAssociate(id) {
         idPrincipal = id;
         hideDivMain();
