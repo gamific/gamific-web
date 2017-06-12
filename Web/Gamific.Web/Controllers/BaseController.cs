@@ -26,6 +26,13 @@ namespace Vlast.Gamific.Web.Controllers
     [HandleError()]
     public class BaseController : Controller
     {
+        public class CheckBoxValue
+        {
+            public int Value { get; set; }
+            public string  Text { get; set; }
+            public bool Checked { get; set; }
+        }
+
         protected static CultureInfo PT_BR_CULTURE = CultureInfo.GetCultureInfo("pt-BR");
 
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
