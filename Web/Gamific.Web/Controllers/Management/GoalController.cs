@@ -46,9 +46,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
             if (jqueryTableRequest != null)
             {
                 TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
-                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId, jqueryTableRequest.Page);
+                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId);
 
-                List<string> externalIds = all.List.run.Select(x => x.PlayerId).Where(q => q != team.MasterPlayerId).ToList();
+                List<string> externalIds = all.List.run.Select(x => x.PlayerId).Where(q => q != team.MasterPlayerId).Skip(10 * jqueryTableRequest.Page).Take(10).ToList();
 
                 List<WorkerDTO> workers = WorkerRepository.Instance.GetDTOFromListExternalId(externalIds);
 
@@ -64,8 +64,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = workers.Count(),
-                        RecordsFiltered = workers.Count(),
+                        RecordsTotal = all.List.run.Count() - 1,
+                        RecordsFiltered = all.List.run.Count() - 1,
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderBy(item => item[index]).ToArray()
                     };
                 }
@@ -74,8 +74,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     response = new JQueryDataTableResponse()
                     {
                         Draw = jqueryTableRequest.Draw,
-                        RecordsTotal = workers.Count(),
-                        RecordsFiltered = workers.Count(),
+                        RecordsTotal = all.List.run.Count() - 1,
+                        RecordsFiltered = all.List.run.Count() - 1,
                         Data = workers.Select(r => new string[] { r.Name + ";" + r.LogoId, r.Email, r.WorkerTypeName, r.ExternalId }).ToArray().OrderByDescending(item => item[index]).ToArray()
                     };
                 }
