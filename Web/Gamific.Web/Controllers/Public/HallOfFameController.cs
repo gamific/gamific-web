@@ -50,7 +50,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                      Value = hall.GeneralWinners[0].logoPath,
                                      Text = "1º" + hall.GeneralWinners[0].PlayerName + " " +"Campanha:" + hall.EpisodeName  
                                  };*/
-            if(halls.List.episode != null)
+            if(halls.List.hallOfFame != null)
             { 
             ViewBag.AllPlayers = from hall in halls.List.hallOfFame
                                  select new HallOfFameEngineDTO
