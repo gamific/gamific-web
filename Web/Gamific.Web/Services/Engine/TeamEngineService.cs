@@ -114,6 +114,24 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public string getHierarchy(string episodeId)
+        {
+            try
+            {
+                using (WebClient client = GetClient())
+                {
+                    string data = client.DownloadString(ENGINE_API + "getHierarchical?episodeId=" + episodeId);
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return "";
+        }
+
         public GetAllDTO FindByEpisodeId(string episodeId, string email)
         {
             try

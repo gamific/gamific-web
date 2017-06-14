@@ -46,7 +46,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ActionResult searchHierarchy(string episodeId)
         {
-            string ret = EngineBIZ.getHierarchy(episodeId);
+            string ret = TeamEngineService.Instance.getHierarchy(episodeId);
 
             return Content(ret, "application/json");
            // return Json(JsonConvert.SerializeObject(ret), JsonRequestBehavior.AllowGet);
