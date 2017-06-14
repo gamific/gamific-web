@@ -447,10 +447,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
             validationTeam.AreaList.Add(areaTeam);
 
             var validationResult = validations[validations.Add()];
-            validationResult.Type = ValidationType.WholeNumber;
+            validationResult.Type = ValidationType.Decimal;
             validationResult.Operator = OperatorType.Between;
             validationResult.Formula1 = 0.ToString();
-            validationResult.Formula2 = Int32.MaxValue.ToString();
+            validationResult.Formula2 = float.MaxValue.ToString();
             validationResult.InCellDropDown = false;
             validationResult.ShowError = true;
             validationResult.AlertStyle = ValidationAlertType.Stop;
@@ -774,7 +774,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         try
                         {
                             goalEngineDTO = GoalEngineService.Instance.GetByRunIdAndMetricId(run.Id, metric.Id);
-                            goalEngineDTO.Goal = Int32.Parse(row[3].Value.ToString());
+                            goalEngineDTO.Goal = float.Parse(row[3].Value.ToString());
                         }
                         catch (Exception e)
                         {
@@ -784,13 +784,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 MetricId = metric.Id,
                                 MetricIcon = metric.Icon,
                                 MetricName = metric.Name,
-                                Goal = Int32.Parse(row[3].Value.ToString()),
+                                Goal = float.Parse(row[3].Value.ToString()),
                                 ItemId = "",
                                 Percentage = 0
                             };
                         }
 
-                        goalEngineDTO.Goal = Int32.Parse(row[3].Value.ToString());
+                        goalEngineDTO.Goal = float.Parse(row[3].Value.ToString());
                         goalEngineDTO = GoalEngineService.Instance.CreateOrUpdate(goalEngineDTO);
                     }
                 }
