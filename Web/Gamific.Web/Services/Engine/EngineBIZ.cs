@@ -12,7 +12,7 @@ using Vlast.Util.Instrumentation;
 
 namespace Vlast.Gamific.Web.Services.Engine.BIZ
 {
-    public class EngineBIZ
+    public class EngineBIZ : EngineServiceBase
     {
         #region API's URLs
 
@@ -167,28 +167,6 @@ namespace Vlast.Gamific.Web.Services.Engine.BIZ
         }
 
 
-
-        public static string getHierarchy(string episodeId)
-        {
-            RankingDTO dto = new RankingDTO();
-
-            try
-            {
-                WebClient client = new WebClient();
-
-                client.Headers["User-Agent"] = "Mozilla / 5.0(Linux; Android 6.0.1; MotoG3 Build/ MPI24.107 - 55) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 51.0.2704.81 Mobile Safari/ 537.36";
-
-                string data = client.DownloadString(ENGINE_API + "getHierarchical?episodeId=" + episodeId );
-
-                return data;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogException(ex);
-            }
-
-            return "";
-        }
 
 
         #endregion

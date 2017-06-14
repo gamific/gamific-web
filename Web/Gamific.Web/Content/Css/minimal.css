@@ -2829,3 +2829,11 @@ a.submit:hover { text-decoration: none; }
 .mobile-device .navbar-nav.side-nav.collapsed.open { width: 100%; }
 
 /*# sourceMappingURL=minimal.css.map */
+
+/****************************************/
+/************* Hall of Fame *************/
+/****************************************/
+
+#hallOfFameId .media-object { width: 280px; height: 280px; margin: 10px;}
+#hallOfFameCampaing .chat-inbox > li:first-child { padding: 5px 15px; }
+/*#hallOfFameCampaing .bg-transparent-black-3 { background-color: rgba(0, 0, 0, 0.3) !important; }*/
