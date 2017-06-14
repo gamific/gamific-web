@@ -384,7 +384,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
                 else
                 {
-                    runners = RunEngineService.Instance.GetRunsByTeamId(teamId, 0, 1000).List.run;
+                    runners = RunEngineService.Instance.GetRunsByTeamId(teamId).List.run;
                 }
             }
 
@@ -587,7 +587,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
                 else
                 {
-                    List<RunEngineDTO> runnersObj = RunEngineService.Instance.GetRunsByTeamId(teamId, 0, 1000).List.run;
+                    List<RunEngineDTO> runnersObj = RunEngineService.Instance.GetRunsByTeamId(teamId).List.run;
 
                     foreach (RunEngineDTO run in runnersObj)
                     {
@@ -748,7 +748,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             List<SelectListItem> workersList = new List<SelectListItem>();
             if (teamId != "empty")
             {
-                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId, 0, 10000);
+                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId);
                 TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
 
                 List<string> externalIds = (from run in all.List.run where run.PlayerId != team.MasterPlayerId select run.PlayerId).ToList();

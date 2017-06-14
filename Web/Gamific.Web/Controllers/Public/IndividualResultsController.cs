@@ -20,7 +20,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
     [CustomAuthorize(Roles = "WORKER,LIDER,JOGADOR")]
     public class IndividualResultsController : BaseController
     {
-        // GET: Dashboard
+        
         [Route("")]
         public ActionResult Index(int state = 1)
         {

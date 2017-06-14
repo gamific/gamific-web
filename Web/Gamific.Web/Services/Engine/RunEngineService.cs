@@ -63,13 +63,13 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-        public GetAllDTO GetRunsByTeamId(string teamId, int pageIndex = 0, int pageSize = 10)
+        public GetAllDTO GetRunsByTeamId(string teamId)
         {
             try
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "search/findByTeamId?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
+                    string response = client.DownloadString(path + "search/findByTeamId?teamId=" + teamId);
                     return JsonDeserialize<GetAllDTO>(response);
                 }
             }
@@ -79,13 +79,13 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
-        public GetAllDTO GetRunsByTeamId(string teamId, string email, int pageIndex = 0, int pageSize = 10)
+        public GetAllDTO GetRunsByTeamId(string teamId, string email)
         {
             try
             {
                 using (WebClient client = GetClient(email))
                 {
-                    string response = client.DownloadString(path + "search/findByTeamId?teamId=" + teamId + "&size=" + pageSize + "&page=" + pageIndex);
+                    string response = client.DownloadString(path + "search/findByTeamId?teamId=" + teamId);
                     return JsonDeserialize<GetAllDTO>(response);
                 }
             }

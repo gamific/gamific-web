@@ -156,6 +156,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     if (team.Id != null)
                     {
+                        checkBoxes.Where(x => !x.Checked && team.SubTeams.Contains(x.Text));
                         team = TeamEngineService.Instance.JoinSubTeamsOnTeam(team.Id, checkBoxes.Where(x => x.Checked == true && x.Text != team.Id).Select(x => x.Text).ToList());
                         TeamEngineDTO teamTemp = TeamEngineService.Instance.UpdateTeamMaster(team.MasterPlayerId, team.Id);
                         teamTemp.LogoId = logoUpload != null ? imageSaving.Id : teamTemp.LogoId;
