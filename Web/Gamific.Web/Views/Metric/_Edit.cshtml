@@ -1,10 +1,13 @@
-﻿@model  Vlast.Gamific.Web.Services.Engine.DTO.MetricEngineDTO
+﻿@using Vlast.Gamific.Model.Firm.Domain
+@model  Vlast.Gamific.Web.Services.Engine.DTO.MetricEngineDTO
 
 @using (Ajax.BeginForm("Save", "Metric", new AjaxOptions { OnSuccess = "onSucessSaveMetric", OnFailure = "onFailureSaveMetric", UpdateTargetId = "modal-painel" }))
 {
     <span style="display:none">
         @Html.HiddenFor(model => model.Id);
     </span>
+
+    <input type="hidden" value="" id="workerTypes" name="workerTypes"/>
 
     <div id="modal-panel">
         <div class="modal-dialog modal-xlg">
@@ -95,6 +98,45 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <div class="col-sm-6 col-md-6 modal-div">
+                            <div class="multiselect">
+                                <div class="selectBox" onclick="showCheckboxes()">
+                                    <select>
+                                        <option>Associar Funções</option>
+                                    </select>
+                                    <div class="overSelect"></div>
+                                </div>
+                                <div id="checkboxes">
+                                    @{
+                                        int i = 0;
+
+                                        foreach (WorkerTypeEntity wt in ViewBag.WorkerTypes)
+                                        {
+                                            if (ViewBag.WorkerTypeMetrics == null || !ViewBag.WorkerTypeMetrics.Contains(wt.Id))
+                                            {
+                                                <label>
+                                                    <input type="checkbox" name="checkBoxes[@i].Checked" id="checkBoxes[@i].Checked" onchange="checkBoxChange(this)" value="false"/>@wt.TypeName
+                                                    <input type="hidden" name="checkBoxes[@i].Value" id="checkBoxes[@i].Value" value="@wt.Id">
+                                                </label>
+                                            }
+                                            else
+                                            {
+                                                <label>
+                                                    <input type="checkbox" name="checkBoxes[@i].Checked" checked id="checkBoxes[@i].Checked" onchange="checkBoxChange(this)" value="true"/>@wt.TypeName
+                                                    <input type="hidden" name="checkBoxes[@i].Value" id="checkBoxes[@i].Value" value="@wt.Id">
+                                                </label>
+                                            }
+                                            i++;
+                                        }
+                                    }
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -105,6 +147,30 @@
     </div>
 }
 
+
+<script>
+	var expanded = false;
+
+	function showCheckboxes() {
+		var checkboxes = document.getElementById("checkboxes");
+			if (!expanded) {
+				checkboxes.style.display = "block";
+				expanded = true;
+			} else {
+				checkboxes.style.display = "none";
+				expanded = false;
+			}
+	}
+
+	function checkBoxChange(checkBox) {
+	    if ($(checkBox).val() == "true")
+	        $(checkBox).val("false");
+	    else
+	        $(checkBox).val("true");
+	}
+
+</script>
+
 <script>
     $('#iconView').append("<i class='fa " + $('#Icon').val() + " fa-3x'></i>");
 
@@ -112,4 +178,41 @@
         $('#iconView').empty().append("<i class='fa "+ $(this).val() +" fa-3x'></i>");
     });
 </script>
+
+<style>
+    .multiselect {
+        width: 200px;
+    }
+
+    .selectBox {
+        position: relative;
+    }
+
+    .selectBox select {
+        width: 100%;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    #checkboxes {
+        display: none;
+        border: 1px #dadada solid;
+    }
+
+    #checkboxes label {
+        display: block;
+    }
+
+    #checkboxes label:hover {
+        background-color: #1e90ff;
+    }
+</style>
 

@@ -10,6 +10,15 @@ namespace Vlast.Gamific.Web.Services.Engine
 {
     public class TeamEngineService : EngineServiceBase
     {
+
+        public class SubTeamsWrapper
+        {
+            [JsonProperty("teamId")]
+            public string TeamId { get; set; }
+            [JsonProperty("subTeamsId")]
+            public List<string> SubTeamsId { get; set; }
+        }
+
         #region Singleton instance
 
         protected static object _syncRoot = new Object();
@@ -283,6 +292,45 @@ namespace Vlast.Gamific.Web.Services.Engine
                 {
                     string responce = client.DownloadString(ENGINE_API + "teamsByPlayerIdAndEpisodeId?episodeId=" + episodeId + "&playerId=" + playerId);
                     return JsonDeserialize<List<TeamEngineDTO>>(responce);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public TeamEngineDTO JoinSubTeamsOnTeam(string teamId, List<string> subTeamsId)
+        {
+            try
+            {
+                SubTeamsWrapper subTeams = new SubTeamsWrapper
+                {
+                    TeamId = teamId,
+                    SubTeamsId = subTeamsId
+                };
+
+                using (WebClient client = GetClient())
+                {
+                    string json = JsonSerialize<SubTeamsWrapper>(ref subTeams);
+                    string responce = client.UploadString(ENGINE_API + "joinSubTeamsOnTeam", "POST", json);
+                    return JsonDeserialize<TeamEngineDTO>(responce);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public TeamEngineDTO RemoveSubTeamsOnTeam(string teamId, string subTeamId)
+        {
+            try
+            {
+                using (WebClient client = GetClient())
+                {
+                    string responce = client.UploadString(ENGINE_API + "removeSubTeamsOnTeam?teamId=" + teamId + "&subTeamId=" + subTeamId, "POST");
+                    return JsonDeserialize<TeamEngineDTO>(responce);
                 }
             }
             catch (Exception e)

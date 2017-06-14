@@ -356,6 +356,7 @@
     <Compile Include="Services\Engine\DTO\HallOfFameEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\ItemEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\Link.cs" />
+    <Compile Include="Services\Engine\DTO\QuizCompleteDTO.cs" />
     <Compile Include="Services\Engine\DTO\ParserDTO.cs" />
     <Compile Include="Services\Engine\DTO\QuizDTO.cs" />
     <Compile Include="Services\Engine\DTO\MetricEngineDTO.cs" />
@@ -537,6 +538,9 @@
     <Content Include="Content\Js\app\pushNotification.js" />
     <Content Include="Content\Js\app\answer.js" />
     <Content Include="Content\Js\app\question.js" />
+    <Content Include="Content\Js\app\episodeComplete.js" />
+    <Content Include="Content\Js\app\quizComplete.js" />
+    <Content Include="Content\Js\app\questionComplete.js" />
     <Content Include="Content\Js\app\questionAssociate.js" />
     <Content Include="Content\Js\app\episodeAssociate.js" />
     <Content Include="Content\Js\app\quizAssociate.js" />
@@ -567,6 +571,9 @@
     <Content Include="Content\Js\app\quiz.js" />
     <Content Include="Content\Js\app\worker - Cópia .min - Cópia %282%29.js">
       <DependentUpon>question.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29 - Cópia  - Cópia .js">
+      <DependentUpon>questionComplete.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29 - Cópia %282%29.js">
       <DependentUpon>episodeAssociate.js</DependentUpon>
@@ -737,7 +744,6 @@
     <Content Include="Content\Js\lib\jquery-1.11.1.min.map" />
     <Content Include="scripts\toastr.js" />
     <Content Include="scripts\toastr.min.js" />
-    <Content Include="Views\favicon.ico" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -841,8 +847,10 @@
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Items\_Edit.cshtml" />
     <Content Include="Views\Quiz\_QuestionComplete.cshtml" />
-    <Content Include="Views\HallOfFame\Index.cshtml" />
-  </ItemGroup>
+<Content Include="Views\HallOfFame\Index.cshtml" /><Content Include="Views\Campaign\Edit.cshtml" />
+    <Content Include="Views\Campaign\Index.cshtml" />
+    <Content Include="Views\Campaign\_AssociateTeams.cshtml" />
+    <Content Include="Views\Quiz\_EpisodeComplete.cshtml" />  </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\MessageControllerBase\" />
   </ItemGroup>

@@ -116,6 +116,70 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return Json(null, JsonRequestBehavior.AllowGet);
         }
 
+
+        [Route("associate/remover/{id}")]
+        public ActionResult RemoveAssociate(int id)
+        {
+            try
+            {
+                using ( TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
+                {
+                    QuestionAnswerService.Instance.delete(id);
+                    scope.Complete();
+
+                    return Json(new { status = "sucess", message = "Registro removido com sucesso!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+
+                return Json(new { status = "error", message = "Ocorreu um problema!" });
+            }
+
+
+        }
+
+
+        [Route("searchAssociate/{id}")]
+        public ActionResult SearchAssociate(JQueryDataTableRequest jqueryTableRequest, int id)
+        {
+
+            int index = jqueryTableRequest.Page;
+
+
+
+            if (jqueryTableRequest != null)
+            {
+                var association = QuestionAnswerService.Instance.GetByQuestion(id);
+                var all = new List<AnswersEntity>();
+                foreach (var item in association)
+                {
+                    var entity = AnswerService.Instance.GetById(item.IdAnswer);
+                    entity.IdAssociate = item.Id;
+                    all.Add(entity);
+                }
+                
+
+                JQueryDataTableResponse response = null;
+
+                if (jqueryTableRequest.Type == null || jqueryTableRequest.Type.Equals("asc"))
+                {
+                    response = new JQueryDataTableResponse()
+                    {
+                        Draw = jqueryTableRequest.Draw,
+                        RecordsFiltered = all.Count(),
+                        Data = all.Select(r => new string[] { r.Id.ToString(), r.Name, r.Answer, r.status.ToString(),r.IdAssociate.ToString() }).ToArray()
+
+                    };
+                }
+
+                return new DataContractResult() { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
+
         [Route("salvar")]
         [HttpPost]
         public ActionResult Save(AnswersEntity entity)

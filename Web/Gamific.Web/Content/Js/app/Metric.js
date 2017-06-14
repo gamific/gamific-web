@@ -107,4 +107,7 @@ function onFailureSaveMetric(){
 
 }
 
-loadMetricDataTable();
+$(document).ready(function () {
+    loadMetricDataTable();
+});
+

@@ -143,16 +143,15 @@ namespace Vlast.Gamific.Web.Services.Engine
                     IsMultiple = item.IsMultiple,
                     LastUpdate = item.LastUpdate,
                     Name = item.Name,
-                    QuizProcess = item.QuizProcess,
                     Required = item.Required,
                     Score = item.Score,
                     UpdatedBy = item.UpdatedBy,
                     DateLimit = item.DateLimit,
                     status = item.status,
                 };
-                QuestionRepository questionRepository = new QuestionRepository();
+                QuizQuestionRepository questionRepository = new QuizQuestionRepository();
 
-                to.QtdPerguntas = questionRepository.GetAllCount();
+                to.QtdPerguntas = questionRepository.Get(x => x.IdQuiz == item.Id).Count();
                 listTO.Add(to);
             }
 

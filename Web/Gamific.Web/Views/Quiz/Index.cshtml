@@ -12,14 +12,14 @@
 
 <div id="divMain">
     <div class="pageheader">
-        <h2><i class="fa fa-object-group"></i> Cadastro de Questionário</h2>
+        <h2><i class="fa fa fa-file-text"></i> Cadastro de Questionário</h2>
     </div>
     <div class="main" style="height:1000px">
         <div class="row">
             <div style="background: #7d7d7e;color: white;padding: 10px;background-color: #999;color: #fff;box-shadow: 2px 2px 2px #131311;-webkit-box-shadow: 2px 2px 2px #020202;border-radius: 10px;">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse1" style="font-size: x-large;">Questinário</a>
+                        <a data-toggle="collapse" href="#collapse1" style="font-size: x-large;">Questionário</a>
                     </h4>
                 </div>
 
@@ -30,7 +30,7 @@
                         <div class="tile transparent">
                             <div class="tile-body color transparent-black rounded-corners">
                                 <div id="registermetrics" class="table-toolbar-left">
-                                    <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/quiz/cadastrar" title="Cadastrar nova metrica" onclick="showEntityModal(this); return false;"><i class="fa fa-plus"></i> Cadastrar novo questionário</a>
+                                    <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/quiz/cadastrar" title="Cadastrar novo questionário" onclick="showEntityModal(this); return false;"><i class="fa fa-plus"></i> Cadastrar novo questionário</a>
                                 </div>
                                 <div class="">
                                     <table id="quizDataTable" class="table table-striped" cellspacing="0" width="100%">
@@ -181,6 +181,15 @@
         idPrincipal = id;
         hideDivMain();
         $.get( '@Url.Action("paginaQuestionComplete", new { id = 1 } )', function(data) {
+            $('#divMainAssociate').html(data);
+        });
+        $('#divMainAssociate').show();
+    }
+
+    function showDivEpisodeComplete(id) {
+        idPrincipal = id;
+        hideDivMain();
+        $.get( '@Url.Action("paginaEpisodeComplete", new { id = 1 } )', function(data) {
             $('#divMainAssociate').html(data);
         });
         $('#divMainAssociate').show();

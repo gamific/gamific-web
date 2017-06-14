@@ -78,6 +78,25 @@ namespace Vlast.Gamific.Model.Firm.Repository
         /// </summary>
         /// <param name="firmId"></param>
         /// <returns></returns>
+        public List<WorkerTypeEntity> GetAllByGameId(string gameId)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from sc in context.WorkerTypes
+                            where sc.Status == GenericStatus.ACTIVE
+                            && sc.ExternalFirmId == gameId
+                            orderby sc.Id ascending
+                            select sc;
+
+                return query.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Busca todos da empresa
+        /// </summary>
+        /// <param name="firmId"></param>
+        /// <returns></returns>
         public List<WorkerTypeEntity> GetAllFromFirm(string firmId)
         {
             using (ModelContext context = new ModelContext())

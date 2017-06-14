@@ -43,13 +43,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
         }
 
 
-        [Route("paginaQuiz")]
+        [Route("paginaQuiz") ]
         public ActionResult paginaQuiz()
         {
             return PartialView("_QuizAssociate");
         }
 
-        [Route("paginaEpisode")]
+        [Route("paginaEpisode") ]
         public ActionResult paginaEpisode()
         {
             return PartialView("_EpisodeAssociate");
@@ -65,6 +65,12 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult paginaQuestionComplete()
         {
             return PartialView("_QuestionComplete");
+        }
+
+        [Route("paginaEpisodeComplete")]
+        public ActionResult paginaEpisodeComplete()
+        {
+            return PartialView("_EpisodeComplete");
         }
 
         [Route("paginaQuestion")]
@@ -206,6 +212,34 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 return Json(new { status = "error", message = "Ocorreu um problema!" });
             }
 
+
+        }
+
+        [Route("complete/{id}")]
+        public ActionResult GetComplete(int id)
+        {
+
+            var toReturn = new List<QuizCompleteDTO>();
+
+            var quiz = QuizService.Instance.GetById(id);
+            var questionAssociations = QuizQuestionService.Instance.getByAssociated(id);
+
+            foreach (var item in questionAssociations)
+            {
+                var to = new QuizCompleteDTO();
+
+                to.QuestionEntity = QuestionService.Instance.GetById(item.IdQuestion);
+                to.QuizEntity = quiz;
+                var answerAssociations = QuestionAnswerService.Instance.GetByQuestion(item.IdQuestion);
+                to.AnswersEntity = new List<AnswersEntity>();
+                foreach (var answer in answerAssociations)
+                {
+                    to.AnswersEntity.Add(AnswerService.Instance.GetById(answer.IdAnswer));
+                }
+
+                toReturn.Add(to);
+            }
+            return Json(toReturn, JsonRequestBehavior.AllowGet);
 
         }
 

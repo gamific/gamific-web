@@ -45,5 +45,8 @@ namespace Vlast.Gamific.Model.Firm.Domain
         [DataMember(Name = "initialDate")]
         public DateTime InitialDate { get; set; }
 
+        [NotMapped]
+        public int IdAssociate { get; set; }
+
     }
 }

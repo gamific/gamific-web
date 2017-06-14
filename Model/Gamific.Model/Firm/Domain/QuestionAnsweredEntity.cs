@@ -34,5 +34,12 @@ namespace Vlast.Gamific.Model.Firm.Domain
         [DataMember(Name = "lastUpdate")]
         public DateTime LastUpdate { get; set; }
 
+        
+        [Required]
+        [DataMember(Name = "quizProcess")]
+        public string QuizProcess { get; set; }
+
+        
+
     }
 }
