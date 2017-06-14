@@ -45,10 +45,10 @@ namespace Vlast.Gamific.Web.Jobs
         {
 
             string dayOfWeek = DateTime.Now.ToString("ddd");
-            if (dayOfWeek == "mon") { // || dayOfWeek == "tue" || dayOfWeek == "wed") {
+            //if (dayOfWeek == "mon") { // || dayOfWeek == "tue" || dayOfWeek == "wed") {
                 MemoryStream ms = CreateXls();
                
-            }
+            //}
 
 
         }
@@ -197,8 +197,8 @@ namespace Vlast.Gamific.Web.Jobs
 
             //cellsResults["A" + row].PutValue(userProfileEntity.Name);
             //cellsResults["B" + row].PutValue(userProfileEntity.Email);
-            //util = util + "<th>" + userProfileEntity.Name + "</th>";
-            //util = util + "<th>" + userProfileEntity.Email + "</th>";
+            util = util + "<th>" + userProfileEntity.Name + "</th>";
+            util = util + "<th>" + userProfileEntity.Email + "</th>";
             //util = util + "<th>" + player.Nick + "</th>";
             //util = util + "<th>" + player.Email + "</th>";
 
@@ -248,6 +248,7 @@ namespace Vlast.Gamific.Web.Jobs
 
             //Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" },"m3iller@gmail.com", ms, filename);
             Send(new EmailSupportDTO { Msg = util, Category = "", Subject = "Contra-relatorio" }, "rafael@gamific.com.br", ms, filename);
+            Send(new EmailSupportDTO { Msg = util, Category = "", Subject = "Contra-relatorio" }, "suporte@gamific.com.br", ms, filename);
             //Send(new EmailSupportDTO { Msg = util , Category = "", Subject = "Contra-relatorio" }, "victor@duplov.com.br", ms, filename);
 
 

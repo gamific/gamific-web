@@ -159,6 +159,23 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public GetAllDTO GetByGameIdAndInactive(string gameId, int active = 0, string column = "initDate", string order = "desc")
+        {
+            try
+            {
+                using (WebClient client = GetClient())
+                {
+                    string response = client.DownloadString(path + "search/findByGameIdAndActive/" + "?gameId=" + gameId + "&active=" + active + "&sort=" + column + "," + order);
+                    GetAllDTO all = JsonDeserialize<GetAllDTO>(response);
+                    return all;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public GetAllDTO GetByGameId(string gameId, int pageIndex = 0, int pageSize = 10, string column = "initDate", string order = "asc")
         {
             try

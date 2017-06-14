@@ -300,6 +300,7 @@
     <Compile Include="Controllers\Management\WorkerTypeMetricController.cs" />
     <Compile Include="Controllers\Media\MediaAPIController.cs" />
     <Compile Include="Controllers\Public\ControllerExtensions.cs" />
+    <Compile Include="Controllers\Public\HallOfFameController.cs" />
     <Compile Include="Controllers\Public\MobileApiController.cs" />
     <Compile Include="Controllers\Public\AboutController.cs" />
     <Compile Include="Controllers\Public\DashboardController.cs" />
@@ -352,6 +353,7 @@
     <Compile Include="Services\Engine\DTO\GetAllDTO.cs" />
     <Compile Include="Services\Engine\DTO\EpisodeEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\GoalEngineDTO.cs" />
+    <Compile Include="Services\Engine\DTO\HallOfFameEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\ItemEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\Link.cs" />
     <Compile Include="Services\Engine\DTO\ParserDTO.cs" />
@@ -367,6 +369,7 @@
     <Compile Include="Services\Engine\EpisodeEngineService.cs" />
     <Compile Include="Services\Engine\GameEngineService.cs" />
     <Compile Include="Services\Engine\GoalEngineService.cs" />
+    <Compile Include="Services\Engine\HallOfFameEngineService.cs" />
     <Compile Include="Services\Engine\ItemEngineService.cs" />
     <Compile Include="Services\Engine\QuestionService.cs" />
     <Compile Include="Services\Engine\AnswerService.cs" />
@@ -511,6 +514,7 @@
     <Content Include="Content\Js\app\goal.min.js">
       <DependentUpon>goal.js</DependentUpon>
     </Content>
+    <Content Include="Content\Js\app\HallOfFame.js" />
     <Content Include="Content\Js\app\help.min.js">
       <DependentUpon>help.js</DependentUpon>
     </Content>
@@ -837,6 +841,7 @@
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Items\_Edit.cshtml" />
     <Content Include="Views\Quiz\_QuestionComplete.cshtml" />
+    <Content Include="Views\HallOfFame\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\MessageControllerBase\" />
