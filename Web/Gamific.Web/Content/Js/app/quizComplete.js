@@ -10,7 +10,6 @@ function initQuiz() {
             monta(data)
         },
         error: function (data) {
-            debugger;
             console.log(data);
         }
     });
@@ -28,7 +27,6 @@ function monta(listAll) {
         })
         htmlTotal = htmlTotal + "</ul>";
     })
-    debugger;
     $('#replaceQuiz').html(htmlTotal);
 }
 
@@ -36,7 +34,6 @@ function monta(listAll) {
 function montaHtmlPergunta(texto, obrigatoria) {
 
     var htmlPergunta = '';
-    debugger;
     if (!obrigatoria) {
         htmlPergunta = "<label class='ss-q-item-label'> <div class='ss-q-title'>" + texto + "</div></label>";
     } else {
@@ -47,7 +44,6 @@ function montaHtmlPergunta(texto, obrigatoria) {
 
 function montaHtmlResposta(texto, multipla) {
     var htmlResposta = '';
-    debugger;
     if (multipla) {
         htmlResposta = htmlResposta + "<input type='checkbox' name='entry.1000005' value='" + texto + "' role='checkbox' class='ss-q-checkbox' aria-required='true'></span>" +
             "<span class='ss-choice-label'>" + texto + "</span></label></li>";

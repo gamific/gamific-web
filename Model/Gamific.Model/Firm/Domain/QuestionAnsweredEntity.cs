@@ -11,7 +11,7 @@ namespace Vlast.Gamific.Model.Firm.Domain
     /// </summary>
     [Table("Firm_Question_Answered")]
     [DataContract]
-    public class QuestionAnsweredEntity
+    public class QuestionAnsweredEntity:GenericEntity
     {
         [Key]
         [DataMember(Name = "id")]
@@ -34,6 +34,9 @@ namespace Vlast.Gamific.Model.Firm.Domain
         [DataMember(Name = "lastUpdate")]
         public DateTime LastUpdate { get; set; }
 
+        [Required]
+        [DataMember(Name = "idQuiz")]
+        public int IdQuiz { get; set; }
         
         [Required]
         [DataMember(Name = "quizProcess")]
