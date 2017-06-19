@@ -46,7 +46,6 @@ function loadDataTableEpisodeComplete() {
                 "orderable": false,
                 "render": function (data, type, row) {
                     var id = row[0].split(";");
-                    debugger;
                     var links = " <a class='fa fa-remove' href='#' onclick='removeAssociatedEpisode(" + id + ")' title='Remover Associação.'> </a>";
 
                     return links;

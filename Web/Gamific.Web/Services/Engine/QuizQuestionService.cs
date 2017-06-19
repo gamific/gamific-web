@@ -71,6 +71,16 @@ namespace Vlast.Gamific.Web.Services.Engine
         }
 
 
+        public bool IsLastQuestion(int idQuiz,int questionId)
+        {
+            QuizQuestionRepository repository = new QuizQuestionRepository();
+            var questionList = repository.Get(x => x.IdQuiz == idQuiz).OrderBy(o => o.Ordination).ToList();
+            var lastItem = questionList.Last();
+            
+            return lastItem.IdQuestion.Equals(questionId);
+        }
+
+
         ///<summary>
         ///Atualiza questionário
         /// </summary>

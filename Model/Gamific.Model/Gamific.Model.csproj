@@ -102,6 +102,7 @@
     <Compile Include="Firm\Repository\GenericRepository.cs" />
     <Compile Include="Firm\Repository\IGenericRepository.cs" />
     <Compile Include="Firm\Repository\ParamRepository.cs" />
+    <Compile Include="Firm\Repository\QuestionAnsweredRepository.cs" />
     <Compile Include="Firm\Repository\QuestionRepository.cs" />
     <Compile Include="Firm\Repository\AnswerRepository.cs" />
     <Compile Include="Firm\Repository\QuestionAnswerRepository.cs" />

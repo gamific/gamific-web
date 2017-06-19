@@ -31,6 +31,16 @@ namespace Vlast.Gamific.Model.Firm.Repository
             }
         }
 
+        public List<QuizEntity> GetAllFromFirmForApp(int firmId)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = (from q in context.QuizEntity where (q.FirmId == firmId && q.DateLimit >= DateTime.Now && q.status == true) select q);
+
+                return query.ToList();
+            }
+        }
+
 
         ///<summary>
         ///Busca todos os funcionarios do perfil jogador de uma firma

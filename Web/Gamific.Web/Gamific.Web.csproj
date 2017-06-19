@@ -113,6 +113,9 @@
       <HintPath>..\..\packages\LinqToExcel.1.10.1\lib\Remotion.Interfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Swashbuckle.Core.5.5.3\lib\net40\Swashbuckle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -247,6 +250,7 @@
     <Compile Include="App_Start\MessagesActionFilter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -372,6 +376,7 @@
     <Compile Include="Services\Engine\GoalEngineService.cs" />
     <Compile Include="Services\Engine\HallOfFameEngineService.cs" />
     <Compile Include="Services\Engine\ItemEngineService.cs" />
+    <Compile Include="Services\Engine\QuestionAnsweredService.cs" />
     <Compile Include="Services\Engine\QuestionService.cs" />
     <Compile Include="Services\Engine\AnswerService.cs" />
     <Compile Include="Services\Engine\QuestionAnswerService.cs" />
@@ -388,6 +393,10 @@
     <Compile Include="Services\Push\DTO\NotificationLogDTO.cs" />
     <Compile Include="Services\Push\DTO\NotificationPushDTO.cs" />
     <Compile Include="Services\Push\NotificationPushService.cs" />
+    <Compile Include="Services\Quiz\DTO\QuestionAnsweredDTO.cs" />
+    <Compile Include="Services\Quiz\DTO\QuestionDTO.cs" />
+    <Compile Include="Services\Quiz\DTO\QuizCompleteDTO.cs" />
+    <Compile Include="Services\Quiz\QuizAPIController.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Controllers\Util\JQueryDataTableRequest.cs" />
   </ItemGroup>
@@ -847,10 +856,12 @@
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Items\_Edit.cshtml" />
     <Content Include="Views\Quiz\_QuestionComplete.cshtml" />
-<Content Include="Views\HallOfFame\Index.cshtml" /><Content Include="Views\Campaign\Edit.cshtml" />
+    <Content Include="Views\HallOfFame\Index.cshtml" />
+    <Content Include="Views\Campaign\Edit.cshtml" />
     <Content Include="Views\Campaign\Index.cshtml" />
     <Content Include="Views\Campaign\_AssociateTeams.cshtml" />
-    <Content Include="Views\Quiz\_EpisodeComplete.cshtml" />  </ItemGroup>
+    <Content Include="Views\Quiz\_EpisodeComplete.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\MessageControllerBase\" />
   </ItemGroup>
