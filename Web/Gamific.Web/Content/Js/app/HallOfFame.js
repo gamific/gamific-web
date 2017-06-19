@@ -39,7 +39,7 @@ function changeChampion(playerId) {
     showChampion += "<div class='pull-left col-md-5 col-sm-5'>";
     showChampion += "<img class='media-object img-circle'style='width: 180px; height: 180px; margin: 70px;' src='" + $("#logoPath-" + playerId).val() + "'>";
     showChampion += "</div>";
-    showChampion += "<div class='col-md-7 col-sm-7 text-center' style='font-size: 30px; padding-top: 14%; color: white;'>";
+    showChampion += "<div  id='textoPrimeiro' class='col-md-7 col-sm-7 ' style='font-size: 30px; margin:0px; padding-top:  80px; color: white;'>";
     showChampion += "<p id='' class='media-heading'><img style='width:35px; height: 35px;' src='../Content/Img/crownG.png' /> " + $("#playerName-" + playerId).val() + " <img style='width:35px; height: 35px;' src='../Content/Img/crownG.png' /></p>";
     showChampion += "<p id='' class='media-heading'>Campanha: " + $("#episodeName-" + playerId).val() + "</p>";
     showChampion += "<p>Score:" + $("#score-" + playerId).val() + "</p>";
