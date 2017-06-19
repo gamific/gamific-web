@@ -219,14 +219,14 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult GetComplete(int id)
         {
 
-            var toReturn = new List<QuizCompleteDTO>();
+            var toReturn = new List<Services.Engine.DTO.QuizCompleteDTO>();
 
             var quiz = QuizService.Instance.GetById(id);
             var questionAssociations = QuizQuestionService.Instance.getByAssociated(id);
 
             foreach (var item in questionAssociations)
             {
-                var to = new QuizCompleteDTO();
+                var to = new Services.Engine.DTO.QuizCompleteDTO();
 
                 to.QuestionEntity = QuestionService.Instance.GetById(item.IdQuestion);
                 to.QuizEntity = quiz;
