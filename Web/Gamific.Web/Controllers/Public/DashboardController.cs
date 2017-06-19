@@ -841,7 +841,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
                 else if (teamId != "empty" && teamId != "")
                 {
-                    results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId, itemId);
+                    results = CardEngineService.Instance.TeamHierarchy(teamId, itemId);
+                    //results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId, itemId);
                 }
                 else
                 {

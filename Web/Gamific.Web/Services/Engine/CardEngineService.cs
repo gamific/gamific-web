@@ -86,6 +86,22 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
             }
         }
 
+        public List<CardEngineDTO> TeamHierarchy(string teamId, string itemId = "")
+        {
+            try
+            {
+                using (WebClient client = GetClient())
+                {
+                    string response = client.DownloadString(path + "getTeamCardsHierarchy?teamId=" + teamId + "&itemId=" + itemId);
+                    return JsonDeserialize<List<CardEngineDTO>>(response);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<CardEngineDTO> TeamWithEmail(string gameId, string teamId, string email)
         {
             try
