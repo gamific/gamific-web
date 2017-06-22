@@ -83,6 +83,13 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
         }
 
+        [Route("teste")]
+        [HttpGet]
+        public void getUserUsername()
+        {
+            string user = User.Identity.Name;
+        }
+
         private bool changeVisibilityGraphStogram()
         {
             bool active = false;
