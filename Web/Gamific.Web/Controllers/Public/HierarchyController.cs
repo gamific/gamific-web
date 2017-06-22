@@ -46,10 +46,23 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ActionResult searchHierarchy(string episodeId)
         {
-            string ret = EngineBIZ.getHierarchy(episodeId);
+            string ret = TeamEngineService.Instance.getHierarchy(episodeId);
 
             return Content(ret, "application/json");
            // return Json(JsonConvert.SerializeObject(ret), JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Busca os episodios
+        /// </summary>
+        /// <returns></returns>
+        [Route("buscarEpisodios")]
+        [HttpGet]
+        public ActionResult SearchEpisodes()
+        {
+            GetAllDTO all = EpisodeEngineService.Instance.GetByGameIdAndActive(CurrentFirm.ExternalId, 1);
+
+            return Json(JsonConvert.SerializeObject(all.List.episode), JsonRequestBehavior.AllowGet);
         }
 
     }

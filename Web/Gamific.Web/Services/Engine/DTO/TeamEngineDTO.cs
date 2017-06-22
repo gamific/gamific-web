@@ -44,5 +44,11 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
 
         [JsonProperty("logoPath")]
         public string LogoPath { get; set; }
+
+        [JsonProperty("subOfTeamId")]
+        public string SubOfTeamId { get; set; }
+
+        [JsonProperty("subTeams")]
+        public List<string> SubTeams { get; set; }
     }
 }

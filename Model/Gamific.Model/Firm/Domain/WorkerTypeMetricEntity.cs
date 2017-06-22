@@ -27,7 +27,7 @@ namespace Vlast.Gamific.Model.Firm.Domain
         /// </summary>
         [DataMember(Name = "workerTypeId")]
         [Required(ErrorMessage = "O tipo de jogador é obrigatorio.")]
-        public long WorkerTypeId { get; set; }
+        public int WorkerTypeId { get; set; }
 
         /// <summary>
         /// FK Metric

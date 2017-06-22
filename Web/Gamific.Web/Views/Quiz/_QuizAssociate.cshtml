@@ -77,6 +77,7 @@
                 obj.idPrincipal = idPrincipal;
                 listToSend.push(obj);
             });
+            hideDivMainAssociate()
             $.ajax({
                 type: "POST",
                 url: "/admin/quiz/associate/",
@@ -85,6 +86,9 @@
                 dataType: "json",
                 success: function (msg) {
                     toastr.success('Registro associado com sucesso!', 'Sucesso');
+                },
+                error: function (msg) {
+                    toastr.error('Erro ao associar', 'Error');
                 }
             });
         });
@@ -159,7 +163,7 @@
             }
 
         });
-            
+
         $('#rootwizard a[href="#tab1"]').tab('show')
 
 

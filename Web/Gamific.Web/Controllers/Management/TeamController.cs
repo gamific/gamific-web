@@ -48,6 +48,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
             ViewBag.SponsorId = team.MasterPlayerId;
             ViewBag.EpisodeId = team.EpisodeId;
 
+            ViewBag.SubTeams = team.SubTeams == null ? JsonConvert.SerializeObject(new List<string>()) : JsonConvert.SerializeObject(team.SubTeams);
+
             return PartialView("_Edit", team);
         }
 
@@ -62,6 +64,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             ViewBag.Sponsors = GetSponsorsToSelect();
             ViewBag.Episodes = GetEpisodesToSelect();
+
+            ViewBag.SubTeams = JsonConvert.SerializeObject(new List<string>());
 
             return PartialView("_Edit", team);
         }
@@ -100,7 +104,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         /// <returns></returns>
         [Route("salvar")]
         [HttpPost]
-        public ActionResult Save(TeamEngineDTO team, HttpPostedFileBase logoUpload)
+        public ActionResult Save(TeamEngineDTO team, HttpPostedFileBase logoUpload, List<CheckBoxValue> checkBoxes)
         {
             try
             {
@@ -152,6 +156,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     if (team.Id != null)
                     {
+                        checkBoxes.Where(x => !x.Checked && team.SubTeams.Contains(x.Text));
+                        team = TeamEngineService.Instance.JoinSubTeamsOnTeam(team.Id, checkBoxes.Where(x => x.Checked == true && x.Text != team.Id).Select(x => x.Text).ToList());
                         TeamEngineDTO teamTemp = TeamEngineService.Instance.UpdateTeamMaster(team.MasterPlayerId, team.Id);
                         teamTemp.LogoId = logoUpload != null ? imageSaving.Id : teamTemp.LogoId;
                         teamTemp.LogoPath = CurrentURL + teamTemp.LogoId;
@@ -162,6 +168,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     {
                         team.LogoPath = CurrentURL + team.LogoId;
                         team = TeamEngineService.Instance.CreateOrUpdate(team);
+                        team = TeamEngineService.Instance.JoinSubTeamsOnTeam(team.Id, checkBoxes.Where(x => x.Checked == true && x.Text != team.Id).Select(x => x.Text).ToList());
                         List<PlayerEngineDTO> listPlayers = new List<PlayerEngineDTO>();
                         listPlayers.Add(PlayerEngineService.Instance.GetById(team.MasterPlayerId));
                         List<RunEngineDTO> runs = TeamEngineService.Instance.JoinPlayersOnTeam(team.Id, listPlayers);
@@ -430,6 +437,25 @@ namespace Vlast.Gamific.Web.Controllers.Management
             int count = WorkerRepository.Instance.GetCountByWorkerTypeId(externalIds, workerTypeId);
 
             return Json(JsonConvert.SerializeObject(count), JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Obtem os times de uma campanha
+        /// </summary>
+        /// <param name="episodeId"></param>
+        /// <returns></returns>
+        [Route("getTeamsToSelect/{episodeId}")]
+        [HttpGet]
+        public ActionResult GetTeamsToSelect(string episodeId)
+        {
+            List<SelectListItem> teams =  TeamEngineService.Instance.FindByEpisodeId(episodeId).List.team.
+                Select(x => new SelectListItem
+                {
+                    Value = x.Id,
+                    Text = x.Nick
+                }).OrderBy(x => x.Text).ToList();
+
+            return Json(JsonConvert.SerializeObject(teams), JsonRequestBehavior.AllowGet);
         }
 
         #endregion

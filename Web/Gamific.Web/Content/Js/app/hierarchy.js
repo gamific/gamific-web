@@ -1,5 +1,6 @@
 
 function searchHierarchy(episode) {
+    $("#custom-colored").empty();
     $.ajax({
         url: "/public/hierarchy/searchHierarchy",
         async: false,
@@ -18,3 +19,28 @@ function searchHierarchy(episode) {
         }
     });
 }
+
+$(document).ready(function () {
+    searchHierarchy($('#EpisodeId').val());
+    $.ajax({
+        url: "/public/hierarchy/buscarEpisodios",
+        async: false,
+        type: "GET",
+        success: function (data) {
+            $("#dropDownEpisodes").empty();
+            var episodes = JSON.parse(data);
+
+            for (var i = 0; i < episodes.length; i++) {
+                $("#dropDownEpisodes").append($("<option value='" + episodes[i].id + "'>" + episodes[i].name + "</option>"));
+            }
+
+        },
+        error: function () {
+            $("#dropDownEpisodes").empty();
+        }
+    });
+});
+
+$('#dropDownEpisodes').change(function () {
+    searchHierarchy($('#dropDownEpisodes').val());
+});

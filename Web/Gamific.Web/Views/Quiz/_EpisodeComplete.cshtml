@@ -1,0 +1,31 @@
+﻿@using Vlast.Gamific.Web.Services.Engine.DTO
+
+<div id="episodeComplete" class="main">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="modal-header">
+                    <button type="button" title="Fechar" id="btn_close_modal" class="close" onclick="hideDivMainAssociate()" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modalQuestionario">Campanhas Associadas</h4>
+                </div>
+                <div class="panel-body">
+                    <table id="episodeCompleteDataTable" class="table" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nome</th>
+                                <th>Data Inicial</th>
+                                <th>Data Final</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Content/Js/app/episodeComplete.js"></script>
+

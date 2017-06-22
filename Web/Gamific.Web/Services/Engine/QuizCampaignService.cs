@@ -82,6 +82,22 @@ namespace Vlast.Gamific.Web.Services.Engine
         }
 
 
+        public void delete(int id)
+        {
+            QuizCampaignRepository repository = new QuizCampaignRepository();
+            repository.delete(x => x.Id == id);
+
+        }
+
+
+        public List<QuizCampaignEntity> getByAssociated(int idAssociated)
+        {
+            QuizCampaignRepository repository = new QuizCampaignRepository();
+            return repository.Get(x => x.IdQuiz == idAssociated).ToList();
+
+        }
+
+
         #endregion
     }
 }

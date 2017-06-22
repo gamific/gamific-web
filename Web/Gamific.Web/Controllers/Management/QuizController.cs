@@ -43,13 +43,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
         }
 
 
-        [Route("paginaQuiz")]
+        [Route("paginaQuiz") ]
         public ActionResult paginaQuiz()
         {
             return PartialView("_QuizAssociate");
         }
 
-        [Route("paginaEpisode")]
+        [Route("paginaEpisode") ]
         public ActionResult paginaEpisode()
         {
             return PartialView("_EpisodeAssociate");
@@ -65,6 +65,12 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult paginaQuestionComplete()
         {
             return PartialView("_QuestionComplete");
+        }
+
+        [Route("paginaEpisodeComplete")]
+        public ActionResult paginaEpisodeComplete()
+        {
+            return PartialView("_EpisodeComplete");
         }
 
         [Route("paginaQuestion")]
@@ -213,14 +219,14 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult GetComplete(int id)
         {
 
-            var toReturn = new List<QuizCompleteDTO>();
+            var toReturn = new List<Services.Engine.DTO.QuizCompleteDTO>();
 
             var quiz = QuizService.Instance.GetById(id);
             var questionAssociations = QuizQuestionService.Instance.getByAssociated(id);
 
             foreach (var item in questionAssociations)
             {
-                var to = new QuizCompleteDTO();
+                var to = new Services.Engine.DTO.QuizCompleteDTO();
 
                 to.QuestionEntity = QuestionService.Instance.GetById(item.IdQuestion);
                 to.QuizEntity = quiz;

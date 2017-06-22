@@ -367,12 +367,12 @@ namespace Vlast.Gamific.Web.Controllers.Management
             validationPeriod.AreaList.Add(areaPeriod);
 
             var validationResult = validations[validations.Add()];
-            validationResult.Type = ValidationType.WholeNumber;
+            validationResult.Type = ValidationType.Decimal;
             validationResult.Operator = OperatorType.Between;
             validationResult.Formula1 = 0.ToString();
-            validationResult.Formula2 = Int32.MaxValue.ToString();
-            validationResult.InCellDropDown = false;
-            validationResult.ShowError = true;
+            validationResult.Formula2 = float.MaxValue.ToString();
+            validationResult.InCellDropDown = true;
+            validationResult.ShowError = false;
             validationResult.AlertStyle = ValidationAlertType.Stop;
             CellArea areaResult;
             areaResult.StartRow = 1;
@@ -596,7 +596,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             result.MetricId = metric.Id;
                             result.Multiplier = metric.Multiplier;
                             result.Name = metric.Name;
-                            result.Points = int.Parse(row[TOTAL].ToString()) - oldResult;
+                            result.Points = float.Parse(row[TOTAL].ToString()) - oldResult;
                             result.Score = 0;
                             result.Xp = metric.Xp;
                             result.RunId = run.Id;
@@ -1038,7 +1038,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             result.MetricId = metric.Id;
                             result.Multiplier = metric.Multiplier;
                             result.Name = metric.Name;
-                            result.Points = int.Parse(row[3].ToString());
+                            result.Points = float.Parse(row[3].ToString());
                             result.Score = 0;
                             result.Xp = metric.Xp;
                             result.RunId = run.Id;

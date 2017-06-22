@@ -60,7 +60,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [HttpGet]
         public ActionResult SearchPlayers(string teamId)
         {
-            GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId, 0, 10000);
+            GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId);
 
             List<string> externalIds = (from run in all.List.run select run.PlayerId).ToList();
 
@@ -90,7 +90,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 if (teamId != "empty")
                 {
-                    all = RunEngineService.Instance.GetRunsByTeamId(teamId, jqueryTableRequest.Page, 1000);
+                    all = RunEngineService.Instance.GetRunsByTeamId(teamId);
                     List<PlayerEngineDTO> players = (from run in all.List.run select PlayerEngineService.Instance.GetById(run.PlayerId)).ToList();
 
                     all.List.result = (from run in all.List.run
@@ -191,7 +191,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 foreach (string checkedId in checkedIds)
                 {
-                    GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(checkedId, 0, 100000);
+                    GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(checkedId);
 
                     foreach(RunEngineDTO run in runs.List.run)
                     {
@@ -238,7 +238,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             try
             {
-                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId, 0, 100000);
+                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId);
                 List<string> playerIds = all.List.run.Select(x => x.PlayerId).ToList();
 
                 return Json(JsonConvert.SerializeObject(playerIds), JsonRequestBehavior.AllowGet);

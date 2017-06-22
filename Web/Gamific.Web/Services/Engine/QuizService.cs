@@ -46,15 +46,15 @@ namespace Vlast.Gamific.Web.Services.Engine
 
         public void Create(QuizEntity entity)
         {
-            QuizRepository repository =  new QuizRepository();
+            QuizRepository repository = new QuizRepository();
             repository.save(entity);
-            
+
         }
 
         ///<summary>
         ///Busca a quantidade de questionários de uma firma
         /// </summary>
-        public int GetCountFromFirm(int firmId,string search)
+        public int GetCountFromFirm(int firmId, string search)
         {
             QuizRepository repository = new QuizRepository();
             return repository.GetCountFromFirm(firmId, search);
@@ -63,11 +63,25 @@ namespace Vlast.Gamific.Web.Services.Engine
         ///<summary>
         ///Busca os questionários de questionários de uma firma
         /// </summary>
-        public List<QuizEntity> GetAllFromFirm(int firmId,string search, int pageIndex,int pageSize)
+        public List<QuizEntity> GetAllFromFirm(int firmId, string search, int pageIndex, int pageSize)
         {
 
             QuizRepository repository = new QuizRepository();
             return repository.GetAllFromFirm(firmId, search, pageIndex, pageSize);
+        }
+
+
+
+        /// <summary>
+        /// Busca todos questionarios por usuario e firm
+        /// </summary>
+        /// <param name="firmId"></param>
+        /// <returns></returns>
+        public List<QuizEntity> GetAllFromFirmForApp(int firmId)
+        {
+
+            QuizRepository repository = new QuizRepository();
+            return repository.GetAllFromFirmForApp(firmId);
         }
 
 
@@ -108,6 +122,65 @@ namespace Vlast.Gamific.Web.Services.Engine
             repository.update(quiz);
         }
 
+        public List<Model.Firm.Domain.QuizCompleteDTO> GetQuiz(int firmId, int userId)
+        {
+            var toReturn = new List<Model.Firm.Domain.QuizCompleteDTO>();
+
+            var quizList = this.GetAllFromFirmForApp(firmId);
+            foreach (var quiz in quizList)
+            {
+                var quizComplete = new Model.Firm.Domain.QuizCompleteDTO();
+                var questionAssociations = QuizQuestionService.Instance.getByAssociated(quiz.Id);
+
+                quizComplete.Id = quiz.Id;
+                quizComplete.CreatedBy = quiz.CreatedBy;
+                quizComplete.DateLimit = quiz.DateLimit;
+                quizComplete.Description = quiz.Description;
+                quizComplete.FirmId = quiz.FirmId;
+                quizComplete.IdQuizQuestion = quiz.IdQuizQuestion;
+                quizComplete.InitialDate = quiz.InitialDate;
+                quizComplete.IsMultiple = quiz.IsMultiple;
+                quizComplete.LastUpdate = quiz.LastUpdate;
+                quizComplete.Link = quiz.Link;
+                quizComplete.Name = quiz.Name;
+                quizComplete.questions = new List<QuestionDTO>();
+                quizComplete.Required = quiz.Required;
+                quizComplete.Score = quiz.Score;
+                quizComplete.status = quiz.status;
+                quizComplete.UpdatedBy = quiz.UpdatedBy;
+
+                foreach (var item in questionAssociations)
+                {
+                    var question = QuestionService.Instance.GetById(item.IdQuestion);
+                    var questionDto = new QuestionDTO();
+                    questionDto.CreatedBy = question.CreatedBy;
+                    questionDto.FirmId = question.FirmId;
+                    questionDto.Id = question.Id;
+                    questionDto.IdQuestionAnswered = question.IdQuestionAnswered;
+                    questionDto.IdQuestionAnswers = question.IdQuestionAnswers;
+                    questionDto.InitialDate = question.InitialDate;
+                    questionDto.LastUpdate = question.LastUpdate;
+                    questionDto.Link = question.Link;
+                    questionDto.Question = question.Question;
+                    questionDto.Required = question.Required;
+                    questionDto.status = question.status;
+                    questionDto.UpdatedBy = question.UpdatedBy;
+
+                    questionDto.answers = new List<AnswersEntity>();
+                    quizComplete.questions.Add(questionDto);
+                    var answerAssociations = QuestionAnswerService.Instance.GetByQuestion(item.IdQuestion);
+                    foreach (var answer in answerAssociations)
+                    {
+                        questionDto.answers.Add(AnswerService.Instance.GetById(answer.IdAnswer));
+                    }
+
+                    toReturn.Add(quizComplete);
+                }
+            }
+
+            return toReturn;
+        }
+
 
         ///<summary>
         ///Atualiza questionário
@@ -122,7 +195,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         ///<summary>
         ///Busca os questionários de questionários de uma firma
         /// </summary>
-        public List<QuizDTO> GetAllFromFirmDTO(int firmId,string search, int pageIndex, int pageSize)
+        public List<QuizDTO> GetAllFromFirmDTO(int firmId, string search, int pageIndex, int pageSize)
         {
 
             QuizRepository repository = new QuizRepository();
@@ -133,7 +206,8 @@ namespace Vlast.Gamific.Web.Services.Engine
 
             foreach (var item in list)
             {
-                QuizDTO to = new QuizDTO() {
+                QuizDTO to = new QuizDTO()
+                {
                     CreatedBy = item.CreatedBy,
                     Description = item.Description,
                     FirmId = item.FirmId,

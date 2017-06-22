@@ -1,0 +1,131 @@
+﻿@using Vlast.Gamific.Web.Services.Engine.DTO
+@model  Vlast.Gamific.Web.Controllers.Public.Model.FilterResultDTO
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#HallOfFame").addClass("active");
+</script>
+
+<div class="pageheader">
+    <div class="row">
+        <div class="col-xs-12 text-center ">
+            <h2 style="color:white;font-size:60px">Hall Da Fama</h2>
+        </div>
+    </div>
+</div>
+
+@{
+    if (ViewBag.AllPlayers != null)
+    {
+        <body id="hallOfFameCampaing">
+
+            <div>
+                <input hidden type="text" value="@ViewBag.GameId" id="gameId" />
+                <input hidden type="text" value="@ViewBag.AllPlayers" id="allPlayers" />
+                <!---->
+
+                <div class="col-lg-4 col-md-5 col-sm-6">
+
+                    <section class="tile bg-transparent-black-1">
+
+
+                        <div class="tile-header color bg-transparent-black-5 rounded-top-corners text-center">
+
+                            <h3><strong>Campanhas</strong></h3>
+
+                        </div>
+                        <div class="tile-body color transparent-black rounded-bottom-corners nopadding">
+                            
+                            <ul class="chat-inbox" id="chat-inbox">
+
+                                @{int count = 0;
+                                    foreach (HallOfFameEngineDTO item in ViewBag.AllPlayers)
+                                    {
+
+                                        if (count == 0)
+                                        {
+                                            <input hidden type="text" value="@item.GeneralWinners[0].Id" id="firstPlayer" />
+                                            count++;
+                                        }
+                                string teste = "'" + item.GeneralWinners[0].Id + "'";
+                                <li onclick="changeChampion(@teste)">
+                                    <a class="active">
+                                        <div class="media">
+                                            <div class="pull-left">
+                                                <img id="" onclick="changeChampion(@teste)" class="media-object img-circle " src="@item.GeneralWinners[0].logoPath"><!--onclick="changeChampion(item.GeneralWinners[0].Id)"-->
+                                            </div>
+                                            <div class="media-body">
+
+                                                <input hidden type="text" value="@item.GeneralWinners[0].Id" id="id-@item.GeneralWinners[0].Id" />
+                                                <input hidden type="text" value="@item.GeneralWinners[0].PlayerId" id="playerId-@item.GeneralWinners[0].Id" />
+                                                <input hidden type="text" value="@item.GeneralWinners[0].TeamName" id="teamName-@item.GeneralWinners[0].Id" />
+                                                <input hidden type="text" value="@item.GeneralWinners[0].Score" id="score-@item.GeneralWinners[0].Id" />
+                                                <input hidden type="text" value="@item.GeneralWinners[0].TeamId" id="teamId-@item.GeneralWinners[0].Id" />
+                                                <input hidden type="text" value="@item.GeneralWinners[0].PlayerName" id="playerName-@item.GeneralWinners[0].Id" />
+                                                <input hidden type="text" value="@item.GeneralWinners[0].logoPath" id="logoPath-@item.GeneralWinners[0].Id" />
+                                                <input hidden type="text" value="@item.EpisodeName" id="episodeName-@item.GeneralWinners[0].Id" />
+
+                                                <p id="" onclick="changeChampion(@teste)" class="media-heading"> @item.GeneralWinners[0].PlayerName </p>
+                                                <p id="" onclick="changeChampion(@teste)" class="media-heading">Campanha: @item.EpisodeName</p> <!--onclick="changeChampion(item.GeneralWinners[0].Id)"-->
+                                                <input type="hidden" value="" />
+
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                }
+
+                                }
+
+                            </ul>
+
+                        </div>
+
+                    </section>
+
+
+                </div>
+
+
+                <div class="col-lg-8 col-md-7 col-sm-6">
+
+                    <!--Foca no funcionario-->
+                    <section class="tile bg-transparent-black-05">
+                        <div class="tile-body color transparent-black rounded-bottom-corners nopadding">
+                            <div id="div-hallOfFameDestac">
+
+                            </div>
+                        </div>
+                    </section>
+
+
+                </div>
+
+            </div>
+        </body>
+    }
+    else
+    {
+        <body id="hallOfFameCampaing">
+            <div class="text-center" style="padding-top: 14%; color: white; font-size:30px;">
+               <p>É necessario o fim de uma campanha para a formação do Hall da Fama.</p>
+
+            </div>
+        </body>
+    }
+
+}
+
+</html>
+
+<script src="~/Content/Js/app/HallOfFame.js" charset="iso-8859-1"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
