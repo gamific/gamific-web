@@ -806,7 +806,16 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             GetAllDTO all = TeamEngineService.Instance.FindByEpisodeId(episodeId);
 
-             List<TeamEngineDTO> teams = OrganizeHierarchy(all.List.team.OrderBy(x => x.Nick).ToList(), all.List.team.Where(x => x.SubOfTeamId == null).Select(x => x.Id).FirstOrDefault());
+            all.List.team = all.List.team.OrderBy(x => x.Nick).ToList();
+
+            List<string> subTeamsNull = all.List.team.Where(x => x.SubOfTeamId == null).Select(x => x.Id).ToList();
+
+            List<TeamEngineDTO> teams = new List<TeamEngineDTO>();
+
+            foreach(string subTeamNull in subTeamsNull)
+            {
+                teams.AddRange(OrganizeHierarchy(all.List.team, subTeamNull));
+            }
 
             return Json(JsonConvert.SerializeObject(teams), JsonRequestBehavior.AllowGet);
         }

@@ -407,17 +407,27 @@ function updateDropDownCheckBoxTeams()
 
             var html = "";
 
-            for (var i = 0; i < teams.length; i++)
+            var count = 0;
+
+            for (var k = 0; k < teams.length; k++)
             {
-                html += "<label>";
-                if (subTeams.indexOf(teams[i].Value) > -1) {
-                    html += "<input type='checkbox' name='checkBoxes[" + i + "].Checked' checked id='checkBoxes[" + i + "].Checked' onchange='checkedChange(this)' value='true' />" + teams[i].Text;
+                var i = k - count;
+                if (teams[k].Value != $("#Id").val() && teams[k].Value != $("#SubOfTeamId").val())
+                {
+                    html += "<label>";
+                    if (subTeams.indexOf(teams[k].Value) > -1) {
+                        html += "<input type='checkbox' name='checkBoxes[" + i + "].Checked' checked id='checkBoxes[" + i + "].Checked' onchange='checkedChange(this)' value='true' />" + teams[k].Text;
+                    }
+                    else {
+                        html += "<input type='checkbox' name='checkBoxes[" + i + "].Checked' id='checkBoxes[" + i + "].Checked' onchange='checkedChange(this)' value='false' />" + teams[k].Text;
+                    }
+                    html +=     "<input type='hidden' name='checkBoxes[" + i + "].Text' id='checkBoxes[" + i + "].Text' value='" + teams[k].Value + "'>";
+                    html += "</label>";
                 }
-                else {
-                    html += "<input type='checkbox' name='checkBoxes[" + i + "].Checked' id='checkBoxes[" + i + "].Checked' onchange='checkedChange(this)' value='false' />" + teams[i].Text;
+                else
+                {
+                    count++;
                 }
-                html +=     "<input type='hidden' name='checkBoxes[" + i + "].Text' id='checkBoxes[" + i + "].Text' value='" + teams[i].Value + "'>";
-                html += "</label>";
             }
 
             $("#checkboxes").append(html);
