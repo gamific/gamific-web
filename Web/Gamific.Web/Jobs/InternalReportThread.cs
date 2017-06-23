@@ -45,10 +45,10 @@ namespace Vlast.Gamific.Web.Jobs
         {
 
             string dayOfWeek = DateTime.Now.ToString("ddd");
-            //if (dayOfWeek == "mon") { // || dayOfWeek == "tue" || dayOfWeek == "wed") {
+            if (dayOfWeek == "mon") { // || dayOfWeek == "tue" || dayOfWeek == "wed") {
                 MemoryStream ms = CreateXls();
                
-            //}
+            }
 
 
         }

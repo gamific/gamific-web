@@ -53,6 +53,22 @@ namespace Vlast.Gamific.Model.Firm.Repository
         }
 
         /// <summary>
+        /// Query para consulta externa
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public List<DataEntity> GetAllOfGameIdAndGameName()
+        {
+            ModelContext context = new ModelContext();
+            var query = from sc in context.Datas
+                        orderby sc.Id ascending
+                        select sc;
+
+            return query.ToList();
+        }
+
+        /// <summary>
         /// Recupera a empresa pelo id
         /// </summary>
         /// <param name="firmId"></param>
