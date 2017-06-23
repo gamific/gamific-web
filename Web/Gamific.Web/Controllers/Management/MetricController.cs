@@ -140,9 +140,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 {
                     if(checkBox.Checked && !workerTypeMetrics.Contains(checkBox.Value))
                     {
+                        WorkerTypeMetricEntity wtm = 
                         WorkerTypeMetricRepository.Instance.CreateWorkerTypeMetric(new WorkerTypeMetricEntity
                         {
-                            MetricExternalId = metric.Id,
+                            MetricExternalId = newMetric.Id,
                             Status = GenericStatus.ACTIVE,
                             UpdatedBy = CurrentUserId,
                             WorkerTypeId = checkBox.Value

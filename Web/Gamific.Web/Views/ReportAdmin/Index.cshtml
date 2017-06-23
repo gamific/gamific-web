@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript">
+    $("#ReportAdmin").addClass("active");
+</script>
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-folder-open-o"></i> Contra Relatorio</h2>
+    </div>
+
+    <div class="main">
+        <div class="row">
+
+                <div class="col-md-3">
+                    
+                
+                    <select class="chosen-select chosen-transparent form-control" id="dropDownGame"></select>
+                </div>
+
+             
+            <div class="col-md-7">
+
+                <p>Date Inicial: <input type="text" id="initDate">  Date final: <input type="text" id="finishDate"> </p>
+
+ 
+            </div>
+            <div class="col-md-2">
+
+                <div id="archiveButtonDiv" class="table-toolbar-left">
+                    <a id="archiveButton" class="btn btn-default sing-up-button" onclick="tableUsers($('#initDate').val(), $('#finishDate').val(), $('#dropDownGame').val())">Pesquisar</a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                
+                <section class="tile bg-transparent-black-05">
+                    <div class="tile-body color transparent-black rounded-bottom-corners nopadding">
+                        <div id="div-tableUsers">
+
+                        </div>
+                    </div>
+                </section>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#initDate").datepicker();
+    });
+
+    $(function () {
+        $("#finishDate").datepicker();
+    });
+</script>
+
+
+
+<script src="~/Content/Js/app/reportAdmin.js" charset="iso-8859-1"></script>

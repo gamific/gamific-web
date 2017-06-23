@@ -13,6 +13,7 @@ using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
 using System.Collections;
 using System.Globalization;
+using Vlast.Gamific.Web.Controllers.Util;
 
 namespace Vlast.Gamific.Web.Jobs
 {
@@ -60,8 +61,9 @@ namespace Vlast.Gamific.Web.Jobs
                         if (worker != null && (worker.ProfileName == Profiles.LIDER || worker.ProfileName == Profiles.JOGADOR))
                         {
                             string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
-                            Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
-                            Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
+                            //Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
+                            //Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
+                            EmailSender.Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email, game.Id, episode.Id, worker.ExternalId);
                         }
                     }
                 }
@@ -76,12 +78,6 @@ namespace Vlast.Gamific.Web.Jobs
 
             Instance = new Thread(rankingThread.Start);
             Instance.Start();
-        }
-
-        private void Send(EmailSupportDTO email, string emailTo)
-        {
-            string emailFrom = ParameterCache.Get("SUPPORT_EMAIL");
-            bool result = EmailDispatcher.SendEmail(emailFrom, email.Subject, new List<string>() { emailTo }, email.Msg);
         }
 
         private string CreateTable(List<ResultEngineDTO> results, string id)

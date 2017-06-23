@@ -154,6 +154,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     
                     ValidateModel(team);
 
+                    if (checkBoxes == null)
+                    {
+                        checkBoxes = new List<CheckBoxValue>();
+                    }
+
                     if (team.Id != null)
                     {
                         checkBoxes.Where(x => !x.Checked && team.SubTeams.Contains(x.Text));
