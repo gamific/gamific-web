@@ -88,6 +88,22 @@ namespace Vlast.Gamific.Account.Model
         }
 
         /// <summary>
+        /// Busca contas por data inicial
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<UserAccountEntity> GetByInitDate(DateTime initDate, DateTime finishDate)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var foundUserAccount = from c in context.Users
+                                       where c.LastLogin >= initDate && c.LastLogin <= finishDate
+                                       select c;
+                return foundUserAccount.ToList();
+            }
+        }
+
+        /// <summary>
         /// Cria uma conta de usuário
         /// </summary>
         /// <param name="newEntity"></param>

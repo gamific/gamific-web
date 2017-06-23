@@ -293,6 +293,7 @@
     <Compile Include="Controllers\Management\ParamController.cs" />
     <Compile Include="Controllers\Management\PushNotificationController.cs" />
     <Compile Include="Controllers\Management\QuestionController.cs" />
+    <Compile Include="Controllers\Management\ReportAdminController.cs" />
     <Compile Include="Controllers\Management\VideoController.cs" />
     <Compile Include="Controllers\Management\Model\IconsDTO.cs" />
     <Compile Include="Controllers\Management\TopicHelpController.cs" />
@@ -706,6 +707,7 @@
     <Content Include="Content\Js\app\race.js" />
     <Content Include="Content\Js\app\video.js" />
     <Content Include="Content\Js\app\workerType.js" />
+    <Content Include="Content\Js\app\reportAdmin.js" />
     <Content Include="Content\management.css" />
     <Content Include="Content\smoothness.css" />
     <Content Include="Content\Js\app\firm.js" />
@@ -861,6 +863,7 @@
     <Content Include="Views\Campaign\Index.cshtml" />
     <Content Include="Views\Campaign\_AssociateTeams.cshtml" />
     <Content Include="Views\Quiz\_EpisodeComplete.cshtml" />
+    <Content Include="Views\ReportAdmin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\MessageControllerBase\" />
