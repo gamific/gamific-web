@@ -73,6 +73,7 @@
     <Compile Include="Account\Repository\AccountDevicesRepository.cs" />
     <Compile Include="Account\Repository\AccountRepository.cs" />
     <Compile Include="Account\Repository\UserProfileRepository.cs" />
+    <Compile Include="Firm\Domain\EmailLogEntity.cs" />
     <Compile Include="Firm\Domain\GenericEntity.cs" />
     <Compile Include="Firm\Domain\JsonPropertyAttribute.cs" />
     <Compile Include="Firm\Domain\ParamEntity.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Firm\DTO\MetricDTO.cs" />
     <Compile Include="Firm\DTO\EngineTeamDTO.cs" />
     <Compile Include="Firm\DTO\WorkerTypeMetricDTO.cs" />
+    <Compile Include="Firm\Repository\EmailLogRepository.cs" />
     <Compile Include="Firm\Repository\GenericRepository.cs" />
     <Compile Include="Firm\Repository\IGenericRepository.cs" />
     <Compile Include="Firm\Repository\ParamRepository.cs" />

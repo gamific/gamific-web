@@ -330,6 +330,7 @@
     <Compile Include="Controllers\Management\TeamController.cs" />
     <Compile Include="Controllers\Public\IndividualResultsController.cs" />
     <Compile Include="Controllers\Management\VideoQuestionController.cs" />
+    <Compile Include="Controllers\Util\EmailSender.cs" />
     <Compile Include="Controllers\Util\ScriptsMigration.cs" />
     <Compile Include="Controllers\Util\ToastMessage.cs" />
     <Compile Include="Controllers\Util\Toastr.cs" />

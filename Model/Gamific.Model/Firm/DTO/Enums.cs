@@ -65,7 +65,10 @@ namespace Vlast.Gamific.Model.Firm.DTO
         fa_hospital_o,
 
         [Display(Name = "ambulancia")]
-        fa_ambulance
+        fa_ambulance,
+
+        [Display(Name = "porcentagem")]
+        fa_percent
     }
 
     public enum Params
