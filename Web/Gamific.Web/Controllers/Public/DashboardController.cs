@@ -747,26 +747,44 @@ namespace Vlast.Gamific.Web.Controllers.Public
         public ActionResult SearchPlayers(string teamId)
         {
             List<SelectListItem> workersList = new List<SelectListItem>();
+
             if (teamId != "empty")
             {
-                GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId);
                 TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
-
-                List<string> externalIds = (from run in all.List.run where run.PlayerId != team.MasterPlayerId select run.PlayerId).ToList();
-
-                List<WorkerDTO> workers = WorkerRepository.Instance.GetDTOFromListExternalId(externalIds);
-
-                workersList = (from worker in workers
-                                                    select new SelectListItem
-                                                    {
-                                                        Value = worker.ExternalId,
-                                                        Text = worker.Name
-                                                    }).ToList();
+                workersList = team.SubTeams != null ? GetPlayersBySubTeam(teamId) : GetPlayersBySubTeam(teamId, false);   
             }
 
             return Json(JsonConvert.SerializeObject(workersList.OrderBy(x => x.Text).ToList()), JsonRequestBehavior.AllowGet);
         }
 
+        private List<SelectListItem> GetPlayersBySubTeam(string teamId, bool withTeamName = true)
+        {
+            List<SelectListItem> playerList = new List<SelectListItem>();
+
+            GetAllDTO all = RunEngineService.Instance.GetRunsByTeamId(teamId);
+            TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
+
+            List<string> Ids = (from run in all.List.run where run.PlayerId != team.MasterPlayerId select run.PlayerId).ToList();
+
+            List<WorkerDTO> w = WorkerRepository.Instance.GetDTOFromListExternalId(Ids);
+
+            playerList.AddRange(from worker in w
+                                select new SelectListItem
+                                {
+                                    Value = worker.ExternalId,
+                                    Text = withTeamName ? worker.Name + " - " + team.Nick : worker.Name
+                                });
+
+            if(team.SubTeams != null)
+            {
+                foreach (string tId in team.SubTeams)
+                {
+                    playerList.AddRange(GetPlayersBySubTeam(tId));
+                }
+            }
+
+            return playerList.OrderBy(x => x.Value).OrderBy(x => x.Text).ToList();
+        }
 
         /// <summary>
         /// Busca os episodios
