@@ -1020,6 +1020,57 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return PartialView("_Edit", runMetric);
         }
 
+        [Route("detalhesCheckin/{episodeId}/{metricId}/{teamId}/{playerId}")]
+        public ActionResult DetailsCheckin(string episodeId, string metricId, string teamId, string playerId)
+        {
+
+            List<RunEngineDTO> runners = new List<RunEngineDTO>();
+
+            if (playerId != "empty") {
+                RunEngineDTO runner = RunEngineService.Instance.GetByEpisodeIdAndPlayerId(episodeId, playerId);
+
+                runners.Add(runner);
+            } else {
+                runners = GetRunsByTeamIdRecursive(teamId);
+            }
+
+            MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
+
+            List<LocationDTO> locations = MetricEngineService.Instance.MapPointsByRunsAndMetric(runners, metric);
+
+            locations = new List<LocationDTO>();
+
+            LocationDTO teste = new LocationDTO();
+
+            teste.Lat = 45.9;
+            teste.Zoom = 8;
+            teste.Lon = 10.9;
+
+            locations.Add(teste);
+
+            ViewBag.EpisodeId = episodeId;
+            ViewBag.TeamId = teamId;
+            ViewBag.PlayerId = playerId;
+
+            if (playerId != "empty")
+            {
+                PlayerEngineDTO player = PlayerEngineService.Instance.GetById(playerId);
+                ViewBag.Name = player.Nick;
+            }
+            else if (teamId != "empty")
+            {
+                TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
+                ViewBag.Name = team.Nick;
+            }
+            else
+            {
+                EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
+                ViewBag.Name = episode.Name;
+            }
+
+            return View("DetailsCheckin", locations);
+        }
+
         ///<summary>
         ///Salvar edição de resultado
         ///</summary>

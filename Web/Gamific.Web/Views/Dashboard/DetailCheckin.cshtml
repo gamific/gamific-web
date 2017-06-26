@@ -1,51 +1,53 @@
 ﻿@model List<Vlast.Gamific.Web.Controllers.Public.Model.LocationDTO>
 
-@{
+    @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
+    }
 
-<body>
-    <script type="text/javascript">
-        $("#Dashboard").addClass("active");
-    </script>
+    <body>
+        <script type="text/javascript">
+            $("#Dashboard").addClass("active");
+        </script>
 
-    <input type="hidden" value="@ViewBag.EpisodeId" id="EpisodeId" />
-    <input type="hidden" value="@ViewBag.TeamId" id="TeamId" />
-    <input type="hidden" value="@ViewBag.PlayerId" id="PlayerId" />
-    <input type="hidden" value="@Model" id="Locations" />
+        <input type="hidden" value="@ViewBag.EpisodeId" id="EpisodeId" />
+        <input type="hidden" value="@ViewBag.TeamId" id="TeamId" />
+        <input type="hidden" value="@ViewBag.PlayerId" id="PlayerId" />
+        <input type="hidden" value="@Model" id="Locations" />
 
-    <div class="pageheader">
-        <h2>@ViewBag.Name</h2>
-        <br />
-        <br />
-        <small>
-            <a href="/public/dashboard/@ViewBag.EpisodeId/@ViewBag.TeamId/@ViewBag.PlayerId"><i class="fa fa-arrow-left"></i> Voltar</a>
-        </small>
-    </div>
-    <div class="main">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="tile transparent">
-                    <div class="tile-body color transparent-black rounded-corners">
-                        <div class="">
-                            <div id="controls"></div>
-                            <div id="gmap-menu"></div>
+        <div class="pageheader">
+            <h2>@ViewBag.Name</h2>
+            <br />
+            <br />
+            <small>
+                <a href="/public/dashboard/@ViewBag.EpisodeId/@ViewBag.TeamId/@ViewBag.PlayerId"><i class="fa fa-arrow-left"></i> Voltar</a>
+            </small>
+        </div>
+        <div class="main">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tile transparent">
+                        <div class="tile-body color transparent-black rounded-corners">
+                            <div class="">
+                                <div id="controls"></div>
+                                <div id="gmap-menu"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                        <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
+        <div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
 
-    <script src="~/Content/Js/app/dashboard.js" charset="iso-8859-1"></script>
+        <script src="https://maps.google.com/maps/api/js?sensor=false&libraries=geometry&v=3.22&key=AIzaSyDrHPr7QllVvwm4Xvi0Zw9QpjWOWJeDmR8"></script>
 
-    <script>
-        loadMaplace($('#Locations').val());
-    </script>
-</body>
+        <script src="~/Content/Js/app/dashboard.js" charset="iso-8859-1"></script>
+
+        <script>
+            loadMaplace($('#Locations').val());
+        </script>
+    </body>
