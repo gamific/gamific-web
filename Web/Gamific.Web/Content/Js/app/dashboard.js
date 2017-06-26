@@ -208,16 +208,16 @@ function loadMetricList() {
             var metrics = JSON.parse(data);
 
             $('#metrics').empty();
-           
+
             var metricBox =
                   " <ul class='list-unstyled metric-menu'>" +
                                         " <li class='title' >" +
                                              " <h5 style='font:15px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;'>Comparativo:</h5>" +
-                                        "   </li>" ;
+                                        "   </li>";
             var aux = "";
-            
+
             for (var i = 0; i < metrics.length; i++) {
-                
+
                 var metricBox2 =
                     "<li>" +
                     "<div>" +
@@ -229,9 +229,9 @@ function loadMetricList() {
                         "</label>" +
                     "</div>" +
                 "</li>";
-              
 
-               aux += ''  + metricBox2;
+
+                aux += '' + metricBox2;
             }
             metricBox = metricBox + aux + " </ul> ";
 
@@ -242,26 +242,26 @@ function loadMetricList() {
 
             $('#metricsBar').empty();
 
-             metricBox =
-                  " <ul class='list-unstyled metric-menu'>" +
-                                        " <li class='title' >" +
-                                             " <h5 style='font:15px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;'>Comparativo:</h5>" +
-                                        "   </li>";
-             aux = "";
+            metricBox =
+                 " <ul class='list-unstyled metric-menu'>" +
+                                       " <li class='title' >" +
+                                            " <h5 style='font:15px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;'>Comparativo:</h5>" +
+                                       "   </li>";
+            aux = "";
 
             for (var i = 0; i < metrics.length; i++) {
 
-                 metricBox2 =
-                    "<li>" +
-                    "<div>" +
-                        "<label>" +
-                            " <input style='width:14px !important; height:auto !important' type='checkbox' value='" + metrics[i].id + "' id='bar-" + metrics[i].id + "' class='checkbox-div barChart' onclick='loadBarChart();' / >" +
-                               "<span style='color:white; font-size:14px !important'>" +
-                                    metrics[i].name +
-                                "</span>" +
-                        "</label>" +
-                    "</div>" +
-                "</li>";
+                metricBox2 =
+                   "<li>" +
+                   "<div>" +
+                       "<label>" +
+                           " <input style='width:14px !important; height:auto !important' type='checkbox' value='" + metrics[i].id + "' id='bar-" + metrics[i].id + "' class='checkbox-div barChart' onclick='loadBarChart();' / >" +
+                              "<span style='color:white; font-size:14px !important'>" +
+                                   metrics[i].name +
+                               "</span>" +
+                       "</label>" +
+                   "</div>" +
+               "</li>";
 
                 aux += '' + metricBox2;
             }
@@ -339,38 +339,75 @@ function refreshCardResults(episodeId, teamId, playerId, itemId) {
 
                 var card = "";
 
-                card += "<div class='card-container col-lg-3 col-md-3 col-sm-6'>"
-                                + "<div class='card " + color + " hover'>"
-                                + "<div class='front'> "
-                                + "<div class='media'>"
-                                + "<div class='media-body' style='text-overflow: ellipsis;width:100%; white-space:nowrap;'>"
-                                + "<span class='pull-left'>"
-                                + "<i class='fa " + cardResults[i].iconMetric + " media-object'></i>"
-                                + "</span>"
-                                + "<small style='padding-left: 5%;'>" + cardResults[i].metricName + "</small>"
-                                + "<h2 class='media-heading animate-number'>"
-                                + "<span id='" + cardResults[i].metricId + '-points' + "' class='media-heading animate-number' style='padding-left: 5%;'>"
-                                + "</span>"
-                                + "</h2>"
-                                + "</div>"
-                                + "</div>"
-                                + "<div class='progress-list'>"
-                                + "<div class='details'>"
-                                + "<div class='status pull-right bg-transparent-black-1'>"
-                                + "Meta: <span id='" + cardResults[i].metricId + "-goal'></span>"
-                                + "</div>"
-                                + "</div>"
-                                + "<div class='status pull-right bg-transparent-black-1'>"
-                                + "<span id='" + cardResults[i].metricId + "-percent' class='animate-number'>23</span>%"
-                                + "</div>"
-                                + "<div class='clearfix'></div>"
-                                + "<div id='a" + cardResults[i].metricId + "-bar' class='bar-prog'></div>"
-                                + "</div>"
-                                + "</div>"
-                                + "<div class='back'><a href='/public/dashboard/detalhes/" + episodeId + "/" + cardResults[i].metricId + "/" + teamId + "/" + playerId + "'><i class='fa " + icon + " fa-4x'></i><span>Detalhes</span></a>"
-                                + "</div>"
-                                + "</div>"
-                                + "</div>";
+                if (cardResults[i].metricName == "check-in") {
+                    card += "<div class='card-container col-lg-3 col-md-3 col-sm-6'>"
+                            + "<div class='card " + color + " hover'>"
+                            + "<div class='front'> "
+                            + "<div class='media'>"
+                            + "<div class='media-body' style='text-overflow: ellipsis;width:100%; white-space:nowrap;'>"
+                            + "<span class='pull-left'>"
+                            + "<i class='fa " + cardResults[i].iconMetric + " media-object'></i>"
+                            + "</span>"
+                            + "<small style='padding-left: 5%;'>" + cardResults[i].metricName + "</small>"
+                            + "<h2 class='media-heading animate-number'>"
+                            + "<span id='" + cardResults[i].metricId + '-points' + "' class='media-heading animate-number' style='padding-left: 5%;'>"
+                            + "</span>"
+                            + "</h2>"
+                            + "</div>"
+                            + "</div>"
+                            + "<div class='progress-list'>"
+                            + "<div class='details'>"
+                            + "<div class='status pull-right bg-transparent-black-1'>"
+                            + "Meta: <span id='" + cardResults[i].metricId + "-goal'></span>"
+                            + "</div>"
+                            + "</div>"
+                            + "<div class='status pull-right bg-transparent-black-1'>"
+                            + "<span id='" + cardResults[i].metricId + "-percent' class='animate-number'>23</span>%"
+                            + "</div>"
+                            + "<div class='clearfix'></div>"
+                            + "<div id='a" + cardResults[i].metricId + "-bar' class='bar-prog'></div>"
+                            + "</div>"
+                            + "</div>"
+                            + "<div class='back'><a href='/public/dashboard/detalhesCheckin/" + episodeId + "/" + cardResults[i].metricId + "/" + teamId + "/" + playerId + "'><i class='fa " + icon + " fa-4x'></i><span>Detalhes</span></a>"
+                            + "</div>"
+                            + "</div>"
+                            + "</div>";
+                } else {
+                    card += "<div class='card-container col-lg-3 col-md-3 col-sm-6'>"
+                            + "<div class='card " + color + " hover'>"
+                            + "<div class='front'> "
+                            + "<div class='media'>"
+                            + "<div class='media-body' style='text-overflow: ellipsis;width:100%; white-space:nowrap;'>"
+                            + "<span class='pull-left'>"
+                            + "<i class='fa " + cardResults[i].iconMetric + " media-object'></i>"
+                            + "</span>"
+                            + "<small style='padding-left: 5%;'>" + cardResults[i].metricName + "</small>"
+                            + "<h2 class='media-heading animate-number'>"
+                            + "<span id='" + cardResults[i].metricId + '-points' + "' class='media-heading animate-number' style='padding-left: 5%;'>"
+                            + "</span>"
+                            + "</h2>"
+                            + "</div>"
+                            + "</div>"
+                            + "<div class='progress-list'>"
+                            + "<div class='details'>"
+                            + "<div class='status pull-right bg-transparent-black-1'>"
+                            + "Meta: <span id='" + cardResults[i].metricId + "-goal'></span>"
+                            + "</div>"
+                            + "</div>"
+                            + "<div class='status pull-right bg-transparent-black-1'>"
+                            + "<span id='" + cardResults[i].metricId + "-percent' class='animate-number'>23</span>%"
+                            + "</div>"
+                            + "<div class='clearfix'></div>"
+                            + "<div id='a" + cardResults[i].metricId + "-bar' class='bar-prog'></div>"
+                            + "</div>"
+                            + "</div>"
+                            + "<div class='back'><a href='/public/dashboard/detalhes/" + episodeId + "/" + cardResults[i].metricId + "/" + teamId + "/" + playerId + "'><i class='fa " + icon + " fa-4x'></i><span>Detalhes</span></a>"
+                            + "</div>"
+                            + "</div>"
+                            + "</div>";
+                }
+
+
 
 
                 var id_card = "#div-cards-" + k;
@@ -802,6 +839,15 @@ function onFailureSaveFilter(data) {
 
 }
 
+function loadMaplace(locs) {
+    new Maplace({
+        locations: locs,
+        map_div: '#gmap-menu',
+        controls_type: 'list',
+        controls_on_map: false
+    }).Load();
+}
+
 function loadBarChart() {
 
     $('#bar-chart').empty();
@@ -831,7 +877,7 @@ function loadBarChart() {
 
     $.ajax({
         url: "/public/dashboard/loadBarChart",
-        data: { metricsIds: metricsIds, teamId: teamId, workerId:workerId, campaignId:campaignId },
+        data: { metricsIds: metricsIds, teamId: teamId, workerId: workerId, campaignId: campaignId },
         async: false,
         type: "POST",
         success: function (data) {
