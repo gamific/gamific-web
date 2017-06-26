@@ -38,8 +38,8 @@ namespace Vlast.Gamific.Web
                 BundleTable.EnableOptimizations = true;
             }
 
-            //rankingJob.Init(new TimeSpan(13, 16, 0));
-            //e.Init(new TimeSpan(7, 0, 0));
+           // rankingJob.Init(new TimeSpan(13, 30, 0));
+           // e.Init(new TimeSpan(8, 0, 0));
 
             //ScriptsMigration.MigrationEmailToEngine();
 
