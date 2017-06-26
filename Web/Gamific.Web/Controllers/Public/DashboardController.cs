@@ -814,7 +814,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             List<TeamEngineDTO> teams = new List<TeamEngineDTO>();
 
-            foreach(string subTeamNull in subTeamsNull)
+            foreach (string subTeamNull in subTeamsNull)
             {
                 teams.AddRange(OrganizeHierarchy(all.List.team, subTeamNull));
             }
@@ -939,8 +939,18 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [Route("detalhesCheckin/{episodeId}/{metricId}/{teamId}/{playerId}")]
         public ActionResult DetailsCheckin(string episodeId, string metricId, string teamId, string playerId)
         {
-            MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
-            metric.Icon = metric.Icon.Replace("_", "-");
+
+            List<LocationDTO> locations = MetricEngineService.Instance.MapPointsByRunsAndMetric(metricId);
+
+            List<LocationDTO> locations = new List<LocationDTO>();
+
+            LocationDTO teste = new LocationDTO();
+
+            teste.Lat = 45.9;
+            teste.Zoom = 8;
+            teste.Lon = 10.9;
+
+            locations.Add(teste);
 
             ViewBag.EpisodeId = episodeId;
             ViewBag.TeamId = teamId;
@@ -962,7 +972,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 ViewBag.Name = episode.Name;
             }
 
-            return View("DetailsCheckin", metric);
+            return View("DetailsCheckin", locations);
         }
 
         /// <summary>

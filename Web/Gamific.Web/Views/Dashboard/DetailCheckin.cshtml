@@ -1,4 +1,4 @@
-﻿@model Vlast.Gamific.Web.Services.Engine.DTO.MetricEngineDTO
+﻿@model List<Vlast.Gamific.Web.Controllers.Public.Model.LocationDTO>
 
 @{
     ViewBag.Title = "Index";
@@ -13,16 +13,14 @@
     <input type="hidden" value="@ViewBag.EpisodeId" id="EpisodeId" />
     <input type="hidden" value="@ViewBag.TeamId" id="TeamId" />
     <input type="hidden" value="@ViewBag.PlayerId" id="PlayerId" />
-    <input type="hidden" value="@Model.Id" id="MetricId" />
+    <input type="hidden" value="@Model" id="Locations" />
 
     <div class="pageheader">
         <h2>@ViewBag.Name</h2>
         <br />
-        <h2><i class="fa @Model.Icon"></i> Detalhes da métrica: @Model.Name</h2>
         <br />
         <small>
             <a href="/public/dashboard/@ViewBag.EpisodeId/@ViewBag.TeamId/@ViewBag.PlayerId"><i class="fa fa-arrow-left"></i> Voltar</a>
-            <!--<a href="/public/dashboard/"><i class="fa fa-arrow-left"></i> Voltar</a>-->
         </small>
     </div>
     <div class="main">
@@ -31,19 +29,8 @@
                 <div class="tile transparent">
                     <div class="tile-body color transparent-black rounded-corners">
                         <div class="">
-                            <table id="MetricResultsDataTable" class="table table-striped" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th>Data</th>
-                                        <th>Nome</th>
-                                        <th>Email</th>
-                                        <th>Item</th>
-                                        <th>Resultado</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                            <div id="controls"></div>
+                            <div id="gmap-menu"></div>
                         </div>
                     </div>
                     <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
@@ -57,4 +44,8 @@
     <div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
 
     <script src="~/Content/Js/app/dashboard.js" charset="iso-8859-1"></script>
+
+    <script>
+        loadMaplace($('#Locations').val());
+    </script>
 </body>

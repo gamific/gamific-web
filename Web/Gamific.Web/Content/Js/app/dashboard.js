@@ -839,6 +839,15 @@ function onFailureSaveFilter(data) {
 
 }
 
+function loadMaplace(locs) {
+    new Maplace({
+        locations: locs,
+        map_div: '#gmap-menu',
+        controls_type: 'list',
+        controls_on_map: false
+    }).Load();
+}
+
 function loadBarChart() {
 
     $('#bar-chart').empty();
