@@ -65,12 +65,12 @@ namespace Vlast.Gamific.Web.Controllers.Management
             List<UserProfileEntity> userProfileEntitys = UserProfileRepository.Instance.GetUsersByDate(initDate, finishDate);
 
 
-            if (gameId != null || gameId != "")
+            if (gameId == null || gameId == "" || gameId == "------")
             {
                 
 
                 string util = "<table>";
-                util = util + "<tr> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> </tr>";
+                util = util + "<tr class='bg-transparent-black-5'> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> </tr>";
                 foreach (UserProfileEntity userProfileEntity in userProfileEntitys)
                 {
                     util = util + "<tr>";
@@ -140,10 +140,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
             else
             {
                 string util = "<table>";
-                util = util + "<tr> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> </tr>";
+                util = util + "<tr class='bg-transparent-black-5'> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> </tr>";
                 foreach (UserProfileEntity userProfileEntity in userProfileEntitys)
                 {
-                    util = util + "<tr>";
+                    GameEngineDTO game = null;
                     PlayerEngineDTO player = null;
                     AccountDevicesEntity device = null;
                     bool token = true;
@@ -154,6 +154,19 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     catch (Exception ex)
                     {
                         token = false;
+                        continue;
+                    }
+                    if (token)
+                    {
+                        try
+                        {
+                            game = GameEngineService.Instance.GetById(player.GameId, player.Email);
+                        }
+                        catch (Exception ex)
+                        {
+                           
+                        }
+                        
                     }
 
                     try
@@ -164,45 +177,48 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     {
                         device = null;
                     }
-
-
-                    util = util + "<th>" + userProfileEntity.Name + "</th>";
-                    util = util + "<th>" + userProfileEntity.Email + "</th>";
-
-                    if (token)
+                    if(gameId == game.Id)
                     {
-                        GameEngineDTO game = GameEngineService.Instance.GetById(player.GameId, player.Email);
-                        util = util + "<th>" + game.Name + "</th>";
+                        util = util + "<tr>";
+
+                        util = util + "<th>" + userProfileEntity.Name + "</th>";
+                        util = util + "<th>" + userProfileEntity.Email + "</th>";
+
+                        if (token)
+                        {
+                            util = util + "<th>" + game.Name + "</th>";
+                        }
+                        else
+                        {
+                            util = util + "<th>" + "------" + "</th>";
+                        }
+
+
+                        try
+                        {
+                            util = util + "<th>" + AccountRepository.Instance.FindByUserName(player.Email).LastUpdate + "</th>";
+                        }
+                        catch (Exception ex)
+                        {
+                            util = util + "<th>" + "--------" + "</th>";
+                        }
+
+
+
+                        try
+                        {
+                            util = util + "<th>" + device.Last_Update + "</th>";
+                        }
+                        catch (Exception ex)
+                        {
+                            util = util + "<th>" + "-----" + "</th>";
+                        }
+
+
+
+                        util = util + "</tr>";
                     }
-                    else
-                    {
-                        util = util + "<th>" + "------" + "</th>";
-                    }
-
-
-                    try
-                    {
-                        util = util + "<th>" + AccountRepository.Instance.FindByUserName(player.Email).LastUpdate + "</th>";
-                    }
-                    catch (Exception ex)
-                    {
-                        util = util + "<th>" + "--------" + "</th>";
-                    }
-
-
-
-                    try
-                    {
-                        util = util + "<th>" + device.Last_Update + "</th>";
-                    }
-                    catch (Exception ex)
-                    {
-                        util = util + "<th>" + "-----" + "</th>";
-                    }
-
-
-
-                    util = util + "</tr>";
+                    
                 }
 
                 return util;

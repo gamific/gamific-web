@@ -17,7 +17,8 @@ function isEmpty() {
     $('#div-tableUsers').append(data);
 }
 
-function tableUsers(initDate, finishDate, gameId) {
+function createTable(initDate, finishDate, gameId) {
+    
     if (initDate != null && initDate != "" && finishDate != null && finishDate != "") {
         searchTable();
     $.ajax({
@@ -45,9 +46,13 @@ function DropDownGame() {
         success: function (data) {
             var empresas = JSON.parse(data);
 
+            var html = "";
+            $("#dropDownGame").append("<option value='" + "------" + "'>" + "Todas" + "</option>");
             for (var i = 0; i < empresas.length; i++) {
-                $("#dropDownGame").append($("<option value='" + empresas[i].ExternalId + " >" + empresas[i].FirmName + "</option>"));
+                $("#dropDownGame").append("<option value='" + empresas[i].externalId + "'>" + empresas[i].firmName + "</option>");
             }
+
+            $("#dropDownGame").append(html);
 
             
         }

@@ -9,55 +9,44 @@
     $("#ReportAdmin").addClass("active");
 </script>
 
+
 <div>
     <div class="pageheader">
         <h2><i class="fa fa-folder-open-o"></i> Contra Relatorio</h2>
     </div>
-
     <div class="main">
         <div class="row">
-
-                <div class="col-md-3">
-                    
-                
-                    <select class="chosen-select chosen-transparent form-control" id="dropDownGame"></select>
-                </div>
-
-             
-            <div class="col-md-7">
-
-                <p>Date Inicial: <input type="text" id="initDate">  Date final: <input type="text" id="finishDate"> </p>
-
- 
-            </div>
-            <div class="col-md-2">
-
-                <div id="archiveButtonDiv" class="table-toolbar-left">
-                    <a id="archiveButton" class="btn btn-default sing-up-button" onclick="tableUsers($('#initDate').val(), $('#finishDate').val(), $('#dropDownGame').val())">Pesquisar</a>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-md-12">
-                
-                <section class="tile bg-transparent-black-05">
-                    <div class="tile-body color transparent-black rounded-bottom-corners nopadding">
-                        <div id="div-tableUsers">
-
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div class="row">
+                            <div id="" style="margin-top:26px" class="col-md-2 "><!--table-toolbar-left -->
+                                <button id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" onclick="createTable($('#initDate').val(), $('#finishDate').val(), $('#dropDownGame').val())">Pesquisar</button>
+                            </div>
+                            <div class="col-md-3">
+                                <p>Date Inicial:</p> <input style="color: #000" type="text" id="initDate"/> 
+                            </div>
+                            <div class="col-md-3">
+                                <p>Date final:</p>  <input style="color: #000" type="text" id="finishDate"/> 
+                            </div>
+                            <div class="col-md-4">
+                                <p>Empresas:</p>  <select class="chosen-select chosen-transparent form-control" id="dropDownGame"></select>
+                            </div>
                         </div>
                     </div>
-                </section>
-
-
-
+                    <div class="bg-transparent-black-3 tile-footer border-top color white rounded-bottom-corners nopadding">
+                        <div id="div-tableUsers" class=""></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-
 </div>
+
+
+
+
+
 
 <script type="text/javascript">
 

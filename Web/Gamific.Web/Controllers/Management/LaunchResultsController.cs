@@ -1011,7 +1011,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     ItemEngineDTO item = new ItemEngineDTO
                     {
                         GameId = gameId,
-                        Name = row[5].ToString().Trim()
+                        Name = row[5].ToString().Trim().Replace('&', 'e')
                     };
 
                     try
@@ -1044,6 +1044,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             result.RunId = run.Id;
                             result.PlayerId = worker.ExternalId;
                             result.ItemId = item.Id;
+                            result.ItemName = item.Name;
 
                             RunMetricEngineService.Instance.CreateOrUpdate(result);
                         }
