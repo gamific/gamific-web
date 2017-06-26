@@ -31,6 +31,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [Route("")]
         public ActionResult Index(int state = 1)
         {
+
             episodesFilter = new List<EpisodeEngineDTO>();
             GetAllDTO all = EpisodeEngineService.Instance.GetByGameIdAndActive(CurrentFirm.ExternalId, 1);
 
@@ -807,7 +808,37 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             GetAllDTO all = TeamEngineService.Instance.FindByEpisodeId(episodeId);
 
-            return Json(JsonConvert.SerializeObject(all.List.team.OrderBy(x => x.Nick).ToList()), JsonRequestBehavior.AllowGet);
+            all.List.team = all.List.team.OrderBy(x => x.Nick).ToList();
+
+            List<string> subTeamsNull = all.List.team.Where(x => x.SubOfTeamId == null).Select(x => x.Id).ToList();
+
+            List<TeamEngineDTO> teams = new List<TeamEngineDTO>();
+
+            foreach(string subTeamNull in subTeamsNull)
+            {
+                teams.AddRange(OrganizeHierarchy(all.List.team, subTeamNull));
+            }
+
+            return Json(JsonConvert.SerializeObject(teams), JsonRequestBehavior.AllowGet);
+        }
+
+        private List<TeamEngineDTO> OrganizeHierarchy(List<TeamEngineDTO> teamList, string next, string hifens = "")
+        {
+            List<TeamEngineDTO> list = new List<TeamEngineDTO>();
+
+            TeamEngineDTO t = teamList.Where(x => x.Id == next).FirstOrDefault();
+            t.Nick = hifens + t.Nick;
+
+            list.Add(t);
+
+            hifens += " - ";
+
+            foreach (TeamEngineDTO team in teamList.Where(x => x.SubOfTeamId == next))
+            {
+                list.AddRange(OrganizeHierarchy(teamList, team.Id, hifens));
+            }
+
+            return list;
         }
 
         /// <summary>
@@ -843,7 +874,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
                 else if (teamId != "empty" && teamId != "")
                 {
-                    results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId, itemId);
+                    results = CardEngineService.Instance.TeamHierarchy(teamId, itemId);
+                    //results = CardEngineService.Instance.Team(CurrentFirm.ExternalId, teamId, itemId);
                 }
                 else
                 {
@@ -959,7 +991,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
 
                 List<WorkerDTO> workers = all.List == null ? new List<WorkerDTO>() : WorkerRepository.Instance.GetWorkerDTOByListExternalId(all.List.runMetric.Select(i => i.PlayerId).ToList());
-                GetAllDTO itens = ItemEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 1000, 0);
+                GetAllDTO itens = ItemEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 1000);
 
 
                 if (all.List != null)

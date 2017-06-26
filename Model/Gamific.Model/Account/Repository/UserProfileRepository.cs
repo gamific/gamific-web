@@ -85,6 +85,22 @@ namespace Vlast.Gamific.Model.Account.Repository
                 return query.ToList();
             }
         }
+        /// <summary>
+        /// Recupera todas as informações de um user profile
+        /// </summary>
+        /// <param name="userProfileId"></param>
+        /// <returns></returns>
+        public List<UserProfileEntity> GetUsersByDate(DateTime initDate, DateTime finishDate)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var query = from sc in context.Profiles
+                            where sc.LastUpdate >= initDate && sc.LastUpdate <= finishDate
+                            select sc;
+
+                return query.ToList();
+            }
+        }
 
         public UserProfileEntity GetByEmail(string email)
         {
