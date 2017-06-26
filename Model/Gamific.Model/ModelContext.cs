@@ -74,6 +74,8 @@ namespace Vlast.Gamific.Model
 
         public DbSet<AccountDevicesEntity> AccountDevices { get; set; }
 
+        public DbSet<EmailLogEntity> EmailLogs { get; set; }
+
         #endregion
 
         internal static int DEFAULT_PAGE_SIZE = 100;

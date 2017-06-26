@@ -140,9 +140,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 {
                     if(checkBox.Checked && !workerTypeMetrics.Contains(checkBox.Value))
                     {
+                        WorkerTypeMetricEntity wtm = 
                         WorkerTypeMetricRepository.Instance.CreateWorkerTypeMetric(new WorkerTypeMetricEntity
                         {
-                            MetricExternalId = metric.Id,
+                            MetricExternalId = newMetric.Id,
                             Status = GenericStatus.ACTIVE,
                             UpdatedBy = CurrentUserId,
                             WorkerTypeId = checkBox.Value
@@ -180,10 +181,26 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 notFilled.Add("icone");
             }
-            if (metric.Multiplier == 0 || metric.Multiplier == null)
+            if ( metric.Multiplier == null)
             {
                 notFilled.Add("peso");
             }
+
+            if (metric.Xp == null)
+            {
+                notFilled.Add("xp");
+            }
+
+            if (metric.Floor == null)
+            {
+                notFilled.Add("limite inferior");
+            }
+
+            if (metric.Ceiling == null)
+            {
+                notFilled.Add("limite superior");
+            }
+
             if (metric.Name == "" || metric.Name == null)
             {
                 notFilled.Add("nome");
