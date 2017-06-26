@@ -309,6 +309,7 @@
     <Compile Include="Controllers\Public\MobileApiController.cs" />
     <Compile Include="Controllers\Public\AboutController.cs" />
     <Compile Include="Controllers\Public\DashboardController.cs" />
+    <Compile Include="Controllers\Public\Model\LocationDTO.cs" />
     <Compile Include="Controllers\Public\Model\LinePointDTO.cs" />
     <Compile Include="Controllers\Public\Model\LineDTO.cs" />
     <Compile Include="Controllers\Public\Model\BarPointDTO.cs" />
@@ -351,6 +352,7 @@
     <Compile Include="Services\Account\DTO\NewRequest.cs" />
     <Compile Include="Services\Account\DTO\ResetPwdRequest.cs" />
     <Compile Include="Services\Account\TokenHandler\JWTHandler.cs" />
+    <Compile Include="Services\Engine\DTO\LocationParamDTO.cs" />
     <Compile Include="Services\Engine\DTO\ChartParamDTO.cs" />
     <Compile Include="Services\Engine\DTO\CardEngineDTO.cs" />
     <Compile Include="Services\Engine\CardEngineService.cs" />
@@ -675,6 +677,7 @@
       <DependentUpon>jquery.videobackground.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\lib\langs\pt_BR.js" />
+    <Content Include="Content\Js\lib\maplace.min.js" />
     <Content Include="Content\Js\lib\minimal.min.js" />
     <Content Include="Content\Js\lib\moment.js" />
     <Content Include="Content\Js\lib\moment.min.js">

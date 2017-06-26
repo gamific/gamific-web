@@ -998,9 +998,9 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             LocationDTO teste = new LocationDTO();
 
-            teste.Lat = 45.9;
+            teste.Latitude = 45.9;
             teste.Zoom = 8;
-            teste.Lon = 10.9;
+            teste.Longitude = 10.9;
 
             locations.Add(teste);
 
@@ -1024,7 +1024,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 ViewBag.Name = episode.Name;
             }
 
-            return View("DetailsCheckin", locations);
+            return View("DetailCheckin", locations);
         }
 
         ///<summary>
