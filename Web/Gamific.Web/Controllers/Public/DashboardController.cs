@@ -588,7 +588,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
                 else
                 {
-                    List<RunEngineDTO> runnersObj = RunEngineService.Instance.GetRunsByTeamId(teamId).List.run;
+                    List<RunEngineDTO> runnersObj = GetRunsByTeamIdRecursive(teamId);
 
                     foreach (RunEngineDTO run in runnersObj)
                     {
@@ -674,69 +674,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return Content(JsonConvert.SerializeObject(linesDTO), "application/json");
         }
 
-        /*
-        [Route("loadChart/{metricId}")]
-        [HttpGet]
-        public ContentResult GetChartResults(string metricId)
-        {
-            ChartResultDTO chartDTO = new ChartResultDTO();
-
-            chartDTO.Positions = new List<List<int>>();
-
-            MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
-
-            List<EpisodeEngineDTO> episodes = EpisodeEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 8).List.episode;
-
-            int i = 0;
-
-            foreach (EpisodeEngineDTO episode in episodes)
-            {
-                List<int> point = new List<int>();
-                
-                List<CardEngineDTO> results = new List<CardEngineDTO>();
-                List<GoalDTO> goals = new List<GoalDTO>();
-                results.Add(CardEngineService.Instance.EpisodeAndMetric(episode.Id, metric.Id));
-                goals = GoalRepository.Instance.GetByEpisodeId(episode.Id);
-                long playersCount = EpisodeEngineService.Instance.GetCountPlayersByEpisodeId(episode.Id);
-
-                results   = (from result in results
-                        join goal in goals
-                        on result.MetricId equals goal.ExternalMetricId into rg
-                        from resultGoal in rg.DefaultIfEmpty()
-                        select new CardEngineDTO
-                        {
-                            IconMetric = result.IconMetric.Replace("_", "-"),
-                            MetricId = result.MetricId,
-                            MetricName = result.MetricName,
-                            TotalPoints = result.TotalPoints,
-                            Goal = (resultGoal != null ? CalculatesGoal(resultGoal.Goal, playersCount, result.IsAverage) : 0),
-                            PercentGoal = (resultGoal != null && resultGoal.Goal != 0 ? CalculatesPercentGoal(resultGoal.Goal, result.TotalPoints, playersCount, result.IsAverage, result.IsInverse) : 0),
-                            IsAverage = result.IsAverage
-                        }).ToList();
-
-                int resultInt = 0;
-
-                if (results != null)
-                {
-                    foreach (CardEngineDTO result in results)
-                    {
-                        resultInt += result.TotalPoints;
-                    }
-                }
-
-                point.Add(i);
-                point.Add(resultInt);
-                chartDTO.Positions.Add(point);
-                i++;
-            }
-
-            chartDTO.MetricName = metric.Name;
-
-            return Content(JsonConvert.SerializeObject(chartDTO), "application/json");
-        }
-        */
-
-
+       
 
         /// <summary>
         /// Busca os jogadores de um time
@@ -755,6 +693,24 @@ namespace Vlast.Gamific.Web.Controllers.Public
             }
 
             return Json(JsonConvert.SerializeObject(workersList.OrderBy(x => x.Text).ToList()), JsonRequestBehavior.AllowGet);
+        }
+
+        private List<RunEngineDTO> GetRunsByTeamIdRecursive(string teamId)
+        {
+            List<RunEngineDTO> runList = new List<RunEngineDTO>();
+
+            runList.AddRange(RunEngineService.Instance.GetRunsByTeamId(teamId).List.run);
+            TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
+
+            if (team.SubTeams != null)
+            {
+                foreach (string id in team.SubTeams)
+                {
+                    runList.AddRange(GetRunsByTeamIdRecursive(id));
+                }
+            }
+
+            return runList;
         }
 
         private List<SelectListItem> GetPlayersBySubTeam(string teamId, bool withTeamName = true)
@@ -1018,6 +974,57 @@ namespace Vlast.Gamific.Web.Controllers.Public
             RunMetricEngineDTO runMetric = RunMetricEngineService.Instance.GetById(runMetricId);
 
             return PartialView("_Edit", runMetric);
+        }
+
+        [Route("detalhesCheckin/{episodeId}/{metricId}/{teamId}/{playerId}")]
+        public ActionResult DetailsCheckin(string episodeId, string metricId, string teamId, string playerId)
+        {
+
+            List<RunEngineDTO> runners = new List<RunEngineDTO>();
+
+            if (playerId != "empty") {
+                RunEngineDTO runner = RunEngineService.Instance.GetByEpisodeIdAndPlayerId(episodeId, playerId);
+
+                runners.Add(runner);
+            } else {
+                runners = GetRunsByTeamIdRecursive(teamId);
+            }
+
+            MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
+
+            List<LocationDTO> locations = MetricEngineService.Instance.MapPointsByRunsAndMetric(runners, metric);
+
+            locations = new List<LocationDTO>();
+
+            LocationDTO teste = new LocationDTO();
+
+            teste.Lat = 45.9;
+            teste.Zoom = 8;
+            teste.Lon = 10.9;
+
+            locations.Add(teste);
+
+            ViewBag.EpisodeId = episodeId;
+            ViewBag.TeamId = teamId;
+            ViewBag.PlayerId = playerId;
+
+            if (playerId != "empty")
+            {
+                PlayerEngineDTO player = PlayerEngineService.Instance.GetById(playerId);
+                ViewBag.Name = player.Nick;
+            }
+            else if (teamId != "empty")
+            {
+                TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
+                ViewBag.Name = team.Nick;
+            }
+            else
+            {
+                EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
+                ViewBag.Name = episode.Name;
+            }
+
+            return View("DetailsCheckin", locations);
         }
 
         ///<summary>

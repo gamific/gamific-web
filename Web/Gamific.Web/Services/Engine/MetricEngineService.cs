@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
+using Vlast.Gamific.Web.Controllers.Public.Model;
 using Vlast.Gamific.Web.Services.Engine.DTO;
 using Vlast.Util.Instrumentation;
 
@@ -109,6 +110,30 @@ namespace Vlast.Gamific.Web.Services.Engine
                 throw e;
             }
         }
+
+        public List<LocationDTO> MapPointsByRunsAndMetric(List<RunEngineDTO> runners, MetricEngineDTO metric)
+        {
+            using (WebClient client = GetClient())
+            {
+                try
+                {
+
+                    LocationParamDTO dto = new LocationParamDTO();
+
+                    dto.Metrics = metric;
+                    dto.Runners = runners;
+
+                    string response = client.UploadString(ENGINE_API + "mapPointsByRunsAndMetric", "POST", JsonSerialize(ref dto));
+
+                    return JsonDeserialize<List<LocationDTO>>(response);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
+
         #endregion
     }
 }
