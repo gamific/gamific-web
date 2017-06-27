@@ -339,7 +339,7 @@ function refreshCardResults(episodeId, teamId, playerId, itemId) {
 
                 var card = "";
 
-                if (cardResults[i].metricName == "check-in") {
+                if (cardResults[i].metricName == "Check-In") {
                     card += "<div class='card-container col-lg-3 col-md-3 col-sm-6'>"
                             + "<div class='card " + color + " hover'>"
                             + "<div class='front'> "

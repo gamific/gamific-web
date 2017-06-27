@@ -65,7 +65,7 @@ namespace Vlast.Gamific.Model.Firm.Repository
                         orderby sc.Id ascending
                         select sc;
 
-            return query.ToList();
+            return query.OrderBy(x => x.FirmName).ToList();
         }
 
         /// <summary>

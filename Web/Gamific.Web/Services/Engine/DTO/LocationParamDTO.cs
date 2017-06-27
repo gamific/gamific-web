@@ -12,7 +12,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
     public class LocationParamDTO
     {
 
-        [JsonProperty("metrics")]
+        [JsonProperty("metric")]
         public MetricEngineDTO Metrics { get; set; }
 
         [JsonProperty("runners")]
