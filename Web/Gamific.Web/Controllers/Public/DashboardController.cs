@@ -75,7 +75,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         {
             GetAllDTO all = EpisodeEngineService.Instance.GetByGameIdAndActive(CurrentFirm.ExternalId, 1);
 
-            if(all.List.episode != null && all.List.episode.Count != 0)
+            if (all.List.episode != null && all.List.episode.Count != 0)
             {
                 ViewBag.Episodes = from ep in all.List.episode
                                    select new SelectListItem
@@ -224,8 +224,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
         public ActionResult GetMetrics(string episodeId)
         {
             List<MetricEngineDTO> metrics;
-            
-            if(episodeId != "empty")
+
+            if (episodeId != "empty")
             {
                 metrics = MetricEngineService.Instance.GetMetricsWithResultsByEpisodeId(episodeId);
 
@@ -622,8 +622,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             List<LineDTO> linesDTO = new List<LineDTO>();
 
-           
-
             foreach (string period in periods)
             {
 
@@ -635,7 +633,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 {
 
                     var query = from entrie in item.Entries
-                                where entrie.Name.Equals(period) 
+                                where entrie.Name.Equals(period)
                                 select new LinePointDTO
                                 {
                                     MetricName = item.Name,
@@ -649,24 +647,26 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         linePoint.Value = 0;
 
                         line.Points.Add(linePoint);
-                    } else
+                    }
+                    else
                     {
                         line.Points.Add(query.FirstOrDefault());
                     }
 
-                  
+
                 }
 
                 linesDTO.Add(line);
 
             }
 
-            foreach(LineDTO aux in  linesDTO)
+            foreach (LineDTO aux in linesDTO)
             {
                 aux.dateLong = Convert.ToDateTime(aux.Period).Ticks;
             }
 
-            var lineQuery = from line in linesDTO orderby line.dateLong
+            var lineQuery = from line in linesDTO
+                            orderby line.dateLong
                             select line;
 
             linesDTO = lineQuery.ToList();
@@ -674,7 +674,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             return Content(JsonConvert.SerializeObject(linesDTO), "application/json");
         }
 
-       
+
 
         /// <summary>
         /// Busca os jogadores de um time
@@ -689,7 +689,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             if (teamId != "empty")
             {
                 TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
-                workersList = team.SubTeams != null ? GetPlayersBySubTeam(teamId) : GetPlayersBySubTeam(teamId, false);   
+                workersList = team.SubTeams != null ? GetPlayersBySubTeam(teamId) : GetPlayersBySubTeam(teamId, false);
             }
 
             return Json(JsonConvert.SerializeObject(workersList.OrderBy(x => x.Text).ToList()), JsonRequestBehavior.AllowGet);
@@ -731,7 +731,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                     Text = withTeamName ? worker.Name + " - " + team.Nick : worker.Name
                                 });
 
-            if(team.SubTeams != null)
+            if (team.SubTeams != null)
             {
                 foreach (string tId in team.SubTeams)
                 {
@@ -786,7 +786,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             List<TeamEngineDTO> teams = new List<TeamEngineDTO>();
 
-            foreach(string subTeamNull in subTeamsNull)
+            foreach (string subTeamNull in subTeamsNull)
             {
                 teams.AddRange(OrganizeHierarchy(all.List.team, subTeamNull));
             }
@@ -854,7 +854,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                     results = CardEngineService.Instance.Episode(CurrentFirm.ExternalId, episodeId, itemId);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 results = new List<CardEngineDTO>();
             }
@@ -982,11 +982,14 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             List<RunEngineDTO> runners = new List<RunEngineDTO>();
 
-            if (playerId != "empty") {
+            if (playerId != "empty")
+            {
                 RunEngineDTO runner = RunEngineService.Instance.GetByEpisodeIdAndPlayerId(episodeId, playerId);
 
                 runners.Add(runner);
-            } else {
+            }
+            else
+            {
                 runners = GetRunsByTeamIdRecursive(teamId);
             }
 
@@ -994,19 +997,17 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             List<LocationDTO> locations = MetricEngineService.Instance.MapPointsByRunsAndMetric(runners, metric);
 
-            locations = new List<LocationDTO>();
-
-            LocationDTO teste = new LocationDTO();
-
-            teste.Latitude = 45.9;
-            teste.Zoom = 8;
-            teste.Longitude = 10.9;
-
-            locations.Add(teste);
+            foreach (LocationDTO location in locations)
+            {
+                location.Lat = location.Latitude;
+                location.Lon = location.Longitude;
+                location.Zoom = 8;
+            }
 
             ViewBag.EpisodeId = episodeId;
             ViewBag.TeamId = teamId;
             ViewBag.PlayerId = playerId;
+            ViewBag.Locations = Content(JsonConvert.SerializeObject(locations), "application/json");
 
             if (playerId != "empty")
             {
@@ -1024,7 +1025,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 ViewBag.Name = episode.Name;
             }
 
-            return View("DetailCheckin", locations);
+            return View("DetailCheckin");
         }
 
         ///<summary>

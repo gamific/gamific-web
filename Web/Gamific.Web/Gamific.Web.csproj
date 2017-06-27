@@ -868,6 +868,7 @@
     <Content Include="Views\Campaign\_AssociateTeams.cshtml" />
     <Content Include="Views\Quiz\_EpisodeComplete.cshtml" />
     <Content Include="Views\ReportAdmin\Index.cshtml" />
+    <Content Include="Views\Dashboard\DetailCheckin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\MessageControllerBase\" />

@@ -12,6 +12,13 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
         [JsonProperty("longitude")]
         public double Longitude { get; set; }
 
+        [JsonProperty("lat")]
+        public double Lat { get; set; }
+
+        [JsonProperty("lon")]
+        public double Lon { get; set; }
+
+        [JsonProperty("zoom")]
         public int Zoom { get; set; }
 
     }
