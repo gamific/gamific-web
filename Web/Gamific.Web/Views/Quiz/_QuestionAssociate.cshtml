@@ -28,6 +28,7 @@
                                         <tr>
                                             <th>Id</th>
                                             <th>Nome</th>
+                                            <th>Resposta</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -136,8 +137,8 @@
                 }
                 $.each(selecionado, function (indexFirst, valueFirs) {
                     $.each(listaSelecionados, function (indexSecond, valueSecond) {
-                        if (valueFirs[0] === valueSecond[0]) {
-                            $(idEtapa2).append('<li>' + valueSecond[0] + ' - ' + valueSecond[1] + '</li>');
+                        if (valueFirs === valueSecond[0]) {
+                            $(idEtapa2).append('<li>' + valueSecond[0] + ' - ' + valueSecond[1] + ' - ' + valueSecond[2] + '</li>');
                         }
                     })
                 });
