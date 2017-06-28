@@ -102,7 +102,7 @@
                 }
                 $.each(selecionado, function (indexFirst, valueFirs) {
                     $.each(listaSelecionados, function (indexSecond, valueSecond) {
-                        if (valueFirs[0] === valueSecond[0]) {
+                        if (valueFirs === valueSecond[0]) {
                             $(idEtapa2).append('<li>' + valueSecond[0] + ' - ' + valueSecond[1] + '</li>');
                         }
                     })
