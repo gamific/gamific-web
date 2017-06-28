@@ -991,19 +991,19 @@ namespace Vlast.Gamific.Web.Controllers.Public
             }
 
             MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
-
+            /*
             List<LocationDTO> locations = MetricEngineService.Instance.MapPointsByRunsAndMetric(runners, metric);
 
             locations = new List<LocationDTO>();
 
             LocationDTO teste = new LocationDTO();
-
+            
             teste.Lat = 45.9;
             teste.Zoom = 8;
             teste.Lon = 10.9;
 
             locations.Add(teste);
-
+            */
             ViewBag.EpisodeId = episodeId;
             ViewBag.TeamId = teamId;
             ViewBag.PlayerId = playerId;
@@ -1023,8 +1023,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 EpisodeEngineDTO episode = EpisodeEngineService.Instance.GetById(episodeId);
                 ViewBag.Name = episode.Name;
             }
-
+            /*
             return View("DetailsCheckin", locations);
+            */
+            return View();
         }
 
         ///<summary>
