@@ -11,6 +11,7 @@ using Vlast.Gamific.Web.Services.Push;
 using System.Threading;
 using System.Globalization;
 using Vlast.Gamific.Model.Firm.DTO;
+using Vlast.Gamific.Web.Services.Account.BIZ;
 
 namespace Vlast.Gamific.Web
 {

@@ -60,7 +60,7 @@ function loadWorkersDataTable() {
                 "orderable": false,
                 "render": function (data, type, row) {
                     var name = row[0].split(";")[0];
-                    var links = "<a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/funcionarios/editar/" + data + "' title='Editar Funcionário.'> </a> &nbsp; <a class='fa fa-remove' href='#' onclick='removeClickTeam(\"" + data + "\",\"" + name + "\")' title='Remover Funcionário.'> </a>";
+                    var links = "<a class='fa fa-exchange' onclick='changePassword(\"" + data + "\",\"" + name + "\")' href='#' title='Alterar senha.'> </a> &nbsp; <a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/funcionarios/editar/" + data + "' title='Editar Funcionário.'> </a> &nbsp; <a class='fa fa-remove' href='#' onclick='removeClickTeam(\"" + data + "\",\"" + name + "\")' title='Remover Funcionário.'> </a>";
 
                     return links;
                 }
@@ -68,6 +68,42 @@ function loadWorkersDataTable() {
         ]
     });
 };
+
+function changePassword(data, name)
+{
+
+    var dialog = BootstrapDialog.show({
+        size: BootstrapDialog.SIZE_SMALL,
+        title: "<div style='font-size:20px;'>Atenção!</div>",
+        message: function () { return "<div style='font-size:20px;'>Deseja mesmo alterar a senha de " + name + " para 'Gamific123'?</div>"; },
+        buttons: [{
+            label: 'Sim',
+            action: function (dialog) {
+                $.ajax({
+                    url: "/admin/funcionarios/changePassword/" + data,
+                    async: true,
+                    type: "POST",
+                    success: function () {
+                        alertMessage("Senha de " + name + " alterada com sucesso.", "success");
+                        dialog.close();
+                    },
+                    error: function () {
+                        alertMessage("Houve um erro ao alterar a senha.", "danger");
+                        dialog.close();
+                    }
+                });
+            }
+        }, {
+            label: 'Não',
+            action: function (dialog) {
+                dialog.close();
+            }
+        }]
+    });
+
+    dialog.getModalHeader().css("background-color", "#AA0000");
+
+}
 
 function removeClickTeam(data, name) {
     var dialog = BootstrapDialog.show({

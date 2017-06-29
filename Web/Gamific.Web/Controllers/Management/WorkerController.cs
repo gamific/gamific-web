@@ -1,5 +1,6 @@
 ﻿using Aspose.Cells;
 using LinqToExcel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -402,6 +403,21 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult CreateWorkersArchive()
         {
             return PartialView("_WorkersArchive");
+        }
+
+        /// <summary>
+        /// Abre o popup de cadastrar funcionarios via arquivo
+        /// </summary>
+        /// <returns></returns>
+        [Route("changePassword/{playerId:int}")]
+        public ActionResult ChangePassword(int playerId)
+        {
+            WorkerDTO worker = WorkerRepository.Instance.GetDTOById(playerId);
+            //PlayerEngineDTO player = PlayerEngineService.Instance.GetById(playerId);
+
+            AccountHandler.ChangePassword(worker.Email, "Gamific123");
+
+            return Json(new { ok = true }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

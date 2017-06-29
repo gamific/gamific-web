@@ -276,6 +276,36 @@ namespace Vlast.Gamific.Web.Services.Account.BIZ
         }
 
         /// <summary>
+        /// Altera a senha de um usuário
+        /// </summary>
+        /// <param name="email"></param
+        /// <param name="newPwd"></param>
+        /// <returns></returns>
+        public static AuthResult ChangePassword(string email, string newPwd)
+        {
+            AuthResult authResult = new AuthResult();
+
+            UserAccountEntity user = AccountRepository.Instance.GetByEmail(email);
+
+            if (user == null)
+            {
+                authResult.AuthStatus = AuthStatus.USER_NOT_EXISTS;
+                return authResult;
+            }
+
+            var security = PasswordUtils.CreateHash(newPwd);
+            user.PasswordHash = security.Item2;
+            user.SecurityStamp = security.Item1;
+
+            AccountRepository.Instance.Update(user);
+
+            authResult.UserRoles = AccountRepository.Instance.GetUserRoles(user.Id);
+
+
+            return authResult;
+        }
+
+        /// <summary>
         /// criaçao de um novo usuário com um perfil
         /// </summary>
         /// <param name="newUserRequest"></param>

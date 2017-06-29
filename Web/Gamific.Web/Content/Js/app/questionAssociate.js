@@ -21,11 +21,21 @@ function loadDataTableQuestionAssociate() {
         //        }
         //    }
         //],
+
         "rowCallback": function (row, data) {
-            listQuestion.push(data);
+            var exist = false;
+            $.each(listQuestion, function (index, item) {
+                if (item[0] === data[0]) {
+                    exist = true;
+                }
+            });
+
+            if (!exist) {
+                listQuestion.push(data);
+            }
 
             if ($.inArray(data[0], questionSelected) !== -1) {
-                
+
                 $(row).css("background-color", "#22beef");
                 $(row).css("color", " #f2f2f2");
             }
@@ -57,7 +67,14 @@ function loadDataTableQuestionAssociate() {
         var id = this.childNodes[0].innerText;
         var index = $.inArray(id, questionSelected);
 
-        if (!questionSelected.includes(id)) {
+        var exist = false;
+        $.each(questionSelected, function (indexS, item) {
+            if (item == id) {
+                exist = true;
+            }
+        });
+
+        if (!exist) {
             questionSelected.push(id);
             $(this).css("background-color", "#22beef");
             $(this).css("color", " #f2f2f2");
