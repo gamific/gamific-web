@@ -86,7 +86,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     try
                     {
-                        device = AccountDevicesRepository.Instance.FindByPlayerIdDescending(player.Id).First();
+                        //device = AccountDevicesRepository.Instance.FindByPlayerIdDescending(player.Id).First();
                     }
                     catch (Exception ex)
                     {
@@ -169,7 +169,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     try
                     {
-                        device = AccountDevicesRepository.Instance.FindByPlayerIdDescending(player.Id).First();
+                        //device = AccountDevicesRepository.Instance.FindByPlayerIdDescending(player.Id).First();
                     }
                     catch (Exception ex)
                     {
@@ -231,89 +231,12 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [HttpGet]
         public ActionResult SearchGameDTO(string initDateMonth, string initDateDay, string initDateYear, string finishDateMonth, string finishDateDay, string finishDateYear, string gameId)
         {
-            var initDate = DateTime.Parse(initDateYear + "-" + initDateMonth + "-" + initDateDay + " 00:00:00");
-            var finishDate = DateTime.Parse(finishDateYear + "-" + finishDateMonth + "-" + finishDateDay + " 00:00:00");
-            List<UserProfileEntity> userProfileEntitys = UserProfileRepository.Instance.GetUsersByDate(initDate, finishDate);
-            List<ReportDTO> all = new List<ReportDTO>();
-            GameEngineDTO game = null;
-            PlayerEngineDTO player = null;
-            AccountDevicesEntity device = null;
-            ReportDTO unidade = new ReportDTO();
+            DateTime initDate = DateTime.Parse(initDateYear + "-" + initDateMonth + "-" + initDateDay + " 00:00:00");
+            DateTime finishDate = DateTime.Parse(finishDateYear + "-" + finishDateMonth + "-" + finishDateDay + " 00:00:00");
 
+            List<ReportDTO> workers = WorkerRepository.Instance.GetWorkerDTOByDate(initDate, finishDate, gameId == "empty" ? "" : gameId);
 
-            foreach (UserProfileEntity userProfileEntity in userProfileEntitys)
-            {
-                
-
-                try
-                {
-                    unidade.Name = userProfileEntity.Name;
-                }
-                catch(Exception ex)
-                {
-                    continue;
-                }
-
-                try
-                {
-                    unidade.Email = userProfileEntity.Email;
-                }
-                catch (Exception ex)
-                {
-                    continue;
-                }
-
-                try
-                {
-                    player = PlayerEngineService.Instance.GetByEmail(userProfileEntity.Email, true);
-                }
-                catch (Exception ex)
-                {
-                    continue;
-                }
-
-                if(player.GameId == gameId)
-                {
-                    try
-                    {
-                        unidade.GameName = GameEngineService.Instance.GetById(player.GameId, player.Email).Name;
-                    }
-                    catch (Exception ex)
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    continue;
-                }
-                
-
-                try
-                {
-                    unidade.LastUpdateWeb = AccountRepository.Instance.FindByUserName(player.Email).LastUpdate;
-                }
-                catch (Exception ex)
-                {
-                    continue;
-                }
-
-                try
-                {
-                    unidade.LastUpdateMobile = AccountDevicesRepository.Instance.FindByPlayerIdDescending(player.Id).First().Last_Update;
-                }
-                catch (Exception ex)
-                {
-                    
-                }
-
-                all.Add(unidade);
-
-            }
-
-
-
-                return Json(JsonConvert.SerializeObject(all), JsonRequestBehavior.AllowGet);
+            return Json(JsonConvert.SerializeObject(workers), JsonRequestBehavior.AllowGet);
         }
 
 
