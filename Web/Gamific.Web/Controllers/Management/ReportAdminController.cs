@@ -272,7 +272,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     continue;
                 }
 
-                if(player.GameId == gameId)
+                if(player.GameId == gameId || gameId == "------")
                 {
                     try
                     {
