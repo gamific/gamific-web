@@ -16,7 +16,7 @@ function isEmpty() {
     data = "<p class='text-center' style='font-size:13px; margin: 250px;'>É necessario selecionar duas datas. Caso queira em apenas um dia, selecione a mesma data nas duas caixas de seleção.</p>";
     $('#div-tableUsers').append(data);
 }
-
+/*
 function createTable(initDate, finishDate, gameId) {
     
     if (initDate != null && initDate != "" && finishDate != null && finishDate != "") {
@@ -36,7 +36,7 @@ function createTable(initDate, finishDate, gameId) {
         isEmpty()
     }
     
-}
+}*/
 
 function DropDownGame() {
     $.ajax({
@@ -57,4 +57,25 @@ function DropDownGame() {
             
         }
     });
+}
+
+function createTable(initDate, finishDate, gameId) {
+
+    if (initDate != null && initDate != "" && finishDate != null && finishDate != "") {
+        searchTable();
+        $.ajax({
+            url: "/admin/relatorio/buscarEmpresa/" + initDate + "/" + finishDate + "/" + gameId,
+            async: false,
+            type: "GET",
+            success: function (data) {
+                $('#div-tableUsers').empty();
+                $('#div-tableUsers').append(data);
+                $("#demo").append("html");
+            }
+        });
+    }
+    else {
+        isEmpty()
+    }
+
 }

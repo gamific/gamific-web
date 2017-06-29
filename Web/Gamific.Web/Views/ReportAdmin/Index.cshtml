@@ -20,21 +20,29 @@
                 <div class="tile transparent">
                     <div class="tile-body color transparent-black rounded-corners">
                         <div class="row">
-                            <div id="" style="margin-top:26px" class="col-md-2 "><!--table-toolbar-left -->
+                            <div id="" style="margin-top:26px" class="col-md-6">
+                                <!--table-toolbar-left -->
                                 <button id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" onclick="createTable($('#initDate').val(), $('#finishDate').val(), $('#dropDownGame').val())">Pesquisar</button>
                             </div>
+                            <div id="" style="margin-top:26px" class="col-md-6 text-right">
+                                <button id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" onclick=""><i class="fa fa-download"></i> Baixar Planilia</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            
                             <div class="col-md-3">
                                 <p>Date Inicial:</p> <input style="color: #000" type="text" id="initDate"/> 
                             </div>
                             <div class="col-md-3">
                                 <p>Date final:</p>  <input style="color: #000" type="text" id="finishDate"/> 
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <p>Empresas:</p>  <select class="chosen-select chosen-transparent form-control" id="dropDownGame"></select>
                             </div>
                         </div>
                     </div>
                     <div class="bg-transparent-black-3 tile-footer border-top color white rounded-bottom-corners nopadding">
+                        
                         <div id="div-tableUsers" class=""></div>
                     </div>
                 </div>

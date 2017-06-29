@@ -99,6 +99,7 @@
     <Compile Include="Firm\DTO\GoalDTO.cs" />
     <Compile Include="Firm\DTO\MetricDTO.cs" />
     <Compile Include="Firm\DTO\EngineTeamDTO.cs" />
+    <Compile Include="Firm\DTO\ReportDTO.cs" />
     <Compile Include="Firm\DTO\WorkerTypeMetricDTO.cs" />
     <Compile Include="Firm\Repository\EmailLogRepository.cs" />
     <Compile Include="Firm\Repository\GenericRepository.cs" />
