@@ -64,7 +64,7 @@ namespace Vlast.Gamific.Model.Account.Repository
         /// </summary>
         /// <param name="playerId"></param>
         /// <returns></returns>
-        public List<AccountDevicesEntity> FindByPlayerIdDescending(string playerId)
+        public AccountDevicesEntity FindLastAccessByPlayerId(string playerId)
         {
             using (ModelContext context = new ModelContext())
             {
@@ -73,11 +73,11 @@ namespace Vlast.Gamific.Model.Account.Repository
                              where worker.Status == GenericStatus.ACTIVE
                              && devices.External_User_Id == playerId
                              && devices.External_User_Id == worker.ExternalId
-                             select devices).OrderByDescending(x => x.Last_Update);
+                             select devices).OrderByDescending(x => x.Last_Update).FirstOrDefault();
 
 
 
-                return query.ToList();
+                return query;
             }
         }
 

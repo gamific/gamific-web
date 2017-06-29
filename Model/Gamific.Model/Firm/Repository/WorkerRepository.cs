@@ -1002,6 +1002,48 @@ namespace Vlast.Gamific.Model.Firm.Repository
             }
         }
 
+        ///<summary>
+        ///Busca os jogadores data de acesso
+        /// </summary>
+        public List<ReportDTO> GetWorkerDTOByDate(DateTime initDate, DateTime finishDate, string gameId = "")
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var lastUpdateDevices = from device in context.AccountDevices
+                                        group device by device.External_User_Id into d
+                                        select d.OrderByDescending(x => x.Last_Update).FirstOrDefault();
+
+                var games = gameId == "" ?
+                    from firm in context.Datas select firm :
+                    from firm in context.Datas where firm.ExternalId == gameId select firm;
+
+                var workers = (from worker in context.Workers
+                            join device in lastUpdateDevices on worker.ExternalId equals device.External_User_Id into lud
+                            from d in lud.DefaultIfEmpty() select new { device = d, worker = worker });
+
+                var query = from workerDevice in workers
+                            from profile in context.Profiles
+                            from firm in games
+                            from userAccount in context.Users
+                            where workerDevice.worker.Status == GenericStatus.ACTIVE
+                             && profile.LastUpdate >= initDate
+                             && profile.LastUpdate <= finishDate
+                             && profile.Id == workerDevice.worker.UserId
+                             && firm.ExternalId == workerDevice.worker.ExternalFirmId
+                             && userAccount.Id == workerDevice.worker.UserId
+                             select new ReportDTO
+                             {
+                                 Name = profile.Name,
+                                 Email = profile.Email,
+                                 GameName = firm.FirmName,
+                                 LastUpdateMobile = workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update,
+                                 LastUpdateWeb = userAccount.LastUpdate
+                             };
+
+                return query.ToList();
+            }
+        }
+
         /// <summary>
         /// Salva um funcionario na base de dados
         /// </summary>

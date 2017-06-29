@@ -187,7 +187,7 @@ namespace Vlast.Gamific.Web.Jobs
 
                 try
                 {
-                    device = AccountDevicesRepository.Instance.FindByPlayerIdDescending(player.Id).First();
+                    //device = AccountDevicesRepository.Instance.FindByPlayerIdDescending(player.Id).First();
                 }
                 catch(Exception ex)
                 {

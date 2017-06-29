@@ -47,7 +47,7 @@ function DropDownGame() {
             var empresas = JSON.parse(data);
 
             var html = "";
-            $("#dropDownGame").append("<option value='" + "------" + "'>" + "Todas" + "</option>");
+            $("#dropDownGame").append("<option value='" + "empty" + "'>" + "Todas" + "</option>");
             for (var i = 0; i < empresas.length; i++) {
                 $("#dropDownGame").append("<option value='" + empresas[i].externalId + "'>" + empresas[i].firmName + "</option>");
             }
