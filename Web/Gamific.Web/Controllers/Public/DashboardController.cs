@@ -994,7 +994,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             }
 
             MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
-
+            /*
             List<LocationDTO> locations = MetricEngineService.Instance.MapPointsByRunsAndMetric(runners, metric);
 
             foreach (LocationDTO location in locations)
@@ -1003,11 +1003,11 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 location.Lon = location.Longitude;
                 location.Zoom = 8;
             }
-
+            */
             ViewBag.EpisodeId = episodeId;
             ViewBag.TeamId = teamId;
             ViewBag.PlayerId = playerId;
-            ViewBag.Locations = Content(JsonConvert.SerializeObject(locations), "application/json");
+            ViewBag.Locations = Content(JsonConvert.SerializeObject(null), "application/json");
 
             if (playerId != "empty")
             {
