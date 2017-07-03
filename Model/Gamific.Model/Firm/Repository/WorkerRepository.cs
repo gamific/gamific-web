@@ -5,6 +5,7 @@ using Vlast.Gamific.Model.Properties;
 using Vlast.Gamific.Model.Firm.Domain;
 using Vlast.Gamific.Model.Firm.DTO;
 using Vlast.Util.Data;
+using System.Globalization;
 
 namespace Vlast.Gamific.Model.Firm.Repository
 {
@@ -1009,6 +1010,9 @@ namespace Vlast.Gamific.Model.Firm.Repository
         {
             using (ModelContext context = new ModelContext())
             {
+
+                CultureInfo cult = new CultureInfo("pt-BR");
+
                 var lastUpdateDevices = from device in context.AccountDevices
                                         group device by device.External_User_Id into d
                                         select d.OrderByDescending(x => x.Last_Update).FirstOrDefault();
@@ -1021,7 +1025,7 @@ namespace Vlast.Gamific.Model.Firm.Repository
                             join device in lastUpdateDevices on worker.ExternalId equals device.External_User_Id into lud
                             from d in lud.DefaultIfEmpty() select new { device = d, worker = worker });
 
-                var query = from workerDevice in workers
+                var query = (from workerDevice in workers
                             from profile in context.Profiles
                             from firm in games
                             from userAccount in context.Users
@@ -1031,14 +1035,17 @@ namespace Vlast.Gamific.Model.Firm.Repository
                              && profile.Id == workerDevice.worker.UserId
                              && firm.ExternalId == workerDevice.worker.ExternalFirmId
                              && userAccount.Id == workerDevice.worker.UserId
-                             select new ReportDTO
-                             {
-                                 Name = profile.Name,
-                                 Email = profile.Email,
-                                 GameName = firm.FirmName,
-                                 LastUpdateMobile = workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update,
-                                 LastUpdateWeb = userAccount.LastUpdate
-                             };
+                            select new ReportDTO
+                            {
+                                Name = profile.Name,
+                                Email = profile.Email,
+                                GameName = firm.FirmName,
+                                LastUpdateMobile = workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update,
+                                LastUpdateWeb = userAccount.LastUpdate,
+                                LastUpdateMobileString = (workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
+                                LastUpdateWebString = userAccount.LastUpdate.ToString()//("dd/MM/yyyy HH:mm:ss", cult)
+
+                            }).OrderBy(x => x.GameName);
 
                 return query.ToList();
             }

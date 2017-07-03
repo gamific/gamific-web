@@ -26,5 +26,12 @@ namespace Vlast.Gamific.Model.Firm.DTO
         //[DataMember(Name = "LAST_UPDATE")]
         public DateTime LastUpdateMobile { get; set; }
 
+        //[DataMember(Name = "LastUpdate")]
+        public string LastUpdateWebString { get; set; }
+
+        //[DataMember(Name = "LAST_UPDATE")]
+        public string LastUpdateMobileString { get; set; }
+
+
     }
 }
