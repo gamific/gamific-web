@@ -841,7 +841,11 @@ function onFailureSaveFilter(data) {
 
 function loadMaplace(locs) {
     new Maplace({
-        locations: locs,
+        locations: [{
+            lat: 45.9,
+            lon: 10.9,
+            zoom: 8
+        }],
         map_div: '#gmap-menu',
         controls_type: 'list',
         controls_on_map: false
