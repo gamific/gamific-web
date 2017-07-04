@@ -53,17 +53,20 @@ namespace Vlast.Gamific.Web.Jobs
 
                 foreach (TeamEngineDTO team in teams.List.team)
                 {
-                    GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(team.Id, email);
-
-                    foreach (RunEngineDTO run in runs.List.run)
+                    if(team.SubTeams == null || team.SubTeams.Count() == 0)
                     {
-                        WorkerDTO worker = WorkerRepository.Instance.GetWorkerDTOByExternalId(run.PlayerId);
-                        if (worker != null && (worker.ProfileName == Profiles.LIDER || worker.ProfileName == Profiles.JOGADOR))
+                        GetAllDTO runs = RunEngineService.Instance.GetRunsByTeamId(team.Id, email);
+
+                        foreach (RunEngineDTO run in runs.List.run)
                         {
-                            string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
-                            //Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
-                            //Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
-                            EmailSender.Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email, game.Id, episode.Id, worker.ExternalId);
+                            WorkerDTO worker = WorkerRepository.Instance.GetWorkerDTOByExternalId(run.PlayerId);
+                            if (worker != null && (worker.ProfileName == Profiles.LIDER || worker.ProfileName == Profiles.JOGADOR))
+                            {
+                                string emailBody = CreateEmail(game, episode.Id, team.Id, worker.ExternalId, worker);
+                                //Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, "igorgarantes@gmail.com");
+                                //Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email);
+                                EmailSender.Send(new EmailSupportDTO { Msg = emailBody, Category = "", Subject = "Ranking Gamific" }, worker.Email, game.Id, episode.Id, worker.ExternalId);
+                            }
                         }
                     }
                 }

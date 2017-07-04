@@ -22,7 +22,16 @@ function loadDataTableQuizAssociate() {
         //    }
         //],
         "rowCallback": function (row, data) {
-            listQuiz.push(data);
+            var exist = false;
+            $.each(listQuiz, function (index, item) {
+                if (item[0] == data[0]) {
+                    exist = true;
+                }
+            });
+
+            if (!exist) {
+                listQuiz.push(data);
+            }
 
             if ($.inArray(data[0], quizSelected) !== -1) {
                 

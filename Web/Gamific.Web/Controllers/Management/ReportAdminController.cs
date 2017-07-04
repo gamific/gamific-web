@@ -25,6 +25,7 @@ using Vlast.Gamific.Web.Services.Engine;
 using Vlast.Gamific.Web.Services.Engine.DTO;
 using Vlast.Gamific.Model.Account.Repository;
 using Newtonsoft.Json;
+using Vlast.Gamific.Model.Firm.DTO;
 
 namespace Vlast.Gamific.Web.Controllers.Management
 {
@@ -35,9 +36,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("")]
         public ActionResult Index()
         {
-
-           // ViewBag.Games = DataRepository.Instance.GetAllOfGameIdAndGameName();
-
             return View();
         }
 
@@ -55,179 +53,24 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return Json(JsonConvert.SerializeObject(all), JsonRequestBehavior.AllowGet);
         }
 
-        [Route("create/{initDateMonth}/{initDateDay}/{initDateYear}/{finishDateMonth}/{finishDateDay}/{finishDateYear}/{gameId}")]
-        public string CreateTableUsers(string initDateMonth, string initDateDay, string initDateYear, string finishDateMonth, string finishDateDay, string finishDateYear, string gameId)
+        
+
+        /// <summary>
+        /// Busca os episodios
+        /// </summary>
+        /// <returns></returns>
+        [Route("buscarEmpresa/{initDateMonth}/{initDateDay}/{initDateYear}/{finishDateMonth}/{finishDateDay}/{finishDateYear}/{gameId}")]
+        [HttpGet]
+        public ActionResult SearchGameDTO(string initDateMonth, string initDateDay, string initDateYear, string finishDateMonth, string finishDateDay, string finishDateYear, string gameId)
         {
-            var initDate = DateTime.Parse(initDateYear + "-" + initDateMonth + "-" + initDateDay + " 00:00:00");
-            var finishDate = DateTime.Parse(finishDateYear + "-" + finishDateMonth + "-" + finishDateDay + " 00:00:00");
-            List<UserAccountEntity> accontEntityResults = AccountRepository.Instance.GetByInitDate(initDate, finishDate);
-            List<AccountDevicesEntity> accontDeviceEntitys = AccountDevicesRepository.Instance.FindAll();
-            List<UserProfileEntity> userProfileEntitys = UserProfileRepository.Instance.GetUsersByDate(initDate, finishDate);
+            DateTime initDate = DateTime.Parse(initDateYear + "-" + initDateMonth + "-" + initDateDay + " 00:00:00");
+            DateTime finishDate = DateTime.Parse(finishDateYear + "-" + finishDateMonth + "-" + finishDateDay + " 00:00:00");
 
+            List<ReportDTO> workers = WorkerRepository.Instance.GetWorkerDTOByDate(initDate, finishDate, gameId == "empty" ? "" : gameId);
 
-            if (gameId == null || gameId == "" || gameId == "------")
-            {
-                
-
-                string util = "<table>";
-                util = util + "<tr class='bg-transparent-black-5'> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> </tr>";
-                foreach (UserProfileEntity userProfileEntity in userProfileEntitys)
-                {
-                    util = util + "<tr>";
-                    PlayerEngineDTO player = null;
-                    AccountDevicesEntity device = null;
-                    bool token = true;
-                    try
-                    {
-                        player = PlayerEngineService.Instance.GetByEmail(userProfileEntity.Email, true);
-                    }
-                    catch (Exception ex)
-                    {
-                        token = false;
-                    }
-
-                    try
-                    {
-                        device = AccountDevicesRepository.Instance.FindByPlayerIdDescending(player.Id).First();
-                    }
-                    catch (Exception ex)
-                    {
-                        device = null;
-                    }
-
-
-                    util = util + "<th>" + userProfileEntity.Name + "</th>";
-                    util = util + "<th>" + userProfileEntity.Email + "</th>";
-
-                    if (token)
-                    {
-                        GameEngineDTO game = GameEngineService.Instance.GetById(player.GameId, player.Email);
-                        util = util + "<th>" + game.Name + "</th>";
-                    }
-                    else
-                    {
-                        util = util + "<th>" + "------" + "</th>";
-                    }
-
-
-                    try
-                    {
-                        util = util + "<th>" + AccountRepository.Instance.FindByUserName(player.Email).LastUpdate + "</th>";
-                    }
-                    catch (Exception ex)
-                    {
-                        util = util + "<th>" + "--------" + "</th>";
-                    }
-
-
-
-                    try
-                    {
-                        util = util + "<th>" + device.Last_Update + "</th>";
-                    }
-                    catch (Exception ex)
-                    {
-                        util = util + "<th>" + "-----" + "</th>";
-                    }
-
-
-
-                    util = util + "</tr>";
-                }
-
-                return util;
-            }
-            else
-            {
-                string util = "<table>";
-                util = util + "<tr class='bg-transparent-black-5'> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> </tr>";
-                foreach (UserProfileEntity userProfileEntity in userProfileEntitys)
-                {
-                    GameEngineDTO game = null;
-                    PlayerEngineDTO player = null;
-                    AccountDevicesEntity device = null;
-                    bool token = true;
-                    try
-                    {
-                        player = PlayerEngineService.Instance.GetByEmail(userProfileEntity.Email, true);
-                    }
-                    catch (Exception ex)
-                    {
-                        token = false;
-                        continue;
-                    }
-                    if (token)
-                    {
-                        try
-                        {
-                            game = GameEngineService.Instance.GetById(player.GameId, player.Email);
-                        }
-                        catch (Exception ex)
-                        {
-                           
-                        }
-                        
-                    }
-
-                    try
-                    {
-                        device = AccountDevicesRepository.Instance.FindByPlayerIdDescending(player.Id).First();
-                    }
-                    catch (Exception ex)
-                    {
-                        device = null;
-                    }
-                    if(gameId == game.Id)
-                    {
-                        util = util + "<tr>";
-
-                        util = util + "<th>" + userProfileEntity.Name + "</th>";
-                        util = util + "<th>" + userProfileEntity.Email + "</th>";
-
-                        if (token)
-                        {
-                            util = util + "<th>" + game.Name + "</th>";
-                        }
-                        else
-                        {
-                            util = util + "<th>" + "------" + "</th>";
-                        }
-
-
-                        try
-                        {
-                            util = util + "<th>" + AccountRepository.Instance.FindByUserName(player.Email).LastUpdate + "</th>";
-                        }
-                        catch (Exception ex)
-                        {
-                            util = util + "<th>" + "--------" + "</th>";
-                        }
-
-
-
-                        try
-                        {
-                            util = util + "<th>" + device.Last_Update + "</th>";
-                        }
-                        catch (Exception ex)
-                        {
-                            util = util + "<th>" + "-----" + "</th>";
-                        }
-
-
-
-                        util = util + "</tr>";
-                    }
-                    
-                }
-
-                return util;
-            }
-            
-
-
-
-            
+            return Json(JsonConvert.SerializeObject(workers), JsonRequestBehavior.AllowGet);
         }
+
+
     }
 }

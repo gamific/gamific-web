@@ -40,6 +40,10 @@ namespace Vlast.Gamific.Model.Firm.DTO
 
         public int TotalXp { get; set; }
 
+        public string FirmName { get; set; }
+
+        public string ExternalFirmId { get; set; }
+
         public override bool Equals(System.Object obj)
         {
             if (obj == null)

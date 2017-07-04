@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Vlast.Gamific.Api.Account.Dto;
+using Vlast.Gamific.Model.Firm.Domain;
+using Vlast.Gamific.Model.Firm.Repository;
 using Vlast.Gamific.Services.Account;
 using Vlast.Gamific.Web.Services.Account.BIZ;
 using Vlast.Gamific.Web.Services.Account.Dto;
@@ -28,16 +30,17 @@ namespace Vlast.Gamific.Api.Account
         /// Retorna todos questionários validos do usuário
         /// </summary>
         /// <returns></returns>
-        [Route("firm/{firmId:int}/user/{userId:int}")]
+        [Route("firm/{externalId}/user/{userId:int}")]
         [HttpGet]
-        public HttpResponseMessage GetQuiz(int firmId, int userId)
+        public HttpResponseMessage GetQuiz(string externalId, int userId)
         {
             HttpResponseMessage result = null;
             try
             {
-                if (firmId > 0)
+                if (externalId != null)
                 {
-                    var quiz = QuizService.Instance.GetQuiz(firmId, userId);
+                    DataEntity firm = DataRepository.Instance.GetByExternalId(externalId);
+                    var quiz = QuizService.Instance.GetQuiz(firm.Id, userId);
                     result = Request.CreateResponse(HttpStatusCode.OK, quiz);
                 }
                 else
