@@ -389,16 +389,29 @@ function refreshCardResults(episodeId, teamId, playerId, itemId) {
                             + "</div>"
                             + "</div>"
                             + "<div class='progress-list'>"
-                            + "<div class='details'>"
-                            + "<div class='status pull-right bg-transparent-black-1'>"
-                            + "Meta: <span id='" + cardResults[i].metricId + "-goal'></span>"
-                            + "</div>"
-                            + "</div>"
-                            + "<div class='status pull-right bg-transparent-black-1'>"
-                            + "<span id='" + cardResults[i].metricId + "-percent' class='animate-number'>23</span>%"
-                            + "</div>"
-                            + "<div class='clearfix'></div>"
-                            + "<div id='a" + cardResults[i].metricId + "-bar' class='bar-prog'></div>"
+
+                                + "<div class='details'>"
+                                    + "<div class='status pull-right bg-transparent-black-1'>"
+                                        + "Meta: <span id='" + cardResults[i].metricId + "-goal'></span>"
+                                    + "</div>"
+                                + "</div>"
+                                + "<div class='status pull-right bg-transparent-black-1'>"
+                                    + "<span id='" + cardResults[i].metricId + "-percent' class='animate-number'>23</span>%"
+                                + "</div>"
+                                + "<div class='clearfix'></div>"
+                                + "<div id='a" + cardResults[i].metricId + "-bar' class='bar-prog'></div>"
+
+                                + "<div class='details'>"
+                                    + "<div class='status pull-right bg-transparent-black-1'>"
+                                        + "Meta: <span id='" + cardResults[i].metricId + "-goal'></span>"
+                                    + "</div>"
+                                + "</div>"
+                                + "<div class='status pull-right bg-transparent-black-1'>"
+                                    + "<span id='" + cardResults[i].metricId + "-percent' class='animate-number'>23</span>%"
+                                + "</div>"
+                                + "<div class='clearfix'></div>"
+                                + "<div id='a3bar' class='bar-prog'></div>"
+
                             + "</div>"
                             + "</div>"
                             + "<div class='back'><a href='/public/dashboard/detalhes/" + episodeId + "/" + cardResults[i].metricId + "/" + teamId + "/" + playerId + "'><i class='fa " + icon + " fa-4x'></i><span>Detalhes</span></a>"
@@ -437,6 +450,9 @@ function refreshCardResults(episodeId, teamId, playerId, itemId) {
                 }, 1500);
 
                 var bar_id = 'a' + cardResults[i].metricId + "-bar";
+                createProgressBar(bar_id, cardResults[i].percentGoal);
+
+                var bar_id = "a3bar";
                 createProgressBar(bar_id, cardResults[i].percentGoal);
             }
 

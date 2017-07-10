@@ -215,7 +215,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             int countErrors = 0;
             int countSuccess = 0;
-
+            
             foreach(NotificationPushDTO notification in notifications)
             {
                 NotificationLogDTO notificationLog = NotificationPushService.Instance.SendPush(notification);
@@ -228,7 +228,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     countSuccess++;
                 }
             }
-
+            
             return Json(new { text = countSuccess + " notificações foram enviadas com sucesso!    " + countErrors + " falharam ao serem enviadas!", error = false });
         }
 
