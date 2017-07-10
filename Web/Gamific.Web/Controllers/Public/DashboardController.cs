@@ -27,6 +27,17 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
         public static List<EpisodeEngineDTO> episodesFilter = new List<EpisodeEngineDTO>();
 
+        [Route("deletaItens")]
+        [HttpGet]
+        public void DeleteItens()
+        {
+            GetAllDTO dto = ItemEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 2000);
+
+            foreach (ItemEngineDTO item in dto.List.item) {
+                ItemEngineService.Instance.DeleteById(item.Id);
+            }
+        }
+
         // GET: Dashboard
         [Route("")]
         public ActionResult Index(int state = 1)
