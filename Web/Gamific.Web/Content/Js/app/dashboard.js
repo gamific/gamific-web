@@ -381,37 +381,24 @@ function refreshCardResults(episodeId, teamId, playerId, itemId) {
                             + "<span class='pull-left'>"
                             + "<i class='fa " + cardResults[i].iconMetric + " media-object'></i>"
                             + "</span>"
-                            + "<small style='padding-left: 5%;'>" + cardResults[i].metricName + "</small>"
+                            + "<small style='padding-left: 5%; color: white; font-weight: bolder; font-size: 15px;'>" + cardResults[i].metricName + "</small>"
                             + "<h2 class='media-heading animate-number'>"
-                            + "<span id='" + cardResults[i].metricId + '-points' + "' class='media-heading animate-number' style='padding-left: 5%;'>"
+                            + "<span id='" + cardResults[i].metricId + '-points' + "' class='media-heading animate-number' style='padding-left: 5%; color: white;'>"
                             + "</span>"
                             + "</h2>"
                             + "</div>"
                             + "</div>"
                             + "<div class='progress-list'>"
-
-                                + "<div class='details'>"
-                                    + "<div class='status pull-right bg-transparent-black-1'>"
-                                        + "Meta: <span id='" + cardResults[i].metricId + "-goal'></span>"
-                                    + "</div>"
-                                + "</div>"
-                                + "<div class='status pull-right bg-transparent-black-1'>"
-                                    + "<span id='" + cardResults[i].metricId + "-percent' class='animate-number'>23</span>%"
-                                + "</div>"
-                                + "<div class='clearfix'></div>"
-                                + "<div id='a" + cardResults[i].metricId + "-bar' class='bar-prog'></div>"
-
-                                + "<div class='details'>"
-                                    + "<div class='status pull-right bg-transparent-black-1'>"
-                                        + "Meta: <span id='" + cardResults[i].metricId + "-goal'></span>"
-                                    + "</div>"
-                                + "</div>"
-                                + "<div class='status pull-right bg-transparent-black-1'>"
-                                    + "<span id='" + cardResults[i].metricId + "-percent' class='animate-number'>23</span>%"
-                                + "</div>"
-                                + "<div class='clearfix'></div>"
-                                + "<div id='a3bar' class='bar-prog'></div>"
-
+                            + "<div class='details'>"
+                            + "<div class='status pull-right bg-transparent-black-1'>"
+                            + "<div style='color: white; font-size: 12px;'>Meta: <span id='" + cardResults[i].metricId + "-goal'></span></div>"
+                            + "</div>"
+                            + "</div>"
+                            + "<div class='status pull-right bg-transparent-black-1'>"
+                            + "<div style='color: white; font-size: 12px;'><span id='" + cardResults[i].metricId + "-percent' class='animate-number'>23</span>%</div>"
+                            + "</div>"
+                            + "<div class='clearfix'></div>"
+                            + "<div id='a" + cardResults[i].metricId + "-bar' class='bar-prog'></div>"
                             + "</div>"
                             + "</div>"
                             + "<div class='back'><a href='/public/dashboard/detalhes/" + episodeId + "/" + cardResults[i].metricId + "/" + teamId + "/" + playerId + "'><i class='fa " + icon + " fa-4x'></i><span>Detalhes</span></a>"
@@ -450,9 +437,6 @@ function refreshCardResults(episodeId, teamId, playerId, itemId) {
                 }, 1500);
 
                 var bar_id = 'a' + cardResults[i].metricId + "-bar";
-                createProgressBar(bar_id, cardResults[i].percentGoal);
-
-                var bar_id = "a3bar";
                 createProgressBar(bar_id, cardResults[i].percentGoal);
             }
 

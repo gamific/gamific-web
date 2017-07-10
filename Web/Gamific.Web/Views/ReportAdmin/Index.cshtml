@@ -22,10 +22,11 @@
                         <div class="row">
                             <div id="" style="margin-top:26px" class="col-md-6">
                                 <!--table-toolbar-left -->
-                                <button id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" onclick="createTable($('#initDate').val(), $('#finishDate').val(), $('#dropDownGame').val())">Pesquisar</button>
+                                <button id="demo-dt-addrow-btn-2" class="btn btn-default sing-up-button" ><i class="fa fa-download"></i> Baixar Planilia</button><!--onclick="downloadTable($('#initDate').val(), $('#finishDate').val(), $('#dropDownGame').val())"-->
+                                 
                             </div>
                             <div id="" style="margin-top:26px" class="col-md-6 text-right">
-                                <button id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" onclick=""><i class="fa fa-download"></i> Baixar Planilia</button>
+                                <button id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" onclick="createTable($('#initDate').val(), $('#finishDate').val(), $('#dropDownGame').val())">Pesquisar</button>
                             </div>
                         </div>
                         <div class="row">
@@ -57,6 +58,11 @@
 
 
 <script type="text/javascript">
+
+    $("#demo-dt-addrow-btn-2").click(function (e) {
+        window.open('data:application/vnd.ms-excel,' + $('#div-tableUsers').html());
+        e.preventDefault();
+    });
 
     $(function () {
         $("#initDate").datepicker();
