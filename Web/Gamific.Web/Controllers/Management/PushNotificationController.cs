@@ -219,14 +219,14 @@ namespace Vlast.Gamific.Web.Controllers.Management
             foreach(NotificationPushDTO notification in notifications)
             {
                 NotificationLogDTO notificationLog = NotificationPushService.Instance.SendPush(notification);
-                if(notificationLog.Success == "0")
+                /*if(notificationLog.Success == "0")
                 {
                     countErrors++;
                 }
                 else
                 {
                     countSuccess++;
-                }
+                }*/
             }
             
             return Json(new { text = countSuccess + " notificações foram enviadas com sucesso!    " + countErrors + " falharam ao serem enviadas!", error = false });
