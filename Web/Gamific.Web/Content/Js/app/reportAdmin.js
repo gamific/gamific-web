@@ -54,9 +54,9 @@ function DropDownGame() {
 }
 
 function createTable(initDate, finishDate, gameId) {
-
+    searchTable();
     if (initDate != null && initDate != "" && finishDate != null && finishDate != "") {
-        searchTable();
+        
         $.ajax({
             url: "/admin/relatorio/buscarEmpresa/" + initDate + "/" + finishDate + "/" + gameId,
             async: false,

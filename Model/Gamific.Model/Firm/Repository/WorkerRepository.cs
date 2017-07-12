@@ -1030,8 +1030,10 @@ namespace Vlast.Gamific.Model.Firm.Repository
                             from firm in games
                             from userAccount in context.Users
                             where workerDevice.worker.Status == GenericStatus.ACTIVE
-                             && profile.LastUpdate >= initDate
-                             && profile.LastUpdate <= finishDate
+                             && ((profile.LastUpdate >= initDate
+                             && profile.LastUpdate <= finishDate) || 
+                             (workerDevice.device == null ? false : (workerDevice.device.Last_Update >= initDate &&
+                             workerDevice.device.Last_Update <= finishDate)))
                              && profile.Id == workerDevice.worker.UserId
                              && firm.ExternalId == workerDevice.worker.ExternalFirmId
                              && userAccount.Id == workerDevice.worker.UserId
