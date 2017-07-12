@@ -361,10 +361,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Xp = 1,
                                 Level = 1,
                                 Role = workerType.TypeName,
-                                GameId = worker.ExternalFirmId,
+                                GameId = game.Id,
                                 LogoId = worker.LogoId,
                                 Email = entity.ProfileInfo.Email,
-                                Cpf = entity.ProfileInfo.CPF
+                                Cpf = entity.ProfileInfo.CPF,
+                                Active = true
                             };
                             player = PlayerEngineService.Instance.CreateOrUpdate(player, "victor@duplov.com.br");
 

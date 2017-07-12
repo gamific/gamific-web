@@ -798,7 +798,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 teams.AddRange(OrganizeHierarchy(all.List.team, subTeamNull));
             }
 
-            return Json(JsonConvert.SerializeObject(teams.OrderBy(x => x.Nick)), JsonRequestBehavior.AllowGet);
+            return Json(JsonConvert.SerializeObject(teams), JsonRequestBehavior.AllowGet);
         }
 
         private List<TeamEngineDTO> OrganizeHierarchy(List<TeamEngineDTO> teamList, string next, string hifens = "")
