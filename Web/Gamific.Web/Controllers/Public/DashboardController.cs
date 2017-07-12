@@ -389,7 +389,14 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            bars = CardEngineService.Instance.EpisodesAndMetrics(episodesParam, metrics, runners);
+            if(runners.Count > 0)
+            {
+                bars = CardEngineService.Instance.EpisodesAndMetrics(episodesParam, metrics, runners);
+            }
+            else
+            {
+                bars = new List<BarDTO>();
+            }
 
             return Content(JsonConvert.SerializeObject(bars), "application/json");
         }
@@ -791,7 +798,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 teams.AddRange(OrganizeHierarchy(all.List.team, subTeamNull));
             }
 
-            return Json(JsonConvert.SerializeObject(teams), JsonRequestBehavior.AllowGet);
+            return Json(JsonConvert.SerializeObject(teams.OrderBy(x => x.Nick)), JsonRequestBehavior.AllowGet);
         }
 
         private List<TeamEngineDTO> OrganizeHierarchy(List<TeamEngineDTO> teamList, string next, string hifens = "")
