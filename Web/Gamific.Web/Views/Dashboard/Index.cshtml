@@ -319,7 +319,7 @@
                                         <select class="form-control" name="metricMorris" id="metricMorris">
                                             @{
                                                 int i;
-                                                if (ViewBag.Metrics != null)
+                                                if (ViewBag.Metrics != null && ViewBag.Metrics.Count > 0)
                                                 {
                                                     <option value="@ViewBag.Metrics[0].Id">@ViewBag.Metrics[0].Name</option>
                                                     for (i = 0; i < @ViewBag.Metrics.Count; i++)
