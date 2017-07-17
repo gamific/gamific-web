@@ -319,7 +319,7 @@ function checkBoxChange(value) {
     }
 }
 
-function submitCreateTeam() {
+/*function submitCreateTeam() {
     if (expanded) {
         checkboxes.style.display = "none";
         expanded = false;
@@ -351,7 +351,7 @@ function submitCreateTeam() {
             alertMessage("Ocorreu um erro ao adicionar esta equipe.", "danger");
         }
     });
-}
+}*/
 
 function loadLogo(inputFile) {
     if (inputFile.files && inputFile.files[0]) {
@@ -433,4 +433,13 @@ function updateDropDownCheckBoxTeams()
             $("#checkboxes").append(html);
         }
     });
+}
+
+function onSuccessSaveTeam() {
+
+    verifyErrors();
+}
+
+function onFailureSaveTeam() {
+
 }
