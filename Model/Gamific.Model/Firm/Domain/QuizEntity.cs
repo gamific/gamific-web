@@ -39,6 +39,7 @@ namespace Vlast.Gamific.Model.Firm.Domain
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "O nome é obrigatório.")]
         [DataMember(Name = "name")]
         public String Name { get; set; }
 
