@@ -108,7 +108,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 {
                     return Redirect("/public/dashboard");
                 }
-                else {
+                else
+                {
                     return Redirect("/public/ranking");
                 }
             }
@@ -246,7 +247,17 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Id = entity.DataInfo.ExternalId,
                                 LogoPath = CurrentURL + entity.DataInfo.LogoId
                             };
-                            game = GameEngineService.Instance.CreateOrUpdate(game);
+
+                            try
+                            {
+                                game = GameEngineService.Instance.CreateOrUpdate(game);
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.LogError(e.Message);
+
+                            }
+
 
                             List<WorkerDTO> workers = WorkerRepository.Instance.GetAllFromFirm(entity.DataInfo.Id);
 
@@ -317,7 +328,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             };
                             game = GameEngineService.Instance.CreateOrUpdate(game, "victor@duplov.com.br");
 
-                            
+
 
                             entity.DataInfo.ExternalId = game.Id;
 
@@ -350,10 +361,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Xp = 1,
                                 Level = 1,
                                 Role = workerType.TypeName,
-                                GameId = worker.ExternalFirmId,
+                                GameId = game.Id,
                                 LogoId = worker.LogoId,
                                 Email = entity.ProfileInfo.Email,
-                                Cpf = entity.ProfileInfo.CPF
+                                Cpf = entity.ProfileInfo.CPF,
+                                Active = true
                             };
                             player = PlayerEngineService.Instance.CreateOrUpdate(player, "victor@duplov.com.br");
 
@@ -451,8 +463,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult SaveFirm(DataEntity entity)
         {
 
-            
-        
+
+
             DataRepository.Instance.UpdateFirm(entity);
 
             GameEngineDTO game = new GameEngineDTO
@@ -465,18 +477,18 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 Name = entity.CompanyName,
                 LogoId = entity.LogoId,
                 Description = entity.Cnpj
-                
-                
+
+
             };
 
-            
+
 
             GameEngineService.Instance.CreateOrUpdate(game);
             Success("Dados da empresa alterados com sucesso!");
             return Redirect("/public/dashboard");
         }
 
-                        
+
 
 
     }

@@ -455,7 +455,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             foreach (WorkerTypeEntity workerType in workerTypes)
             {
-                workerTypeNames.Add(workerType.TypeName + "-" + workerType.Id);
+                workerTypeNames.Add(workerType.TypeName);
             }
 
             var flatListProfiles = string.Join(",", workerTypeNames.ToArray());
@@ -546,6 +546,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             try
             {
+                string gameId = CurrentFirm.ExternalId;
+
                 workersArchive.SaveAs(Path.Combine(Server.MapPath("~/App_Data"), workersArchive.FileName));
 
                 string path = Path.Combine(Server.MapPath("~/App_Data"), workersArchive.FileName);
@@ -572,6 +574,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                         result = AccountHandler.CreateFirmUser(request, Roles.WORKER);
 
+                        WorkerTypeEntity workerType = WorkerTypeRepository.Instance.GetByGameIdAndTypeName(gameId, row[4].ToString());
+
                         if (AuthStatus.OK.Equals(result.AuthStatus))
                         {
                             WorkerEntity worker = new WorkerEntity();
@@ -580,7 +584,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             worker.FirmId = CurrentFirm.Id;
                             worker.UserId = result.UserId;
                             worker.ExternalFirmId = CurrentFirm.ExternalId;
-                            worker.WorkerTypeId = int.Parse(row[4].ToString().Split('-')[1]);
+                            worker.WorkerTypeId = workerType.Id;
                             worker.UpdatedBy = CurrentUserId;
 
                             ValidateModel(worker);
@@ -590,7 +594,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Level = 1,
                                 Xp = 1,
                                 Nick = request.Name,
-                                Role = row[4].ToString().Split('-')[0],
+                                Role = workerType.ProfileName.ToString(),
                                 GameId = worker.ExternalFirmId,
                                 LogoId = worker.LogoId,
                                 Cpf = request.Cpf,
@@ -598,8 +602,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 LogoPath = CurrentURL + worker.LogoId,
                                 Active = true
                             };
-
-
 
                             dto = PlayerEngineService.Instance.CreateOrUpdate(dto);
 

@@ -91,6 +91,17 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("remover/{teamId}")]
         public ActionResult Remove(string teamId)
         {
+            /*
+            TeamEngineDTO team = TeamEngineService.Instance.GetById(teamId);
+
+            foreach(string tId in team.SubTeams)
+            {
+                TeamEngineDTO t = TeamEngineService.Instance.GetById(tId);
+                t.SubOfTeamId = null;
+                TeamEngineService.Instance.CreateOrUpdate(t);
+            }
+            */
+
             TeamEngineService.Instance.RemoveTeamFromEpisode(teamId);
 
             return new EmptyResult();
@@ -161,13 +172,14 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                     if (team.Id != null)
                     {
+                        string nick = team.Nick;
                         checkBoxes.Where(x => !x.Checked && team.SubTeams.Contains(x.Text));
-                        team = TeamEngineService.Instance.JoinSubTeamsOnTeam(team.Id, checkBoxes.Where(x => x.Checked == true && x.Text != team.Id).Select(x => x.Text).ToList());
                         TeamEngineDTO teamTemp = TeamEngineService.Instance.UpdateTeamMaster(team.MasterPlayerId, team.Id);
                         teamTemp.LogoId = logoUpload != null ? imageSaving.Id : teamTemp.LogoId;
                         teamTemp.LogoPath = CurrentURL + teamTemp.LogoId;
-                        teamTemp.Nick = team.Nick; 
+                        teamTemp.Nick = nick; 
                         team = TeamEngineService.Instance.CreateOrUpdate(teamTemp);
+                        team = TeamEngineService.Instance.JoinSubTeamsOnTeam(team.Id, checkBoxes.Where(x => x.Checked == true && x.Text != team.Id).Select(x => x.Text).ToList());
                     }
                     else
                     {
