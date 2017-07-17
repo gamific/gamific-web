@@ -28,6 +28,7 @@ using Vlast.Util.Parameter;
 using Vlast.Gamific.Web.Services.Push;
 using Vlast.Gamific.Web.Services.Push.DTO;
 using Vlast.Gamific.Model.Account.DTO;
+using System.Text.RegularExpressions;
 
 namespace Vlast.Gamific.Web.Controllers.Management
 {
@@ -1011,8 +1012,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     ItemEngineDTO item = new ItemEngineDTO
                     {
                         GameId = gameId,
-                        Name = row[5].ToString().Trim().Replace('&', 'e')
-                    };
+                        Name = Regex.Replace(row[5].ToString().Trim(), "[^0-9a-zA-Z]+", " ")
+                };
 
                     try
                     {

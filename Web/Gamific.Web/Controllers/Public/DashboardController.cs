@@ -400,7 +400,14 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            bars = CardEngineService.Instance.EpisodesAndMetrics(episodesParam, metrics, runners);
+            if(runners.Count > 0)
+            {
+                bars = CardEngineService.Instance.EpisodesAndMetrics(episodesParam, metrics, runners);
+            }
+            else
+            {
+                bars = new List<BarDTO>();
+            }
 
             return Content(JsonConvert.SerializeObject(bars), "application/json");
         }
@@ -955,6 +962,11 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         DateTime dat = new DateTime(rm.Date);
                         string ds = dat.ToString("dd/MM/yyyy");
                     }
+                }
+                else
+                {
+                    all.List = new GetAllDTO.Embedded();
+                    all.List.runMetric = new List<RunMetricEngineDTO>();
                 }
 
                 JQueryDataTableResponse response = new JQueryDataTableResponse()
