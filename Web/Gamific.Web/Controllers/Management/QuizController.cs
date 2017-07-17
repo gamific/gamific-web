@@ -296,42 +296,60 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
-                    if (entity.Name == null)
+                    if (ModelState.IsValid)
                     {
-                        return Json(new { status = "warn", message = "O campo nome é obrigatório!" });
-                    }
-                    if (entity.Id == 0)
-                    {
-                        QuizService service = QuizService.Instance;
-                        entity.InitialDate = DateTime.Now;
-                        entity.CreatedBy = CurrentUserEmail;
-                        entity.LastUpdate = DateTime.Now;
-                        entity.FirmId = CurrentFirm.Id;
-                        entity.status = true;
-                        service.Create(entity);
-                        scope.Complete();
+                        if (entity.Name == null)
+                        {
+                            //return Json(new { status = "warn", message = "O campo nome é obrigatório!" });
+                            ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar o Questionário.");
+                            return PartialView("_Edit", entity);
 
-                        return Json(new { status = "sucess", message = "Registro cadastrado com sucesso!" });
+                        }
+                        if (entity.Id == 0)
+                        {
+                            QuizService service = QuizService.Instance;
+                            entity.InitialDate = DateTime.Now;
+                            entity.CreatedBy = CurrentUserEmail;
+                            entity.LastUpdate = DateTime.Now;
+                            entity.FirmId = CurrentFirm.Id;
+                            entity.status = true;
+                            service.Create(entity);
+                            Success("Questionário cadastrado com sucesso.");
+                            scope.Complete();
+
+                           // return Json(new { status = "sucess", message = "Registro cadastrado com sucesso!" });
+                        }
+                        else
+                        {
+                            QuizService service = QuizService.Instance;
+                            entity.LastUpdate = DateTime.Now;
+                            entity.status = true;
+                            entity.UpdatedBy = CurrentUserEmail;
+                            entity.FirmId = CurrentFirm.Id;
+                            service.Update(entity);
+                            Success("Questionário atualizado com sucesso.");
+                            scope.Complete();
+                           // return Json(new { status = "sucess", message = "Registro atualizado com sucesso!" });
+                        }
                     }
                     else
                     {
-                        QuizService service = QuizService.Instance;
-                        entity.LastUpdate = DateTime.Now;
-                        entity.status = true;
-                        entity.UpdatedBy = CurrentUserEmail;
-                        entity.FirmId = CurrentFirm.Id;
-                        service.Update(entity);
-                        scope.Complete();
-                        return Json(new { status = "sucess", message = "Registro atualizado com sucesso!" });
+                        ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar o questionário.");
+                        return PartialView("_Edit", entity);
+
                     }
-                }
+                } 
+
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
 
-                return Json(new { status = "error", message = "Ocorreu um problema!" });
+                //return Json(new { status = "error", message = "Ocorreu um problema!" });
+                ModelState.AddModelError("", "Ocorreu um problema!");
+                return PartialView("_Edit", entity);
             }
+            return new EmptyResult();
 
         }
 
