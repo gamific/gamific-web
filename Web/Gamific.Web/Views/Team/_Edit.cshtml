@@ -1,6 +1,8 @@
 ﻿@model  Vlast.Gamific.Web.Services.Engine.DTO.TeamEngineDTO
 
-<form id="formCreateTeam" action="#">
+@using (Ajax.BeginForm("Save", "Team", new AjaxOptions { OnSuccess = "onSuccessSaveTeam", OnFailure = "onFailureSaveTeam", UpdateTargetId = "modal-panel" }, new { enctype = "multipart/form-data" }))
+{
+
     <span style="display:none">
         @Html.HiddenFor(model => model.Id);
         @Html.HiddenFor(model => model.LogoId);
@@ -25,12 +27,13 @@
                         @Html.Label("Selecione uma Campanha*")
                         <div class="form-group">
                             <select class="form-control" name="episodeId" id="episodeId">
-                                @foreach (SelectListItem Episode in ViewBag.Episodes){
+                                @foreach (SelectListItem Episode in ViewBag.Episodes)
+                                {
                                     if (Episode.Value == ViewBag.EpisodeId && ViewBag.EpisodeId != null)
                                     {
                                         <option value="@Episode.Value" selected="selected">@Episode.Text</option>
                                     }
-                                    else if(ViewBag.EpisodeId == null)
+                                    else if (ViewBag.EpisodeId == null)
                                     {
                                         <option value="@Episode.Value">@Episode.Text</option>
                                     }
@@ -97,13 +100,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="submitCreateTeam();" data-dismiss="modal">Concluir</button>
+                    <button type="submit" class="btn btn-primary">Concluir</button>
                 </div>
             </div>
         </div>
     </div>
-</form>
-
+}
 <script type="text/javascript">
     $(document).ready(function () {
         updateDropDownCheckBoxTeams();
@@ -147,3 +149,29 @@
     }
 </style>
 
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+        if (form.getAttribute("enctype") === "multipart/form-data") {
+            if (form.dataset.ajax) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action, false);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (form.dataset.ajaxUpdate) {
+                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                            if (updateTarget) {
+                                updateTarget.innerHTML = xhr.responseText;
+                                updateDropDownCheckBoxTeams();
+                            }
+                        }
+                    }
+                };
+                xhr.send(new FormData(form));
+            }
+            onSuccessSaveTeam();
+        }
+    }, true);
+</script>
