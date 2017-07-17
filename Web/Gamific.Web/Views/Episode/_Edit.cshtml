@@ -1,6 +1,6 @@
 ﻿@model  Vlast.Gamific.Web.Services.Engine.DTO.EpisodeEngineDTO
 
-@using (Ajax.BeginForm("Save", "Episode", new AjaxOptions { OnSuccess = "onSucessSaveEpisode", OnFailure = "onFailureSaveEpisode", UpdateTargetId = "modal-painel" }))
+@using (Ajax.BeginForm("Save", "Episode", new AjaxOptions { OnSuccess = "onSucessSaveEpisode", OnFailure = "onFailureSaveEpisode", UpdateTargetId = "modal-panel" }))
 {
     <span style="display:none">
         @Html.HiddenFor(model => model.Id);
@@ -29,7 +29,7 @@
                         <div class="col-sm-10 col-md-12 modal-div">
                             @Html.LabelFor(model => model.Name, "Nome*:", new { @class = "col-sm-12 control-label" })
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
-                            @Html.ValidationMessageFor(model => model.Name, "O campo Nome da Episode é obrigatório.", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Name, "O campo Nome da Campanha é obrigatório.", new { @class = "text-danger" })
                         </div>
                     </div>
                     
@@ -141,4 +141,28 @@
     });
 
 </script>
-
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+       
+            if (form.dataset.ajax) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action, false);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (form.dataset.ajaxUpdate) {
+                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                            if (updateTarget) {
+                                updateTarget.innerHTML = xhr.responseText;
+                            }
+                        }
+                    }
+                };
+                xhr.send(new FormData(form));
+            }
+            onSucessSaveEpisode();
+        
+    }, true);
+</script>
