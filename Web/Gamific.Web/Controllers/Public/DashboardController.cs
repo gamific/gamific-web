@@ -952,6 +952,11 @@ namespace Vlast.Gamific.Web.Controllers.Public
                         string ds = dat.ToString("dd/MM/yyyy");
                     }
                 }
+                else
+                {
+                    all.List = new GetAllDTO.Embedded();
+                    all.List.runMetric = new List<RunMetricEngineDTO>();
+                }
 
                 JQueryDataTableResponse response = new JQueryDataTableResponse()
                 {
