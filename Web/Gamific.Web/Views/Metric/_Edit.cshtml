@@ -1,7 +1,7 @@
 ﻿@using Vlast.Gamific.Model.Firm.Domain
 @model  Vlast.Gamific.Web.Services.Engine.DTO.MetricEngineDTO
 
-@using (Ajax.BeginForm("Save", "Metric", new AjaxOptions { OnSuccess = "onSucessSaveMetric", OnFailure = "onFailureSaveMetric", UpdateTargetId = "modal-painel" }))
+@using (Ajax.BeginForm("Save", "Metric", new AjaxOptions { OnSuccess = "onSucessSaveMetric", OnFailure = "onFailureSaveMetric", UpdateTargetId = "modal-panel" }))
 {
     <span style="display:none">
         @Html.HiddenFor(model => model.Id);
@@ -32,12 +32,14 @@
                         <div class="col-sm-10 col-md-6 modal-div">
                             @Html.LabelFor(model => model.Floor, "Valor minimo:", new { @class = "col-sm-12 control-label" })
                             @Html.EditorFor(model => model.Floor, new { htmlAttributes = new { @class = "form-control", @tabindex = "2", min = 0} })
+                            @Html.ValidationMessageFor(model => model.Floor, "O campo Valor mínimo é obrigatório.", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-10 col-md-6 modal-div">
                             @Html.LabelFor(model => model.Ceiling, "Valor maximo:", new { @class = "col-sm-12 control-label" })
                             @Html.EditorFor(model => model.Ceiling, new { htmlAttributes = new { @class = "form-control", @tabindex = "3", min = 0} })
+                            @Html.ValidationMessageFor(model => model.Ceiling, "O campo Valor máximo é obrigatório.", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
@@ -51,6 +53,7 @@
                         <div class="col-sm-10 col-md-6 modal-div">
                             @Html.LabelFor(model => model.Xp , "XP:", new { @class = "col-sm-12 control-label" })
                             @Html.EditorFor(model => model.Xp, new { htmlAttributes = new { @class = "form-control", @tabindex = "5", min = 0 } })
+                            @Html.ValidationMessageFor(model => model.Xp, "O campo XP é obrigatório.", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
@@ -177,6 +180,31 @@
         $('#iconView').empty().append("<i class='fa "+ $(this).val() +" fa-3x'></i>");
     });
 </script>
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+       
+        if (form.dataset.ajax) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action, false);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    if (form.dataset.ajaxUpdate) {
+                        var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                        if (updateTarget) {
+                            updateTarget.innerHTML = xhr.responseText;
+                        }
+                    }
+                }
+            };
+            xhr.send(new FormData(form));
+        }
+        onSucessSaveMetric();
+        
+    }, true);
+</script>
 
 <style>
     .multiselect {
@@ -214,4 +242,3 @@
         background-color: #1e90ff;
     }
 </style>
-
