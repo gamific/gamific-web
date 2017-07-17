@@ -1,6 +1,6 @@
 ﻿@model   Vlast.Gamific.Model.Firm.Domain.QuestionEntity
 @*@model  Vlast.Gamific.Web.Services.Engine.DTO.QuizDTO*@
-@using (Ajax.BeginForm("Save", "Question", new AjaxOptions { OnSuccess = "onSucessSaveQuestionToast", OnFailure = "onFailureSaveQuestionToast", UpdateTargetId = "modal-painel" }))
+@using (Ajax.BeginForm("Save", "Question", new AjaxOptions { OnSuccess = "onSucessSaveQuestion", OnFailure = "onFailureSaveQuestion", UpdateTargetId = "modal-panel" }))
 
 {
 
@@ -22,7 +22,7 @@
                         <div class="col-sm-10 col-md-12 modal-div">
                             @Html.LabelFor(model => model.Question, "Pergunta*:", new { @class = "col-sm-12 control-label" })
                             @Html.EditorFor(model => model.Question, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
-                            @Html.ValidationMessageFor(model => model.Question, "O campo Nome da metrica é obrigatório.", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Question, "O campo Nome da Pergunta é obrigatório.", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-sm-10 col-md-12 modal-div">
@@ -63,3 +63,28 @@
     });
 </script>
 
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+
+        if (form.dataset.ajax) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action, false);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    if (form.dataset.ajaxUpdate) {
+                        var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                        if (updateTarget) {
+                            updateTarget.innerHTML = xhr.responseText;
+                        }
+                    }
+                }
+            };
+            xhr.send(new FormData(form));
+        }
+        onSucessSaveQuestion();
+
+    }, true);
+</script>
