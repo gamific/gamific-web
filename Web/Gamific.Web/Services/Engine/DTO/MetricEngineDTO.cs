@@ -1,46 +1,46 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Web;
+
 
 namespace Vlast.Gamific.Web.Services.Engine.DTO
 {
+    [DataContract]
     public class MetricEngineDTO
     {
-        public MetricEngineDTO() { }
 
-        public MetricEngineDTO(string name, string description, int? floor, int? ceiling, int? multiplier, int? xp)
-        {
-            this.Name = name;
-            this.Description = description;
-            this.Floor = floor;
-            this.Ceiling = ceiling;
-            this.Multiplier = multiplier;
-            this.Xp = xp;
-        }
-
+ 
         [JsonProperty("id")]
         public string Id { get; set; }
 
+        [Required(ErrorMessage = "O nome é obrigatório.")]
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        //[Required(ErrorMessage = "A firma é obrigatório.")]
         [JsonProperty("gameId")]
         public string GameId { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
 
+        [Required(ErrorMessage = "O limite inferior é obrigatório.")]
         [JsonProperty("floor")]
         public int? Floor { get; set; }
 
+        [Required(ErrorMessage = "O limite superior é obrigatório.")]
         [JsonProperty("ceiling")]
         public int? Ceiling { get; set; }
 
+        [Required(ErrorMessage = "O peso é obrigatório.")]
         [JsonProperty("multiplier")]
         public int? Multiplier { get; set; }
 
+        [Required(ErrorMessage = "O xp é obrigatório.")]
         [JsonProperty("xp")]
         public int? Xp { get; set; }
 
@@ -50,6 +50,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("inverse")]
         public bool IsInverse { get; set; }
 
+        [Required(ErrorMessage = "O ícone é obrigatório.")]
         [JsonProperty("icon")]
         public string Icon { get; set; }
 
