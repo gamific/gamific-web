@@ -1101,3 +1101,6 @@ body { background: #fff; }
 div#statistics-chart svg {
     width: 100%;
 }
+.datepicker table tr td, .datepicker table tr th{
+    line-height:1em;
+}
