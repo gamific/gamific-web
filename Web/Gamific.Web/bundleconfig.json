@@ -24,6 +24,42 @@
     ]
   },
   {
+    "outputFileName": "Content/Js/app/Episode.min.js",
+    "inputFiles": [
+      "Content/Js/app/Episode.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/episodeAssociate.min.js",
+    "inputFiles": [
+      "Content/Js/app/episodeAssociate.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/episodeComplete.min.js",
+    "inputFiles": [
+      "Content/Js/app/episodeComplete.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/HallOfFame.min.js",
+    "inputFiles": [
+      "Content/Js/app/HallOfFame.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/Items.min.js",
+    "inputFiles": [
+      "Content/Js/app/Items.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/Items.min.js",
+    "inputFiles": [
+      "Content/Js/app/Items.js"
+    ]
+  },
+  {
     "outputFileName": "Content/Js/app/firm.min.js",
     "inputFiles": [
       "Content/Js/app/firm.js"
@@ -117,6 +153,60 @@
     "outputFileName": "Content/Js/app/workerTypeMetric.min.js",
     "inputFiles": [
       "Content/Js/app/workerTypeMetric.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/param.min.js",
+    "inputFiles": [
+      "Content/Js/app/param.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/pushNotification.min.js",
+    "inputFiles": [
+      "Content/Js/app/pushNotification.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/question.min.js",
+    "inputFiles": [
+      "Content/Js/app/question.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/questionAssociate.min.js",
+    "inputFiles": [
+      "Content/Js/app/questionAssociate.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/questionComplete.min.js",
+    "inputFiles": [
+      "Content/Js/app/questionComplete.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/quiz.min.js",
+    "inputFiles": [
+      "Content/Js/app/quiz.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/quizAssociate.min.js",
+    "inputFiles": [
+      "Content/Js/app/quizAssociate.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/quizComplete.min.js",
+    "inputFiles": [
+      "Content/Js/app/quizComplete.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/Js/app/reportAdmin.min.js",
+    "inputFiles": [
+      "Content/Js/app/reportAdmin.js"
     ]
   },
   {
