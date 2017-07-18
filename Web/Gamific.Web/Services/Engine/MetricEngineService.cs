@@ -110,7 +110,7 @@ namespace Vlast.Gamific.Web.Services.Engine
                 throw e;
             }
         }
-        /*
+        
         public List<LocationDTO> MapPointsByRunsAndMetric(List<RunEngineDTO> runners, MetricEngineDTO metric)
         {
             using (WebClient client = GetClient())
@@ -133,7 +133,7 @@ namespace Vlast.Gamific.Web.Services.Engine
                 }
             }
         }
-        */
+        
         #endregion
     }
 }
