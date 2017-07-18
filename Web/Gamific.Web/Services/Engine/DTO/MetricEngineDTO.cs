@@ -28,11 +28,11 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("description")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "O limite inferior é obrigatório.")]
+        //[Required(ErrorMessage = "O limite inferior é obrigatório.")]
         [JsonProperty("floor")]
         public int? Floor { get; set; }
 
-        [Required(ErrorMessage = "O limite superior é obrigatório.")]
+        //[Required(ErrorMessage = "O limite superior é obrigatório.")]
         [JsonProperty("ceiling")]
         public int? Ceiling { get; set; }
 
@@ -40,7 +40,7 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("multiplier")]
         public int? Multiplier { get; set; }
 
-        [Required(ErrorMessage = "O xp é obrigatório.")]
+        //[Required(ErrorMessage = "O xp é obrigatório.")]
         [JsonProperty("xp")]
         public int? Xp { get; set; }
 
