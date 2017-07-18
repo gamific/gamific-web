@@ -210,14 +210,16 @@ var currentDate = new Date();
 var dateInitial = moment($("#InitialDate").val(), "DD/MM/YYYY HH:mm:SS").toDate()
 var dateEnd = moment($("#EndDate").val(), "DD/MM/YYYY HH:mm:SS").toDate()
 
-$('#EndDate').datepicker({
-    language: 'pt-BR',
-    changeMonth: true,
-    showOtherMonths: true,
-    selectOtherMonths: true,
-    selectOtherYears: true,
-    changeYear: true
-});
+    $('#EndDate').datepicker({
+        language: 'pt-BR',
+        changeMonth: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        selectOtherYears: true,
+        changeYear: true,
+        orientation: 'bottom',
+    });
+
 if ($('#EndDate').val() == "01/01/0001 00:00:00") {
     $("#EndDate").datepicker("setDate", currentDate);
 } else {
@@ -230,7 +232,8 @@ $('#InitialDate').datepicker({
     showOtherMonths: true,
     selectOtherMonths: true,
     selectOtherYears: true,
-    changeYear: true
+    changeYear: true,
+    orientation: 'bottom'
 });
 
 if ($('#InitialDate').val() == "01/01/0001 00:00:00") {
@@ -238,7 +241,6 @@ if ($('#InitialDate').val() == "01/01/0001 00:00:00") {
 } else {
     $("#InitialDate").datepicker("setDate", dateInitial);
 }
-
 //initialize form wizard
 $('#rootwizard').bootstrapWizard({
 
