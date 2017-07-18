@@ -190,7 +190,6 @@ namespace Vlast.Gamific.Web.Controllers.Account
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, result.UserId.ToString()));
                 claims.Add(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "http://vlast.com.br"));
 
-
                 bool isSystemAdmin = false;
                 foreach (var role in result.UserRoles)
                 {

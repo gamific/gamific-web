@@ -55,8 +55,7 @@ namespace Vlast.Gamific.Web
                             "~/Content/Js/lib/progressbar.min.js",
                             "~/Content/Js/lib/bootstrap-datepicker.js",
                             "~/Content/Js/lib/bootstrap-dialog.min.js",
-                            "~/Content/Js/lib/jquery-sortable-min.js",
-                            "~/Content/Js/lib/maplace.min.js"
+                            "~/Content/Js/lib/jquery-sortable-min.js"
                             ));
             }
 
