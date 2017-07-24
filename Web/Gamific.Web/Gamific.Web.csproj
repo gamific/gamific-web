@@ -365,7 +365,6 @@
     <Compile Include="Services\Engine\DTO\HallOfFameEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\ItemEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\Link.cs" />
-    <Compile Include="Services\Engine\DTO\QuizCompleteDTO.cs" />
     <Compile Include="Services\Engine\DTO\ParserDTO.cs" />
     <Compile Include="Services\Engine\DTO\QuizDTO.cs" />
     <Compile Include="Services\Engine\DTO\MetricEngineDTO.cs" />
@@ -381,15 +380,15 @@
     <Compile Include="Services\Engine\GoalEngineService.cs" />
     <Compile Include="Services\Engine\HallOfFameEngineService.cs" />
     <Compile Include="Services\Engine\ItemEngineService.cs" />
-    <Compile Include="Services\Engine\QuestionAnsweredService.cs" />
-    <Compile Include="Services\Engine\QuestionService.cs" />
     <Compile Include="Services\Engine\AnswerService.cs" />
+    <Compile Include="Services\Engine\MetricEngineService.cs" />
+    <Compile Include="Services\Engine\PlayerEngineService.cs" />
+    <Compile Include="Services\Engine\QuestionAnsweredService.cs" />
     <Compile Include="Services\Engine\QuestionAnswerService.cs" />
+    <Compile Include="Services\Engine\QuestionService.cs" />
     <Compile Include="Services\Engine\QuizCampaignService.cs" />
     <Compile Include="Services\Engine\QuizQuestionService.cs" />
     <Compile Include="Services\Engine\QuizService.cs" />
-    <Compile Include="Services\Engine\MetricEngineService.cs" />
-    <Compile Include="Services\Engine\PlayerEngineService.cs" />
     <Compile Include="Services\Engine\RunEngineService.cs" />
     <Compile Include="Services\Engine\RunMetricEngineService.cs" />
     <Compile Include="Services\Engine\TeamEngineService.cs" />
@@ -398,9 +397,6 @@
     <Compile Include="Services\Push\DTO\NotificationLogDTO.cs" />
     <Compile Include="Services\Push\DTO\NotificationPushDTO.cs" />
     <Compile Include="Services\Push\NotificationPushService.cs" />
-    <Compile Include="Services\Quiz\DTO\QuestionAnsweredDTO.cs" />
-    <Compile Include="Services\Quiz\DTO\QuestionDTO.cs" />
-    <Compile Include="Services\Quiz\DTO\QuizCompleteDTO.cs" />
     <Compile Include="Services\Quiz\QuizAPIController.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Controllers\Util\JQueryDataTableRequest.cs" />
@@ -848,6 +844,7 @@
     <Content Include="Views\Dashboard\DetailCheckin.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Services\Quiz\DTO\" />
     <Folder Include="Views\MessageControllerBase\" />
   </ItemGroup>
   <ItemGroup>

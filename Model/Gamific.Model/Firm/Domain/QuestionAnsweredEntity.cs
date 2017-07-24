@@ -16,33 +16,42 @@ namespace Vlast.Gamific.Model.Firm.Domain
         [Key]
         [DataMember(Name = "id")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [JsonProperty("id")]
         public int Id { get; set; }
 
         [Required]
         [DataMember(Name = "IdQuestion")]
+        [JsonProperty("idQuestion")]
         public int IdQuestion { get; set; }
 
         [Required]
         [DataMember(Name = "IdAnswers")]
+        [JsonProperty("idAnswers")]
         public int IdAnswers { get; set; }
 
         [Required]
         [DataMember(Name = "userId")]
+        [JsonProperty("userId")]
         public int UserId { get; set; }
 
         [Required]
         [DataMember(Name = "lastUpdate")]
+        [JsonProperty("lastUpdate")]
         public DateTime LastUpdate { get; set; }
 
         [Required]
         [DataMember(Name = "idQuiz")]
+        [JsonProperty("idQuiz")]
         public int IdQuiz { get; set; }
         
         [Required]
         [DataMember(Name = "quizProcess")]
+        [JsonProperty("quizProcess")]
         public string QuizProcess { get; set; }
 
-        
-
+        [Required]
+        [DataMember(Name = "playerId")]
+        [JsonProperty("playerId")]
+        public string PlayerId { get; set; }
     }
 }

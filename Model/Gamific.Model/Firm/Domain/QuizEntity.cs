@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
+using Vlast.Util.Data;
 
 namespace Vlast.Gamific.Model.Firm.Domain
 {
@@ -70,12 +71,10 @@ namespace Vlast.Gamific.Model.Firm.Domain
         [DataMember(Name = "updatedBy")]
         public string UpdatedBy { get; set; }
 
-
         [DataMember(Name = "link")]
         public string Link { get; set; }
 
         [DataMember(Name = "firmId")]
-        [Required]
         public int FirmId { get; set; }
 
         [DataMember(Name = "dateLimit")]
@@ -84,5 +83,7 @@ namespace Vlast.Gamific.Model.Firm.Domain
         [DataMember(Name = "status")]
         public bool status { get; set; }
 
+        [DataMember(Name = "gameId")]
+        public string GameId { get; set; }
     }
 }

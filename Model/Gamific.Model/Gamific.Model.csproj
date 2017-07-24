@@ -48,6 +48,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\MySql.Data.Entity.6.9.6\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Jobs\Gamific.Jobs\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -89,6 +93,7 @@
     <Compile Include="Firm\Domain\TeamWorkerEntity.cs" />
     <Compile Include="Firm\Domain\ResultEntity.cs" />
     <Compile Include="Firm\Domain\QuizEntity.cs" />
+    <Compile Include="Firm\DTO\AnswersDTO.cs" />
     <Compile Include="Firm\DTO\CarDTO.cs" />
     <Compile Include="Firm\DTO\Enums.cs" />
     <Compile Include="Firm\Domain\MessageEntity.cs" />
@@ -99,6 +104,9 @@
     <Compile Include="Firm\DTO\GoalDTO.cs" />
     <Compile Include="Firm\DTO\MetricDTO.cs" />
     <Compile Include="Firm\DTO\EngineTeamDTO.cs" />
+    <Compile Include="Firm\DTO\QuestionAnsweredDTO.cs" />
+    <Compile Include="Firm\DTO\QuestionDTO.cs" />
+    <Compile Include="Firm\DTO\QuizCompleteDTO.cs" />
     <Compile Include="Firm\DTO\ReportDTO.cs" />
     <Compile Include="Firm\DTO\WorkerTypeMetricDTO.cs" />
     <Compile Include="Firm\Repository\EmailLogRepository.cs" />
