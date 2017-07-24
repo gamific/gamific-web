@@ -160,43 +160,59 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
-                    if (entity.Question == null)
+                    if (ModelState.IsValid)
                     {
-                        return Json(new { status = "warn", message = "O campo pergunta é obrigatório!" });
-                    }
-                    if (entity.Id == 0)
-                    {
-                        QuestionService service = QuestionService.Instance;
-                        entity.InitialDate = DateTime.Now;
-                        entity.CreatedBy = CurrentUserEmail;
-                        entity.LastUpdate = DateTime.Now;
-                        entity.FirmId = CurrentFirm.Id;
-                        entity.status = true;
-                        service.Create(entity);
-                        scope.Complete();
 
-                        return Json(new { status = "sucess", message = "Registro cadastrado com sucesso!" });
+
+                        if (entity.Question == null)
+                        {
+                            ModelState.AddModelError("", "O campo pergunta é obrigatório!");
+                            return PartialView("_Edit", entity);
+                            //return Json(new { status = "warn", message = "O campo pergunta é obrigatório!" });
+                        }
+                        if (entity.Id == 0)
+                        {
+                            QuestionService service = QuestionService.Instance;
+                            entity.InitialDate = DateTime.Now;
+                            entity.CreatedBy = CurrentUserEmail;
+                            entity.LastUpdate = DateTime.Now;
+                            entity.FirmId = CurrentFirm.Id;
+                            entity.status = true;
+                            service.Create(entity);
+                            Success("Registro cadastrado com sucesso!");
+                            scope.Complete();
+
+                            //return Json(new { status = "sucess", message = "Registro cadastrado com sucesso!" });
+                        }
+                        else
+                        {
+                            QuestionService service = QuestionService.Instance;
+                            entity.LastUpdate = DateTime.Now;
+                            entity.status = true;
+                            entity.UpdatedBy = CurrentUserEmail;
+                            entity.FirmId = CurrentFirm.Id;
+                            service.Update(entity);
+                            Success("Registro atualizado com sucesso!");
+                       
+                            scope.Complete();
+                           // return Json(new { status = "sucess", message = "Registro atualizado com sucesso!" });
+                        }
                     }
                     else
                     {
-                        QuestionService service = QuestionService.Instance;
-                        entity.LastUpdate = DateTime.Now;
-                        entity.status = true;
-                        entity.UpdatedBy = CurrentUserEmail;
-                        entity.FirmId = CurrentFirm.Id;
-                        service.Update(entity);
-                        scope.Complete();
-                        return Json(new { status = "sucess", message = "Registro atualizado com sucesso!" });
+                        ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar a Pergunta.");
+                        return PartialView("_Edit", entity);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
-
-                return Json(new { status = "error", message = "Ocorreu um problema!" });
+                ModelState.AddModelError("", "Ocorreu um problema!");
+                return PartialView("_Edit", entity);
+                // return Json(new { status = "error", message = "Ocorreu um problema!" });
             }
-
+            return new EmptyResult();
         }
     }
 }

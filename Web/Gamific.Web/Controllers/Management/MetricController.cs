@@ -129,7 +129,11 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 {
                     metric.GameId = CurrentFirm.ExternalId;
                 }
+              
+                if (ModelState.IsValid)
+                {
 
+                
                 ValidateModel(metric);
 
                 MetricEngineDTO newMetric = MetricEngineService.Instance.CreateOrUpdate(metric);
@@ -162,6 +166,22 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 }
 
                 Success("Metrica atualizada com sucesso.");
+                }
+                else
+                {
+                    ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
+                    {
+                        Selected = metric.Icon == i.ToString().Replace("_", "-") ? true : false,
+                        Text = i.GetType().GetMember(i.ToString()).First().GetCustomAttribute<DisplayAttribute>().Name,
+                        Value = i.ToString().Replace("_", "-")
+                    }).ToList();
+
+                    ViewBag.WorkerTypes = WorkerTypeRepository.Instance.GetAllByGameId(CurrentFirm.ExternalId);
+
+                    ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar a Métrica.");
+
+                    return PartialView("_Edit", metric);
+                }
             }
             catch (Exception ex)
             {
@@ -173,57 +193,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return new EmptyResult();
         }
 
-        private void ValidateModel(MetricEngineDTO metric)
-        {
-            List<string> notFilled = new List<string>();
-
-            if (metric.Icon == "" || metric.Icon == null)
-            {
-                notFilled.Add("icone");
-            }
-            if ( metric.Multiplier == null)
-            {
-                notFilled.Add("peso");
-            }
-
-            if (metric.Xp == null)
-            {
-                notFilled.Add("xp");
-            }
-
-            if (metric.Floor == null)
-            {
-                notFilled.Add("limite inferior");
-            }
-
-            if (metric.Ceiling == null)
-            {
-                notFilled.Add("limite superior");
-            }
-
-            if (metric.Name == "" || metric.Name == null)
-            {
-                notFilled.Add("nome");
-            }
-            if (metric.GameId == "" || metric.GameId == null)
-            {
-                notFilled.Add("Firma");
-            }
-
-            if(notFilled.Count != 0)
-            {
-                string fields = ", campos não preenchidos: ";
-                int i;
-
-                for (i = 0; i < notFilled.Count - 1; i++)
-                {
-                    fields += notFilled[i] + ", ";
-                }
-
-                fields += notFilled[i] + ".";
-
-                throw new Exception(fields);
-            }
-        }
+        
     }
 }

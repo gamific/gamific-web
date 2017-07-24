@@ -212,7 +212,7 @@ function cleanClickEpisode(data) {
 
 
 function onSucessSaveEpisode() {
-    verifyErrors();
+    verifyErrors(); 
 }
 
 function onFailureSaveEpisode() {

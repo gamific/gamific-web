@@ -98,7 +98,7 @@ function removeQuestion(data, name) {
     dialog.getModalHeader().css("background-color", "#AA0000");
 }
 
-function onSucessSaveQuestionToast(data, status, xhr) {
+/*function onSucessSaveQuestionToast(data, status, xhr) {
     if (data && data.status === 'error') {
         toastr.error(data.message, 'Erro');
     } else if (data && data.status === 'warn') {
@@ -112,10 +112,18 @@ function onSucessSaveQuestionToast(data, status, xhr) {
         loadDataTableQuestion();
         $('.modal').modal('hide');
     }
+}*/
+
+/*function onFailureSaveQuestionToast() {
+    toastr.error('Ocorreu um erro inesperado no sistema!', 'Erro');
+}*/
+
+function onSucessSaveQuestion() {
+    verifyErrors();
 }
 
-function onFailureSaveQuestionToast() {
-    toastr.error('Ocorreu um erro inesperado no sistema!', 'Erro');
+function onFailureSaveQuestion() {
+
 }
 
 loadDataTableQuestion();

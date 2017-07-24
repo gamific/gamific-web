@@ -15,6 +15,7 @@ namespace Vlast.Gamific.Web
             {
                 bundles.Add(new ScriptBundle("~/bundles/LayoutScripts").Include(
                             "~/Content/Js/lib/jquery-1.11.1.min.js",
+                            "~/Content/Js/lib/moment.min.js",
                             "~/Content/Js/lib/bootstrap.min.js ",
                             "~/Content/Js/lib/jquery.dataTables.min.js",
                             "~/Content/Js/lib/dataTables.bootstrap.min.js",
@@ -48,14 +49,13 @@ namespace Vlast.Gamific.Web
                             "~/Content/Js/lib/summernote.min.js",
                             "~/Content/Js/lib/jquery.unobtrusive-ajax.min.js",
                             "~/Content/Js/lib/tiny-mce.min.js",
-                            "~/Content/Js/lib/moment.min.js",
+                           // "~/Content/Js/lib/moment.min.js",
                             "~/Content/Js/lib/jquery.animateNumbers.js",
                             "~/Content/Js/app/gamific.min.js",
                             "~/Content/Js/lib/progressbar.min.js",
                             "~/Content/Js/lib/bootstrap-datepicker.js",
                             "~/Content/Js/lib/bootstrap-dialog.min.js",
-                            "~/Content/Js/lib/jquery-sortable-min.js",
-                            "~/Content/Js/lib/maplace.min.js"
+                            "~/Content/Js/lib/jquery-sortable-min.js"
                             ));
             }
 
@@ -63,6 +63,7 @@ namespace Vlast.Gamific.Web
             {
                 bundles.Add(new ScriptBundle("~/bundles/LayoutScripts").Include(
                         "~/Content/Js/lib/jquery-1.11.1.min.js",
+                        "~/Content/Js/lib/moment.js",
                         "~/Content/Js/lib/bootstrap.min.js ",
                         "~/Content/Js/lib/jquery.dataTables.js",
                         "~/Content/Js/lib/dataTables.bootstrap.js",
@@ -97,13 +98,13 @@ namespace Vlast.Gamific.Web
                         "~/Content/Js/lib/summernote.min.js",
                         "~/Content/Js/lib/jquery.unobtrusive-ajax.js",
                         "~/Content/Js/lib/tiny-mce.js",
-                        "~/Content/Js/lib/moment.js",
+                       // "~/Content/Js/lib/moment.js",
                         "~/Content/Js/app/gamific.js"
                         ));
             }
             bundles.Add(new StyleBundle("~/Content/LayoutStyle").Include(
                         "~/Content/css/bootstrap.min.css", new CssRewriteUrlTransform()).Include(
-                        "~/Content/css/datepicker.css", new CssRewriteUrlTransform()).Include(
+                       // "~/Content/css/datepicker.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/animate.min.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/dataTables.responsive.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/dataTables.bootstrap.css", new CssRewriteUrlTransform()).Include(
@@ -119,6 +120,7 @@ namespace Vlast.Gamific.Web
                         "~/Content/css/morris.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/rickshaw.min.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/gamific.css", new CssRewriteUrlTransform()).Include(
+                        "~/Content/css/bootstrap-datepicker3.css", new CssRewriteUrlTransform()).Include(
                         "~/Content/css/bootstrap-dialog.min.css", new CssRewriteUrlTransform()
                         ));
 

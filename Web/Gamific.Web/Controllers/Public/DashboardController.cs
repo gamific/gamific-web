@@ -27,6 +27,18 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
         public static List<EpisodeEngineDTO> episodesFilter = new List<EpisodeEngineDTO>();
 
+        [Route("deletaItens")]
+        [HttpGet]
+        public void DeleteItens()
+        {
+            GetAllDTO dto = ItemEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 2000);
+
+            foreach (ItemEngineDTO item in dto.List.item)
+            {
+                ItemEngineService.Instance.DeleteById(item.Id);
+            }
+        }
+
         // GET: Dashboard
         [Route("")]
         public ActionResult Index(int state = 1)
@@ -389,7 +401,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 }
             }
 
-            if(runners.Count > 0)
+            if (runners.Count > 0)
             {
                 bars = CardEngineService.Instance.EpisodesAndMetrics(episodesParam, metrics, runners);
             }
@@ -1000,26 +1012,50 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
                 runners.Add(runner);
             }
-            else
+            else if (teamId != "empty")
             {
                 runners = GetRunsByTeamIdRecursive(teamId);
             }
+            else
+            {
+                GetAllDTO all = TeamEngineService.Instance.FindByEpisodeId(episodeId);
+
+                all.List.team = all.List.team.OrderBy(x => x.Nick).ToList();
+
+                List<string> subTeamsNull = all.List.team.Where(x => x.SubOfTeamId == null).Select(x => x.Id).ToList();
+
+                List<TeamEngineDTO> teams = new List<TeamEngineDTO>();
+
+                foreach (string subTeamNull in subTeamsNull)
+                {
+                    teams.AddRange(OrganizeHierarchy(all.List.team, subTeamNull));
+                }
+
+                foreach (TeamEngineDTO team in teams)
+                {
+                    runners.AddRange(GetRunsByTeamIdRecursive(team.Id));
+                }
+            }
 
             MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
-            /*
+
             List<LocationDTO> locations = MetricEngineService.Instance.MapPointsByRunsAndMetric(runners, metric);
+
+            List<LocationViewDTO> locs = new List<LocationViewDTO>();
 
             foreach (LocationDTO location in locations)
             {
-                location.Lat = location.Latitude;
-                location.Lon = location.Longitude;
-                location.Zoom = 8;
+                LocationViewDTO loc = new LocationViewDTO();
+
+                loc.Lat = location.Latitude;
+                loc.Lon = location.Longitude;
+                locs.Add(loc);
             }
-            */
+
             ViewBag.EpisodeId = episodeId;
             ViewBag.TeamId = teamId;
             ViewBag.PlayerId = playerId;
-            ViewBag.Locations = Content(JsonConvert.SerializeObject(null), "application/json");
+            ViewBag.Locations = Content(JsonConvert.SerializeObject(locs), "application/json");
 
             if (playerId != "empty")
             {

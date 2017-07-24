@@ -101,7 +101,7 @@ function remove(data, name) {
     dialog.getModalHeader().css("background-color", "#AA0000");
 }
 
-function onSucessSaveAnswerToast(data, status, xhr) {
+/*function onSucessSaveAnswerToast(data, status, xhr) {
     if (data && data.status === 'error') {
         toastr.error(data.message, 'Erro');
     } else if (data && data.status === 'warn') {
@@ -115,10 +115,16 @@ function onSucessSaveAnswerToast(data, status, xhr) {
         loadDataTableAnswer();
         $('.modal').modal('hide');
     }
-}
+}*/
 
-function onFailureSaveAnswerToast() {
+/*function onFailureSaveAnswerToast() {
     toastr.error('Ocorreu um erro inesperado no sistema!', 'Erro');
-}
+}*/
 
+function onSucessSaveAnswer() {
+    verifyErrors();
+}
+function onFailureSaveAnswer() {
+
+}
 loadDataTableAnswer();

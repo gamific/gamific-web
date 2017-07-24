@@ -187,52 +187,69 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             try
             {
-                if (entity.Name == null)
+                if (ModelState.IsValid)
                 {
-                    return Json(new { status = "warn", message = "O campo identificação é obrigatório!" });
-                }
-
-                if (entity.Answer == null)
-                {
-                    return Json(new { status = "warn", message = "O campo resposta é obrigatório!" });
-                }
-
-
-                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
-                {
-
-                    if (entity.Id == 0)
+                    if (entity.Name == null)
                     {
-                        AnswerService service = AnswerService.Instance;
-                        entity.InitialDate = DateTime.Now;
-                        entity.CreatedBy = CurrentUserEmail;
-                        entity.LastUpdate = DateTime.Now; 
-                        entity.FirmId = CurrentFirm.Id;
-                        entity.status = true;
-                        service.Create(entity);
-                        scope.Complete();
+                        //return Json(new { status = "warn", message = "O campo identificação é obrigatório!" });
+                        ModelState.AddModelError("", "O campo identificação é obrigatório!");
+                        return PartialView("_Edit", entity);
+                    }
 
-                        return Json(new { status = "sucess", message = "Registro cadastrado com sucesso!" });
-                    }
-                    else
+                    if (entity.Answer == null)
                     {
-                        AnswerService service = AnswerService.Instance;
-                        entity.LastUpdate = DateTime.Now;
-                        entity.status = true;
-                        entity.UpdatedBy = CurrentUserEmail;
-                        entity.FirmId = CurrentFirm.Id;
-                        service.Update(entity);
-                        scope.Complete();
-                        return Json(new { status = "sucess", message = "Registro atualizado com sucesso!" });
+                        ModelState.AddModelError("", "O campo resposta é obrigatório!");
+                        return PartialView("_Edit", entity);
+                        //return Json(new { status = "warn", message = "O campo resposta é obrigatório!" });
                     }
+
+
+                    using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
+                    {
+
+                        if (entity.Id == 0)
+                        {
+                            AnswerService service = AnswerService.Instance;
+                            entity.InitialDate = DateTime.Now;
+                            entity.CreatedBy = CurrentUserEmail;
+                            entity.LastUpdate = DateTime.Now;
+                            entity.FirmId = CurrentFirm.Id;
+                            entity.status = true;
+                            service.Create(entity);
+                            Success("Registro cadastrado com sucesso!");
+                            scope.Complete();
+
+                           // return Json(new { status = "sucess", message = "Registro cadastrado com sucesso!" });
+                        }
+                        else
+                        {
+                            AnswerService service = AnswerService.Instance;
+                            entity.LastUpdate = DateTime.Now;
+                            entity.status = true;
+                            entity.UpdatedBy = CurrentUserEmail;
+                            entity.FirmId = CurrentFirm.Id;
+                            service.Update(entity);
+                            Success("Registro atualizado com sucesso!");
+                            scope.Complete();
+                            //return Json(new { status = "sucess", message = "Registro atualizado com sucesso!" });
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar a Resposta.");
+                    return PartialView("_Edit", entity);
                 }
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
 
-                return Json(new { status = "error", message = "Ocorreu um problema!" });
+                //return Json(new { status = "error", message = "Ocorreu um problema!" });
+                ModelState.AddModelError("", "Ocorreu um problema!");
+                return PartialView("_Edit", entity);
             }
+            return new EmptyResult();
 
         }
 

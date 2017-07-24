@@ -121,80 +121,92 @@ namespace Vlast.Gamific.Web.Controllers.Management
             {
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
-                    ImageEntity imageSaving = new ImageEntity();
-                    if (logoUpload != null && logoUpload.ContentLength > 0)
+                    if (ModelState.IsValid)
                     {
-                        imageSaving.Status = GenericStatus.ACTIVE;
-                        imageSaving.UpdatedBy = CurrentUserId;
-
-                        byte[] cover = null;
-                        using (var memoryStream = new MemoryStream())
+                        ImageEntity imageSaving = new ImageEntity();
+                        if (logoUpload != null && logoUpload.ContentLength > 0)
                         {
-                            logoUpload.InputStream.CopyTo(memoryStream);
-                            if (memoryStream.Length > 0)
+                            imageSaving.Status = GenericStatus.ACTIVE;
+                            imageSaving.UpdatedBy = CurrentUserId;
+
+                            byte[] cover = null;
+                            using (var memoryStream = new MemoryStream())
                             {
-                                using (Image image = Bitmap.FromStream(memoryStream))
+                                logoUpload.InputStream.CopyTo(memoryStream);
+                                if (memoryStream.Length > 0)
                                 {
-                                    logoUpload.InputStream.CopyTo(memoryStream);
-                                    if (memoryStream.Length > 0)
+                                    using (Image image = Bitmap.FromStream(memoryStream))
                                     {
-                                        cover = memoryStream.ToArray();
+                                        logoUpload.InputStream.CopyTo(memoryStream);
+                                        if (memoryStream.Length > 0)
+                                        {
+                                            cover = memoryStream.ToArray();
+                                        }
                                     }
                                 }
                             }
+
+                            //if (team.LogoId > 0)
+                            {
+                                //imageSaving.Id = team.LogoId;
+                            }
+                            //else
+                            {
+                                imageSaving = ImageRepository.Instance.CreateImage(imageSaving);
+                            }
+
+                            ImageRepository.Instance.SaveOrReplaceLogo(imageSaving.Id, cover);
+
+                            team.LogoId = imageSaving.Id;
                         }
 
-                        //if (team.LogoId > 0)
+                        if (team.GameId == null)
                         {
-                            //imageSaving.Id = team.LogoId;
+                            team.GameId = CurrentFirm.ExternalId;
                         }
-                        //else
+
+                        ValidateModel(team);
+
+                        if (checkBoxes == null)
                         {
-                            imageSaving = ImageRepository.Instance.CreateImage(imageSaving);
+                            checkBoxes = new List<CheckBoxValue>();
                         }
 
-                        ImageRepository.Instance.SaveOrReplaceLogo(imageSaving.Id, cover);
+                        if (team.Id != null)
+                        {
+                            string nick = team.Nick;
+                            checkBoxes.Where(x => !x.Checked && team.SubTeams.Contains(x.Text));
+                            TeamEngineDTO teamTemp = TeamEngineService.Instance.UpdateTeamMaster(team.MasterPlayerId, team.Id);
+                            teamTemp.LogoId = logoUpload != null ? imageSaving.Id : teamTemp.LogoId;
+                            teamTemp.LogoPath = CurrentURL + teamTemp.LogoId;
+                            teamTemp.Nick = nick;
+                            team = TeamEngineService.Instance.CreateOrUpdate(teamTemp);
+                            team = TeamEngineService.Instance.JoinSubTeamsOnTeam(team.Id, checkBoxes.Where(x => x.Checked == true && x.Text != team.Id).Select(x => x.Text).ToList());
+                        }
+                        else
+                        {
+                            team.LogoPath = CurrentURL + team.LogoId;
+                            team = TeamEngineService.Instance.CreateOrUpdate(team);
+                            team = TeamEngineService.Instance.JoinSubTeamsOnTeam(team.Id, checkBoxes.Where(x => x.Checked == true && x.Text != team.Id).Select(x => x.Text).ToList());
+                            List<PlayerEngineDTO> listPlayers = new List<PlayerEngineDTO>();
+                            listPlayers.Add(PlayerEngineService.Instance.GetById(team.MasterPlayerId));
+                            List<RunEngineDTO> runs = TeamEngineService.Instance.JoinPlayersOnTeam(team.Id, listPlayers);
+                        }
 
-                        team.LogoId = imageSaving.Id;
-                    }
+                        scope.Complete();
 
-                    if (team.GameId == null)
-                    {
-                        team.GameId = CurrentFirm.ExternalId;
-                    }
-                    
-                    ValidateModel(team);
-
-                    if (checkBoxes == null)
-                    {
-                        checkBoxes = new List<CheckBoxValue>();
-                    }
-
-                    if (team.Id != null)
-                    {
-                        string nick = team.Nick;
-                        checkBoxes.Where(x => !x.Checked && team.SubTeams.Contains(x.Text));
-                        TeamEngineDTO teamTemp = TeamEngineService.Instance.UpdateTeamMaster(team.MasterPlayerId, team.Id);
-                        teamTemp.LogoId = logoUpload != null ? imageSaving.Id : teamTemp.LogoId;
-                        teamTemp.LogoPath = CurrentURL + teamTemp.LogoId;
-                        teamTemp.Nick = nick; 
-                        team = TeamEngineService.Instance.CreateOrUpdate(teamTemp);
-                        team = TeamEngineService.Instance.JoinSubTeamsOnTeam(team.Id, checkBoxes.Where(x => x.Checked == true && x.Text != team.Id).Select(x => x.Text).ToList());
+                        return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        team.LogoPath = CurrentURL + team.LogoId;
-                        team = TeamEngineService.Instance.CreateOrUpdate(team);
-                        team = TeamEngineService.Instance.JoinSubTeamsOnTeam(team.Id, checkBoxes.Where(x => x.Checked == true && x.Text != team.Id).Select(x => x.Text).ToList());
-                        List<PlayerEngineDTO> listPlayers = new List<PlayerEngineDTO>();
-                        listPlayers.Add(PlayerEngineService.Instance.GetById(team.MasterPlayerId));
-                        List<RunEngineDTO> runs = TeamEngineService.Instance.JoinPlayersOnTeam(team.Id, listPlayers);
+                        ViewBag.Sponsors = GetSponsorsToSelect();
+                        ViewBag.Episodes = GetEpisodesToSelect();
+
+                        ViewBag.SubTeams = JsonConvert.SerializeObject(new List<string>());
+                        ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar a Equipe.");
+                        return PartialView("_Edit", team);
                     }
-
-                    scope.Complete();
-
-                    return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
-                }
+            }
             }
             catch (Exception e)
             {

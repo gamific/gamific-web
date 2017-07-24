@@ -99,11 +99,11 @@ function removeClickMetric(data, name) {
     dialog.getModalHeader().css("background-color", "#AA0000");
 }
 
-function onSucessSaveMetric(){
+function onSucessSaveMetric(data){
     verifyErrors();
 }
 
-function onFailureSaveMetric(){
+function onFailureSaveMetric(data){
 
 }
 

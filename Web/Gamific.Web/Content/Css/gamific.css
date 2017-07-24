@@ -563,7 +563,7 @@ abbr,acronym { border:0; }*/
 
 body { background: #fff; }
 /* optional Container STYLES */
-.chart { height: 550px; margin: 5px; width: 900px;  }
+.chart { height: 550px; margin: 5px; width: 100%;  }
 .Treant > .node {  }
 .Treant > p { font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; font-weight: bold; font-size: 12px; }
 .node-name { font-weight: bold;}
@@ -1096,4 +1096,11 @@ body { background: #fff; }
     border: 8px solid #00ff21;/*#28B428;*/
     border-top: 8px solid transparent;
     border-radius: 999px;
+}
+
+div#statistics-chart svg {
+    width: 100%;
+}
+.datepicker table tr td, .datepicker table tr th{
+    line-height:1em;
 }

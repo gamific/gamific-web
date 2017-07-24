@@ -64,6 +64,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult SearchGameDTO(string initDateMonth, string initDateDay, string initDateYear, string finishDateMonth, string finishDateDay, string finishDateYear, string gameId)
         {
             DateTime initDate = DateTime.Parse(initDateYear + "-" + initDateMonth + "-" + initDateDay + " 00:00:00");
+
             DateTime finishDate = DateTime.Parse(finishDateYear + "-" + finishDateMonth + "-" + finishDateDay + " 00:00:00");
 
             List<ReportDTO> workers = WorkerRepository.Instance.GetWorkerDTOByDate(initDate, finishDate, gameId == "empty" ? "" : gameId);

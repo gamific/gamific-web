@@ -107,8 +107,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar a Função.");
-                    return PartialView("_Edit");
+                    ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
+                    {
+                        Text = i.ToString(),
+                        Value = i.ToString()
+                    }).ToList();
+                    ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar o Produto.");
+                    return PartialView("_Edit", items);
 
                 }
 

@@ -309,6 +309,7 @@
     <Compile Include="Controllers\Public\MobileApiController.cs" />
     <Compile Include="Controllers\Public\AboutController.cs" />
     <Compile Include="Controllers\Public\DashboardController.cs" />
+    <Compile Include="Controllers\Public\Model\LocationViewDTO.cs" />
     <Compile Include="Controllers\Public\Model\LocationDTO.cs" />
     <Compile Include="Controllers\Public\Model\LinePointDTO.cs" />
     <Compile Include="Controllers\Public\Model\LineDTO.cs" />
@@ -404,6 +405,7 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\Css\animate.css" />
     <Content Include="Content\Css\bootstrap-checkbox.css" />
+    <Content Include="Content\Css\bootstrap-datepicker3.css" />
     <Content Include="Content\Css\bootstrap-dialog.min.css" />
     <Content Include="Content\Css\bootstrap-dropdown-multilevel.css" />
     <Content Include="Content\Css\bootstrap.min.css" />
@@ -578,27 +580,6 @@
       <DependentUpon>video.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\app\quiz.js" />
-    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %282%29.js">
-      <DependentUpon>question.js</DependentUpon>
-    </Content>
-    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29 - Cópia  - Cópia .js">
-      <DependentUpon>questionComplete.js</DependentUpon>
-    </Content>
-    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29 - Cópia %282%29.js">
-      <DependentUpon>episodeAssociate.js</DependentUpon>
-    </Content>
-    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29 - Cópia .js">
-      <DependentUpon>questionAssociate.js</DependentUpon>
-    </Content>
-    <Content Include="Content\Js\app\worker - Cópia .min - Cópia %283%29.js">
-      <DependentUpon>quizAssociate.js</DependentUpon>
-    </Content>
-    <Content Include="Content\Js\app\worker - Cópia .min - Cópia .js">
-      <DependentUpon>answer.js</DependentUpon>
-    </Content>
-    <Content Include="Content\Js\app\worker - Cópia .min.js">
-      <DependentUpon>quiz.js</DependentUpon>
-    </Content>
     <Content Include="Content\Js\app\worker.min.js">
       <DependentUpon>worker.js</DependentUpon>
     </Content>
@@ -609,10 +590,7 @@
     <Content Include="Content\Js\app\workerTypeMetric.min.js">
       <DependentUpon>workerTypeMetric.js</DependentUpon>
     </Content>
-    <Content Include="Content\Js\lib\bootstrap-datepicker - Cópia .js" />
-    <Content Include="Content\Js\lib\bootstrap-datepicker - Cópia .min.js">
-      <DependentUpon>bootstrap-datepicker - Cópia .js</DependentUpon>
-    </Content>
+    <Content Include="Content\Js\lib\bootstrap-datepicker.js" />
     <Content Include="Content\Js\lib\jquery-sortable-min.js" />
     <Content Include="Content\Js\lib\bootstrap-datepicker.min.js">
       <DependentUpon>jquery-sortable-min.js</DependentUpon>
@@ -777,7 +755,6 @@
     <Content Include="App_Data\.ebextensions\Gamific.Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ClassDiagram1.cd" />
     <Content Include="App_Code\ToastrBuilder.cshtml" />
     <None Include="bundleconfig.json" />
     <Content Include="Content\Unity\Release\WebGL3.asm.jsgz" />
