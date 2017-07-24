@@ -31,5 +31,21 @@ namespace Vlast.Gamific.Model.Firm.Repository
                 return (from q in context.AnswersEntity where (q.FirmId == firmId) select q).Count();
             }
         }
+
+        public List<AnswersEntity> GetByQuestionId(int questionId)
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                var answers = from quizQuestion in context.QuizQuestionEntity
+                              from answer in context.AnswersEntity
+                              from questionAnswer in context.QuestionAnswersEntity
+                              where questionAnswer.IdAnswer == answer.Id
+                              && questionAnswer.IdQuestion == quizQuestion.IdQuestion
+                              && quizQuestion.Id == questionId 
+                              select answer;
+
+                return answers.ToList();
+            }
+        }
     }
 }

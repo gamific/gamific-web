@@ -12,6 +12,8 @@ using System.Threading;
 using System.Globalization;
 using Vlast.Gamific.Model.Firm.DTO;
 using Vlast.Gamific.Web.Services.Account.BIZ;
+using Vlast.Gamific.Model.Firm.Repository;
+using Vlast.Gamific.Model.Firm.Domain;
 
 namespace Vlast.Gamific.Web
 {
@@ -38,6 +40,7 @@ namespace Vlast.Gamific.Web
             {
                 BundleTable.EnableOptimizations = true;
             }
+
 
            // rankingJob.Init(new TimeSpan(13, 00, 0));
            // e.Init(new TimeSpan(8, 0, 0));

@@ -218,7 +218,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("complete/{id}")]
         public ActionResult GetComplete(int id)
         {
-
+            /*
             var toReturn = new List<Services.Engine.DTO.QuizCompleteDTO>();
 
             var quiz = QuizService.Instance.GetById(id);
@@ -240,6 +240,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 toReturn.Add(to);
             }
             return Json(toReturn, JsonRequestBehavior.AllowGet);
+            */
+            return null;
 
         }
 

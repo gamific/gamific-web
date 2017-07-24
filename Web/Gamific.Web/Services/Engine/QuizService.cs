@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -165,7 +165,7 @@ namespace Vlast.Gamific.Web.Services.Engine
                     questionDto.Required = question.Required;
                     questionDto.status = question.status;
                     questionDto.UpdatedBy = question.UpdatedBy;
-
+                    /*
                     questionDto.answers = new List<AnswersEntity>();
                     quizComplete.questions.Add(questionDto);
                     var answerAssociations = QuestionAnswerService.Instance.GetByQuestion(item.IdQuestion);
@@ -173,7 +173,7 @@ namespace Vlast.Gamific.Web.Services.Engine
                     {
                         questionDto.answers.Add(AnswerService.Instance.GetById(answer.IdAnswer));
                     }
-
+                    */
                     toReturn.Add(quizComplete);
                 }
             }

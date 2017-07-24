@@ -211,5 +211,60 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
             }
 
         }
+
+        [Route("getQuizById/{id:int}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public string GetQuiz(int id)
+        {
+            QuizRepository repository = new QuizRepository();
+            QuizCompleteDTO quiz = repository.GetQuizCompleteDTOById(id);
+
+            string json;
+
+            json = JsonConvert.SerializeObject(
+            quiz,
+            Formatting.Indented,
+            new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            return json;
+        }
+
+        [Route("getAllQuizByGameId/{gameId}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public string GetAllQuizByGameId(string gameId)
+        {
+            QuizRepository repository = new QuizRepository();
+            List<QuizEntity> quiz = repository.GetAllFromGame(gameId);
+
+            string json;
+
+            json = JsonConvert.SerializeObject(
+            quiz,
+            Formatting.Indented,
+            new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            return json;
+        }
+
+        [Route("answerQuiz")]
+        [HttpPost]
+        [AllowAnonymous]
+        public string AnswerQuiz(List<QuestionAnsweredEntity> answers)
+        {
+            if(answers != null && answers.Count > 0)
+            {
+                foreach(QuestionAnsweredEntity answer in answers)
+                {
+                    QuestionAnsweredRepository questionAnswered = new QuestionAnsweredRepository();
+                    questionAnswered.save(answer);
+                }
+
+                return "Ok";
+            }
+
+            return "Erro";
+        }
     }
 }
