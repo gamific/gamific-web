@@ -41,9 +41,9 @@ namespace Vlast.Gamific.Web
                 BundleTable.EnableOptimizations = true;
             }
 
-
-           // rankingJob.Init(new TimeSpan(13, 00, 0));
-           // e.Init(new TimeSpan(8, 0, 0));
+            //WorkerRepository.Instance.GetWorkerDTOByDate(new DateTime(), DateTime.Now, "588602233a87786bec6ca703");
+            // rankingJob.Init(new TimeSpan(13, 00, 0));
+            // e.Init(new TimeSpan(8, 0, 0));
 
             //ScriptsMigration.MigrationEmailToEngine();
 
@@ -52,7 +52,7 @@ namespace Vlast.Gamific.Web
             entity.Image = File.ReadAllBytes(@"C:\Temp\tulio.jpg");
             BannerRepository.Instance.UpdateBanner(entity);
             */
-
+            //var teste = 1;
         }
     }
 }

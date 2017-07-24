@@ -54,8 +54,6 @@ namespace Vlast.Gamific.Model
 
         public DbSet<WorkerEntity> Workers { get; set; }
 
-        public DbSet<EmailLogEntity> EmailLogEntitys { get; set; }
-
         public DbSet<QuizEntity> QuizEntity { get; set; }
 
         public DbSet<AnswersEntity> AnswersEntity { get; set; }
