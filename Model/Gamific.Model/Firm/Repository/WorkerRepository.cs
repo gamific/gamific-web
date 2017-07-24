@@ -1025,29 +1025,36 @@ namespace Vlast.Gamific.Model.Firm.Repository
                             join device in lastUpdateDevices on worker.ExternalId equals device.External_User_Id into lud
                             from d in lud.DefaultIfEmpty() select new { device = d, worker = worker });
 
+                var email = (from emailLogs in context.EmailLogEntitys
+                             where emailLogs.GameId == gameId
+                             group emailLogs by emailLogs.PlayerId into p
+                             select new { emailLogs = p });
+
                 var query = (from workerDevice in workers
-                            from profile in context.Profiles
-                            from firm in games
-                            from userAccount in context.Users
-                            where workerDevice.worker.Status == GenericStatus.ACTIVE
+                             from profile in context.Profiles
+                             from firm in games
+                             from userAccount in context.Users
+                             from emails in email
+                             where workerDevice.worker.Status == GenericStatus.ACTIVE
                              && ((profile.LastUpdate >= initDate
-                             && profile.LastUpdate <= finishDate) || 
+                             && profile.LastUpdate <= finishDate) ||
                              (workerDevice.device == null ? false : (workerDevice.device.Last_Update >= initDate &&
                              workerDevice.device.Last_Update <= finishDate)))
                              && profile.Id == workerDevice.worker.UserId
                              && firm.ExternalId == workerDevice.worker.ExternalFirmId
                              && userAccount.Id == workerDevice.worker.UserId
-                            select new ReportDTO
-                            {
-                                Name = profile.Name,
-                                Email = profile.Email,
-                                GameName = firm.FirmName,
-                                LastUpdateMobile = workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update,
-                                LastUpdateWeb = userAccount.LastUpdate,
-                                LastUpdateMobileString = (workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
-                                LastUpdateWebString = userAccount.LastUpdate.ToString()//("dd/MM/yyyy HH:mm:ss", cult)
+                             //&& emails.To == profile.Email
+                             select new ReportDTO
+                             {
+                                 Name = profile.Name,
+                                 Email = profile.Email,
+                                 GameName = firm.FirmName,
+                                 LastUpdateMobile = workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update,
+                                 LastUpdateWeb = userAccount.LastUpdate,
+                                 LastUpdateMobileString = (workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
+                                 LastUpdateWebString = userAccount.LastUpdate.ToString()//("dd/MM/yyyy HH:mm:ss", cult)
 
-                            }).OrderBy(x => x.GameName);
+                             }).OrderBy(x => x.GameName);
 
                 return query.ToList();
             }
