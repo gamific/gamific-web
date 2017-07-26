@@ -65,7 +65,7 @@ function createTable(initDate, finishDate, gameId) {
                 $('#div-tableUsers').empty();
                 var report = JSON.parse(data);
                 var util = "<table>";
-                util = util + "<tr class='bg-transparent-black-5'> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> </tr>";
+                util = util + "<tr class='bg-transparent-black-5'> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> <th>Ultimo Email</th> <th>Quantidade</th> </tr>";
 
                 for (var i = 0; i < report.length; i++) {
 
@@ -84,6 +84,10 @@ function createTable(initDate, finishDate, gameId) {
                     util = util + "<th>" + report[i].LastUpdateWebString + "</th>";
 
                     util = util + "<th>" + report[i].LastUpdateMobileString + "</th>";
+
+                    util = util + "<th>" + report[i].LastReciveEmailString + "</th>";
+
+                    util = util + "<th>" + report[i].CountEmails + "</th>";
 
                     util = util + "</tr>";
                 }
