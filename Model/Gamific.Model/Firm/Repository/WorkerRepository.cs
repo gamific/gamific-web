@@ -1029,34 +1029,39 @@ namespace Vlast.Gamific.Model.Firm.Repository
                              from game in games
                              where emailLogs.GameId == game.ExternalId
                              group emailLogs by emailLogs.PlayerId into p
-                             select new { To = p.FirstOrDefault().To , count = p.Count(), max = p.Max(x => x.SendTime) };
+                             select new { To = p.FirstOrDefault().To , count = p.Count(), max = p.Max(x => x.SendTime), playerId = p.FirstOrDefault().PlayerId };
 
-                var query = (from workerDevice in workers
+                var workerEmail = from worker in workers
+                                  join email in emails on worker.worker.ExternalId equals email.playerId into teste
+                                  from t in teste.DefaultIfEmpty()
+                                  select new { workerDevice = worker, email = t };
+
+                var query = (from wed in workerEmail  
                              from profile in context.Profiles
                              from firm in games
                              from userAccount in context.Users
-                             from email in emails
-                             where workerDevice.worker.Status == GenericStatus.ACTIVE
+                             where wed.workerDevice.worker.Status == GenericStatus.ACTIVE
                              && ((profile.LastUpdate >= initDate
                              && profile.LastUpdate <= finishDate) ||
-                             (workerDevice.device == null ? false : (workerDevice.device.Last_Update >= initDate &&
-                             workerDevice.device.Last_Update <= finishDate)))
-                             && profile.Id == workerDevice.worker.UserId
-                             && firm.ExternalId == workerDevice.worker.ExternalFirmId
-                             && userAccount.Id == workerDevice.worker.UserId
-                             && email.To == profile.Email
+                             (wed.workerDevice.device == null ? false : (wed.workerDevice.device.Last_Update >= initDate &&
+                             wed.workerDevice.device.Last_Update <= finishDate))
+                             || (wed.email.To == profile.Email ? (wed.email.max >= initDate &&
+                             wed.email.max <= finishDate) : false))
+                             && profile.Id == wed.workerDevice.worker.UserId
+                             && firm.ExternalId == wed.workerDevice.worker.ExternalFirmId
+                             && userAccount.Id == wed.workerDevice.worker.UserId
                              select new ReportDTO
                              {
                                  Name = profile.Name,
                                  Email = profile.Email,
                                  GameName = firm.FirmName,
-                                 LastUpdateMobile = workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update,
+                                 LastUpdateMobile = wed.workerDevice.device == null ? new DateTime() : wed.workerDevice.device.Last_Update,
                                  LastUpdateWeb = userAccount.LastUpdate,
-                                 LastUpdateMobileString = (workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
+                                 LastUpdateMobileString = (wed.workerDevice.device == null ? new DateTime() : wed.workerDevice.device.Last_Update).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
                                  LastUpdateWebString = userAccount.LastUpdate.ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
-                                 LastReciveEmail = email.max,
-                                 LastReciveEmailString = email.max.ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
-                                 CountEmails = email.count
+                                 LastReciveEmail = wed.email != null ? wed.email.max : new DateTime(),
+                                 LastReciveEmailString = wed.email != null ? wed.email.max.ToString() : (new DateTime()).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
+                                 CountEmails = wed.email != null ? wed.email.count : 0
 
                              }).OrderBy(x => x.GameName);
                              
