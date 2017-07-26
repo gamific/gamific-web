@@ -1018,17 +1018,18 @@ namespace Vlast.Gamific.Model.Firm.Repository
                                         select d.OrderByDescending(x => x.Last_Update).FirstOrDefault();
 
                 var games = gameId == "" ?
-                    (from firm in context.Datas select firm).ToList() :
-                    (from firm in context.Datas where firm.ExternalId == gameId select firm).ToList();
+                    from firm in context.Datas select firm :
+                    from firm in context.Datas where firm.ExternalId == gameId select firm;
 
-                var workers = (from worker in context.Workers
+                var workers = from worker in context.Workers
                             join device in lastUpdateDevices on worker.ExternalId equals device.External_User_Id into lud
-                            from d in lud.DefaultIfEmpty() select new { device = d, worker = worker }).ToList();
+                            from d in lud.DefaultIfEmpty() select new { device = d, worker = worker };
 
-                var emails = (from emailLogs in context.EmailLogs
-                             where emailLogs.GameId == gameId
+                var emails = from emailLogs in context.EmailLogs
+                             from game in games
+                             where emailLogs.GameId == game.ExternalId
                              group emailLogs by emailLogs.PlayerId into p
-                             select new { To = p.FirstOrDefault().To , count = p.Count(), max = p.Max(x => x.SendTime) }).ToList();
+                             select new { To = p.FirstOrDefault().To , count = p.Count(), max = p.Max(x => x.SendTime) };
 
                 var query = (from workerDevice in workers
                              from profile in context.Profiles
@@ -1052,16 +1053,15 @@ namespace Vlast.Gamific.Model.Firm.Repository
                                  LastUpdateMobile = workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update,
                                  LastUpdateWeb = userAccount.LastUpdate,
                                  LastUpdateMobileString = (workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
-                                 LastUpdateWebString = userAccount.LastUpdate.ToString(),//("dd/MM/yyyy HH:mm:ss", cult)
+                                 LastUpdateWebString = userAccount.LastUpdate.ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
                                  LastReciveEmail = email.max,
-                                 LastReciveEmailString = email.max.ToString(),
+                                 LastReciveEmailString = email.max.ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
                                  CountEmails = email.count
 
                              }).OrderBy(x => x.GameName);
                              
 
                 return query.ToList();
-                //return null;
             }
         }
 

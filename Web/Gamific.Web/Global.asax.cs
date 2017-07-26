@@ -14,6 +14,7 @@ using Vlast.Gamific.Model.Firm.DTO;
 using Vlast.Gamific.Web.Services.Account.BIZ;
 using Vlast.Gamific.Model.Firm.Repository;
 using Vlast.Gamific.Model.Firm.Domain;
+using System.Collections.Generic;
 
 namespace Vlast.Gamific.Web
 {
@@ -41,7 +42,6 @@ namespace Vlast.Gamific.Web
                 BundleTable.EnableOptimizations = true;
             }
 
-            //WorkerRepository.Instance.GetWorkerDTOByDate(new DateTime(), DateTime.Now, "588602233a87786bec6ca703");
             // rankingJob.Init(new TimeSpan(13, 00, 0));
             // e.Init(new TimeSpan(8, 0, 0));
 
@@ -52,7 +52,6 @@ namespace Vlast.Gamific.Web
             entity.Image = File.ReadAllBytes(@"C:\Temp\tulio.jpg");
             BannerRepository.Instance.UpdateBanner(entity);
             */
-            //var teste = 1;
         }
     }
 }

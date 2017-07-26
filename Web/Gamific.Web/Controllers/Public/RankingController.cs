@@ -61,7 +61,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         [HttpGet]
         public ActionResult SearchMetrics()
         {
-            GetAllDTO all = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId);
+            GetAllDTO all = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId, 0, 1000);
 
             return Json(JsonConvert.SerializeObject(all.List.metric), JsonRequestBehavior.AllowGet);
         }
