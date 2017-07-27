@@ -1049,6 +1049,8 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
                 loc.Lat = location.Latitude;
                 loc.Lon = location.Longitude;
+                loc.html = location.description ?? "Check-in";
+              
                 locs.Add(loc);
             }
 
@@ -1056,6 +1058,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             ViewBag.TeamId = teamId;
             ViewBag.PlayerId = playerId;
             ViewBag.Locations = Content(JsonConvert.SerializeObject(locs), "application/json");
+            ViewBag.MetricId = metricId;
 
             if (playerId != "empty")
             {
@@ -1103,6 +1106,82 @@ namespace Vlast.Gamific.Web.Controllers.Public
             RunMetricEngineService.Instance.DeleteById(runMetricId);
 
             return new EmptyResult();
+        }
+
+        /// <summary>
+        /// Popula uma tabela com infomaçoes do Check-In realizados.
+        /// </summary>
+        /// <returns></returns>
+        [Route("resultadosCheckIn/{episodeId}/{metricId}/{teamId}/{playerId}")]
+        public ActionResult SearchCheckIn(JQueryDataTableRequest jqueryTableRequest, string episodeId, string metricId, string teamId, string playerId)
+        {
+            if (jqueryTableRequest != null)
+            {
+                 GetAllDTO all = new GetAllDTO();
+              
+                List<RunEngineDTO> runners = new List<RunEngineDTO>();
+
+                if (playerId != "empty")
+                {
+                    RunEngineDTO runner = RunEngineService.Instance.GetByEpisodeIdAndPlayerId(episodeId, playerId);
+
+                    runners.Add(runner);
+                }
+                else if (teamId != "empty")
+                {
+                    runners = GetRunsByTeamIdRecursive(teamId);
+                }
+                else
+                {
+                    all = TeamEngineService.Instance.FindByEpisodeId(episodeId);
+
+                    all.List.team = all.List.team.OrderBy(x => x.Nick).ToList();
+
+                    List<string> subTeamsNull = all.List.team.Where(x => x.SubOfTeamId == null).Select(x => x.Id).ToList();
+
+                    List<TeamEngineDTO> teams = new List<TeamEngineDTO>();
+
+                    foreach (string subTeamNull in subTeamsNull)
+                    {
+                        teams.AddRange(OrganizeHierarchy(all.List.team, subTeamNull));
+                    }
+
+                    foreach (TeamEngineDTO team in teams)
+                    {
+                        runners.AddRange(GetRunsByTeamIdRecursive(team.Id));
+                    }
+                }
+
+                MetricEngineDTO metric = MetricEngineService.Instance.GetById(metricId);
+
+                List<LocationDTO> locations = MetricEngineService.Instance.MapPointsByRunsAndMetric(runners, metric);
+
+                List<CheckInDTO> checkIns = new List<CheckInDTO>();
+
+                foreach (LocationDTO location in locations)
+                {
+                    CheckInDTO ci = new CheckInDTO();
+
+                    ci.date = new DateTime(location.Date).ToString("dd/MM/yyyy");
+                    ci.playerName = PlayerEngineService.Instance.GetById(location.PlayerId);
+                    ci.description = location.description ?? "Check-in";
+
+                    checkIns.Add(ci);
+                }
+
+                JQueryDataTableResponse response = new JQueryDataTableResponse()
+                {
+                    Draw = jqueryTableRequest.Draw,
+                    RecordsTotal = locations.Count,
+                    RecordsFiltered = locations.Count,
+                    Data = checkIns.Select(r => new string[] {r.date, r.playerName, r.description}).ToArray()
+                    
+                };
+
+                return new DataContractResult() { Data = response, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
 
         #region Métodos privados

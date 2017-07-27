@@ -12,5 +12,11 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
         [JsonProperty("lon")]
         public double Lon { get; set; }
 
+        [JsonProperty("html")]
+        public string html { get; set; }
+
+        [JsonProperty("date")]
+        public string date { get; set; }
+
     }
 }
