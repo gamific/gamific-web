@@ -952,14 +952,14 @@ $("#FinishDate").datepicker("setDate", currentDate);
 
 function LoadCheckInDataTable() {
     table = $('#CheckInDataTable').dataTable({
-        "serverSide": true,
+        "serverSide": false,
         "ajax": "/public/dashboard/resultadosCheckIn/" + $('#EpisodeId').val() + "/" + $('#MetricId').val() + "/" + $('#TeamId').val() + "/" + $('#PlayerId').val(),
         "processing": true,
         "scrollY": "300px",
         "scrollCollapse": true,
         "deferRender": true,
         "lengthChange": false,
-        "search": false,
+        
         "language": {
             "emptyTable": "Não foram encontrados resultados.",
             "paginate": {
@@ -979,14 +979,14 @@ function LoadCheckInDataTable() {
             {
                 "width": "40%",
                 "targets": 1,
-                "orderable": false,
-                "serchable": false,
+                "orderable": true,
+                "serchable": true,
             },
             {
                 "width": "40%",
-                "targets": 1,
-                "orderable": false,
-                "serchable": false,
+                "targets": 2,
+                "orderable": true,
+                "serchable": true,
             },
            
         ],
