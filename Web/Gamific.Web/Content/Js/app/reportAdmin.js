@@ -64,7 +64,7 @@ function createTable(initDate, finishDate, gameId) {
     if (initDate != null && initDate != "" && finishDate != null && finishDate != "") {
         
         $.ajax({
-            url: "/admin/relatorio/buscarUsuario/" + initDate + "/" + finishDate + "/" + gameId,
+            url: "/admin/relatorio/buscarUsuario/" + initDate + "/" + finishDate + "/" + gameId + "/" + true,
             async: false,
             type: "GET",
             success: function (data) {
@@ -111,7 +111,8 @@ function createTableInative(initDate, finishDate, gameId) {
     if (initDate != null && initDate != "" && finishDate != null && finishDate != "") {
 
         $.ajax({
-            url: "/admin/relatorio/buscarUsuarioInativo/" + initDate + "/" + finishDate + "/" + gameId,
+            //url: "/admin/relatorio/buscarUsuarioInativo/" + initDate + "/" + finishDate + "/" + gameId,
+            url: "/admin/relatorio/buscarUsuario/" + initDate + "/" + finishDate + "/" + gameId + "/" + false,
             async: false,
             type: "GET",
             success: function (data) {
