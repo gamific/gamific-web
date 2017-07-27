@@ -10,13 +10,13 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
     {
 
         [JsonProperty("date")]
-        public long Date { get; set; }
+        public string Date { get; set; }
 
-        [JsonProperty("playerId")]
-        public string PlayerId { get; set; }
+        [JsonProperty("playerName")]
+        public string PlayerName { get; set; }
 
         [JsonProperty("description")]
-        public string description { get; set; }
+        public string Description { get; set; }
 
     }
 }

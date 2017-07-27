@@ -971,13 +971,19 @@ function LoadCheckInDataTable() {
         "fnServerParams": function (aoData) { },
         "columnDefs": [
             {
-                "width": "50%",
+                "width": "20%",
                 "targets": 0,
                 "orderable": true,
                 "searchable": true,
             },
             {
-                "width": "50%",
+                "width": "40%",
+                "targets": 1,
+                "orderable": false,
+                "serchable": false,
+            },
+            {
+                "width": "40%",
                 "targets": 1,
                 "orderable": false,
                 "serchable": false,

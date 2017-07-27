@@ -1049,7 +1049,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
                 loc.Lat = location.Latitude;
                 loc.Lon = location.Longitude;
-                loc.html = location.description ?? "Check-in";
+                loc.html = location.Description ?? "Check-in";
               
                 locs.Add(loc);
             }
@@ -1162,9 +1162,10 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 {
                     CheckInDTO ci = new CheckInDTO();
 
-                    ci.date = new DateTime(location.Date).ToString("dd/MM/yyyy");
-                    ci.playerName = PlayerEngineService.Instance.GetById(location.PlayerId);
-                    ci.description = location.description ?? "Check-in";
+                    ci.Date = new DateTime(location.Date).ToString("dd/MM/yyyy");
+                    PlayerEngineDTO player = PlayerEngineService.Instance.GetById(location.PlayerId);
+                    ci.PlayerName = player.Nick;
+                    ci.Description = location.Description ?? "Check-in";
 
                     checkIns.Add(ci);
                 }
@@ -1174,7 +1175,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                     Draw = jqueryTableRequest.Draw,
                     RecordsTotal = locations.Count,
                     RecordsFiltered = locations.Count,
-                    Data = checkIns.Select(r => new string[] {r.date, r.playerName, r.description}).ToArray()
+                    Data = checkIns.Select(r => new string[] {r.Date, r.PlayerName, r.Description}).ToArray()
                     
                 };
 
