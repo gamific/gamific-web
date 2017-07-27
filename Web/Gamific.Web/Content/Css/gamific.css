@@ -1104,3 +1104,6 @@ div#statistics-chart svg {
 .datepicker table tr td, .datepicker table tr th{
     line-height:1em;
 }
+#gmap-menu {
+    color: #000;
+}
