@@ -309,6 +309,7 @@
     <Compile Include="Controllers\Public\MobileApiController.cs" />
     <Compile Include="Controllers\Public\AboutController.cs" />
     <Compile Include="Controllers\Public\DashboardController.cs" />
+    <Compile Include="Controllers\Public\Model\CheckInDTO.cs" />
     <Compile Include="Controllers\Public\Model\LocationViewDTO.cs" />
     <Compile Include="Controllers\Public\Model\LocationDTO.cs" />
     <Compile Include="Controllers\Public\Model\LinePointDTO.cs" />
