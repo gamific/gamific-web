@@ -59,16 +59,44 @@ namespace Vlast.Gamific.Web.Controllers.Management
         /// Busca os episodios
         /// </summary>
         /// <returns></returns>
-        [Route("buscarEmpresa/{initDateMonth}/{initDateDay}/{initDateYear}/{finishDateMonth}/{finishDateDay}/{finishDateYear}/{gameId}")]
+        [Route("buscarUsuario/{initDateMonth}/{initDateDay}/{initDateYear}/{finishDateMonth}/{finishDateDay}/{finishDateYear}/{gameId}/{active}")]
         [HttpGet]
-        public ActionResult SearchGameDTO(string initDateMonth, string initDateDay, string initDateYear, string finishDateMonth, string finishDateDay, string finishDateYear, string gameId)
+        public ActionResult SearchGameDTO(string initDateMonth, string initDateDay, string initDateYear, string finishDateMonth, string finishDateDay, string finishDateYear, string gameId, bool active)
         {
             DateTime initDate = DateTime.Parse(initDateYear + "-" + initDateMonth + "-" + initDateDay + " 00:00:00");
 
             DateTime finishDate = DateTime.Parse(finishDateYear + "-" + finishDateMonth + "-" + finishDateDay + " 00:00:00");
 
-            List<ReportDTO> workers = WorkerRepository.Instance.GetWorkerDTOByDate(initDate, finishDate, gameId == "empty" ? "" : gameId);
+            List<ReportDTO> workers = null;
 
+            if (active)
+            {
+                workers = WorkerRepository.Instance.GetWorkerDTOByDate(initDate, finishDate, gameId == "empty" ? "" : gameId);
+            }
+            else
+            {
+                workers = WorkerRepository.Instance.GetWorkerDTOByDateAndInative(initDate, finishDate, gameId == "empty" ? "" : gameId);
+            }
+
+
+
+            return Json(JsonConvert.SerializeObject(workers), JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Busca os episodios
+        /// </summary>
+        /// <returns></returns>
+        [Route("buscarUsuarioInativo/{initDateMonth}/{initDateDay}/{initDateYear}/{finishDateMonth}/{finishDateDay}/{finishDateYear}/{gameId}")]
+        [HttpGet]
+        public ActionResult SearchGameDTOInativo(string initDateMonth, string initDateDay, string initDateYear, string finishDateMonth, string finishDateDay, string finishDateYear, string gameId)
+        {
+            DateTime initDate = DateTime.Parse(initDateYear + "-" + initDateMonth + "-" + initDateDay + " 00:00:00");
+
+            DateTime finishDate = DateTime.Parse(finishDateYear + "-" + finishDateMonth + "-" + finishDateDay + " 00:00:00");
+
+            List<ReportDTO> workers = WorkerRepository.Instance.GetWorkerDTOByDateAndInative(initDate, finishDate, gameId == "empty" ? "" : gameId);
+            //List<ReportDTO> workers = WorkerRepository.Instance.GetWorkerDTOByDate(initDate, finishDate, gameId == "empty" ? "" : gameId);
             return Json(JsonConvert.SerializeObject(workers), JsonRequestBehavior.AllowGet);
         }
 

@@ -20,7 +20,8 @@ $(document).ready(function () {
 function searchTable() {
     $('#div-tableUsers').empty();
     var data;
-    data = "<p class='text-center' ><i class='fa fa-spinner w3-spin' style='font-size:64px; margin: 250px;'></i></p>";
+    //data = "<p class='text-center' ><i class='fa fa-spinner w3-spin' style='font-size:64px; margin: 250px;'></i></p>";
+    data = + data + "<p class='text-center' >ERRO</p>";
     $('#div-tableUsers').append(data);
 }
 
@@ -47,6 +48,11 @@ function DropDownGame() {
             }
 
             $("#dropDownGame").append(html);
+            $("#dropDownGameInative").append("<option value='" + "empty" + "'>" + "Todas" + "</option>");
+            for (var i = 0; i < empresas.length; i++) {
+                $("#dropDownGameInative").append("<option value='" + empresas[i].externalId + "'>" + empresas[i].firmName + "</option>");
+            }
+            $("#dropDownGameInative").append(html);
 
             
         }
@@ -54,18 +60,18 @@ function DropDownGame() {
 }
 
 function createTable(initDate, finishDate, gameId) {
-    searchTable();
+    //searchTable();
     if (initDate != null && initDate != "" && finishDate != null && finishDate != "") {
         
         $.ajax({
-            url: "/admin/relatorio/buscarEmpresa/" + initDate + "/" + finishDate + "/" + gameId,
+            url: "/admin/relatorio/buscarUsuario/" + initDate + "/" + finishDate + "/" + gameId + "/" + true,
             async: false,
             type: "GET",
             success: function (data) {
                 $('#div-tableUsers').empty();
                 var report = JSON.parse(data);
                 var util = "<table>";
-                util = util + "<tr class='bg-transparent-black-5'> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> </tr>";
+                util = util + "<tr class='bg-transparent-black-5'> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> <th>Ultimo Email</th> <th>Quantidade</th> </tr>";
 
                 for (var i = 0; i < report.length; i++) {
 
@@ -77,13 +83,13 @@ function createTable(initDate, finishDate, gameId) {
 
                     util = util + "<th>" + report[i].GameName + "</th>";
 
-                    //util = util + "<th>" + report[i].LastUpdateWeb + "</th>";
-
-                    //util = util + "<th>" + report[i].LastUpdateMobile + "</th>";
-
                     util = util + "<th>" + report[i].LastUpdateWebString + "</th>";
 
                     util = util + "<th>" + report[i].LastUpdateMobileString + "</th>";
+
+                    util = util + "<th>" + report[i].LastReciveEmailString + "</th>";
+
+                    util = util + "<th>" + report[i].CountEmails + "</th>";
 
                     util = util + "</tr>";
                 }
@@ -91,6 +97,54 @@ function createTable(initDate, finishDate, gameId) {
                 util = util + "</table>";
                 
                 $('#div-tableUsers').append(util);
+            }
+        });
+    }
+    else {
+        isEmpty()
+    }
+
+}
+
+function createTableInative(initDate, finishDate, gameId) {
+    //searchTable();
+    if (initDate != null && initDate != "" && finishDate != null && finishDate != "") {
+
+        $.ajax({
+            //url: "/admin/relatorio/buscarUsuarioInativo/" + initDate + "/" + finishDate + "/" + gameId,
+            url: "/admin/relatorio/buscarUsuario/" + initDate + "/" + finishDate + "/" + gameId + "/" + false,
+            async: false,
+            type: "GET",
+            success: function (data) {
+                $('#div-tableUsersInative').empty();
+                var report = JSON.parse(data);
+                var util = "<table>";
+                util = util + "<tr class='bg-transparent-black-5'> <th>Nome</th> <th>Email</th> <th>Empresa</th> <th>Web</th> <th>Mobile</th> <th>Ultimo Email</th> <th>Quantidade</th> </tr>";
+
+                for (var i = 0; i < report.length; i++) {
+
+                    util = util + "<tr>";
+
+                    util = util + "<th>" + report[i].Name + "</th>";
+
+                    util = util + "<th>" + report[i].Email + "</th>";
+
+                    util = util + "<th>" + report[i].GameName + "</th>";
+
+                    util = util + "<th>" + report[i].LastUpdateWebString + "</th>";
+
+                    util = util + "<th>" + report[i].LastUpdateMobileString + "</th>";
+
+                    util = util + "<th>" + report[i].LastReciveEmailString + "</th>";
+
+                    util = util + "<th>" + report[i].CountEmails + "</th>";
+
+                    util = util + "</tr>";
+                }
+
+                util = util + "</table>";
+
+                $('#div-tableUsersInative').append(util);
             }
         });
     }
