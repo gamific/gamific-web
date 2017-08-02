@@ -315,13 +315,17 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             foreach (TeamEngineDTO team in all.List.team)
             {
-                teamNames.Add(team.Nick);
+                teamNames.Add(team.Nick);   
+                
             }
 
+            
             var flatListMetrics = string.Join(",", metricsNames.ToArray());
 
+                       
             var flatListTeams = string.Join(",", teamNames.ToArray());
 
+           
             var validations = worksheetResults.Validations;
 
             var validationEmail = validations[validations.Add()];
