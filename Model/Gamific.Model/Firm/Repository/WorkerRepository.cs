@@ -1018,50 +1018,125 @@ namespace Vlast.Gamific.Model.Firm.Repository
                                         select d.OrderByDescending(x => x.Last_Update).FirstOrDefault();
 
                 var games = gameId == "" ?
-                    (from firm in context.Datas select firm).ToList() :
-                    (from firm in context.Datas where firm.ExternalId == gameId select firm).ToList();
+                    from firm in context.Datas select firm :
+                    from firm in context.Datas where firm.ExternalId == gameId select firm;
 
-                var workers = (from worker in context.Workers
+                var workers = from worker in context.Workers
                             join device in lastUpdateDevices on worker.ExternalId equals device.External_User_Id into lud
-                            from d in lud.DefaultIfEmpty() select new { device = d, worker = worker }).ToList();
+                            from d in lud.DefaultIfEmpty() select new { device = d, worker = worker };
 
-                var emails = (from emailLogs in context.EmailLogs
-                             where emailLogs.GameId == gameId
+                var emails = from emailLogs in context.EmailLogs
+                             from game in games
+                             where emailLogs.GameId == game.ExternalId
                              group emailLogs by emailLogs.PlayerId into p
-                             select new { To = p.FirstOrDefault().To , count = p.Count(), max = p.Max(x => x.SendTime) }).ToList();
+                             select new { To = p.FirstOrDefault().To , count = p.Count(), max = p.Max(x => x.SendTime), playerId = p.FirstOrDefault().PlayerId };
 
-                var query = (from workerDevice in workers
+                var workerEmail = from worker in workers
+                                  join email in emails on worker.worker.ExternalId equals email.playerId into teste
+                                  from t in teste.DefaultIfEmpty()
+                                  select new { workerDevice = worker, email = t };
+
+                var query = (from wed in workerEmail  
                              from profile in context.Profiles
                              from firm in games
                              from userAccount in context.Users
-                             from email in emails
-                             where workerDevice.worker.Status == GenericStatus.ACTIVE
+                             where wed.workerDevice.worker.Status == GenericStatus.ACTIVE
                              && ((profile.LastUpdate >= initDate
                              && profile.LastUpdate <= finishDate) ||
-                             (workerDevice.device == null ? false : (workerDevice.device.Last_Update >= initDate &&
-                             workerDevice.device.Last_Update <= finishDate)))
-                             && profile.Id == workerDevice.worker.UserId
-                             && firm.ExternalId == workerDevice.worker.ExternalFirmId
-                             && userAccount.Id == workerDevice.worker.UserId
-                             && email.To == profile.Email
+                             (wed.workerDevice.device == null ? false : (wed.workerDevice.device.Last_Update >= initDate &&
+                             wed.workerDevice.device.Last_Update <= finishDate))
+                             || (wed.email.To == profile.Email ? (wed.email.max >= initDate &&
+                             wed.email.max <= finishDate) : false))
+                             && profile.Id == wed.workerDevice.worker.UserId
+                             && firm.ExternalId == wed.workerDevice.worker.ExternalFirmId
+                             && userAccount.Id == wed.workerDevice.worker.UserId
                              select new ReportDTO
                              {
                                  Name = profile.Name,
                                  Email = profile.Email,
                                  GameName = firm.FirmName,
-                                 LastUpdateMobile = workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update,
+                                 LastUpdateMobile = wed.workerDevice.device == null ? new DateTime() : wed.workerDevice.device.Last_Update,
                                  LastUpdateWeb = userAccount.LastUpdate,
-                                 LastUpdateMobileString = (workerDevice.device == null ? new DateTime() : workerDevice.device.Last_Update).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
-                                 LastUpdateWebString = userAccount.LastUpdate.ToString(),//("dd/MM/yyyy HH:mm:ss", cult)
-                                 LastReciveEmail = email.max,
-                                 LastReciveEmailString = email.max.ToString(),
-                                 CountEmails = email.count
+                                 LastUpdateMobileString = (wed.workerDevice.device == null ? new DateTime() : wed.workerDevice.device.Last_Update).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
+                                 LastUpdateWebString = userAccount.LastUpdate.ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
+                                 LastReciveEmail = wed.email != null ? wed.email.max : new DateTime(),
+                                 LastReciveEmailString = wed.email != null ? wed.email.max.ToString() : (new DateTime()).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
+                                 CountEmails = wed.email != null ? wed.email.count : 0
 
                              }).OrderBy(x => x.GameName);
                              
 
                 return query.ToList();
-                //return null;
+            }
+        }
+
+        ///<summary>
+        ///Busca os jogadores data de acesso
+        /// </summary>
+        public List<ReportDTO> GetWorkerDTOByDateAndInative(DateTime initDate, DateTime finishDate, string gameId = "")
+        {
+            using (ModelContext context = new ModelContext())
+            {
+                
+                CultureInfo cult = new CultureInfo("pt-BR");
+
+                var lastUpdateDevices = from device in context.AccountDevices
+                                        where device.Last_Update == DateTime.MinValue
+                                        group device by device.External_User_Id into d
+                                        select d.OrderByDescending(x => x.Last_Update).FirstOrDefault();
+
+                var games = gameId == "" ?
+                    from firm in context.Datas select firm :
+                    from firm in context.Datas where firm.ExternalId == gameId select firm;
+
+                var workers = from worker in context.Workers
+                              join device in lastUpdateDevices on worker.ExternalId equals device.External_User_Id into lud
+                              from d in lud.DefaultIfEmpty()
+                              select new { device = d, worker = worker };
+
+                var emails = from emailLogs in context.EmailLogs
+                             from game in games
+                             where emailLogs.GameId == game.ExternalId
+                             group emailLogs by emailLogs.PlayerId into p
+                             select new { To = p.FirstOrDefault().To, count = p.Count(), max = p.Max(x => x.SendTime), playerId = p.FirstOrDefault().PlayerId };
+
+                var workerEmail = from worker in workers
+                                  join email in emails on worker.worker.ExternalId equals email.playerId into teste
+                                  from t in teste.DefaultIfEmpty()
+                                  select new { workerDevice = worker, email = t };
+
+                var query = (from wed in workerEmail
+                             from profile in context.Profiles
+                             from firm in games
+                             from userAccount in context.Users
+                             where wed.workerDevice.worker.Status == GenericStatus.ACTIVE
+                             && ((profile.LastUpdate >= initDate
+                             && profile.LastUpdate <= finishDate) ||
+                             (wed.workerDevice.device == null ? false : (wed.workerDevice.device.Last_Update >= initDate &&
+                             wed.workerDevice.device.Last_Update <= finishDate))
+                             || (wed.email.To == profile.Email ? (wed.email.max >= initDate &&
+                             wed.email.max <= finishDate) : false))
+                             && profile.Id == wed.workerDevice.worker.UserId
+                             && firm.ExternalId == wed.workerDevice.worker.ExternalFirmId
+                             && userAccount.Id == wed.workerDevice.worker.UserId
+                             //&& wed.workerDevice.device.Last_Update == DateTime.MinValue
+                             select new ReportDTO
+                             {
+                                 Name = profile.Name,
+                                 Email = profile.Email,
+                                 GameName = firm.FirmName,
+                                 LastUpdateMobile = wed.workerDevice.device == null ? new DateTime() : wed.workerDevice.device.Last_Update,
+                                 LastUpdateWeb = userAccount.LastUpdate,
+                                 LastUpdateMobileString = (wed.workerDevice.device == null ? new DateTime() : wed.workerDevice.device.Last_Update).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
+                                 LastUpdateWebString = userAccount.LastUpdate.ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
+                                 LastReciveEmail = wed.email != null ? wed.email.max : new DateTime(),
+                                 LastReciveEmailString = wed.email != null ? wed.email.max.ToString() : (new DateTime()).ToString(),//("dd/MM/yyyy HH:mm:ss", cult),
+                                 CountEmails = wed.email != null ? wed.email.count : 0
+
+                             }).OrderBy(x => x.GameName);
+
+
+                return query.ToList();
             }
         }
 

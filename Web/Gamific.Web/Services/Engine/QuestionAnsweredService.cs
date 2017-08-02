@@ -48,7 +48,7 @@ namespace Vlast.Gamific.Web.Services.Engine
         {
             var repository = new QuestionAnsweredRepository();
             var item = new QuestionAnsweredEntity();
-            item.IdAnswers = to.IdAnswers;
+            //item.IdAnswers = to.IdAnswers;
             item.IdQuestion = to.IdQuestion;
             item.IdQuiz = to.IdQuiz;
             item.UserId = to.UserId;

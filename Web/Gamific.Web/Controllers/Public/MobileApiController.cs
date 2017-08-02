@@ -251,20 +251,52 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
         [Route("answerQuiz")]
         [HttpPost]
         [AllowAnonymous]
-        public string AnswerQuiz(List<QuestionAnsweredEntity> answers)
+        public string AnswerQuiz(QuestionAnsweredEntity answer)
         {
-            if(answers != null && answers.Count > 0)
+            try
             {
-                foreach(QuestionAnsweredEntity answer in answers)
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
                     QuestionAnsweredRepository questionAnswered = new QuestionAnsweredRepository();
                     questionAnswered.save(answer);
-                }
 
-                return "Ok";
+                    foreach (int answerId in answer.IdAnswers)
+                    {
+                        QuestionAnsweredSelectedRepository questionAnsweredSelected = new QuestionAnsweredSelectedRepository();
+                        questionAnsweredSelected.save(new QuestionAnsweredSelectedEntity
+                        {
+                            AnswerId = answerId,
+                            PlayerId = answer.PlayerId,
+                            QuestionId = answer.IdQuestion,
+                            QuizId = answer.IdQuiz
+                        });
+                    }
+
+                    scope.Complete();
+                }
+            }
+            catch (Exception e)
+            {
+                string jsonError = JsonConvert.SerializeObject(
+                new
+                {
+                    error = "Error: " + e.Message
+                },
+                Formatting.Indented,
+                new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+                return jsonError;
             }
 
-            return "Erro";
+            string json = JsonConvert.SerializeObject(
+            new 
+            {
+                ok = "ok"
+            },
+            Formatting.Indented,
+            new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            return json;
         }
     }
 }

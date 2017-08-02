@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
@@ -25,11 +26,6 @@ namespace Vlast.Gamific.Model.Firm.Domain
         public int IdQuestion { get; set; }
 
         [Required]
-        [DataMember(Name = "IdAnswers")]
-        [JsonProperty("idAnswers")]
-        public int IdAnswers { get; set; }
-
-        [Required]
         [DataMember(Name = "userId")]
         [JsonProperty("userId")]
         public int UserId { get; set; }
@@ -53,5 +49,9 @@ namespace Vlast.Gamific.Model.Firm.Domain
         [DataMember(Name = "playerId")]
         [JsonProperty("playerId")]
         public string PlayerId { get; set; }
+
+        [NotMapped]
+        [JsonProperty("idAnswers")]
+        public List<int> IdAnswers { get; set; }
     }
 }

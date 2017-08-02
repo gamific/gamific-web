@@ -84,6 +84,7 @@
     <Compile Include="Firm\Domain\MetricEntity.cs" />
     <Compile Include="Firm\Domain\DataEntity.cs" />
     <Compile Include="Firm\Domain\AnswersEntity.cs" />
+    <Compile Include="Firm\Domain\QuestionAnsweredSelectedEntity.cs" />
     <Compile Include="Firm\Domain\QuestionAnswersEntity.cs" />
     <Compile Include="Firm\Domain\QuestionAnsweredEntity.cs" />
     <Compile Include="Firm\Domain\QuestionEntity.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Firm\Repository\IGenericRepository.cs" />
     <Compile Include="Firm\Repository\ParamRepository.cs" />
     <Compile Include="Firm\Repository\QuestionAnsweredRepository.cs" />
+    <Compile Include="Firm\Repository\QuestionAnsweredSelectedRepository.cs" />
     <Compile Include="Firm\Repository\QuestionRepository.cs" />
     <Compile Include="Firm\Repository\AnswerRepository.cs" />
     <Compile Include="Firm\Repository\QuestionAnswerRepository.cs" />
