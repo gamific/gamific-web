@@ -284,6 +284,7 @@
     <Compile Include="Controllers\Account\Model\AccountViewModels.cs" />
     <Compile Include="Controllers\Account\Model\IdentityModels.cs" />
     <Compile Include="Controllers\Management\EpisodeController.cs" />
+    <Compile Include="Controllers\Management\ImplantationController.cs" />
     <Compile Include="Controllers\Management\ItemsController.cs" />
     <Compile Include="Controllers\Management\LaunchResultsController.cs" />
     <Compile Include="Controllers\Management\AnswerController.cs" />
@@ -842,6 +843,7 @@
     <Content Include="Views\Quiz\_EpisodeComplete.cshtml" />
     <Content Include="Views\ReportAdmin\Index.cshtml" />
     <Content Include="Views\Dashboard\DetailCheckin.cshtml" />
+    <Content Include="Views\Implantation\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Quiz\DTO\" />
