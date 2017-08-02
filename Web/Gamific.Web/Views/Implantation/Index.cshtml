@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model  Vlast.Gamific.Model.Firm.DTO.FirmDTO
+
+<script type="text/javascript">
+    $("#Cadastrar-Empresa").addClass("active");
+</script>
+
+@using GridMvc.Html
+
+<div>
+    <!-- header -->
+    <div class="pageheader">
+        <h2><i class="fa fa-building"></i> Cadastrar Empresa </h2>
+    </div>
+    <!-- /header -->
+    <!-- content -->
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="rootwizard" class="panel">
+                    <div class="panel-body nopadding color rounded-top-corners">
+                        <ul>
+                            <li><a href="#tab1" data-toggle="tab">Campanhas</a></li>
+                            <li><a href="#tab2" data-toggle="tab">Métricas</a></li>
+                            <li><a href="#tab3" data-toggle="tab">Funções</a></li>
+                            <li><a href="#tab4" data-toggle="tab">Jogadores</a></li>
+                            <li><a href="#tab5" data-toggle="tab">Equipes</a></li>
+                            <li><a href="#tab6" data-toggle="tab">Metas</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div id="bar" class="progress progress-striped active">
+                            <div class="progress-bar progress-bar-cyan animate-progress-bar"></div>
+                        </div>
+                        <form action="/admin/empresas/salvar" class="form-horizontal" enctype="multipart/form-data" method="post">
+                            <div class="tab-content">
+                                <div class="tab-pane" id="tab1">
+                                    <div class="form-group">
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab2">
+                                    <div class="form-group">
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab3">
+                                    <div class="form-group">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-footer border-top color white rounded-bottom-corners nopadding">
+                        <ul class="pager pager-full wizard">
+                            <li class="previous"><a href="javascript:;"><i class="fa fa-arrow-left fa-lg"></i> Voltar</a></li>
+                            <li class="next"><a href="javascript:;">Avançar <i class="fa fa-arrow-right fa-lg"></i></a></li>
+                            <li class="next finish" style="display:none; cursor:pointer" onclick="">
+                                <a>
+                                    <i class="fa fa-check fa-lg"></i> Cadastrar
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        //initialize form wizard
+        $('#rootwizard').bootstrapWizard({
+
+            'tabClass': 'nav nav-tabs tabdrop',
+            onTabShow: function (tab, navigation, index) {
+                var $total = navigation.find('li').not('.tabdrop').length;
+                var $current = index + 1;
+                var $percent = ($current / $total) * 100;
+                $('#rootwizard').find('#bar .progress-bar').css({ width: $percent + '%' });
+
+                // If it's the last tab then hide the last button and show the finish instead
+                if ($current >= $total) {
+                    $('#rootwizard').find('.pager .next').hide();
+                    $('#rootwizard').find('.pager .finish').show();
+                    $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                } else {
+                    $('#rootwizard').find('.pager .next').show();
+                    $('#rootwizard').find('.pager .finish').hide();
+                }
+            },
+            onNext: function (tab, navigation, index) {
+
+                var form = $('.form' + index)
+
+                form.parsley('validate');
+
+                tab.addClass('success');
+
+            },
+
+            onTabClick: function (tab, navigation, index) {
+
+                var form = $('.form' + (index + 1))
+
+                form.parsley('validate');
+
+                tab.addClass('success');
+
+            }
+
+        });
+        // Initialize tabDrop
+        $('.tabdrop').tabdrop({ text: '<i class="fa fa-th-list"></i>' });
+
+
+    })
+</script>
