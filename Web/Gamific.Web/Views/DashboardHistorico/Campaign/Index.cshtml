@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#Campanhas").addClass("active");
+</script>
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-road"></i> Campanha</h2>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <input type="hidden" id="CurrentProfile" value="@ViewBag.CurrentProfile" />
+                    <div class="tile-body color transparent-black rounded-corners">
+                        @if (Vlast.Gamific.Web.Controllers.BaseController.CurrentProfile.ProfileName.Equals("SUPERVISOR DE CAMPANHA") || Vlast.Gamific.Web.Controllers.BaseController.CurrentProfile.ProfileName.Equals("ADMINISTRADOR"))
+                        {
+                            <div id="gerenciarcampanhas" class="table-toolbar-left">
+                                <button id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" onclick="window.location.href = '/admin/campanhas/cadastrar'"><i class="fa fa-flag"></i> Cadastrar Campanha</button>
+                            </div>
+                        }
+                        <div class="">
+                            <table id="campaignDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/Content/Js/app/campaign.js" charset="iso-8859-1"></script>

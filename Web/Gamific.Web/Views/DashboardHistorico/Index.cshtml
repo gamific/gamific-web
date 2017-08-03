@@ -1,0 +1,401 @@
+﻿@using Vlast.Gamific.Model.Public.DTO
+@using Vlast.Gamific.Model.Firm.Domain
+@model  Vlast.Gamific.Web.Controllers.Public.Model.FilterResultDTO
+
+@using Vlast.Gamific.Web.Services.Engine.DTO
+@using Vlast.Gamific.Web.Controllers.Public.Model
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#Dashboard").addClass("active");
+</script>
+
+<div class="pageheader">
+    <div class="row">
+        <div class="col-xs-6">
+            <h2><i class="fa fa-dashboard"></i> Dashboard Histórico</h2>
+        </div>
+        <div class="col-xs-6">
+            <div class="text-right tile-header" id="buttonFilters">
+                <a id="FilterButton" class="" onclick="hideFilters()"><i class="fa fa-filter fa-2x" aria-hidden="true" style="margin-top:20px;"></i></a>
+            </div>
+        </div>
+    </div>
+    <!--<h2><i class="fa fa-dashboard"></i> Dashboard</h2>
+    <div class="hidden-lg text-right tile-header">
+        <a id="FilterButton" class="" onclick="hideFilters()"><i class="fa fa-filter fa-2x" aria-hidden="true"></i></a>
+    </div>-->
+</div>
+
+<body class="bg-1">
+    <input hidden type="text" value="@ViewBag.State" id="state" />
+    <input hidden type="text" value="@ViewBag.EpisodeId" id="EpisodeId" />
+    <input hidden type="text" value="@ViewBag.TeamId" id="TeamId" />
+    <input hidden type="text" value="@ViewBag.PlayerId" id="PlayerId" />
+    <input hidden type="text" value="@ViewBag.Grafic_itens" id="Grafic_itens" />
+    <input hidden type="text" value="@ViewBag.Grafic_stogram" id="Grafic_stogram" />
+    <input hidden type="text" value="@ViewBag.Grafic_evolution" id="Grafic_evolution" />
+
+    <div id="wrap">
+        <div class="row">
+            <!-- Conteúdo -->
+            <div class="main">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+
+                        <section class="tile transparent" id="Filters">
+                            <div class="tile-header color transparent-black textured rounded-corners ">
+                                <div class="hidden-xs">
+                                    Filtros
+                                    <br />
+                                    <br />
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+
+                                        @if (ViewBag.Grafic_itens == true)
+                                        {
+                                            <div class="col-xs-12 col-sm-6 col-md-3">
+                                                <div class="">
+                                                    <div class="col-xs-12">
+                                                        Campanha
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <select class="chosen-select chosen-transparent form-control" id="dropDownEpisodes"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-6 col-md-3">
+                                                <div class="">
+                                                    <div class="col-xs-12">
+                                                        Equipe
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <select class="chosen-select chosen-transparent form-control" id="dropDownTeams"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-6 col-md-3">
+                                                <div class="">
+                                                    <div class="col-xs-12">
+                                                        Funcionario
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <select class="chosen-select chosen-transparent form-control" id="dropDownWorkers"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-6 col-md-3">
+                                                <div class="">
+                                                    <div class="col-xs-12">
+                                                        Produtos
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <select class="chosen-select chosen-transparent form-control" id="dropDownItens"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                                <div class="">
+                                                    <div class="col-xs-12">
+                                                        Campanha
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <select class="chosen-select chosen-transparent form-control" id="dropDownEpisodes"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                                <div class="">
+                                                    <div class="col-xs-12">
+                                                        Equipe
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <select class="chosen-select chosen-transparent form-control" id="dropDownTeams"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                                <div class="">
+                                                    <div class="col-xs-12">
+                                                        Funcionario
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <select class="chosen-select chosen-transparent form-control" id="dropDownWorkers"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- cards -->
+
+                    <div class="row cards">
+                        <div class="">
+                            <div id="stats" class="carousel dashboardstats col-xs-12" data-ride="carousel" data-interval="30000">
+                                <div class="">
+                                    <!-- Wrapper for slides -->
+                                    <div class="carousel-inner" id="div-cards">
+
+                                    </div>
+                                </div>
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#stats" data-slide="prev">
+                                    <i class="fa fa-chevron-left fa-lg left-side"></i>
+                                </a>
+                                <a class="right carousel-control" href="#stats" data-slide="next" style="padding-right:25px;">
+                                    <i class="fa fa-chevron-right fa-lg right-side"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /cards -->
+                </div>
+            </div>
+
+            <!-- /grafico evolucao -->
+            <div class="row" id="grafic_evolucao">
+                <div class="col-lg-12 col-md-12">
+                    <section class="tile transparent">
+                        <div class="tile-header color transparent-black textured rounded-top-corners">
+                            <div class="controls">
+                                <a href="index.html#" class="minimize"><i class="fa fa-chevron-down"></i></a>
+                                <a href="index.html#" class="remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <div class="row">
+                               <!-- <div class="col-xs-12 col-sm-12">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                            <h1 style="color:white !important; font:25px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;">Evolução Campanhas por Período</h1>
+                                            <i class="fa" style="padding-left: 10px; padding-right:10px;" title="Data Inicial."><input type="text" id="InitialDate" class="form-control" /></i>
+                                            <i title="Data Final." class="fa"><input type="text" id="FinishDate" class="form-control" /></i>
+                                            <i style="font-size:15px; padding-left:45px;" class="fa fa-search" onclick="initializeChart();" title="Buscar"></i>
+                                        </div>
+                                    </div>
+                                </div>-->
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                            <h4 style="color:white !important; font:18px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;" class="underline text-left">Comparativo de Campanhas Geral</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile-widget color transparent-black textured">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 pull-right">
+                                    <div style="width: 100%; text-align: center;">
+                                        <img id="chartLoading" width="50" />
+                                    </div>
+                                    <div id="metrics" style="height: 250px;margin-left: 50px;">
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 pull-left">
+                                    <div id="statistics-chart" class="chart statistics" style="height: 250px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- /grafico hisograma -->
+            <div class="row" id="grafic_histogramo">
+                <div class="col-lg-12 col-md-12">
+                    <section class="tile transparent">
+                        <div class="tile-header color transparent-black textured rounded-top-corners">
+                            <div class="controls">
+                                <a href="index.html#" class="minimize"><i class="fa fa-chevron-down"></i></a>
+                                <a href="index.html#" class="remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                            <h1 style="color:white !important; font:25px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;">Resultados Campanhas</h1>
+                                            <a style="font-size:25px; padding-left:45px;" class="fa fa-filter" href="/public/dashboardHistorico/getCampaignsModal" onclick="showEntityModal(this); return false;" title="Mudar Filtros."></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                            <h4 style="color:white !important; font:18px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;" class="underline text-left">Comparativo de Campanhas Geral</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tile-widget color transparent-black textured">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 pull-right">
+                                    <div id="metricsBar" style="height: 250px;margin-left: 50px;">
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 pull-left">
+                                    <div id="bar-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!--/Grafico produtos -->
+            <div class="row" id="grafic_products">
+                <div class="col-lg-12 col-md-12">
+                    <section class="tile color transparent-black" style="background-color:rgba(0, 0, 0, -0.7);">
+                        <div class="tile-header color transparent-black textured rounded-top-corners">
+                            <div class="controls">
+                                <a href="index.html#" class="minimize"><i class="fa fa-chevron-down"></i></a>
+                                <a href="index.html#" class="remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="">
+                                        <div class="col-xs-12">
+                                            <div class="tile-header" style="border-bottom:1px solid rgba(255, 255, 255, 0.3); padding-bottom:5px;">
+                                                <h2 style="font:25px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;">Gráfico de Produtos</h2>
+                                                <input id="morrisType" value="1" hidden />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="tile-widget color transparent-black textured">
+                            <div class="row">
+
+                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-5">
+                                    <div class="tile-body">
+                                        <div id="products" style="height: 300px;" class="morris-chart"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-4">
+                                    <div class="tile-header">
+                                    </div>
+                                    <div class="tile-body">
+                                        <ul class="inline text-left chart-legend" id="productsList"></ul>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                                    <div id="metrics">
+                                        <h5 style="font:15px/1 FontAwesome; font-family:'Roboto', 'Arial', sans-serif;">Métricas:</h5>
+
+                                        <select class="form-control" name="metricMorris" id="metricMorris">
+                                            @{
+                                                int i;
+                                                if (ViewBag.Metrics != null && ViewBag.Metrics.Count > 0)
+                                                {
+                                                   
+                                                    for (i = 0; i < @ViewBag.Metrics.Count; i++)
+                                                    {
+                                                        <option value="@ViewBag.Metrics[i].Id">@ViewBag.Metrics[i].Name</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>
+<script src="~/Content/Js/app/dashboardHistorico.js" charset="iso-8859-1"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+            dashBoardLoad($('#state').val(), $('#EpisodeId').val(), $('#TeamId').val(), $('#PlayerId').val());
+            $(window).resize(function () {
+                if ($('header').width() <= 768) {
+                    showFilters()
+                }
+            });
+
+            hideGraficProducts();
+            hideGraficStogram();
+            hideGraficEvolution();
+
+        });
+
+        function hideFilters() {
+            if ($('#Filters').is(":visible")) {
+                $('#Filters').hide();
+            }
+            else {
+                $('#Filters').show();
+            }
+        }
+
+        function showFilters() {
+            if ($('#Filters').is(":hidden")) {
+                $('#Filters').show();
+            }
+        }
+
+        function hideGraficProducts() {
+            if (!$('#Grafic_itens').val()) {
+                $('#grafic_products').hide();
+            }
+        }
+
+        function hideGraficStogram() {
+            if (!$('#Grafic_stogram').val()) {
+                $('#grafic_histogramo').hide();
+            }
+        }
+
+        function hideGraficEvolution() {
+            if (!$('#Grafic_evolution').val()) {
+                $('#grafic_evolucao').hide();
+            }
+        }
+
+</script>
+
+
+
+<div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />

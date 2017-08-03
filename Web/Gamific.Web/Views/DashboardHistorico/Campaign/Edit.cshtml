@@ -1,0 +1,235 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model  Vlast.Gamific.Model.Firm.Domain.CampaignEntity
+
+<script type="text/javascript">
+    $("#Campanhas").addClass("active");
+</script>
+
+@using GridMvc.Html
+@using Vlast.Gamific.Model.Firm.Domain
+@using Vlast.Gamific.Web.Controllers.Management.Model
+
+<!-- header -->
+<div class="pageheader">
+    <h2><i class="fa fa-road"></i> Cadastrar Campanha </h2>
+    <br />
+    <small>
+        <a href="/admin/campanhas">
+            <i class="fa fa-arrow-left"></i> Voltar
+        </a>
+    </small>
+</div>
+
+<!-- /header -->
+<!-- content -->
+<div class="main">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="rootwizard" class="panel">
+                <input type="hidden" id="CurrentProfile" value="@ViewBag.CurrentProfile" />
+                <input type="hidden" id="CurrentWorker" value="@ViewBag.CurrentWorker" />
+                <div class="panel-body nopadding color rounded-top-corners">
+                    <ul>
+                        <li><a href="#tab1" data-toggle="tab">Informações da campanha</a></li>
+                        <li><a href="#tab2" data-toggle="tab">Métricas</a></li>
+                        <li><a href="#tab3" data-toggle="tab">Equipes</a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div id="bar" class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-cyan animate-progress-bar"></div>
+                    </div>
+                    <form action="/admin/campanhas/salvar" method="post" enctype="multipart/form-data">
+                        <span style="display:none">
+                            @Html.HiddenFor(model => model.Id);
+                            @Html.HiddenFor(model => model.Status);
+                            @Html.HiddenFor(model => model.FirmId);
+                            <input type="hidden" id="IconsList" value="@ViewBag.IconsDTOString" />
+                            <input id="TeamsId" name="TeamsId" type="hidden" value="@ViewBag.TeamsId" />
+                            <input id="GoalList" name="GoalList" type="hidden" value="@ViewBag.GoalList" />
+                        </span>
+                        <div class="tab-content">
+                            <div class="tab-pane" id="tab1">
+                                <div class="form-horizontal form1">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CampaignName, "Nome da Campanha*:", new { @class = "col-sm-3" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.EditorFor(model => model.CampaignName, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                                            @Html.ValidationMessageFor(model => model.CampaignName, "O campo Nome da Campanha é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3">Período*:</label>
+
+                                        <div class="col-sm-10 col-md-6">
+                                            <div class="col-xs-5">
+                                                <div class="form-group">
+                                                    @Html.EditorFor(model => model.InitialDate, new { htmlAttributes = new { @class = "form-control", @tabindex = "2" } })
+                                                    @Html.ValidationMessageFor(model => model.InitialDate, "O campo Data inicial é obrigatório.", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-5">
+                                                <div class="form-group">
+                                                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
+                                                    @Html.ValidationMessageFor(model => model.EndDate, "O campo Data final é obrigatório.", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if (Model.Id <= 0)
+                                    {
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.ProfileId, "Perfil da campanha*:", new { @class = "col-sm-3" })
+                                            <div class="col-sm-10 col-md-6">
+                                                @Html.DropDownListFor(model => model.ProfileId, (IEnumerable<SelectListItem>
+                                                )ViewBag.Profiles, "Informe o perfil da Campanha", new { @onchange = "checkIfIsEnable()", @class = "form-control", @tabindex = "4" })
+                                                @Html.ValidationMessageFor(model => model.ProfileId, "O campo Perfil da campanha é obrigatório.", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.ProfileId, "Perfil da campanha*:", new { @class = "col-sm-3" })
+                                            <div class="col-sm-10 col-md-6">
+                                                @Html.DropDownListFor(model => model.ProfileId, (IEnumerable<SelectListItem>
+                                                )ViewBag.Profiles, new { @readonly = "readonly", @class = "form-control read-only-words", @tabindex = "4" })
+                                                @Html.ValidationMessageFor(model => model.ProfileId, "O campo Perfil da campanha é obrigatório.", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.SponsorId, "Responsável pela campanha*:", new { @class = "col-sm-3" })
+                                        <div class="col-sm-10 col-md-6">
+                                            @Html.DropDownListFor(model => model.SponsorId, (IEnumerable<SelectListItem>
+                                                )ViewBag.Sponsors, "Informe o supervisor da Campanha", new { @class = "form-control", @tabindex = "5" })
+                                            @Html.ValidationMessageFor(model => model.SponsorId, "O campo Responsável pela campanha é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Description, "Descrição da Campanha*:", new { @class = "col-sm-12" })
+                                        <div class="col-sm-10 col-md-12">
+                                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @cols = 1, @rows = 8, @tabindex = "6" })
+                                            @Html.ValidationMessageFor(model => model.Description, "O campo Descrição da Campanha é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab2">
+                                <div class="form-horizontal form2 " role="form" id="stepdate">
+                                    <div class="col-xs-12">
+                                        <table id="permissions">
+                                            @if (Vlast.Gamific.Web.Controllers.BaseController.CurrentProfile.ProfileName.Equals("SUPERVISOR DE CAMPANHA") || Vlast.Gamific.Web.Controllers.BaseController.CurrentProfile.ProfileName.Equals("ADMINISTRADOR"))
+                                            {
+                                                <tr>
+                                                    <th><button type="button" onClick="addRow(this)" class="btn btn-default"><i class="fa fa-plus"></i> Adicionar Métrica</button></th>
+                                                </tr>
+                                            }
+                                            @if (ViewBag.Metrics != null)
+                                            {
+                                                int i = 0;
+                                                foreach (CampaignMetricEntity item in ViewBag.Metrics)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @if (Vlast.Gamific.Web.Controllers.BaseController.CurrentProfile.ProfileName.Equals("SUPERVISOR DE CAMPANHA") || Vlast.Gamific.Web.Controllers.BaseController.CurrentProfile.ProfileName.Equals("ADMINISTRADOR"))
+                                                            {
+                                                                if (item.Id > 0)
+                                                                {
+                                                                    <a href="#" onclick="removeMetric(@item.Id, this),RemoveTableRow(this);" title="Remover métrica" class="remove-icon"><i class="fa fa-remove"></i></a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a href="#" onclick="deleteRow(this);" title="Remover métrica" class="remove-icon"><i class="fa fa-remove"></i></a>
+                                                                }
+                                                            }
+                                                            <input type="hidden" id="MetricaList[@i].Id" name="MetricaList[@i].Id" value="@item.Id" />
+                                                            <input type="text" placeholder="Informe o nome da métrica" class="form-control col-xs-6" id="MetricaList[@i].MetricName" name="MetricaList[@i].MetricName" value="@item.MetricName" />
+                                                            <input type="number" placeholder="Informe o peso da métrica" class="form-control col-xs-6" id="MetricaList[@i].Weigth" name="MetricaList[@i].Weigth" value="@item.Weigth" min="1"/>
+                                                            <input type="number" placeholder="Valor Mínimo" class="form-control col-xs-6" id="MetricaList[@i].MinValue" name="MetricaList[@i].MinValue" value="@item.MinValue" min="1"/>
+                                                            <input type="number" placeholder="Valor Máximo" class="form-control col-xs-6" id="MetricaList[@i].MaxValue" name="MetricaList[@i].ValueMax" value="@item.ValueMax" min="1"/>
+                                                            <select class="form-control col-xs-6" id="MetricaList[@i].Icon" onchange="showIcon(this, @i)" style="float:left;" name="MetricaList[@i].Icon" value="@item.Icon">
+                                                                @foreach (IconsDTO icon in @ViewBag.IconsDTO)
+                                                                {
+                                                                    if (@icon.Value.Equals(@item.Icon.Replace("-", "_")))
+                                                                    {
+                                                                        <option value="@icon.Value" selected>
+                                                                            @icon.Value
+                                                                        </option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@icon.Value">
+                                                                            @icon.Value
+                                                                        </option>
+                                                                    }
+
+                                                                }
+                                                            </select>
+                                                            <i class="@i col-xs-6 fa @item.Icon"></i>
+                                                        </td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab3">
+                                <div class="form-horizontal form3" role="form" id="stepplayers">
+                                    @if (Vlast.Gamific.Web.Controllers.BaseController.CurrentProfile.ProfileName.Equals("SUPERVISOR DE CAMPANHA") || Vlast.Gamific.Web.Controllers.BaseController.CurrentProfile.ProfileName.Equals("ADMINISTRADOR"))
+                                    {
+                                        <div id="gerenciarEquipesCampanha" class="table-toolbar-left">
+                                            <a id="addPlayers" class="btn btn-default sing-up-button" href="/admin/campanhas/associarEquipes" title="Adicionar Equipes" onclick="showEntityModal(this); return false;"><i class="fa fa-user-plus"></i> Adicionar Equipes</a>
+                                        </div>
+                                    }
+                                    <div class="" style="width:100%">
+                                        <table id="teamsFromCampaignDataTable" class="campaignDataTable table table-striped" cellspacing="0" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="min-tablet">Nome</th>
+                                                    <th class="min-tablet">Responsável</th>
+                                                    <th class="min-tablet"></th>
+                                                    <th class="min-tablet"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div style="display:none;">
+                                    <button id="submitFormButton" type="submit"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer border-top color white rounded-bottom-corners nopadding">
+                    <ul class="pager pager-full wizard">
+                        <li class="previous"><a href="javascript:;"><i class="fa fa-arrow-left fa-lg"></i> Voltar</a></li>
+                        <li class="next"><a href="javascript:;">Avançar <i class="fa fa-arrow-right fa-lg"></i></a></li>
+                        @if (Vlast.Gamific.Web.Controllers.BaseController.CurrentProfile.ProfileName.Equals("SUPERVISOR DE CAMPANHA") || Vlast.Gamific.Web.Controllers.BaseController.CurrentProfile.ProfileName.Equals("ADMINISTRADOR"))
+                        {
+                            <li class="next finish" style="display:none; cursor:pointer" onclick="$('#submitFormButton').click()">
+                                <a>
+                                    <i class="fa fa-check fa-lg"></i> Cadastrar
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
+
+<script src="/Content/Js/app/campaign.js" charset="iso-8859-1"></script>

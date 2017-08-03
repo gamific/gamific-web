@@ -1,0 +1,68 @@
+﻿@model Vlast.Gamific.Web.Services.Engine.DTO.RunMetricEngineDTO
+
+@using (Ajax.BeginForm("EditResult", "Dashboard", new AjaxOptions { OnSuccess = "onSucessSaveResult", OnFailure = "onFailureSaveResult", UpdateTargetId = "modal-painel" }))
+{
+    <span style="display:none">
+        @Html.HiddenFor(model => model.Ceiling);
+        @Html.HiddenFor(model => model.Description);
+        @Html.HiddenFor(model => model.Floor);
+        @Html.HiddenFor(model => model.Id);
+        @Html.HiddenFor(model => model.MetricId);
+        @Html.HiddenFor(model => model.Multiplier);
+        @Html.HiddenFor(model => model.Name);
+        @Html.HiddenFor(model => model.PlayerId);
+        @Html.HiddenFor(model => model.RunId);
+        @Html.HiddenFor(model => model.Score);
+        @Html.HiddenFor(model => model.Xp);
+        @Html.HiddenFor(model => model.ItemId);
+        @Html.HiddenFor(model => model.ItemName);
+    </span>
+
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" title="Fechar" id="btn_close_modal" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="editarResultado">Editar resultado</h4>
+                </div>
+                <div class="modal-body" id="edit-modal-body">
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @{
+                                @Html.LabelFor(model => model.Date, "Data", new { @class = "col-sm-12 control-label" })
+                                string date = new DateTime(Model.Date).ToString("dd/MM/yyyy");
+                                <input class="form-control" type="datetime" value="@date" id="Date" name="Date" />
+                            }
+                        </div>
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.Points, "Resultado", new { @class = "col-sm-12 control-label" })
+                            @Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control", @tabindex = "2", @min = 0} })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="submitButton">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+$('#Date').prop('readonly', true);
+
+$('#Date').datepicker({
+    language: 'pt-BR',
+    changeMonth: true,
+    showOtherMonths: true,
+    selectOtherMonths: true,
+    selectOtherYears: true,
+    changeYear: true,
+    dateformat: 'dd/MM/yyyy'
+}).on('change', function () {
+    $('.datepicker').hide();
+});
+</script>
+}
+

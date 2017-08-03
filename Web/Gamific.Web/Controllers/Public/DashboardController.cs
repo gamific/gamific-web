@@ -46,7 +46,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
             episodesFilter = new List<EpisodeEngineDTO>();
             GetAllDTO all = EpisodeEngineService.Instance.GetByGameIdAndActive(CurrentFirm.ExternalId, 1);
-
+           
             if (all.List.episode != null && all.List.episode.Count != 0)
             {
 
@@ -770,7 +770,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
         public ActionResult SearchEpisodes(int state)
         {
             GetAllDTO all = EpisodeEngineService.Instance.GetByGameIdAndActive(CurrentFirm.ExternalId, state);
-
+            
             return Json(JsonConvert.SerializeObject(all.List.episode), JsonRequestBehavior.AllowGet);
         }
 
@@ -802,7 +802,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
             all.List.team = all.List.team.OrderBy(x => x.Nick).ToList();
 
             List<string> subTeamsNull = all.List.team.Where(x => x.SubOfTeamId == null).Select(x => x.Id).ToList();
-
+            
             List<TeamEngineDTO> teams = new List<TeamEngineDTO>();
 
             foreach (string subTeamNull in subTeamsNull)
