@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Vlast.Gamific.Web.Services.Engine.DTO.EpisodeEngineDTO>
 
-@using (Ajax.BeginForm("KeepCampaigns", "Dashboard", new AjaxOptions { OnSuccess = "onSuccessSaveFilter", OnFailure = "onFailureSaveFilter", UpdateTargetId = "modal-panel" }, new { enctype = "multipart/form-data" }))
+@using (Ajax.BeginForm("KeepCampaigns", "DashboardHistorico", new AjaxOptions { OnSuccess = "onSuccessSaveFilter", OnFailure = "onFailureSaveFilter", UpdateTargetId = "modal-panel" }, new { enctype = "multipart/form-data" }))
 {
     <div id="modal-panel">
         <div class="modal-dialog modal-xlg">

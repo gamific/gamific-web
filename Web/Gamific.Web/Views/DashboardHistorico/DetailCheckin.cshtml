@@ -12,6 +12,7 @@
     <input type="hidden" value="@ViewBag.TeamId" id="TeamId" />
     <input type="hidden" value="@ViewBag.PlayerId" id="PlayerId" />
     <input type="hidden" value="@ViewBag.Locations" id="Locations" />
+    <input type="hidden" value="@ViewBag.MetricId" id="MetricId" />
 
     @{
         var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -42,13 +43,42 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div class="">
+                            <table id="CheckInDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Jogador</th>
+                                        <th>Descrição</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script src="https://maps.google.com/maps/api/js?sensor=false&libraries=geometry&v=3.26&key=AIzaSyDrHPr7QllVvwm4Xvi0Zw9QpjWOWJeDmR8"></script>
+    <script src="https://maps.google.com/maps/api/js?libraries=geometry&v=3.26&key=AIzaSyDrHPr7QllVvwm4Xvi0Zw9QpjWOWJeDmR8"></script>
     <script src="~/Content/Js/lib/maplace.min.js" charset="iso-8859-1"></script>
     <script src="~/Content/Js/app/dashboardHistorico.js" charset="iso-8859-1"></script>
 
     <script>
         loadMaplace(@Html.Raw(userInfoJson));
+    </script>
+    <script>
+        $(document).ready(function () {
+            LoadCheckInDataTable();
+        });
     </script>
 </body>

@@ -76,6 +76,7 @@ function refreshDropDownEpisodes(state, currentId) {
                 $("#dropDownTeams").append($("<option value='empty'>Vazio</option>"));
                 $("#dropDownWorkers").append($("<option value='empty'>Vazio</option>"));
                 $('#div-cards').empty();
+               
             }
 
             loadMetricList();
@@ -124,6 +125,7 @@ function refreshDropDownTeams(episodeId, currentId) {
             if (currentId == "" || currentId == undefined) {
                 refreshDropDownWorkers($('#dropDownTeams').val());
             }
+           
         },
         error: function () {
             $("#dropDownTeams").empty();
@@ -158,7 +160,6 @@ function refreshDropDownWorkers(teamId, currentId) {
                 }
                 $("#dropDownWorkers").append($("<option value='" + workers[i].Value + "'" + selected + " >" + workers[i].Text + "</option>"));
             }
-
             refreshCardResults($("#dropDownEpisodes").val(), $("#dropDownTeams").val(), $("#dropDownWorkers").val(), $("#dropDownItens").val());
 
         },
@@ -601,6 +602,7 @@ function dashBoardLoad(state, episodeId, teamId, playerId) {
     if (playerId != "" && playerId != undefined) {
         refreshDropDownWorkers(teamId, playerId);
     }
+            
 }
 
 function onSucessSaveResult() {
@@ -947,3 +949,46 @@ $('#FinishDate').datepicker({
 });
 
 $("#FinishDate").datepicker("setDate", currentDate);
+
+function LoadCheckInDataTable() {
+    table = $('#CheckInDataTable').dataTable({
+        "serverSide": false,
+        "ajax": "/public/dashboardHistorico/resultadosCheckIn/" + $('#EpisodeId').val() + "/" + $('#MetricId').val() + "/" + $('#TeamId').val() + "/" + $('#PlayerId').val(),
+        "processing": true,
+        "scrollY": "300px",
+        "scrollCollapse": true,
+        "deferRender": true,
+        "lengthChange": false,
+
+        "language": {
+            "emptyTable": "Não foram encontrados resultados.",
+            "paginate": {
+                "previous": '<i class="fa fa-angle-left"></i>',
+                "next": '<i class="fa fa-angle-right"></i>'
+            }
+        },
+        "dom": '<"newtoolbar">frtip',
+        "fnServerParams": function (aoData) { },
+        "columnDefs": [
+            {
+                "width": "20%",
+                "targets": 0,
+                "orderable": true,
+                "searchable": true,
+            },
+            {
+                "width": "40%",
+                "targets": 1,
+                "orderable": true,
+                "serchable": true,
+            },
+            {
+                "width": "40%",
+                "targets": 2,
+                "orderable": true,
+                "serchable": true,
+            },
+
+        ],
+    });
+}

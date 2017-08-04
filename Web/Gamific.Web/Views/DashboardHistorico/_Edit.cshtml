@@ -1,6 +1,6 @@
 ﻿@model Vlast.Gamific.Web.Services.Engine.DTO.RunMetricEngineDTO
 
-@using (Ajax.BeginForm("EditResult", "Dashboard", new AjaxOptions { OnSuccess = "onSucessSaveResult", OnFailure = "onFailureSaveResult", UpdateTargetId = "modal-painel" }))
+@using (Ajax.BeginForm("EditResult", "DashboardHistorico", new AjaxOptions { OnSuccess = "onSucessSaveResult", OnFailure = "onFailureSaveResult", UpdateTargetId = "modal-panel" }))
 {
     <span style="display:none">
         @Html.HiddenFor(model => model.Ceiling);
