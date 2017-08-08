@@ -66,7 +66,10 @@
                     links +=  " <a class='fa fa-clone' onclick='showEntityModal(this); return false;'  href='/admin/episode/clonar/" + data + "' title='Clone está campanha, com todas as equipes,metas e metricas'> </a>";
                     links += " <a class='fa fa-eraser' href='#' onclick='cleanClickEpisode(\"" + data + "\")' title='Zera todos os resultados desta campanha.'> </a>";
                     if (row[4] == "Sim") {
-                        links += " <a class='fa fa-power-off'  href='#' onclick='removeClickEpisode(\"" + data + "\",\"" + name + "\")' title='Finaliza está campanha.'> </a>";
+                        links += " <a class='fa fa-power-off'  href='#' onclick='removeClickEpisode(\"" + data + "\",\"" + name + "\")' title='Inativar esta campanha.'> </a>";
+                    }
+                    if (row[4] == "Não") {
+                        links += " <a class='fa fa-tachometer'  href='/public/dashboardHistorico/" + data + "/empty/empty' title='Ver Dashboard.'> </a>";
                     }
                     return links;
                 }

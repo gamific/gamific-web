@@ -306,10 +306,12 @@
     <Compile Include="Controllers\Management\WorkerTypeMetricController.cs" />
     <Compile Include="Controllers\Media\MediaAPIController.cs" />
     <Compile Include="Controllers\Public\ControllerExtensions.cs" />
+    <Compile Include="Controllers\Public\DashboardHistoricoController.cs" />
     <Compile Include="Controllers\Public\HallOfFameController.cs" />
     <Compile Include="Controllers\Public\MobileApiController.cs" />
     <Compile Include="Controllers\Public\AboutController.cs" />
     <Compile Include="Controllers\Public\DashboardController.cs" />
+    <Compile Include="Controllers\Public\Model\CheckInDTO.cs" />
     <Compile Include="Controllers\Public\Model\LocationViewDTO.cs" />
     <Compile Include="Controllers\Public\Model\LocationDTO.cs" />
     <Compile Include="Controllers\Public\Model\LinePointDTO.cs" />
@@ -511,6 +513,10 @@
     <Content Include="Content\Js\app\chat.js" />
     <Content Include="Content\Js\app\chat.min.js">
       <DependentUpon>chat.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\dashboardHistorico.js" />
+    <Content Include="Content\Js\app\dashboard - Cópia .min.js">
+      <DependentUpon>dashboardHistorico.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\app\dashboard.js" />
     <Content Include="Content\Js\app\dashboard.min.js">
@@ -844,6 +850,14 @@
     <Content Include="Views\ReportAdmin\Index.cshtml" />
     <Content Include="Views\Dashboard\DetailCheckin.cshtml" />
     <Content Include="Views\Implantation\Index.cshtml" />
+    <Content Include="Views\DashboardHistorico\_CampaignsFilter.cshtml" />
+    <Content Include="Views\DashboardHistorico\_Edit.cshtml" />
+    <Content Include="Views\DashboardHistorico\Detail.cshtml" />
+    <Content Include="Views\DashboardHistorico\DetailCheckin.cshtml" />
+    <Content Include="Views\DashboardHistorico\Index.cshtml" />
+    <Content Include="Views\DashboardHistorico\Campaign\_AssociateTeams.cshtml" />
+    <Content Include="Views\DashboardHistorico\Campaign\Edit.cshtml" />
+    <Content Include="Views\DashboardHistorico\Campaign\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Quiz\DTO\" />

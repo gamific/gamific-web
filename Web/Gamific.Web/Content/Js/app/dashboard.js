@@ -844,6 +844,7 @@ function loadMaplace(locs) {
         map_div: '#gmap-menu',
         type: 'marker',
         locations: JSON.parse(locs.Content)
+       
     }).Load();
 }
 
@@ -947,3 +948,47 @@ $('#FinishDate').datepicker({
 });
 
 $("#FinishDate").datepicker("setDate", currentDate);
+
+
+function LoadCheckInDataTable() {
+    table = $('#CheckInDataTable').dataTable({
+        "serverSide": false,
+        "ajax": "/public/dashboard/resultadosCheckIn/" + $('#EpisodeId').val() + "/" + $('#MetricId').val() + "/" + $('#TeamId').val() + "/" + $('#PlayerId').val(),
+        "processing": true,
+        "scrollY": "300px",
+        "scrollCollapse": true,
+        "deferRender": true,
+        "lengthChange": false,
+        
+        "language": {
+            "emptyTable": "Não foram encontrados resultados.",
+            "paginate": {
+                "previous": '<i class="fa fa-angle-left"></i>',
+                "next": '<i class="fa fa-angle-right"></i>'
+            }
+        },
+        "dom": '<"newtoolbar">frtip',
+        "fnServerParams": function (aoData) { },
+        "columnDefs": [
+            {
+                "width": "20%",
+                "targets": 0,
+                "orderable": true,
+                "searchable": true,
+            },
+            {
+                "width": "40%",
+                "targets": 1,
+                "orderable": true,
+                "serchable": true,
+            },
+            {
+                "width": "40%",
+                "targets": 2,
+                "orderable": true,
+                "serchable": true,
+            },
+           
+        ],
+    });
+}

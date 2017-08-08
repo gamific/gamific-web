@@ -1,6 +1,4 @@
-﻿
-
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -26,7 +24,7 @@
         <br />
         <br />
         <small>
-            <a href="/public/dashboard/@ViewBag.EpisodeId/@ViewBag.TeamId/@ViewBag.PlayerId"><i class="fa fa-arrow-left"></i> Voltar</a>
+            <a href="/public/dashboardHistorico/@ViewBag.EpisodeId/@ViewBag.TeamId/@ViewBag.PlayerId"><i class="fa fa-arrow-left"></i> Voltar</a>
         </small>
     </div>
     <div class="main">
@@ -56,7 +54,7 @@
                                         <th>Data</th>
                                         <th>Jogador</th>
                                         <th>Descrição</th>
-                                   
+
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -70,10 +68,10 @@
             </div>
         </div>
     </div>
-   
+
     <script src="https://maps.google.com/maps/api/js?libraries=geometry&v=3.26&key=AIzaSyDrHPr7QllVvwm4Xvi0Zw9QpjWOWJeDmR8"></script>
     <script src="~/Content/Js/lib/maplace.min.js" charset="iso-8859-1"></script>
-    <script src="~/Content/Js/app/dashboard.js" charset="iso-8859-1"></script>
+    <script src="~/Content/Js/app/dashboardHistorico.js" charset="iso-8859-1"></script>
 
     <script>
         loadMaplace(@Html.Raw(userInfoJson));

@@ -21,5 +21,15 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
         [JsonProperty("zoom")]
         public int Zoom { get; set; }
 
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("date")]
+        public long Date { get; set; }
+
+        [JsonProperty("playerId")]
+        public string PlayerId { get; set; }
+
+
     }
 }
