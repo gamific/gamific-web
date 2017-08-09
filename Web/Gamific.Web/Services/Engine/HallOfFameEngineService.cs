@@ -82,6 +82,22 @@ namespace Vlast.Gamific.Web.Services.Engine
             }
         }
 
+        public void DeleteByEpisodeId(string episodeId)
+        {
+            try
+            {
+                using (WebClient client = GetClient())
+                {
+                    client.DownloadString(ENGINE_API + "deleteHallOfFameByEpisodeId?episodeId=" + episodeId);
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
 
 
 

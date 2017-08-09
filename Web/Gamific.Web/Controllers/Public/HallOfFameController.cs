@@ -156,5 +156,13 @@ namespace Vlast.Gamific.Web.Controllers.Public
 
         }
 
+        [Route("remover/{episodeId}")]
+        public ActionResult Remove(string episodeId)
+        {
+            HallOfFameEngineService.Instance.DeleteByEpisodeId(episodeId);
+
+            return View("Index");
+        }
+
     }
 }
