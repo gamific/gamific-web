@@ -15,8 +15,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("")]
         public ActionResult Index()
         {
-            ViewBag.Teste = "Doideira";
-
             return View();
         }
     }
