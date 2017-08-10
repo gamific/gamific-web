@@ -298,5 +298,40 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
 
             return json;
         }
+
+        [Route("getQuestionsByQuizId/{idQuiz}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public string GetQuestionByQuizId(int idQuiz)
+        {
+            QuizQuestionRepository repository = new QuizQuestionRepository();
+            List<QuizQuestionEntity> question = repository.getAllByAssociated(idQuiz);
+
+            string json;
+
+            json = JsonConvert.SerializeObject(
+            question,
+            Formatting.Indented,
+            new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            return json;
+        }
+        [Route("getQuestionById/{id:int}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public string GetQuestion(int id)
+        {
+            QuestionRepository repository = new QuestionRepository();
+            QuestionEntity question = repository.GetById(id);
+
+            string json;
+
+            json = JsonConvert.SerializeObject(
+            question,
+            Formatting.Indented,
+            new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            return json;
+        }
     }
 }
