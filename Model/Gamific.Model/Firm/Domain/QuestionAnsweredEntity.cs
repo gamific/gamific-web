@@ -52,6 +52,6 @@ namespace Vlast.Gamific.Model.Firm.Domain
 
         [NotMapped]
         [JsonProperty("idAnswers")]
-        public List<int> IdAnswers { get; set; }
+        public List<QuestionAnsweredSelectedEntity> IdAnswers { get; set; }
     }
 }

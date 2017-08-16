@@ -260,15 +260,15 @@ namespace Vlast.Gamific.Web.Controllers.Mobile
                     QuestionAnsweredRepository questionAnswered = new QuestionAnsweredRepository();
                     questionAnswered.save(answer);
 
-                    foreach (int answerId in answer.IdAnswers)
+                    foreach (QuestionAnsweredSelectedEntity answered in answer.IdAnswers)
                     {
                         QuestionAnsweredSelectedRepository questionAnsweredSelected = new QuestionAnsweredSelectedRepository();
                         questionAnsweredSelected.save(new QuestionAnsweredSelectedEntity
                         {
-                            AnswerId = answerId,
-                            PlayerId = answer.PlayerId,
-                            QuestionId = answer.IdQuestion,
-                            QuizId = answer.IdQuiz
+                            AnswerId = answered.AnswerId,
+                            PlayerId = answered.PlayerId,
+                            QuestionId = answered.QuestionId,
+                            QuizId = answered.QuizId
                         });
                     }
 

@@ -1107,3 +1107,6 @@ div#statistics-chart svg {
 #gmap-menu {
     color: #000;
 }
+div#daysOfWeek {
+    padding-top: 7px;
+}

@@ -1,13 +1,13 @@
-﻿
+﻿@using Vlast.Gamific.Model.Firm.Domain
+@model  Vlast.Gamific.Web.Controllers.Management.Model.ImplantationDTO
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model  Vlast.Gamific.Model.Firm.DTO.FirmDTO
 
 <script type="text/javascript">
-    $("#Cadastrar-Empresa").addClass("active");
+    $("#Implantacao").addClass("active");
 </script>
 
 @using GridMvc.Html
@@ -15,7 +15,7 @@
 <div>
     <!-- header -->
     <div class="pageheader">
-        <h2><i class="fa fa-building"></i> Cadastrar Empresa </h2>
+        <h2><i class="fa fa-building"></i> Implantação </h2>
     </div>
     <!-- /header -->
     <!-- content -->
@@ -26,10 +26,10 @@
                     <div class="panel-body nopadding color rounded-top-corners">
                         <ul>
                             <li><a href="#tab1" data-toggle="tab">Campanhas</a></li>
-                            <li><a href="#tab2" data-toggle="tab">Métricas</a></li>
-                            <li><a href="#tab3" data-toggle="tab">Funções</a></li>
-                            <li><a href="#tab4" data-toggle="tab">Jogadores</a></li>
-                            <li><a href="#tab5" data-toggle="tab">Equipes</a></li>
+                            <li><a href="#tab2" data-toggle="tab">Funções</a></li>
+                            <li><a href="#tab3" data-toggle="tab">Jogadores</a></li>
+                            <li><a href="#tab4" data-toggle="tab">Equipes</a></li>
+                            <li><a href="#tab5" data-toggle="tab">Métricas</a></li>
                             <li><a href="#tab6" data-toggle="tab">Metas</a></li>
                         </ul>
                     </div>
@@ -37,26 +37,333 @@
                         <div id="bar" class="progress progress-striped active">
                             <div class="progress-bar progress-bar-cyan animate-progress-bar"></div>
                         </div>
-                        <form action="/admin/empresas/salvar" class="form-horizontal" enctype="multipart/form-data" method="post">
+                        <form action="/admin/implantacao/salvar" class="form-horizontal" enctype="multipart/form-data" method="post">
                             <div class="tab-content">
                                 <div class="tab-pane" id="tab1">
                                     <div class="form-group">
+                                        <div class="col-sm-10 col-md-12">
+                                            @Html.LabelFor(model => model.Episode.Name, "Nome*:", new { @class = "col-sm-2 control-label" })
+                                            <div class="col-sm-10">@Html.EditorFor(model => model.Episode.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })</div>
 
+                                            @Html.ValidationMessageFor(model => model.Episode.Name, "O campo Nome da Campanha é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-12">
+                                            @Html.LabelFor(model => model.Episode.initDateAux, "Data inicial do periodo:", new { @class = "col-sm-2 control-label" })
+                                            <div class="col-sm-10">
+                                                @Html.EditorFor(model => model.Episode.initDateAux, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Episode.initDateAux, "O campo Data inicial do periodo é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-12">
+                                            @Html.LabelFor(model => model.Episode.finishDateAux, "Data final do periodo:", new { @class = "col-sm-2 control-label" })
+                                            <div class="col-sm-10">
+                                                @Html.EditorFor(model => model.Episode.finishDateAux, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Episode.finishDateAux, "O campo Data final do periodo é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-12 modal-div">
+                                            <label class="col-sm-2 control-label">
+                                                Enviar email:
+                                                @Html.CheckBoxFor(model => model.Episode.sendEmail, Model.Episode.sendEmail)
+                                            </label>
+                                            <div id="daysOfWeek">
+                                                <input type="checkbox" id="mon" name="mon" value="mon" onchange="CheckChange('mon')">Segunda
+                                                <input type="checkbox" id="tue" name="tue" value="tue" onchange="CheckChange('tue')">Terça
+                                                <input type="checkbox" id="wed" name="wed" value="wed" onchange="CheckChange('wed')">Quarta
+                                                <input type="checkbox" id="thu" name="thu" value="thu" onchange="CheckChange('thu')">Quinta
+                                                <input type="checkbox" id="fri" name="fri" value="fri" onchange="CheckChange('fri')">Sexta
+                                                <input type="checkbox" id="sat" name="sat" value="sat" onchange="CheckChange('sat')">Sábado
+                                                <input type="checkbox" id="sun" name="sun" value="sun" onchange="CheckChange('sun')">Domingo
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab2">
                                     <div class="form-group">
-
+                                        <div class="col-sm-10 col-md-12">
+                                            @Html.LabelFor(model => model.WorkerType.TypeName, "Nome da função*:", new { @class = "col-sm-2 control-label" })
+                                            <div class="col-sm-10">
+                                                @Html.EditorFor(model => model.WorkerType.TypeName, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.WorkerType.TypeName, "O campo Nome da Função é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-12">
+                                            @Html.LabelFor(model => model.WorkerType.ProfileName, "Perfil*:", new { @class = "col-sm-2 control-label" })
+                                            <div class="col-sm-10">
+                                                @Html.DropDownListFor(model => model.WorkerType.ProfileName, (IEnumerable<SelectListItem>)ViewBag.Profiles, "Informe o perfil do tipo", new { @class = "form-control", @tabindex = "2" })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.WorkerType.ProfileName, "O campo Perfil é obrigatório.", new { @class = "text-danger" })
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab3">
+
+                                    @Html.AntiForgeryToken()
+                                    <div class="row">
+                                        @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
+                                    </div>
                                     <div class="form-group">
+                                        <div class="col-sm-10 col-md-6 modal-div">
+                                            @Html.LabelFor(model => model.Worker.Name, "Nome*:", new { @class = "col-sm-2 control-label" })
+                                            <div class="col-sm-10">
+                                                @Html.EditorFor(model => model.Worker.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Worker.Name, "O campo Nome é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-sm-10 col-md-6 modal-div">
+                                            @Html.LabelFor(model => model.Worker.Email, "Email*:", new { @class = "col-sm-2 control-label" })
+                                            <div class="col-sm-10">
+                                                @Html.EditorFor(model => model.Worker.Email, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Worker.Email, "O campo Email é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-sm-10 col-md-6 modal-div">
+                                            @Html.LabelFor(model => model.Worker.Phone, "Telefone*:", new { @class = "col-sm-2 control-label" })
+                                            <div class="col-sm-10">
+                                                @Html.EditorFor(model => model.Worker.Phone, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Worker.Phone, "O campo Telefone é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="col-sm-10 col-md-6 modal-div">
+                                            @Html.LabelFor(model => model.Worker.WorkerTypeId, "Função*:", new { @class = "col-sm-2 control-label" })
+                                            <div class="col-sm-10">
+                                                @Html.DropDownListFor(model => model.Worker.WorkerTypeId, (IEnumerable<SelectListItem>)ViewBag.Types, "Informe a função", new { @class = "form-control", @tabindex = "6" })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Worker.WorkerTypeId, "O campo Função é obrigatório.", new { @class = "text-danger" })
+                                        </div>
 
                                     </div>
+
                                 </div>
-                            </div>
+                                <div class="tab-pane" id="tab4">
+
+                                    @Html.AntiForgeryToken()
+                                    <div class="row">
+                                        @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
+                                    </div>
+
+                                    <div class="col-xs-12" style="top:7px;">
+                                        @Html.Label("Selecione uma Campanha*")
+                                        <div class="form-group">
+                                            <select class="form-control" name="episodeId" id="episodeId">
+                                                @foreach (SelectListItem Episode in ViewBag.Episodes)
+                                                {
+                                                    if (Episode.Value == ViewBag.EpisodeId && ViewBag.EpisodeId != null)
+                                                    {
+                                                        <option value="@Episode.Value" selected="selected">@Episode.Text</option>
+                                                    }
+                                                    else if (ViewBag.EpisodeId == null)
+                                                    {
+                                                        <option value="@Episode.Value">@Episode.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12" style="top:7px;">
+                                        @Html.Label("Nome da Equipe*")
+                                        <div class="form-group">
+                                            <div class="modal-div">
+                                                @Html.EditorFor(model => model.Team.Nick, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                                                @Html.ValidationMessageFor(model => model.Team.Nick, "O campo Nome da Equipe é obrigatório.", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12" style="top:7px;">
+                                        @Html.Label("Selecione um Responsavel*")
+                                        <div class="form-group">
+                                            <select class="form-control" name="masterPlayerId">
+                                                @foreach (SelectListItem Sponsor in ViewBag.Sponsors)
+                                                {
+                                                    if (Sponsor.Value == ViewBag.SponsorId && ViewBag.SponsorId != null)
+                                                    {
+                                                        <option value="@Sponsor.Value" selected="selected">@Sponsor.Text</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@Sponsor.Value">@Sponsor.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12" style="top:7px;">
+                                        @Html.Label("Selecione as equipes")
+                                        <div class="form-group">
+                                            <div>
+                                                <div class="selectBox" onclick="showCheckboxes()">
+                                                    <select class="form-control">
+                                                        <option>Associar Equipes</option>
+                                                    </select>
+                                                    <div class="overSelect"></div>
+                                                </div>
+                                                <div id="checkboxes">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane" id="tab5">
+                                    @Html.AntiForgeryToken()
+                                    <div class="row">
+                                        @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-12 modal-div">
+                                            @Html.LabelFor(model => model.Metric.Name, "Nome da Metrica*:", new { @class = "col-sm-12 control-label" })
+                                            @Html.EditorFor(model => model.Metric.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                                            @Html.ValidationMessageFor(model => model.Metric.Name, "O campo Nome da metrica é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-6 modal-div">
+                                            @Html.LabelFor(model => model.Metric.Floor, "Valor minimo:", new { @class = "col-sm-12 control-label" })
+                                            @Html.EditorFor(model => model.Metric.Floor, new { htmlAttributes = new { @class = "form-control", @tabindex = "2", min = 0 } })
+                                            @*Html.ValidationMessageFor(model => model.Floor, "O campo Valor mínimo é obrigatório.", new { @class = "text-danger" })*@
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-6 modal-div">
+                                            @Html.LabelFor(model => model.Metric.Ceiling, "Valor maximo:", new { @class = "col-sm-12 control-label" })
+                                            @Html.EditorFor(model => model.Metric.Ceiling, new { htmlAttributes = new { @class = "form-control", @tabindex = "3", min = 0 } })
+                                            @*Html.ValidationMessageFor(model => model.Ceiling, "O campo Valor máximo é obrigatório.", new { @class = "text-danger" })*@
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-6 modal-div">
+                                            @Html.LabelFor(model => model.Metric.Multiplier, "Peso*:", new { @class = "col-sm-2 control-label" })
+                                            @Html.EditorFor(model => model.Metric.Multiplier, new { htmlAttributes = new { @class = "form-control", @tabindex = "4", min = 0 } })
+                                            @Html.ValidationMessageFor(model => model.Metric.Multiplier, "O campo peso é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-6 modal-div">
+                                            @Html.LabelFor(model => model.Metric.Icon, "Icone*:", new { @class = "col-sm-2 control-label" })
+                                            <div>
+                                                <select id="Icon" class="form-control" name="Icon" tabindex="6">
+                                                    @foreach (SelectListItem icon in ViewBag.Icons)
+                                                    {
+                                                        if (icon.Selected == true)
+                                                        {
+                                                            <option value="@icon.Value" selected>@icon.Text</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@icon.Value">@icon.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            @Html.ValidationMessageFor(model => model.Metric.Icon, "O campo icone é obrigatório.", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-6 modal-div">
+                                            <div style="margin-top:20px;" id="iconView"></div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-3 modal-div">
+                                            <label style="font-size:larger;">
+                                                É média:
+                                                @Html.CheckBoxFor(model => model.Metric.IsAverage, Model.Metric.IsAverage)
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-md-3 modal-div">
+                                            <label style="font-size:larger;">
+                                                É inverso:
+                                                @Html.CheckBoxFor(model => model.Metric.IsInverse, Model.Metric.IsInverse)
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-6 col-md-6 modal-div">
+                                            <div class="multiselect">
+                                                <div class="selectBox" onclick="showCheckboxes()">
+                                                    <select>
+                                                        <option>Associar Funções</option>
+                                                    </select>
+                                                    <div class="overSelect"></div>
+                                                </div>
+                                                <div id="checkboxes">
+                                                    @{
+                                                        int i = 0;
+
+                                                        foreach (WorkerTypeEntity wt in ViewBag.WorkerTypes)
+                                                        {
+                                                            if (ViewBag.WorkerTypeMetrics == null || !ViewBag.WorkerTypeMetrics.Contains(wt.Id))
+                                                            {
+                                                                <label>
+                                                                    <input type="checkbox" name="checkBoxes[@i].Checked" id="checkBoxes[@i].Checked" onchange="checkBoxChange(this)" value="false" />@wt.TypeName
+                                                                    <input type="hidden" name="checkBoxes[@i].Value" id="checkBoxes[@i].Value" value="@wt.Id">
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label>
+                                                                    <input type="checkbox" name="checkBoxes[@i].Checked" checked id="checkBoxes[@i].Checked" onchange="checkBoxChange(this)" value="true" />@wt.TypeName
+                                                                    <input type="hidden" name="checkBoxes[@i].Value" id="checkBoxes[@i].Value" value="@wt.Id">
+                                                                </label>
+                                                            }
+                                                            i++;
+                                                        }
+                                                    }
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                                <div class="tab-pane" id="tab6">
+                                    @if (Model.Goal != null)
+                                    {
+                                        int j = 0;
+                                        foreach (var item in Model.Goal)
+                                        {
+                                            <label class="col-sm-12 col-md-12 col-xs-6" style="font-size:100%">@item.MetricName</label>
+                                            <input type="hidden" value="@item.MetricName" id="GoalList[@j].MetricName" name="GoalList[@j].MetricName" />
+                                            <input type="hidden" value="@item.MetricIcon" id="GoalList[@j].MetricIcon" name="GoalList[@j].MetricIcon" />
+                                            <input type="hidden" value="@item.RunId" id="GoalList[@j].RunId" name="GoalList[@j].RunId" />
+                                            <input type="hidden" value="@item.Id" id="GoalList[@j].Id" name="GoalList[@j].Id" />
+                                            <input type="hidden" value="@item.MetricId" id="GoalList[@j].MetricId" name="GoalList[@i].MetricId" />
+                                            <input type="hidden" value="@item.TeamId" id="GoalList[@j].TeamId" name="GoalList[@j].TeamId" />
+                                            <input type="number" min="0" value="@item.Goal" class="form-control col-xs-6" id="GoalList[@j].Goal" name="GoalList[@j].Goal" />
+                                            i++;
+                                        }
+                                    } 
+
+                                </div>
+
+                                </div>
+
                         </form>
                     </div>
+
                     <div class="panel-footer border-top color white rounded-bottom-corners nopadding">
                         <ul class="pager pager-full wizard">
                             <li class="previous"><a href="javascript:;"><i class="fa fa-arrow-left fa-lg"></i> Voltar</a></li>
@@ -73,6 +380,38 @@
         </div>
     </div>
 </div>
+<script src="/Content/Js/app/implantacao.js" charset="iso-8859-1"></script>
+<script>
+
+    var currentDate = new Date();
+    $('#initDateAux').datepicker({
+        language: 'pt-BR',
+        changeMonth: true,
+        changeYear: true,
+        showOtherMonths: true,
+        autoclose: true,
+        selectOtherMonths: true,
+        selectOtherYears: true,
+        changeYear: true,
+        orientation: 'bottom'
+    });
+</script>
+
+<script>
+    var currentDate = new Date();
+    $('#finishDateAux').datepicker({
+        language: 'pt-BR',
+        changeMonth: true,
+        changeYear: true,
+        autoclose: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        selectOtherYears: true,
+        changeYear: true,
+        orientation: 'bottom'
+    });
+</script>
+
 
 <script>
     $(function () {
@@ -124,3 +463,103 @@
 
     })
 </script>
+<script>
+
+    $(document).ready(function () {
+        if (!$('#sendEmail').is(':checked')) {
+            $('#daysOfWeek').hide();
+        } else {
+            var daysOfWeek = $('#DaysOfWeek').val().split(',');
+
+            daysOfWeek.forEach(function (value, key) {
+                $('#' + value).prop('checked', true);
+            });
+        }
+
+        
+    });
+
+    $('#sendEmail').change(function () {
+        if ($('#sendEmail').is(':checked')) {
+            $('#daysOfWeek').show();
+            var daysOfWeek = $('#DaysOfWeek').val().split(',');
+
+            daysOfWeek.forEach(function (value, key) {
+                $('#' + value).prop('checked', true);
+            });
+        }
+        else {
+            $('#daysOfWeek').hide();
+        }
+    });
+
+</script>
+
+<script>
+    var expanded = false;
+
+    function showCheckboxes() {
+        var checkboxes = document.getElementById("checkboxes");
+        if (!expanded) {
+            checkboxes.style.display = "block";
+            expanded = true;
+        } else {
+            checkboxes.style.display = "none";
+            expanded = false;
+        }
+    }
+
+    function checkBoxChange(checkBox) {
+        if ($(checkBox).val() == "true")
+            $(checkBox).val("false");
+        else
+            $(checkBox).val("true");
+    }
+
+</script>
+
+<script>
+    $('#iconView').append("<i class='fa " + $('#Icon').val() + " fa-3x'></i>");
+
+    $('#Icon').change(function () {
+        $('#iconView').empty().append("<i class='fa " + $(this).val() + " fa-3x'></i>");
+    });
+</script>
+
+
+<style>
+    .multiselect {
+        width: 200px;
+    }
+
+    .selectBox {
+        position: relative;
+    }
+
+        .selectBox select {
+            width: 100%;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    #checkboxes {
+        display: none;
+        border: 1px #dadada solid;
+    }
+
+        #checkboxes label {
+            display: block;
+        }
+
+            #checkboxes label:hover {
+                background-color: #1e90ff;
+            }
+</style>
