@@ -252,7 +252,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 {
                     foreach (GoalEngineDTO goal in goalList)
                     {
-                        if (goal.Id == null && goal.Goal > 0)
+                        if (goal.Id == null && goal.Goal >= 0)
                         {
                             MetricEngineDTO metric = MetricEngineService.Instance.GetById(goal.MetricId);
                             GoalEngineDTO goalEngine = new GoalEngineDTO
@@ -265,7 +265,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             };
                             GoalEngineService.Instance.CreateOrUpdate(goalEngine);
                         }
-                        else if (goal.Goal > 0)
+                        else if (goal.Goal >= 0)
                         {
                             GoalEngineDTO goalEngine = GoalEngineService.Instance.GetByRunIdAndMetricId(goal.RunId, goal.MetricId);
                             goalEngine.Goal = goal.Goal;
