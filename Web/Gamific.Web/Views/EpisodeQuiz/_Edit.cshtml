@@ -1,0 +1,87 @@
+﻿@model  Vlast.Gamific.Web.Services.Engine.DTO.EpisodeQuizEngineDTO
+
+@using (Ajax.BeginForm("Save", "EpisodeQuiz", new AjaxOptions { OnSuccess = "onSuccessSaveQuiz", OnFailure = "onFailureSaveQuiz", UpdateTargetId = "modal-panel" }))
+{
+    <div id="modal-panel">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" title="Fechar" id="btn_close_modal" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="criarQuizLabel">Criar Quiz</h4>
+                </div>
+                <div class="modal-body" id="edit-modal-body">
+
+                    <span style="display:none">
+                        @Html.HiddenFor(model => model.EpisodeId);
+                    </span>
+
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.Name, "Nome*:", new { @class = "col-sm-2 control-label" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                            @Html.ValidationMessageFor(model => model.Name, "O campo Nome é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.ExpirationDate, "Validade*:", new { @class = "col-sm-2 control-label" })
+                            @Html.EditorFor(model => model.ExpirationDate, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                            @Html.ValidationMessageFor(model => model.ExpirationDate, "O campo Validade é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+        if (form.getAttribute("enctype") === "multipart/form-data") {
+            if (form.dataset.ajax) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action, false);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (form.dataset.ajaxUpdate) {
+                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                            if (updateTarget) {
+                                updateTarget.innerHTML = xhr.responseText;
+                            }
+                        }
+                    }
+                };
+                xhr.send(new FormData(form));
+            }
+            onSuccessSaveQuiz();
+        }
+    }, true);
+</script>
+
+<script type="text/javascript">
+    $('#ExpirationDate').prop('readonly', true);
+
+    $('#ExpirationDate').datepicker({
+        language: 'pt-BR',
+        changeMonth: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        selectOtherYears: true,
+        changeYear: true,
+        dateformat: 'dd/MM/yyyy',
+        orientation: 'bottom'
+    }).on('change', function () {
+        $('.datepicker').hide();
+    });
+</script>
