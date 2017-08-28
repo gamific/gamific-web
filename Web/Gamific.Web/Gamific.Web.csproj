@@ -302,6 +302,9 @@
     <Compile Include="Controllers\Management\HelpController.cs" />
     <Compile Include="Controllers\Management\Model\EmailSupportDTO.cs" />
     <Compile Include="Controllers\Management\SupportController.cs" />
+    <Compile Include="Controllers\Management\QuizQuestionController.cs" />
+    <Compile Include="Controllers\Management\QuestionAnswerController.cs" />
+    <Compile Include="Controllers\Management\EpisodeQuizController.cs" />
     <Compile Include="Controllers\Management\WorkerTypeController.cs" />
     <Compile Include="Controllers\Management\GoalController.cs" />
     <Compile Include="Controllers\Management\WorkerTypeMetricController.cs" />
@@ -369,6 +372,9 @@
     <Compile Include="Services\Engine\DTO\HallOfFameEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\ItemEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\Link.cs" />
+    <Compile Include="Services\Engine\DTO\QuizQuestionEngineDTO.cs" />
+    <Compile Include="Services\Engine\DTO\EpisodeQuizEngineDTO.cs" />
+    <Compile Include="Services\Engine\DTO\QuestionAnswerEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\ParserDTO.cs" />
     <Compile Include="Services\Engine\DTO\QuizDTO.cs" />
     <Compile Include="Services\Engine\DTO\MetricEngineDTO.cs" />
@@ -589,6 +595,18 @@
       <DependentUpon>video.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\app\quiz.js" />
+    <Content Include="Content\Js\app\episodeQuiz.js" />
+    <Content Include="Content\Js\app\worker - Copy %282%29.min.js">
+      <DependentUpon>episodeQuiz.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\quizQuestion.js" />
+    <Content Include="Content\Js\app\worker - Copy %283%29.min.js">
+      <DependentUpon>quizQuestion.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\questionAsnwer.js" />
+    <Content Include="Content\Js\app\worker - Copy.min.js">
+      <DependentUpon>questionAsnwer.js</DependentUpon>
+    </Content>
     <Content Include="Content\Js\app\worker.min.js">
       <DependentUpon>worker.js</DependentUpon>
     </Content>
@@ -860,6 +878,12 @@
     <Content Include="Views\DashboardHistorico\Campaign\_AssociateTeams.cshtml" />
     <Content Include="Views\DashboardHistorico\Campaign\Edit.cshtml" />
     <Content Include="Views\DashboardHistorico\Campaign\Index.cshtml" />
+    <Content Include="Views\EpisodeQuiz\_Edit.cshtml" />
+    <Content Include="Views\EpisodeQuiz\Index.cshtml" />
+    <Content Include="Views\QuizQuestion\_Edit.cshtml" />
+    <Content Include="Views\QuizQuestion\Index.cshtml" />
+    <Content Include="Views\QuestionAsnwer\_Edit.cshtml" />
+    <Content Include="Views\QuestionAsnwer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Quiz\DTO\" />
