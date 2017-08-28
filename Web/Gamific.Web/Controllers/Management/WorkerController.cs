@@ -206,7 +206,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                             player.Cpf = entity.Cpf;
                             player.LogoPath = CurrentURL + player.LogoId;
                             player.Active = true;
-
+                            player.GameId = CurrentFirm.ExternalId;
                             PlayerEngineService.Instance.CreateOrUpdate(player);
 
                             Success("Funcionário atualizado com sucesso.");

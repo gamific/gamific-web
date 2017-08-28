@@ -245,12 +245,13 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Neighborhood = entity.DataInfo.Neighborhood,
                                 Phone = entity.DataInfo.Phone,
                                 Id = entity.DataInfo.ExternalId,
-                                LogoPath = CurrentURL + entity.DataInfo.LogoId
+                                LogoPath = CurrentURL + entity.DataInfo.LogoId,
+                                Description = entity.DataInfo.Cnpj
                             };
 
                             try
                             {
-                                game = GameEngineService.Instance.CreateOrUpdate(game);
+                                game = GameEngineService.Instance.CreateOrUpdate(game, "victor@duplov.com.br");
                             }
                             catch (Exception e)
                             {
@@ -324,7 +325,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                                 Name = entity.DataInfo.FirmName,
                                 Neighborhood = entity.DataInfo.Neighborhood,
                                 Phone = entity.DataInfo.Phone,
-                                Id = entity.DataInfo.ExternalId
+                                Id = entity.DataInfo.ExternalId,
+                                Description = entity.DataInfo.Cnpj
                             };
                             game = GameEngineService.Instance.CreateOrUpdate(game, "victor@duplov.com.br");
 
@@ -476,7 +478,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 Id = entity.ExternalId,
                 Name = entity.CompanyName,
                 LogoId = entity.LogoId,
-                Description = entity.Cnpj
+                Description = entity.Cnpj,
+                LogoPath = CurrentURL + entity.LogoId
 
 
             };

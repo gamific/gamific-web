@@ -522,9 +522,6 @@
       <DependentUpon>chat.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\app\dashboardHistorico.js" />
-    <Content Include="Content\Js\app\dashboard - Cópia .min.js">
-      <DependentUpon>dashboardHistorico.js</DependentUpon>
-    </Content>
     <Content Include="Content\Js\app\dashboard.js" />
     <Content Include="Content\Js\app\dashboard.min.js">
       <DependentUpon>dashboard.js</DependentUpon>
