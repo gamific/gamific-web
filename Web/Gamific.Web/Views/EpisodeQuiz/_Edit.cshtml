@@ -21,16 +21,16 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-10 col-md-6 modal-div">
-                            @Html.LabelFor(model => model.Name, "Nome*:", new { @class = "col-sm-2 control-label" })
-                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
-                            @Html.ValidationMessageFor(model => model.Name, "O campo Nome é obrigatório.", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.Title, "Titulo*:", new { @class = "col-sm-6 control-label" })
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                            @Html.ValidationMessageFor(model => model.Title, "O campo Titulo é obrigatório.", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-10 col-md-6 modal-div">
-                            @Html.LabelFor(model => model.ExpirationDate, "Validade*:", new { @class = "col-sm-2 control-label" })
-                            @Html.EditorFor(model => model.ExpirationDate, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
-                            @Html.ValidationMessageFor(model => model.ExpirationDate, "O campo Validade é obrigatório.", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.Description, "Descricao*:", new { @class = "col-sm-6 control-label" })
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                            @Html.ValidationMessageFor(model => model.Description, "O campo Descricao é obrigatório.", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -67,21 +67,4 @@
             onSuccessSaveQuiz();
         }
     }, true);
-</script>
-
-<script type="text/javascript">
-    $('#ExpirationDate').prop('readonly', true);
-
-    $('#ExpirationDate').datepicker({
-        language: 'pt-BR',
-        changeMonth: true,
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        selectOtherYears: true,
-        changeYear: true,
-        dateformat: 'dd/MM/yyyy',
-        orientation: 'bottom'
-    }).on('change', function () {
-        $('.datepicker').hide();
-    });
 </script>

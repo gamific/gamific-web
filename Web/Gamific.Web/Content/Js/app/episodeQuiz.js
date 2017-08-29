@@ -2,7 +2,7 @@ function loadQuizDataTable() {
 
     $('#quizDataTable').dataTable({
         "serverSide": true,
-        "ajax": "/admin/episodeQuiz/search/" + $('#NumberOfQuiz').val(),
+        "ajax": "/admin/episodeQuiz/search/" + $('#NumberOfQuiz').val() + "?episodeId=" + $('#EpisodeId').val(),
         "scrollY": "300px",
         "processing": true,
         "ordering": true,
@@ -23,18 +23,6 @@ function loadQuizDataTable() {
             {
                 "width": "90%",
                 "targets": 0,
-                "orderable": true,
-                "searchable": true,
-            },
-            {
-                "width": "30%",
-                "targets": 1,
-                "orderable": true,
-                "searchable": true,
-            },
-            {
-                "width": "30%",
-                "targets": 2,
                 "orderable": true,
                 "searchable": true,
             },

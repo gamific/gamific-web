@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Vlast.Gamific.Model.School.DTO;
+using Vlast.Gamific.Web.Services.Engine;
 using Vlast.Gamific.Web.Services.Engine.DTO;
 using Vlast.Util.Instrumentation;
 
@@ -23,7 +24,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             ViewBag.EpisodeId = episodeId;
 
-            ViewBag.NumberOfQuiz = 0;// WorkerRepository.Instance.GetCountFromFirm(CurrentFirm.Id);
+            ViewBag.NumberOfQuiz = EpisodeQuizEngineService.Instance.GetByEpisodeId(episodeId).Count;
 
             return View();
         }
@@ -31,11 +32,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("editar/{quizId}")]
         public ActionResult Edit(string quizId)
         {
-            EpisodeQuizEngineDTO quiz = new EpisodeQuizEngineDTO();//WorkerRepository.Instance.GetDTOById(workerId);
+            EpisodeQuizEngineDTO quiz = EpisodeQuizEngineService.Instance.GetById(quizId);
 
             return PartialView("_Edit", quiz);
         }
-
 
         [Route("cadastrar/{episodeId}")]
         public ActionResult Create(string episodeId)
@@ -47,21 +47,21 @@ namespace Vlast.Gamific.Web.Controllers.Management
             return PartialView("_Edit", quiz);
         }
 
-        [Route("remover/{quizId:int}")]
-        public ActionResult Remove(int quizId)
+        [Route("remover/{quizId}")]
+        public ActionResult Remove(string quizId)
         {
+            EpisodeQuizEngineDTO quiz = EpisodeQuizEngineService.Instance.GetById(quizId);
+
             try
             {
-                EpisodeQuizEngineDTO quiz = new EpisodeQuizEngineDTO();//WorkerRepository.Instance.GetDTOById(workerId);
-
-                //WorkerRepository.Instance.UpdateWorker(quiz);
+                EpisodeQuizEngineService.Instance.DeleteById(quizId);
             }
             catch (Exception e)
             {
                 Error("Ocorreu um erro ao remover.");
             }
 
-            ViewBag.NumberOfQuiz = 0;//.Instance.GetCountFromFirm(CurrentFirm.Id);
+            ViewBag.NumberOfQuiz = EpisodeQuizEngineService.Instance.GetByEpisodeId(quiz.EpisodeId).Count;
 
             return View("Index");
         }
@@ -76,7 +76,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 {
                     ValidateModel(entity);
 
-                    //PlayerEngineService.Instance.CreateOrUpdate(player);
+                    EpisodeQuizEngineService.Instance.CreateOrUpdate(entity);
 
                     Success("Quiz salvo com sucesso.");
                 }
@@ -104,7 +104,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("search/{numberOfQuiz:int}")]
         public ActionResult Search(JQueryDataTableRequest jqueryTableRequest, int numberOfQuiz)
         {
-            numberOfQuiz = 0;//WorkerRepository.Instance.GetCountFromFirm(CurrentFirm.Id);
+            string episodeId = Request["episodeId"];
+
+            numberOfQuiz = EpisodeQuizEngineService.Instance.GetByEpisodeId(episodeId).Count;
 
             if (jqueryTableRequest != null)
             {
@@ -115,7 +117,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 List<EpisodeQuizEngineDTO> searchResult = null;
 
-                searchResult = new List<EpisodeQuizEngineDTO>();//WorkerRepository.Instance.GetAllFromFirm(CurrentFirm.Id, jqueryTableRequest.Page, 10);
+                searchResult = EpisodeQuizEngineService.Instance.GetByEpisodeId(episodeId);
 
                 var searchedQueryList = new List<EpisodeQuizEngineDTO>();
 
@@ -125,7 +127,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 {
                     filter = filter.ToLowerInvariant().Trim();
                     var searchedQuery = from n in searchResult
-                                        where (n.Name != null && n.Name.ToLowerInvariant().Trim().Contains(filter))
+                                        where (n.Title != null && n.Title.ToLowerInvariant().Trim().Contains(filter))
                                         select n;
 
                     searchedQueryList = searchedQuery.ToList();
@@ -146,7 +148,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = numberOfQuiz,
                         RecordsFiltered = numberOfQuiz,
-                        Data = searchedQueryList.Select(r => new string[] { r.Name, r.ExpirationDate.ToString(), r.Status.ToString(), r.Id.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
+                        Data = searchedQueryList.Select(r => new string[] { r.Title, r.Id.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
 
                     };
                 }
@@ -157,7 +159,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = numberOfQuiz,
                         RecordsFiltered = numberOfQuiz,
-                        Data = searchedQueryList.Select(r => new string[] { r.Name, r.ExpirationDate.ToString(), r.Status.ToString(), r.Id.ToString() }).ToArray().OrderByDescending(item => item[index]).ToArray()
+                        Data = searchedQueryList.Select(r => new string[] { r.Title, r.Id.ToString() }).ToArray().OrderByDescending(item => item[index]).ToArray()
                     };
                 }
 

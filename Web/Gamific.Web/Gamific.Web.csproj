@@ -303,7 +303,6 @@
     <Compile Include="Controllers\Management\Model\EmailSupportDTO.cs" />
     <Compile Include="Controllers\Management\SupportController.cs" />
     <Compile Include="Controllers\Management\QuizQuestionController.cs" />
-    <Compile Include="Controllers\Management\QuestionAnswerController.cs" />
     <Compile Include="Controllers\Management\EpisodeQuizController.cs" />
     <Compile Include="Controllers\Management\WorkerTypeController.cs" />
     <Compile Include="Controllers\Management\GoalController.cs" />
@@ -385,6 +384,8 @@
     <Compile Include="Services\Engine\DTO\TeamEngineDTO.cs" />
     <Compile Include="Services\Engine\EngineBIZ.cs" />
     <Compile Include="Services\Engine\EngineServiceBase.cs" />
+    <Compile Include="Services\Engine\QuizQuestionEngineService.cs" />
+    <Compile Include="Services\Engine\EpisodeQuizEngineService.cs" />
     <Compile Include="Services\Engine\EpisodeEngineService.cs" />
     <Compile Include="Services\Engine\GameEngineService.cs" />
     <Compile Include="Services\Engine\GoalEngineService.cs" />
@@ -394,10 +395,8 @@
     <Compile Include="Services\Engine\MetricEngineService.cs" />
     <Compile Include="Services\Engine\PlayerEngineService.cs" />
     <Compile Include="Services\Engine\QuestionAnsweredService.cs" />
-    <Compile Include="Services\Engine\QuestionAnswerService.cs" />
     <Compile Include="Services\Engine\QuestionService.cs" />
     <Compile Include="Services\Engine\QuizCampaignService.cs" />
-    <Compile Include="Services\Engine\QuizQuestionService.cs" />
     <Compile Include="Services\Engine\QuizService.cs" />
     <Compile Include="Services\Engine\RunEngineService.cs" />
     <Compile Include="Services\Engine\RunMetricEngineService.cs" />
@@ -599,10 +598,6 @@
     <Content Include="Content\Js\app\quizQuestion.js" />
     <Content Include="Content\Js\app\worker - Copy %283%29.min.js">
       <DependentUpon>quizQuestion.js</DependentUpon>
-    </Content>
-    <Content Include="Content\Js\app\questionAsnwer.js" />
-    <Content Include="Content\Js\app\worker - Copy.min.js">
-      <DependentUpon>questionAsnwer.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\app\worker.min.js">
       <DependentUpon>worker.js</DependentUpon>
@@ -879,8 +874,6 @@
     <Content Include="Views\EpisodeQuiz\Index.cshtml" />
     <Content Include="Views\QuizQuestion\_Edit.cshtml" />
     <Content Include="Views\QuizQuestion\Index.cshtml" />
-    <Content Include="Views\QuestionAsnwer\_Edit.cshtml" />
-    <Content Include="Views\QuestionAsnwer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Quiz\DTO\" />

@@ -13,7 +13,7 @@
                     @Html.AntiForgeryToken()
 
                     <span style="display:none">
-                        @Html.HiddenFor(model => model.QuizId);
+                        @Html.HiddenFor(model => model.QuizSheetId);
                     </span>
 
                     <div class="row">
@@ -21,19 +21,24 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-10 col-md-6 modal-div">
-                            @Html.LabelFor(model => model.Title, "Titulo*:", new { @class = "col-sm-2 control-label" })
-                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
-                            @Html.ValidationMessageFor(model => model.Title, "O campo Titulo é obrigatório.", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.Enunciation, "Titulo*:", new { @class = "col-sm-2 control-label" })
+                            @Html.EditorFor(model => model.Enunciation, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                            @Html.ValidationMessageFor(model => model.Enunciation, "O campo Titulo é obrigatório.", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-10 col-md-6 modal-div">
-                            @Html.LabelFor(model => model.CorrectAnswer, "Resposta Correta*:", new { @class = "col-sm-2 control-label" })
-                            @Html.EditorFor(model => model.CorrectAnswer, new { htmlAttributes = new { @class = "form-control", @tabindex = "2" } })
-                            @Html.ValidationMessageFor(model => model.CorrectAnswer, "O campo Resposta Correta é obrigatório.", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.OptionsString, "Respostas(separadas por ;)*:", new { @class = "col-sm-2 control-label" })
+                            @Html.EditorFor(model => model.OptionsString, new { htmlAttributes = new { @class = "form-control", @tabindex = "2" } })
+                            @Html.ValidationMessageFor(model => model.OptionsString, "O campo Respostas é obrigatório.", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-10 col-md-6 modal-div">
-                            @Html.LabelFor(model => model.PointsVale, "Valor em pontos*:", new { @class = "col-sm-2 control-label" })
-                            @Html.EditorFor(model => model.PointsVale, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
-                            @Html.ValidationMessageFor(model => model.PointsVale, "O campo Valor em pontos é obrigatório.", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.CorrectOptionIndex, "Indice da Resposta Correta*:", new { @class = "col-sm-2 control-label" })
+                            @Html.EditorFor(model => model.CorrectOptionIndex, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
+                            @Html.ValidationMessageFor(model => model.CorrectOptionIndex, "O campo Indice da Resposta Correta é obrigatório.", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-10 col-md-6 modal-div">
+                            @Html.LabelFor(model => model.Points, "Valor em pontos*:", new { @class = "col-sm-2 control-label" })
+                            @Html.EditorFor(model => model.Points, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+                            @Html.ValidationMessageFor(model => model.Points, "O campo Valor em pontos é obrigatório.", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>

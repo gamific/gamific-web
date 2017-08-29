@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Vlast.Gamific.Model.School.DTO;
+using Vlast.Gamific.Web.Services.Engine;
 using Vlast.Gamific.Web.Services.Engine.DTO;
 using Vlast.Util.Instrumentation;
 
@@ -23,7 +24,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             ViewBag.QuizId = quizId;
 
-            ViewBag.NumberOfQuestions = 0;// WorkerRepository.Instance.GetCountFromFirm(CurrentFirm.Id);
+            ViewBag.NumberOfQuestions = QuizQuestionEngineService.Instance.GetByQuizId(quizId).Count;
 
             return View();
         }
@@ -31,7 +32,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("editar/{questionId}")]
         public ActionResult Edit(string questionId)
         {
-            QuizQuestionEngineDTO question = new QuizQuestionEngineDTO();//WorkerRepository.Instance.GetDTOById(workerId);
+            QuizQuestionEngineDTO question = QuizQuestionEngineService.Instance.GetById(questionId);
 
             return PartialView("_Edit", question);
         }
@@ -42,26 +43,26 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             QuizQuestionEngineDTO question = new QuizQuestionEngineDTO();
 
-            question.QuizId = quizId;
+            question.QuizSheetId = quizId;
 
             return PartialView("_Edit", question);
         }
 
-        [Route("remover/{questionId:int}")]
-        public ActionResult Remove(int questionId)
+        [Route("remover/{questionId}")]
+        public ActionResult Remove(string questionId)
         {
+            QuizQuestionEngineDTO question = QuizQuestionEngineService.Instance.GetById(questionId);
+
             try
             {
-                QuizQuestionEngineDTO question = new QuizQuestionEngineDTO();//WorkerRepository.Instance.GetDTOById(workerId);
-
-                //WorkerRepository.Instance.UpdateWorker(quiz);
+                QuizQuestionEngineService.Instance.DeleteById(questionId);
             }
             catch (Exception e)
             {
                 Error("Ocorreu um erro ao remover.");
             }
 
-            ViewBag.NumberOfQuestions = 0;//.Instance.GetCountFromFirm(CurrentFirm.Id);
+            ViewBag.NumberOfQuestions = QuizQuestionEngineService.Instance.GetByQuizId(question.QuizSheetId).Count;
 
             return View("Index");
         }
@@ -76,7 +77,15 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 {
                     ValidateModel(entity);
 
-                    //PlayerEngineService.Instance.CreateOrUpdate(player);
+                    string[] respostas = entity.OptionsString.Split(';');
+
+                    int i = 0;
+
+                    for (i = 0; i < respostas.Length; i++) {
+                        entity.Options.Add(respostas[i]);
+                    }
+
+                    QuizQuestionEngineService.Instance.CreateOrUpdate(entity);
 
                     Success("Pergunta salva com sucesso.");
                 }
@@ -104,7 +113,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("search/{numberOfQuestion:int}")]
         public ActionResult Search(JQueryDataTableRequest jqueryTableRequest, int numberOfQuestion)
         {
-            numberOfQuestion = 0;//WorkerRepository.Instance.GetCountFromFirm(CurrentFirm.Id);
+            string quizId = Request["quizId"];
+
+            numberOfQuestion = QuizQuestionEngineService.Instance.GetByQuizId(quizId).Count;
 
             if (jqueryTableRequest != null)
             {
@@ -115,7 +126,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 List<QuizQuestionEngineDTO> searchResult = null;
 
-                searchResult = new List<QuizQuestionEngineDTO>();//WorkerRepository.Instance.GetAllFromFirm(CurrentFirm.Id, jqueryTableRequest.Page, 10);
+                searchResult = QuizQuestionEngineService.Instance.GetByQuizId(quizId);
 
                 var searchedQueryList = new List<QuizQuestionEngineDTO>();
 
@@ -125,7 +136,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 {
                     filter = filter.ToLowerInvariant().Trim();
                     var searchedQuery = from n in searchResult
-                                        where (n.Title != null && n.Title.ToLowerInvariant().Trim().Contains(filter))
+                                        where (n.Enunciation != null && n.Enunciation.ToLowerInvariant().Trim().Contains(filter))
                                         select n;
 
                     searchedQueryList = searchedQuery.ToList();
@@ -146,7 +157,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = numberOfQuestion,
                         RecordsFiltered = numberOfQuestion,
-                        Data = searchedQueryList.Select(r => new string[] { r.Title, r.PointsVale.ToString(), r.CorrectAnswer, r.Id.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
+                        Data = searchedQueryList.Select(r => new string[] { r.Enunciation, r.Subject.ToString(), r.Points.ToString(), r.Id.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
 
                     };
                 }
@@ -157,7 +168,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = numberOfQuestion,
                         RecordsFiltered = numberOfQuestion,
-                        Data = searchedQueryList.Select(r => new string[] { r.Title, r.PointsVale.ToString(), r.CorrectAnswer, r.Id.ToString() }).ToArray().OrderByDescending(item => item[index]).ToArray()
+                        Data = searchedQueryList.Select(r => new string[] { r.Enunciation, r.Subject.ToString(), r.Points.ToString(), r.Id.ToString() }).ToArray().OrderByDescending(item => item[index]).ToArray()
                     };
                 }
 
@@ -165,12 +176,6 @@ namespace Vlast.Gamific.Web.Controllers.Management
             }
 
             return Json(null, JsonRequestBehavior.AllowGet);
-        }
-
-        [Route("cadastrarResposta/{questionId}")]
-        public ActionResult CreateQuestionAnswer(string questionId)
-        {
-            return Redirect("/admin/questionAnswer?questionId=" + questionId);
         }
 
     }

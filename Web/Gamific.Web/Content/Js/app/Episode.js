@@ -63,7 +63,7 @@
                 "render": function (data, type, row) {
                     var name = row[0].split(";")[0];
                     var links = "<a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/episode/editar/" + data + "' title='Edite está campanha'> </a>";
-                    links += "<a class='fa fa-plus' href='/admin/episodeQuiz?episodeId=" + data + "' title='Edite está campanha'> </a>";
+                    links += "<a class='fa fa-plus' href='/admin/episodeQuiz?episodeId=" + data + "' title='Edite os questionarios desta campanha'> </a>";
                     links +=  " <a class='fa fa-clone' onclick='showEntityModal(this); return false;'  href='/admin/episode/clonar/" + data + "' title='Clone está campanha, com todas as equipes,metas e metricas'> </a>";
                     links += " <a class='fa fa-eraser' href='#' onclick='cleanClickEpisode(\"" + data + "\")' title='Zera todos os resultados desta campanha.'> </a>";
                     if (row[4] == "Sim") {

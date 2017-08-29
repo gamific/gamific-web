@@ -2,7 +2,7 @@ function loadQuestionsDataTable() {
 
     $('#perguntasDataTable').dataTable({
         "serverSide": true,
-        "ajax": "/admin/quizQuestion/search/" + $('#NumberOfQuestions').val(),
+        "ajax": "/admin/quizQuestion/search/" + $('#NumberOfQuestions').val() + "?quizId=" + $('#QuizId').val(),
         "scrollY": "300px",
         "processing": true,
         "ordering": true,
@@ -44,7 +44,7 @@ function loadQuestionsDataTable() {
                 "searchable": false,
                 "orderable": false,
                 "render": function (data, type, row) {
-                    var links = "<a class='fa fa-plus' href='/admin/quizQuestion/cadastrarResposta/" + data + "' title='Adicionar Resposta.'> </a> &nbsp; <a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/quizQuestion/editar/" + data + "' title='Editar Pergunta.'> </a> &nbsp; <a class='fa fa-remove' href='/admin/quizQuestion/remover/" + data + "' title='Remover Pergunta.'> </a>";
+                    var links = "<a class='fa fa-pencil' onclick='showEntityModal(this); return false;' href='/admin/quizQuestion/editar/" + data + "' title='Editar Pergunta.'> </a> &nbsp; <a class='fa fa-remove' href='/admin/quizQuestion/remover/" + data + "' title='Remover Pergunta.'> </a>";
 
                     return links;
                 }
