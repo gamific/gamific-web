@@ -66,8 +66,6 @@ namespace Vlast.Gamific.Web.Controllers.Public
                                     };
 
             return View("Index");
-            
-
         }
         
         [Route("buscarScore")]

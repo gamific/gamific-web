@@ -384,6 +384,7 @@
     <Compile Include="Services\Engine\DTO\TeamEngineDTO.cs" />
     <Compile Include="Services\Engine\EngineBIZ.cs" />
     <Compile Include="Services\Engine\EngineServiceBase.cs" />
+    <Compile Include="Services\Engine\QuestionAnswerService.cs" />
     <Compile Include="Services\Engine\QuizQuestionEngineService.cs" />
     <Compile Include="Services\Engine\EpisodeQuizEngineService.cs" />
     <Compile Include="Services\Engine\EpisodeEngineService.cs" />
@@ -397,6 +398,7 @@
     <Compile Include="Services\Engine\QuestionAnsweredService.cs" />
     <Compile Include="Services\Engine\QuestionService.cs" />
     <Compile Include="Services\Engine\QuizCampaignService.cs" />
+    <Compile Include="Services\Engine\QuizQuestionService.cs" />
     <Compile Include="Services\Engine\QuizService.cs" />
     <Compile Include="Services\Engine\RunEngineService.cs" />
     <Compile Include="Services\Engine\RunMetricEngineService.cs" />
