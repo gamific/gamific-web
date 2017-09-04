@@ -1110,3 +1110,49 @@ div#statistics-chart svg {
 div#daysOfWeek {
     padding-top: 7px;
 }
+.main.implantacao .panel {
+    background: rgba(0, 0, 0, 0.3);
+}
+.main.implantacao .panel .panel-body ul li a{
+    color: #fff;
+}
+.main.implantacao .panel .panel-body ul li.active a {
+        color: #717171;
+}
+.main.implantacao .tab-content label{
+    color: #fff;
+}
+.main.implantacao div#daysOfWeek {
+    color:#fff;
+}
+.main.implantacao .form-control {
+    background: rgba(0, 0, 0, 0.3);
+    border: 0;
+    color: #fff;
+}
+.main.implantacao button.btn-cadastrar {
+    float: right;
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
+    margin-right: 10px;
+}
+.main.implantacao button.next {
+    float: right;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.main.implantacao button.previous {
+    float: left;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.main.implantacao .text-danger-summary {
+    color: red;
+    font-size:14px;
+}
+.main.implantacao .text-danger {
+    color: red;
+}

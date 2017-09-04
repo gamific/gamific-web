@@ -12,6 +12,7 @@ using Vlast.Gamific.Model.Firm.Repository;
 using Vlast.Gamific.Web.Controllers.Management.Model;
 using Vlast.Gamific.Web.Services.Engine;
 using Vlast.Gamific.Web.Services.Engine.DTO;
+using Vlast.Util.Instrumentation;
 
 namespace Vlast.Gamific.Web.Controllers.Management
 {
@@ -24,26 +25,94 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("")]
         public ActionResult Index()
         {
-            ImplantationDTO implantation = new ImplantationDTO();
-           
-            ViewBag.Profiles = GetProfilesToSelect(new Profiles());
-            ViewBag.Types = GetWorkerTypesToSelect(0);
+            EpisodeEngineDTO episode = new EpisodeEngineDTO();
+            episode.Active = true;
 
-            ViewBag.Sponsors = GetSponsorsToSelect();
-            ViewBag.Episodes = GetEpisodesToSelect();
+            ViewBag.NumberOfWorkerTypes = WorkerTypeRepository.Instance.GetCountFromFirm(CurrentFirm.ExternalId);
 
-            ViewBag.SubTeams = JsonConvert.SerializeObject(new List<string>());
+            ViewBag.WorkerType = WorkerTypeRepository.Instance.GetAllFromFirm(CurrentFirm.ExternalId);
 
             ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
             {
-                Selected = implantation.Metric.Icon == i.ToString().Replace("_", "-") ? true : false,
-                Text = i.GetType().GetMember(i.ToString()).First().GetCustomAttribute<DisplayAttribute>().Name,
-                Value = i.ToString().Replace("_", "-")
+                Text = i.ToString(),
+                Value = i.ToString()
             }).ToList();
+           
+            return View("Index",episode);
+        }
 
-            ViewBag.WorkerTypes = WorkerTypeRepository.Instance.GetAllByGameId(CurrentFirm.ExternalId);
+        [Route("salvarCampanha")]
+        [HttpPost]
+        public ActionResult SaveEpisode(EpisodeEngineDTO episode)
+        {
+            try
+            {
+                
+                if (ModelState.IsValid)
+                {
 
-            return View("Index",implantation);
+                    if (episode.Active == false)
+                    {
+                        Success("Campanha não pode ser alterada.");
+                    }
+                    else
+                    {
+                        if (episode.Id == null || episode.Id.Equals(""))
+                        {
+                            episode.Active = true;
+                        }
+
+
+                        episode.initDate = episode.initDateAux.Ticks;
+
+                        episode.finishDate = episode.finishDateAux.Ticks;
+
+                        episode.GameId = CurrentFirm.ExternalId;
+
+                        ValidateModel(episode);
+
+                        EpisodeEngineDTO newEpisode = EpisodeEngineService.Instance.CreateOrUpdate(episode);
+
+                        if (newEpisode == null)
+                        {
+                            throw new Exception(".");
+                        }
+
+                        Success("Campanha atualizada com sucesso.");
+                        
+                        return View("Index", episode);
+                    }
+
+
+
+
+                }
+                else
+                {
+                   
+                    episode.Active = true;
+                   
+                      ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
+                      {
+                          Text = i.ToString(),
+                          Value = i.ToString()
+                      }).ToList();
+                     ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar a Campanha.");
+                 
+                    return PartialView("Index", episode);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+
+                Error("Erro ao atualizar campanha" + ex.Message);
+                return View("Index");
+            }
+
+            return new EmptyResult();
         }
 
         /// <summary>
