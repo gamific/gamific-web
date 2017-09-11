@@ -1,5 +1,4 @@
 function loadQuizDataTable() {
-
     $('#quizDataTable').dataTable({
         "serverSide": true,
         "ajax": "/admin/episodeQuiz/search/" + $('#NumberOfQuiz').val() + "?episodeId=" + $('#EpisodeId').val(),
@@ -28,7 +27,7 @@ function loadQuizDataTable() {
             },
             {
                 "width": "10%",
-                "targets": 3,
+                "targets": 1,
                 "searchable": false,
                 "orderable": false,
                 "render": function (data, type, row) {

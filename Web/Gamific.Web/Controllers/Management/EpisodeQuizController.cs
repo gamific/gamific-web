@@ -24,7 +24,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             ViewBag.EpisodeId = episodeId;
 
-            ViewBag.NumberOfQuiz = EpisodeQuizEngineService.Instance.GetByEpisodeId(episodeId).Count;
+            ViewBag.NumberOfQuiz = EpisodeQuizEngineService.Instance.GetByEpisodeId(episodeId).List.quizSheet.Count;
 
             return View();
         }
@@ -34,6 +34,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             EpisodeQuizEngineDTO quiz = EpisodeQuizEngineService.Instance.GetById(quizId);
 
+            ViewBag.Metrics = GetMetricsToSelect(quiz.MetridID);
+
             return PartialView("_Edit", quiz);
         }
 
@@ -41,6 +43,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult Create(string episodeId)
         {
             EpisodeQuizEngineDTO quiz = new EpisodeQuizEngineDTO();
+
+            ViewBag.Metrics = GetMetricsToSelect(null);
 
             quiz.EpisodeId = episodeId;
 
@@ -61,7 +65,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 Error("Ocorreu um erro ao remover.");
             }
 
-            ViewBag.NumberOfQuiz = EpisodeQuizEngineService.Instance.GetByEpisodeId(quiz.EpisodeId).Count;
+            ViewBag.NumberOfQuiz = EpisodeQuizEngineService.Instance.GetByEpisodeId(quiz.EpisodeId).List.quizSheet.Count;
 
             return View("Index");
         }
@@ -106,7 +110,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             string episodeId = Request["episodeId"];
 
-            numberOfQuiz = EpisodeQuizEngineService.Instance.GetByEpisodeId(episodeId).Count;
+            numberOfQuiz = EpisodeQuizEngineService.Instance.GetByEpisodeId(episodeId).List.quizSheet.Count;
 
             if (jqueryTableRequest != null)
             {
@@ -117,7 +121,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 List<EpisodeQuizEngineDTO> searchResult = null;
 
-                searchResult = EpisodeQuizEngineService.Instance.GetByEpisodeId(episodeId);
+                searchResult = EpisodeQuizEngineService.Instance.GetByEpisodeId(episodeId).List.quizSheet;
 
                 var searchedQueryList = new List<EpisodeQuizEngineDTO>();
 
@@ -173,6 +177,28 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public ActionResult CreateQuizQuestion(string quizId)
         {
             return Redirect("/admin/quizQuestion?quizId=" + quizId);
+        }
+
+        private List<SelectListItem> GetMetricsToSelect(string selected)
+        {
+            if (String.IsNullOrWhiteSpace(selected))
+            {
+                selected = "";
+            }
+
+            List<MetricEngineDTO> metrics = new List<MetricEngineDTO>();
+
+            metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+
+            var query = from c in metrics
+                        select new SelectListItem
+                        {
+                            Text = c.Name,
+                            Value = c.Id,
+                            Selected = c.Id.Equals(selected)
+                        };
+
+            return query.ToList();
         }
 
     }

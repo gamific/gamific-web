@@ -20,6 +20,9 @@ namespace Vlast.Gamific.Web.Services.Engine.DTO
         [JsonProperty("description")]
         public string Description { get; set; }
 
+        [JsonProperty("metridID")]
+        public string MetridID { get; set; }
+
         [JsonProperty("_links")]
         public Link Links { get; set; }
     }

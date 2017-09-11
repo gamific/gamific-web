@@ -52,14 +52,14 @@ namespace Vlast.Gamific.Web.Services.Engine
             Delete(questionId);
         }
 
-        public List<QuizQuestionEngineDTO> GetByQuizId(string quizId)
+        public GetAllDTO GetByQuizId(string quizId)
         {
             try
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "findByQuizSheetId?quizSheetId=" + quizId);
-                    return JsonDeserialize<List<QuizQuestionEngineDTO>>(response);
+                    string response = client.DownloadString(path + "search/findByQuizSheetId?quizSheetId=" + quizId);
+                    return JsonDeserialize<GetAllDTO>(response);
                 }
             }
             catch (Exception e)
