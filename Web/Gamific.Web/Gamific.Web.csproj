@@ -302,6 +302,8 @@
     <Compile Include="Controllers\Management\HelpController.cs" />
     <Compile Include="Controllers\Management\Model\EmailSupportDTO.cs" />
     <Compile Include="Controllers\Management\SupportController.cs" />
+    <Compile Include="Controllers\Management\QuizQuestionController.cs" />
+    <Compile Include="Controllers\Management\EpisodeQuizController.cs" />
     <Compile Include="Controllers\Management\WorkerTypeController.cs" />
     <Compile Include="Controllers\Management\GoalController.cs" />
     <Compile Include="Controllers\Management\WorkerTypeMetricController.cs" />
@@ -369,6 +371,9 @@
     <Compile Include="Services\Engine\DTO\HallOfFameEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\ItemEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\Link.cs" />
+    <Compile Include="Services\Engine\DTO\QuizQuestionEngineDTO.cs" />
+    <Compile Include="Services\Engine\DTO\EpisodeQuizEngineDTO.cs" />
+    <Compile Include="Services\Engine\DTO\QuestionAnswerEngineDTO.cs" />
     <Compile Include="Services\Engine\DTO\ParserDTO.cs" />
     <Compile Include="Services\Engine\DTO\QuizDTO.cs" />
     <Compile Include="Services\Engine\DTO\MetricEngineDTO.cs" />
@@ -379,6 +384,9 @@
     <Compile Include="Services\Engine\DTO\TeamEngineDTO.cs" />
     <Compile Include="Services\Engine\EngineBIZ.cs" />
     <Compile Include="Services\Engine\EngineServiceBase.cs" />
+    <Compile Include="Services\Engine\QuestionAnswerService.cs" />
+    <Compile Include="Services\Engine\QuizQuestionEngineService.cs" />
+    <Compile Include="Services\Engine\EpisodeQuizEngineService.cs" />
     <Compile Include="Services\Engine\EpisodeEngineService.cs" />
     <Compile Include="Services\Engine\GameEngineService.cs" />
     <Compile Include="Services\Engine\GoalEngineService.cs" />
@@ -388,7 +396,6 @@
     <Compile Include="Services\Engine\MetricEngineService.cs" />
     <Compile Include="Services\Engine\PlayerEngineService.cs" />
     <Compile Include="Services\Engine\QuestionAnsweredService.cs" />
-    <Compile Include="Services\Engine\QuestionAnswerService.cs" />
     <Compile Include="Services\Engine\QuestionService.cs" />
     <Compile Include="Services\Engine\QuizCampaignService.cs" />
     <Compile Include="Services\Engine\QuizQuestionService.cs" />
@@ -586,6 +593,14 @@
       <DependentUpon>video.js</DependentUpon>
     </Content>
     <Content Include="Content\Js\app\quiz.js" />
+    <Content Include="Content\Js\app\episodeQuiz.js" />
+    <Content Include="Content\Js\app\worker - Copy %282%29.min.js">
+      <DependentUpon>episodeQuiz.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Js\app\quizQuestion.js" />
+    <Content Include="Content\Js\app\worker - Copy %283%29.min.js">
+      <DependentUpon>quizQuestion.js</DependentUpon>
+    </Content>
     <Content Include="Content\Js\app\worker.min.js">
       <DependentUpon>worker.js</DependentUpon>
     </Content>
@@ -857,8 +872,10 @@
     <Content Include="Views\DashboardHistorico\Campaign\_AssociateTeams.cshtml" />
     <Content Include="Views\DashboardHistorico\Campaign\Edit.cshtml" />
     <Content Include="Views\DashboardHistorico\Campaign\Index.cshtml" />
-    <Content Include="Views\Implantation\WorkerType.cshtml" />
-    <Content Include="Views\Implantation\Episode.cshtml" />
+    <Content Include="Views\EpisodeQuiz\_Edit.cshtml" />
+    <Content Include="Views\EpisodeQuiz\Index.cshtml" />
+    <Content Include="Views\QuizQuestion\_Edit.cshtml" />
+    <Content Include="Views\QuizQuestion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Quiz\DTO\" />

@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<input type="hidden" id="NumberOfQuestions" value="@ViewBag.NumberOfQuestions"/>
+<input type="hidden" id="QuizId" value="@ViewBag.QuizId" />
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-question-circle"></i> Perguntas</h2>
+        <br />
+        <small>
+            <a href="/admin/episode">
+                <i class="fa fa-arrow-left"></i> Voltar
+            </a>
+        </small>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div id="gerenciarperguntas" class="table-toolbar-left">
+                            <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/quizQuestion/cadastrar/@ViewBag.QuizId" title="Cadastrar Pergunta" onclick="showEntityModal(this); return false;"><i class="fa fa-plus"></i> Cadastrar Pergunta</a>
+                        </div>
+                        <div class="">
+                            <table id="perguntasDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Enunciado</th>
+                                        <th>Assunto</th>
+                                        <th>Valor</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
+
+<script src="/Content/Js/app/quizQuestion.js" charset="iso-8859-1"></script>

@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<input type="hidden" id="NumberOfQuiz" value="@ViewBag.NumberOfQuiz" />
+<input type="hidden" id="EpisodeId" value="@ViewBag.EpisodeId" />
+
+<div>
+    <div class="pageheader">
+        <h2><i class="fa fa-question"></i> Quiz</h2>
+        <br />
+        <small>
+            <a href="/admin/episode">
+                <i class="fa fa-arrow-left"></i> Voltar
+            </a>
+        </small>
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile transparent">
+                    <div class="tile-body color transparent-black rounded-corners">
+                        <div id="gerenciarquiz" class="table-toolbar-left">
+                            <a id="demo-dt-addrow-btn" class="btn btn-default sing-up-button" href="/admin/episodeQuiz/cadastrar/@ViewBag.EpisodeId" title="Cadastrar Quiz" onclick="showEntityModal(this); return false;"><i class="fa fa-plus"></i> Cadastrar Quiz</a>
+                        </div>
+                        <div class="">
+                            <table id="quizDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Titulo</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="entity-edit-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" />
+
+<script src="/Content/Js/app/episodeQuiz.js" charset="iso-8859-1"></script>
