@@ -19,6 +19,9 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
         [JsonProperty("description")]
         public string Description { get; set; }
 
+        [JsonProperty("place")]
+        public string Place { get; set; }
+
 
     }
 }

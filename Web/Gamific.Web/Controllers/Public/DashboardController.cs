@@ -1171,7 +1171,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                     PlayerEngineDTO player = PlayerEngineService.Instance.GetById(location.PlayerId);
                     ci.PlayerName = player.Nick;
                     ci.Description = location.Description ?? "Check-in";
-
+                    ci.Place = location.Place;
                     checkIns.Add(ci);
                 }
                 
@@ -1180,7 +1180,7 @@ namespace Vlast.Gamific.Web.Controllers.Public
                     Draw = jqueryTableRequest.Draw,
                     RecordsTotal = locations.Count,
                     RecordsFiltered = locations.Count,
-                    Data = checkIns.OrderByDescending(r=> DateTime.Parse(r.Date)).Select(r => new string[] {r.Date, r.PlayerName, r.Description}).ToArray()
+                    Data = checkIns.OrderByDescending(r=> DateTime.Parse(r.Date)).Select(r => new string[] {r.Date, r.PlayerName, r.Description, r.Place}).ToArray()
                     
                 };
 

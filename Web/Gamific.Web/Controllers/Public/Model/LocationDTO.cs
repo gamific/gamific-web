@@ -30,6 +30,9 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
         [JsonProperty("playerId")]
         public string PlayerId { get; set; }
 
+        [JsonProperty("place")]
+        public string Place { get; set; }
+
 
     }
 }

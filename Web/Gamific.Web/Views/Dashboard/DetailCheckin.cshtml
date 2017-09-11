@@ -22,7 +22,7 @@
     }
 
     <div class="pageheader">
-        <h2>@ViewBag.Name</h2>
+        <h2><i class="fa fa-map-pin"></i> Check-In: @ViewBag.Name</h2>
         <br />
         <br />
         <small>
@@ -42,6 +42,7 @@
                                         <th>Data</th>
                                         <th>Jogador</th>
                                         <th>Descrição</th>
+                                        <th>Localização</th>
                                    
                                     </tr>
                                 </thead>
@@ -61,7 +62,7 @@
                     <div class="tile-body color transparent-black rounded-corners">
                         <div class="">
                             <div id="controls"></div>
-                            <div style="min-height: 700px; height:100px;" id="gmap-menu"></div>
+                            <div style="min-height: 400px; height:100px;" id="gmap-menu"></div>
                         </div>
                     </div>
                     <div class="tile-footer border-top color white rounded-bottom-corners nopadding">

@@ -843,7 +843,10 @@ function loadMaplace(locs) {
     new Maplace({
         map_div: '#gmap-menu',
         type: 'marker',
-        locations: JSON.parse(locs.Content)
+        locations: JSON.parse(locs.Content),
+        map_options: {
+            zoom: 5
+        }
        
     }).Load();
 }
@@ -978,14 +981,20 @@ function LoadCheckInDataTable() {
                 "searchable": true,
             },
             {
-                "width": "40%",
+                "width": "25%",
                 "targets": 1,
                 "orderable": true,
                 "serchable": true,
             },
             {
-                "width": "40%",
+                "width": "25%",
                 "targets": 2,
+                "orderable": true,
+                "serchable": true,
+            },
+            {
+                "width": "30%",
+                "targets": 3,
                 "orderable": true,
                 "serchable": true,
             },
