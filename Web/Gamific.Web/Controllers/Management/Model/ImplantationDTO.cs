@@ -21,7 +21,7 @@ namespace Vlast.Gamific.Web.Controllers.Management.Model
             Worker = new WorkerDTO();
             Team = new TeamEngineDTO();
             Metric = new MetricEngineDTO();
-            //Goal = new IEnumerable<GoalEngineDTO>();
+            Goal = new List<GoalEngineDTO>();
 
         }
         public EpisodeEngineDTO Episode { get; set; }
@@ -34,7 +34,7 @@ namespace Vlast.Gamific.Web.Controllers.Management.Model
 
         public MetricEngineDTO Metric { get; set; }
 
-        public IEnumerable<GoalEngineDTO> Goal { get; set; }
+        public List<GoalEngineDTO> Goal { get; set; }
 
     }
 }

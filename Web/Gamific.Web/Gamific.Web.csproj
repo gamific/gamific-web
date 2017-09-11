@@ -857,6 +857,8 @@
     <Content Include="Views\DashboardHistorico\Campaign\_AssociateTeams.cshtml" />
     <Content Include="Views\DashboardHistorico\Campaign\Edit.cshtml" />
     <Content Include="Views\DashboardHistorico\Campaign\Index.cshtml" />
+    <Content Include="Views\Implantation\WorkerType.cshtml" />
+    <Content Include="Views\Implantation\Episode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Quiz\DTO\" />

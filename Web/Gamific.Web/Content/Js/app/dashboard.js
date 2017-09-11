@@ -969,6 +969,7 @@ function LoadCheckInDataTable() {
         },
         "dom": '<"newtoolbar">frtip',
         "fnServerParams": function (aoData) { },
+        "order": [0, 'desc'],
         "columnDefs": [
             {
                 "width": "20%",
