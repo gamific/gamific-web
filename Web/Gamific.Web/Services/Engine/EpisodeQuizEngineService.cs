@@ -58,7 +58,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient())
                 {
-                    string response = client.DownloadString(path + "findByEpisodeId?episodeId=" + episodeId);
+                    string response = client.DownloadString(path + "search/findByEpisodeId?episodeId=" + episodeId);
                     return JsonDeserialize<List<EpisodeQuizEngineDTO>>(response);
                 }
             }
