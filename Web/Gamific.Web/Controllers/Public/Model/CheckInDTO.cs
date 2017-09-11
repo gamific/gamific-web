@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Vlast.Gamific.Web.Controllers.Public.Model
@@ -17,6 +18,10 @@ namespace Vlast.Gamific.Web.Controllers.Public.Model
 
         [JsonProperty("description")]
         public string Description { get; set; }
+
+        [JsonProperty("place")]
+        public string Place { get; set; }
+
 
     }
 }

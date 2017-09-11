@@ -25,8 +25,9 @@ namespace Vlast.Gamific.Web.Controllers.Management
         [Route("")]
         public ActionResult Index()
         {
-            EpisodeEngineDTO episode = new EpisodeEngineDTO();
-            episode.Active = true;
+            
+            ImplantationDTO implantation = new ImplantationDTO();
+            implantation.Episode.Active = true;
 
             ViewBag.NumberOfWorkerTypes = WorkerTypeRepository.Instance.GetCountFromFirm(CurrentFirm.ExternalId);
 
@@ -37,13 +38,24 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 Text = i.ToString(),
                 Value = i.ToString()
             }).ToList();
-           
-            return View("Index",episode);
+
+            ViewBag.Profiles = GetProfilesToSelect(new Profiles());
+
+            ViewBag.NumberOfWorkers = WorkerRepository.Instance.GetCountFromFirm(CurrentFirm.Id);
+
+            ViewBag.Types = GetWorkerTypesToSelect(0);
+
+            ViewBag.Sponsors = GetSponsorsToSelect();
+            ViewBag.Episodes = GetEpisodesToSelect();
+
+            ViewBag.SubTeams = JsonConvert.SerializeObject(new List<string>());
+
+            return View("Index", implantation);
         }
 
         [Route("salvarCampanha")]
         [HttpPost]
-        public ActionResult SaveEpisode(EpisodeEngineDTO episode)
+        public ActionResult SaveEpisode(ImplantationDTO implantation)
         {
             try
             {
@@ -51,27 +63,27 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 if (ModelState.IsValid)
                 {
 
-                    if (episode.Active == false)
+                    if (implantation.Episode.Active == false)
                     {
                         Success("Campanha não pode ser alterada.");
                     }
                     else
                     {
-                        if (episode.Id == null || episode.Id.Equals(""))
+                        if (implantation.Episode.Id == null || implantation.Episode.Id.Equals(""))
                         {
-                            episode.Active = true;
+                            implantation.Episode.Active = true;
                         }
 
 
-                        episode.initDate = episode.initDateAux.Ticks;
+                        implantation.Episode.initDate = implantation.Episode.initDateAux.Ticks;
 
-                        episode.finishDate = episode.finishDateAux.Ticks;
+                        implantation.Episode.finishDate = implantation.Episode.finishDateAux.Ticks;
 
-                        episode.GameId = CurrentFirm.ExternalId;
+                        implantation.Episode.GameId = CurrentFirm.ExternalId;
 
-                        ValidateModel(episode);
+                        ValidateModel(implantation.Episode);
 
-                        EpisodeEngineDTO newEpisode = EpisodeEngineService.Instance.CreateOrUpdate(episode);
+                        EpisodeEngineDTO newEpisode = EpisodeEngineService.Instance.CreateOrUpdate(implantation.Episode);
 
                         if (newEpisode == null)
                         {
@@ -80,7 +92,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                         Success("Campanha atualizada com sucesso.");
                         
-                        return View("Index", episode);
+                        return View("Index", implantation);
                     }
 
 
@@ -89,8 +101,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 }
                 else
                 {
-                   
-                    episode.Active = true;
+
+                    implantation.Episode.Active = true;
                    
                       ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
                       {
@@ -99,7 +111,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                       }).ToList();
                      ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar a Campanha.");
                  
-                    return PartialView("Index", episode);
+                    return PartialView("Index", implantation);
 
                 }
 

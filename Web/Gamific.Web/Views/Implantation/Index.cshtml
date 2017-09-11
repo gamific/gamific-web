@@ -1,4 +1,4 @@
-﻿@model  Vlast.Gamific.Web.Services.Engine.DTO.EpisodeEngineDTO
+﻿@model  Vlast.Gamific.Web.Controllers.Management.Model.ImplantationDTO
 
 @{
     ViewBag.Title = "Index";
@@ -41,96 +41,88 @@
                         </div>
                             <div class="tab-content">
                                 <div class="tab-pane" id="tab1">
-                                    
                                     <form method="post" action="/admin/implantacao/salvarCampanha" class="episode">
                                         <div id="episode">
-                                        <span style="display:none">
-                                            @Html.HiddenFor(model => model.Id);
-                                            @Html.HiddenFor(model => model.Active);
-                                            @Html.HiddenFor(model => model.initDate);
-                                            @Html.HiddenFor(model => model.finishDate);
-                                            @Html.HiddenFor(model => model.GameId);
-                                            @Html.HiddenFor(model => model.DaysOfWeek);
-                                            @Html.HiddenFor(model => model.ScoreByResult);
+                                            <span style="display:none">
+                                                @Html.HiddenFor(model => model.Episode.Id);
+                                                @Html.HiddenFor(model => model.Episode.Active);
+                                                @Html.HiddenFor(model => model.Episode.initDate);
+                                                @Html.HiddenFor(model => model.Episode.finishDate);
+                                                @Html.HiddenFor(model => model.Episode.GameId);
+                                                @Html.HiddenFor(model => model.Episode.DaysOfWeek);
+                                                @Html.HiddenFor(model => model.Episode.ScoreByResult);
 
-                                        </span>
-                                        @Html.AntiForgeryToken()
-                                        <div class="row">
-                                            @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 modal-div">
-                                            <div class="form-group">
-
-                                                @Html.LabelFor(model => model.Name, "Nome*:", new { @class = "control-label" })
-                                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
-
-                                                @Html.ValidationMessageFor(model => model.Name, "O campo Nome da Campanha é obrigatório.", new { @class = "text-danger" })
+                                            </span>
+                                            @Html.AntiForgeryToken()
+                                            <div class="row">
+                                                @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
                                             </div>
-                                        </div>
-                                        <div class="col-sm-10 col-md-6 modal-div">
-                                            <div class="form-group">
+                                            <div class="col-sm-12 col-md-6 modal-div">
+                                                <div class="form-group">
 
-                                                @Html.LabelFor(model => model.XpReward, "Quantidade de XP*:", new { @class = "control-label" })
-                                                @Html.EditorFor(model => model.XpReward, new { htmlAttributes = new { @class = "form-control", @tabindex = "2" } })
-                                                @Html.ValidationMessageFor(model => model.XpReward, "O campo Xp é obrigatório.", new { @class = "text-danger" })
+                                                    @Html.LabelFor(model => model.Episode.Name, "Nome*:", new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.Episode.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+
+                                                    @Html.ValidationMessageFor(model => model.Episode.Name, "O campo Nome da Campanha é obrigatório.", new { @class = "text-danger" })
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="col-sm-10 col-md-6 modal-div">
+                                                <div class="form-group">
 
-                                        <div class="col-sm-12 col-md-6 modal-div nopadding">
-                                            <div class="form-group">
-
-                                                @Html.LabelFor(model => model.initDateAux, "Data inicial:", new { @class = "control-label" })
-
-                                                @Html.EditorFor(model => model.initDateAux, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
-
-                                                @Html.ValidationMessageFor(model => model.initDateAux, "O campo Data inicial é obrigatório.", new { @class = "text-danger" })
+                                                    @Html.LabelFor(model => model.Episode.XpReward, "Quantidade de XP*:", new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.Episode.XpReward, new { htmlAttributes = new { @class = "form-control", @tabindex = "2" } })
+                                                    @Html.ValidationMessageFor(model => model.Episode.XpReward, "O campo Xp é obrigatório.", new { @class = "text-danger" })
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 modal-div">
-                                            <div class="form-group">
 
-                                                @Html.LabelFor(model => model.finishDateAux, "Data final:", new { @class = "control-label" })
+                                            <div class="col-sm-12 col-md-6 modal-div nopadding">
+                                                <div class="form-group">
 
-                                                @Html.EditorFor(model => model.finishDateAux, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+                                                    @Html.LabelFor(model => model.Episode.initDateAux, "Data inicial:", new { @class = "control-label" })
 
-                                                @Html.ValidationMessageFor(model => model.finishDateAux, "O campo Data final é obrigatório.", new { @class = "text-danger" })
+                                                    @Html.EditorFor(model => model.Episode.initDateAux, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
+
+                                                    @Html.ValidationMessageFor(model => model.Episode.initDateAux, "O campo Data inicial é obrigatório.", new { @class = "text-danger" })
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-12 modal-div">
-                                            <div class="form-group">
+                                            <div class="col-sm-12 col-md-6 modal-div">
+                                                <div class="form-group">
 
-                                                <label class="control-label">
-                                                    Enviar email:
-                                                    @Html.CheckBoxFor(model => model.sendEmail, Model.sendEmail)
-                                                </label>
-                                                <div id="daysOfWeek">
-                                                    <input type="checkbox" id="mon" name="mon" value="mon" onchange="CheckChange('mon')">Segunda
-                                                    <input type="checkbox" id="tue" name="tue" value="tue" onchange="CheckChange('tue')">Terça
-                                                    <input type="checkbox" id="wed" name="wed" value="wed" onchange="CheckChange('wed')">Quarta
-                                                    <input type="checkbox" id="thu" name="thu" value="thu" onchange="CheckChange('thu')">Quinta
-                                                    <input type="checkbox" id="fri" name="fri" value="fri" onchange="CheckChange('fri')">Sexta
-                                                    <input type="checkbox" id="sat" name="sat" value="sat" onchange="CheckChange('sat')">Sábado
-                                                    <input type="checkbox" id="sun" name="sun" value="sun" onchange="CheckChange('sun')">Domingo
+                                                    @Html.LabelFor(model => model.Episode.finishDateAux, "Data final:", new { @class = "control-label" })
+
+                                                    @Html.EditorFor(model => model.Episode.finishDateAux, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+
+                                                    @Html.ValidationMessageFor(model => model.Episode.finishDateAux, "O campo Data final é obrigatório.", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 modal-div">
+                                                <div class="form-group">
+
+                                                    <label class="control-label">
+                                                        Enviar email:
+                                                        @Html.CheckBoxFor(model => model.Episode.sendEmail, Model.Episode.sendEmail)
+                                                    </label>
+                                                    <div id="daysOfWeek">
+                                                        <input type="checkbox" id="mon" name="mon" value="mon" onchange="CheckChange('mon')">Segunda
+                                                        <input type="checkbox" id="tue" name="tue" value="tue" onchange="CheckChange('tue')">Terça
+                                                        <input type="checkbox" id="wed" name="wed" value="wed" onchange="CheckChange('wed')">Quarta
+                                                        <input type="checkbox" id="thu" name="thu" value="thu" onchange="CheckChange('thu')">Quinta
+                                                        <input type="checkbox" id="fri" name="fri" value="fri" onchange="CheckChange('fri')">Sexta
+                                                        <input type="checkbox" id="sat" name="sat" value="sat" onchange="CheckChange('sat')">Sábado
+                                                        <input type="checkbox" id="sun" name="sun" value="sun" onchange="CheckChange('sun')">Domingo
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="border-top color white rounded-bottom-corners nopadding">
+                                                <div class="col-xs-12 buttons">
+
+                                                    <button type="button" class="btn previous"><i class="fa fa-arrow-left fa-lg"></i> Voltar</button>
+                                                    <button type="button" class="btn next">Avançar <i class="fa fa-arrow-right fa-lg"></i></button>
+                                                    <button type="submit" class="btn btn-cadastrar">Cadastrar</button>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="border-top color white rounded-bottom-corners nopadding">
-                                            <div class="col-xs-12 buttons">
-
-                                                <!-- <li class="previous"><a href="javascript:;"><i class="fa fa-arrow-left fa-lg"></i> Voltar</a></li>-->
-                                                <!-- <li class="next"><a href="javascript:;">Avançar <i class="fa fa-arrow-right fa-lg"></i></a></li>-->
-                                                <!--<li class="next finish" style="display:none; cursor:pointer" onclick="">
-                        <a>
-                            <i class="fa fa-check fa-lg"></i> Finaliza
-                        </a>
-                    </li>-->
-                                                <button type="button" class="btn previous"><i class="fa fa-arrow-left fa-lg"></i> Voltar</button>
-                                                <button type="button" class="btn next">Avançar <i class="fa fa-arrow-right fa-lg"></i></button>
-                                                <button type="submit" class="btn btn-cadastrar">Cadastrar</button>
-                                            </div>
-                                        </div>
-                                            </div>
                                     </form>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -146,8 +138,7 @@
                                                                     <th>XP</th>
                                                                     <th>Campanha Ativa</th>
                                                                     <th>Email Ativo</th>
-                                                                   <!-- <th>Ações</th>-->
-
+                                                                  
                                                                 </tr>
                                                             </thead>
                                                             <tbody></tbody>
@@ -159,18 +150,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-
-
+                                    </div>       
                                 </div>
-                                <div class="tab-pane" id="tab2">
-                                    
+                                <div class="tab-pane" id="tab2">                                   
                                     <form method="post" action="/admin/implantacao/salvarFuncao" class="funcao">
                                         <div id="funcao">
+                                            
                                             <span style="display:none">
-                                                @Html.HiddenFor(model => model.Id);
-                                                @Html.HiddenFor(model => model.ExternalFirmId);
+                                                @Html.HiddenFor(model => model.WorkerType.Id);
+                                                @Html.HiddenFor(model => model.WorkerType.ExternalFirmId);
                                             </span>
                                             @Html.AntiForgeryToken()
                                             <div class="row">
@@ -178,18 +166,19 @@
                                             </div>
                                             <div class="col-sm-10 col-md-6 modal-div">
                                                 <div class="form-group">
-                                                    @Html.LabelFor(model => model.TypeName, "Nome da função*:", new { @class = "control-label" })
-                                                    @Html.EditorFor(model => model.TypeName, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
-                                                    @Html.ValidationMessageFor(model => model.TypeName, "O campo Nome da Função é obrigatório.", new { @class = "text-danger" })
+                                                    @Html.LabelFor(model => model.WorkerType.TypeName, "Nome da função*:", new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.WorkerType.TypeName, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                                                    @Html.ValidationMessageFor(model => model.WorkerType.TypeName, "O campo Nome da Função é obrigatório.", new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                             <div class="col-sm-10 col-md-6 modal-div">
                                                 <div class="form-group">
-                                                    @Html.LabelFor(model => model.ProfileName, "Perfil*:", new { @class = "control-label" })
-                                                    @Html.DropDownListFor(model => model.ProfileName, (IEnumerable<SelectListItem>)ViewBag.Profiles, "Informe o perfil do tipo", new { @class = "form-control", @tabindex = "2" })
-                                                    @Html.ValidationMessageFor(model => model.ProfileName, "O campo Perfil é obrigatório.", new { @class = "text-danger" })
+                                                    @Html.LabelFor(model => model.WorkerType.ProfileName, "Perfil*:", new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.WorkerType.ProfileName, (IEnumerable<SelectListItem>)ViewBag.Profiles, "Informe o perfil do tipo", new { @class = "form-control", @tabindex = "2" })
+                                                    @Html.ValidationMessageFor(model => model.WorkerType.ProfileName, "O campo Perfil é obrigatório.", new { @class = "text-danger" })
                                                 </div>
                                             </div>
+                                            <input type="hidden" id="NumberOfWorkerTypes" value="@ViewBag.NumberOfWorkerTypes" />
                                             <div class="border-top color white rounded-bottom-corners nopadding">
                                                 <div class="col-xs-12 buttons">
                                                     <button type="button" class="btn previous"><i class="fa fa-arrow-left fa-lg"></i> Voltar</button>
@@ -197,29 +186,262 @@
                                                     <button type="submit" class="btn btn-cadastrar">Cadastrar</button>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </form>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="tile transparent">
+                                                <div class="tile-body color rounded-corners">
+                                                   
+                                                    <div class="">
+                                                        <table id="workerTypeDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Função</th>
+                                                                    <th>Perfil</th>
+                                                              
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
+                                                </div>
                                             </div>
-                                        </form>
                                         </div>
-                                        <div class="tab-pane" id="tab3">
+                                    </div>
+                                 </div>
+                                 <div class="tab-pane" id="tab3">
+                                     <form action="/admin/implantacao/salvarFuncionario" method="post">
+                                         <div class="worker">
+                                             @Html.AntiForgeryToken()
+                                             <div class="row">
+                                                 @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
+                                             </div>
+                                             
+                                                 <div class="col-sm-12 col-md-6">
+                                                     <div class="form-group">
+                                                         @Html.LabelFor(model => model.Worker.Name, "Nome*:", new { @class = "control-label" })
+                                                         @Html.EditorFor(model => model.Worker.Name, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                                                         @Html.ValidationMessageFor(model => model.Worker.Name, "O campo Nome é obrigatório.", new { @class = "text-danger" })
+                                                     </div>
+                                                </div>
+                                                 <div class="col-sm-12 col-md-6">
+                                                     <div class="form-group">
+                                                         @Html.LabelFor(model => model.Worker.Email, "Email*:", new { @class = "control-label" })
+                                                         @Html.EditorFor(model => model.Worker.Email, new { htmlAttributes = new { @class = "form-control", @tabindex = "3" } })
+                                                         @Html.ValidationMessageFor(model => model.Worker.Email, "O campo Email é obrigatório.", new { @class = "text-danger" })
+                                                     </div>
+                                                  </div>
+                                                 <div class="col-sm-12 col-md-6">
+                                                     <div class="form-group">
+                                                         @Html.LabelFor(model => model.Worker.Phone, "Telefone*:", new { @class = "control-label" })
+                                                         @Html.EditorFor(model => model.Worker.Phone, new { htmlAttributes = new { @class = "form-control", @tabindex = "4" } })
+                                                         @Html.ValidationMessageFor(model => model.Worker.Phone, "O campo Telefone é obrigatório.", new { @class = "text-danger" })
+                                                     </div>
+                                                 </div>
+                                                 <div class="col-sm-12 col-md-6">
+                                                     <div class="form-group">
+                                                         @Html.LabelFor(model => model.Worker.Cpf, "CPF*:", new { @class = "control-label" })
+                                                         @Html.EditorFor(model => model.Worker.Cpf, new { htmlAttributes = new { @class = "form-control", @tabindex = "5" } })
+                                                         @Html.ValidationMessageFor(model => model.Worker.Cpf, "O campo CPF é obrigatório.", new { @class = "text-danger" })
+                                                     </div>
+                                                 </div>
+                                                 <div class="col-sm-12 col-md-6">
+                                                     <div class="form-group">
+                                                         @Html.LabelFor(model => model.Worker.WorkerTypeId, "Função*:", new { @class = "control-label" })
+                                                         @Html.DropDownListFor(model => model.Worker.WorkerTypeId, (IEnumerable<SelectListItem>)ViewBag.Types, "Informe a função", new { @class = "form-control", @tabindex = "6" })
+                                                         @Html.ValidationMessageFor(model => model.Worker.WorkerTypeId, "O campo Função é obrigatório.", new { @class = "text-danger" })
+                                                     </div>
+                                                 </div>
+                                                 <div class="col-sm-12 col-md-6">
+                                                     <div class="form-group">
+                                                         @Html.LabelFor(model => model.Worker.TotalXp, "Quantidade de XP*:", new { @class = "control-label" })
+                                                         @Html.EditorFor(model => model.Worker.TotalXp, new { htmlAttributes = new { @class = "form-control", @tabindex = "7" } })
+                                                         @Html.ValidationMessageFor(model => model.Worker.TotalXp, "O campo Xp é obrigatório.", new { @class = "text-danger" })
+                                                     </div>
+                                                 </div>
+                                             <input type="hidden" id="NumberOfWorkers" value="@ViewBag.NumberOfWorkers" />
+                                             <div class="border-top color white rounded-bottom-corners nopadding">
+                                                 <div class="col-xs-12 buttons">
+                                                     <button type="button" class="btn previous"><i class="fa fa-arrow-left fa-lg"></i> Voltar</button>
+                                                     <button type="button" class="btn next">Avançar <i class="fa fa-arrow-right fa-lg"></i></button>
+                                                     <button type="submit" class="btn btn-cadastrar">Cadastrar</button>
+                                                 </div>
+                                             </div>
+                                             </div>
+                                     </form>
+                                     <div class="row">
+                                         <div class="col-md-12">
+                                             <div class="tile transparent">
+                                                 <div class="tile-body color rounded-corners">
+                                                     
+                                                     <div class="">
+                                                         <table id="funcionariosDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                                             <thead>
+                                                                 <tr>
+                                                                     <th>Nome</th>
+                                                                     <th>E-mail</th>
+                                                                     <th>Função</th>
+                                                                     
+                                                                 </tr>
+                                                             </thead>
+                                                             <tbody></tbody>
+                                                         </table>
+                                                     </div>
+                                                 </div>
+                                                 <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
 
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="tab-pane" id="tab4">
+                                     
+                                     <form action="admin/implantacao/salvarTime" method="post">
+                                         <span style="display:none">
+                                             @Html.HiddenFor(model => model.Team.Id);
+                                             @Html.HiddenFor(model => model.Team.LogoId);
+                                             @Html.HiddenFor(model => model.Team.GameId);
+                                             @Html.HiddenFor(model => model.Team.SubOfTeamId);
+                                             <input type="hidden" value="@ViewBag.SubTeams" id="subTeams" />
+                                         </span>
+                                         <div class="time">
+                                         @Html.AntiForgeryToken()
+                                         <div class="row">
+                                             @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
+                                         </div>
+
+                                         <div class="col-xs-12 col-md-6">
+                                             @Html.Label("Selecione uma Campanha*")
+                                             <div class="form-group">
+                                                 <select class="form-control" name="episodeId" id="episodeId">
+                                                     @foreach (SelectListItem Episode in ViewBag.Episodes)
+                                                     {
+                                                         if (Episode.Value == ViewBag.EpisodeId && ViewBag.EpisodeId != null)
+                                                         {
+                                                             <option value="@Episode.Value" selected="selected">@Episode.Text</option>
+                                                         }
+                                                         else if (ViewBag.EpisodeId == null)
+                                                         {
+                                                             <option value="@Episode.Value">@Episode.Text</option>
+                                                         }
+                                                     }
+                                                 </select>
+                                             </div>
+                                         </div>
+
+                                         <div class="col-xs-12 col-md-6">
+                                             @Html.Label("Nome da Equipe*")
+                                             <div class="form-group">
+                                                 
+                                                     @Html.EditorFor(model => model.Team.Nick, new { htmlAttributes = new { @class = "form-control", @tabindex = "1" } })
+                                                     @Html.ValidationMessageFor(model => model.Team.Nick, "O campo Nome da Equipe é obrigatório.", new { @class = "text-danger" })
+                                                 
+                                             </div>
+                                         </div>
+
+                                         <div class="col-xs-12 col-md-6" >
+                                             @Html.Label("Selecione um Responsavel*")
+                                             <div class="form-group">
+                                                 <select class="form-control" name="masterPlayerId">
+                                                     @foreach (SelectListItem Sponsor in ViewBag.Sponsors)
+                                                     {
+                                                         if (Sponsor.Value == ViewBag.SponsorId && ViewBag.SponsorId != null)
+                                                         {
+                                                             <option value="@Sponsor.Value" selected="selected">@Sponsor.Text</option>
+                                                         }
+                                                         else
+                                                         {
+                                                             <option value="@Sponsor.Value">@Sponsor.Text</option>
+                                                         }
+                                                     }
+                                                 </select>
+                                             </div>
+                                         </div>
+
+                                         <div class="col-xs-12 col-md-6" >
+                                             @Html.Label("Selecione as equipes")
+                                             <div class="form-group">
+                                                 <div>
+                                                     <div class="selectBox" onclick="showCheckboxesTeam()">
+                                                         <select class="form-control">
+                                                             <option>Associar Equipes</option>
+                                                         </select>
+                                                         <div class="overSelect"></div>
+                                                     </div>
+                                                     <div id="checkboxes-team">
+
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                             <div class="border-top color white rounded-bottom-corners nopadding">
+                                                 <div class="col-xs-12 buttons">
+                                                     <button type="button" class="btn previous"><i class="fa fa-arrow-left fa-lg"></i> Voltar</button>
+                                                     <button type="button" class="btn next">Avançar <i class="fa fa-arrow-right fa-lg"></i></button>
+                                                     <button type="submit" class="btn btn-cadastrar">Cadastrar</button>
+                                                 </div>
+                                             </div>                                        
                                         </div>
-                                        <div class="tab-pane" id="tab4">
+                                     </form>
 
+                                     <div class="row">
+                                         <div class="col-lg-12 col-md-12">
 
-                                        </div>
-                                        <div class="tab-pane" id="tab5">
+                                             <section class="tile transparent" id="Filters">
+                                                 <div class="tile-header color rounded-corners ">
+                                                     Campanha
+                                                     <br />
+                                                     <br />
+                                                     <div class="row">
+                                                         <div class="form-group">
+                                                             <div class="col-xs-12 col-sm-12 col-md-12">
 
+                                                                 <select class="chosen-select chosen-transparent form-control" id="dropDownEpisodes"></select>
 
-                                        </div>
-                                        <div class="tab-pane" id="tab6">
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                             </section>
+                                                 </div>
+                                            
+                                       </div>
+                                     
+                                     <div class="row">
+                                         <div class="col-md-12">
+                                             <div class="tile transparent">
+                                                 <div class="tile-body color rounded-corners">
+                                                                                                        
+                                                     <div class="">
+                                                         <table id="teamDataTable" class="table table-striped" cellspacing="0" width="100%">
+                                                             <thead>
+                                                                 <tr>
+                                                                     <th>Nome</th>
+                                                                     <th>Responsável</th>                                                                    
+                                                                 </tr>
+                                                             </thead>
+                                                             <tbody></tbody>
+                                                         </table>
+                                                     </div>
+                                                 </div>
+                                                 <div class="tile-footer border-top color white rounded-bottom-corners nopadding">
 
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
 
-                                        </div>
-                                </div>
-
-                    </div>
-
-                    
+                                 </div>
+                                 <div class="tab-pane" id="tab5">
+                                 </div>
+                                 <div class="tab-pane" id="tab6">
+                                 </div>
+                            </div>
+                    </div>       
                 </div>
             </div>
         </div>
@@ -280,25 +502,38 @@
                     $('#rootwizard').find('.buttons .next').show();
                     $('#rootwizard').find('.buttons .finish').hide();
                 }
+                if (index == 1) {
+                    $('#workerTypeDataTable').dataTable().fnDestroy();
+                    loadWorkerTypeDataTable();
+                } else if (index == 2) {
+                    $('#funcionariosDataTable').dataTable().fnDestroy();
+                    loadWorkersDataTable();
+                } else if (index == 3) {
+                    $('#teamDataTable').dataTable().fnDestroy();
+                    loadTeamsDataTable();
+                }
             },
             onNext: function (tab, navigation, index) {
+                
+               // var form = $('.form' + index)
 
-                var form = $('.form' + index)
-
-                form.parsley('validate');
+                //form.parsley('validate');
 
                 tab.addClass('success');
+
+               
+                
 
             },
 
             onTabClick: function (tab, navigation, index) {
+               
+               // var form = $('.form' + (index + 1))
 
-                var form = $('.form' + (index + 1))
-
-                form.parsley('validate');
+                //form.parsley('validate');
 
                 tab.addClass('success');
-
+                
             },
             nextSelector: '.buttons .next',
             previousSelector: '.buttons .previous'
@@ -435,3 +670,49 @@
 
     }, true);
 </script>
+
+
+<!-- Time -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        updateDropDownCheckBoxTeams();
+    });
+
+    $("#episodeId").change(function () {
+        updateDropDownCheckBoxTeams();
+    });
+</script>
+
+<style>
+    .selectBox {
+        position: relative;
+    }
+
+        .selectBox select {
+            width: 100%;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    #checkboxes-team {
+        display: none;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 15px;
+        margin-top: 5px;
+    }
+
+        #checkboxes-team label {
+            display: block;
+        }
+
+           
+</style>
