@@ -24,7 +24,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             ViewBag.QuizId = quizId;
 
-            ViewBag.NumberOfQuestions = QuizQuestionEngineService.Instance.GetByQuizId(quizId).Count;
+            ViewBag.NumberOfQuestions = QuizQuestionEngineService.Instance.GetByQuizId(quizId).List.question.Count;
 
             return View();
         }
@@ -62,7 +62,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                 Error("Ocorreu um erro ao remover.");
             }
 
-            ViewBag.NumberOfQuestions = QuizQuestionEngineService.Instance.GetByQuizId(question.QuizSheetId).Count;
+            ViewBag.NumberOfQuestions = QuizQuestionEngineService.Instance.GetByQuizId(question.QuizSheetId).List.question.Count;
 
             return View("Index");
         }
@@ -78,6 +78,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
                     ValidateModel(entity);
 
                     string[] respostas = entity.OptionsString.Split(';');
+
+                    entity.Options = new List<string>();
 
                     int i = 0;
 
@@ -115,7 +117,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         {
             string quizId = Request["quizId"];
 
-            numberOfQuestion = QuizQuestionEngineService.Instance.GetByQuizId(quizId).Count;
+            numberOfQuestion = QuizQuestionEngineService.Instance.GetByQuizId(quizId).List.question.Count;
 
             if (jqueryTableRequest != null)
             {
@@ -126,7 +128,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 List<QuizQuestionEngineDTO> searchResult = null;
 
-                searchResult = QuizQuestionEngineService.Instance.GetByQuizId(quizId);
+                searchResult = QuizQuestionEngineService.Instance.GetByQuizId(quizId).List.question;
 
                 var searchedQueryList = new List<QuizQuestionEngineDTO>();
 
@@ -157,7 +159,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = numberOfQuestion,
                         RecordsFiltered = numberOfQuestion,
-                        Data = searchedQueryList.Select(r => new string[] { r.Enunciation, r.Subject.ToString(), r.Points.ToString(), r.Id.ToString() }).ToArray().OrderBy(item => item[index]).ToArray()
+                        Data = searchedQueryList.Select(r => new string[] { r.Enunciation, r.Subject, r.Points.ToString(), r.Id }).ToArray().OrderBy(item => item[index]).ToArray()
 
                     };
                 }
@@ -168,7 +170,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                         Draw = jqueryTableRequest.Draw,
                         RecordsTotal = numberOfQuestion,
                         RecordsFiltered = numberOfQuestion,
-                        Data = searchedQueryList.Select(r => new string[] { r.Enunciation, r.Subject.ToString(), r.Points.ToString(), r.Id.ToString() }).ToArray().OrderByDescending(item => item[index]).ToArray()
+                        Data = searchedQueryList.Select(r => new string[] { r.Enunciation, r.Subject, r.Points.ToString(), r.Id }).ToArray().OrderByDescending(item => item[index]).ToArray()
                     };
                 }
 

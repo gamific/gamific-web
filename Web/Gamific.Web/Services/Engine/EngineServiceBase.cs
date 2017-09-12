@@ -217,7 +217,7 @@ namespace Vlast.Gamific.Web.Services.Engine
             {
                 using (WebClient client = GetClient())
                 {
-                    string responce = client.DownloadString(path + "/search/findByGameId?gameId=" + gameId + "&size=" + pageSize 
+                    string responce = client.DownloadString(path + "search/findByGameId?gameId=" + gameId + "&size=" + pageSize 
                         + "&page=" + pageIndex + "&sort=" + colum + "," + order );
                     return JsonDeserialize<GetAllDTO>(responce);
                 }
