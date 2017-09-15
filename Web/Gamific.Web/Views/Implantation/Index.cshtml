@@ -215,6 +215,13 @@
                                  <div class="tab-pane" id="tab3">
                                      <form action="/admin/implantacao/salvarFuncionario" method="post">
                                          <div class="worker">
+                                             <span style="display:none">
+                                                 @Html.HiddenFor(model => model.Worker.IdWorker);
+                                                 @Html.HiddenFor(model => model.Worker.IdUser);
+                                                 @Html.HiddenFor(model => model.Worker.LogoId);
+                                                 @Html.HiddenFor(model => model.Worker.ExternalId);
+                                                 @Html.HiddenFor(model => model.Worker.Role);
+                                             </span>
                                              @Html.AntiForgeryToken()
                                              <div class="row">
                                                  @Html.ValidationSummary(true, "", new { @id = "validation-data", @class = "text-danger-summary" })
@@ -252,6 +259,19 @@
                                                      <div class="form-group">
                                                          @Html.LabelFor(model => model.Worker.WorkerTypeId, "Função*:", new { @class = "control-label" })
                                                          @Html.DropDownListFor(model => model.Worker.WorkerTypeId, (IEnumerable<SelectListItem>)ViewBag.Types, "Informe a função", new { @class = "form-control", @tabindex = "6" })
+                                                        <!-- <select class="form-control" name="Worker_WorkerTypeId" id="Worker_WorkerTypeId" tabindex="6">
+                                                             @*foreach (SelectListItem Type in ViewBag.Types)
+                                                             {
+                                                                 if (Type.Value == ViewBag.TypeId && ViewBag.TypeId != null)
+                                                                 {
+                                                                     <option value="@Type.Value" selected="selected">@Type.Text</option>
+                                                                 }
+                                                                 else
+                                                                 {
+                                                                     <option value="@Type.Value">@Type.Text</option>
+                                                                 }
+                                                             }*@
+                                                         </select>-->
                                                          @Html.ValidationMessageFor(model => model.Worker.WorkerTypeId, "O campo Função é obrigatório.", new { @class = "text-danger" })
                                                      </div>
                                                  </div>
@@ -451,7 +471,7 @@
 <script>
 
     var currentDate = new Date();
-    $('#initDateAux').datepicker({
+    $('#Episode_initDateAux').datepicker({
         language: 'pt-BR',
         changeMonth: true,
         changeYear: true,
@@ -466,7 +486,7 @@
 
 <script>
     var currentDate = new Date();
-    $('#finishDateAux').datepicker({
+    $('#Episode_finishDateAux').datepicker({
         language: 'pt-BR',
         changeMonth: true,
         changeYear: true,
@@ -548,7 +568,7 @@
 <script>
 
     $(document).ready(function () {
-        if (!$('#sendEmail').is(':checked')) {
+        if (!$('#Episode_sendEmail').is(':checked')) {
             $('#daysOfWeek').hide();
         } else {
             var daysOfWeek = $('#DaysOfWeek').val().split(',');
@@ -561,8 +581,8 @@
         
     });
 
-    $('#sendEmail').change(function () {
-        if ($('#sendEmail').is(':checked')) {
+    $('#Episode_sendEmail').change(function () {
+        if ($('#Episode_sendEmail').is(':checked')) {
             $('#daysOfWeek').show();
             var daysOfWeek = $('#DaysOfWeek').val().split(',');
 
@@ -645,7 +665,7 @@
                 background-color: #1e90ff;
             }
 </style>
-<script>
+<!--<script>
     window.addEventListener("submit", function (e) {
         var form = e.target;
 
@@ -670,7 +690,7 @@
 
     }, true);
 </script>
-
+-->
 
 <!-- Time -->
 <script type="text/javascript">
@@ -684,7 +704,7 @@
 </script>
 
 <style>
-    .selectBox {
+    /* .selectBox {
         position: relative;
     }
 
@@ -701,7 +721,7 @@
         top: 0;
         bottom: 0;
     }
-
+       */
     #checkboxes-team {
         display: none;
         border-radius: 4px;
@@ -716,3 +736,8 @@
 
            
 </style>
+
+<script>
+    VMasker(document.getElementById('Worker_Phone')).maskPattern('(99) 99999 - 9999');
+    VMasker(document.getElementById('Worker_Cpf')).maskPattern('999.999.999-99');
+</script>

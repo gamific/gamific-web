@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using Vlast.Gamific.Model.Firm.Domain;
@@ -12,6 +13,7 @@ using Vlast.Gamific.Model.Firm.Repository;
 using Vlast.Gamific.Web.Controllers.Management.Model;
 using Vlast.Gamific.Web.Services.Engine;
 using Vlast.Gamific.Web.Services.Engine.DTO;
+using Vlast.Util.Data;
 using Vlast.Util.Instrumentation;
 
 namespace Vlast.Gamific.Web.Controllers.Management
@@ -111,7 +113,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
                       }).ToList();
                      ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar a Campanha.");
                  
-                    return PartialView("Index", implantation);
+                    return View("Index", implantation);
 
                 }
 
@@ -122,6 +124,77 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
                 Error("Erro ao atualizar campanha" + ex.Message);
                 return View("Index");
+            }
+
+            return new EmptyResult();
+        }
+
+        /// <summary>
+        /// Salva as informações do tipo de jogador
+        /// </summary>
+        /// <param name="implantation"></param>
+        /// <returns></returns>
+        [Route("salvarFuncao")]
+        [HttpPost]
+        public ActionResult SaveWorkerType(ImplantationDTO implantation)
+        {
+            try
+            {
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
+                {
+
+                    ViewBag.Profiles = GetProfilesToSelect(implantation.WorkerType.ProfileName);
+
+                    if (ModelState.IsValid)
+                    {
+
+                        if (implantation.WorkerType.Id > 0)
+                        {
+                            implantation.WorkerType.Status = GenericStatus.ACTIVE;
+                            implantation.WorkerType.FirmId = CurrentFirm.Id;
+                            implantation.WorkerType.ExternalFirmId = CurrentFirm.ExternalId;
+                            implantation.WorkerType.UpdatedBy = CurrentUserId;
+
+                            ValidateModel(implantation.WorkerType);
+
+                            WorkerTypeRepository.Instance.UpdateWorkerType(implantation.WorkerType);
+
+                            Success("Função atualizada com sucesso.");
+                            scope.Complete();
+                        }
+                        else
+                        {
+                            implantation.WorkerType.Status = GenericStatus.ACTIVE;
+                            implantation.WorkerType.FirmId = CurrentFirm.Id;
+                            implantation.WorkerType.ExternalFirmId = CurrentFirm.ExternalId;
+                            implantation.WorkerType.UpdatedBy = CurrentUserId;
+
+                            ValidateModel(implantation.WorkerType);
+
+                            WorkerTypeRepository.Instance.CreateWorkerType(implantation.WorkerType);
+
+                            Success("Função criada com sucesso.");
+                            scope.Complete();
+                          
+                            
+                        }
+                        return View("Index", implantation);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Alguns campos são obrigatórios para salvar a Função.");
+
+                        return View("Index", implantation);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+
+                ModelState.AddModelError("", "Ocorreu um erro ao tentar salvar a Função.");
+
+                return View("Index", implantation);
             }
 
             return new EmptyResult();
@@ -157,6 +230,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
             }
 
             List<WorkerTypeEntity> profiles = new List<WorkerTypeEntity>();
+
 
             profiles = WorkerTypeRepository.Instance.GetAllFromFirm(CurrentFirm.Id);
 
@@ -223,6 +297,8 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             return query.ToList();
         }
+
+
     }
     
 }

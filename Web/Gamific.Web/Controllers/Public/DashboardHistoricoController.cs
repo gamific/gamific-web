@@ -1161,10 +1161,9 @@ namespace Vlast.Gamific.Web.Controllers.Public
                 {
                     CheckInDTO ci = new CheckInDTO();
 
-                    DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                    DateTime date = start.AddMilliseconds(location.Date).ToLocalTime();
+                    DateTime date = new DateTime(((location.Date - 10800000) * 10000) + 621355968000000000l);
                     ci.Date = date.ToString("dd'/'MM'/'yyyy HH':'mm':'ss");
-
+                   
                     PlayerEngineDTO player = PlayerEngineService.Instance.GetById(location.PlayerId);
                     ci.PlayerName = player.Nick;
                     ci.Description = location.Description ?? "Check-in";
