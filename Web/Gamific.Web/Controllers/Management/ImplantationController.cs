@@ -178,6 +178,26 @@ namespace Vlast.Gamific.Web.Controllers.Management
                           
                             
                         }
+                        ViewBag.NumberOfWorkerTypes = WorkerTypeRepository.Instance.GetCountFromFirm(CurrentFirm.ExternalId);
+
+                        ViewBag.WorkerType = WorkerTypeRepository.Instance.GetAllFromFirm(CurrentFirm.ExternalId);
+
+                        ViewBag.Icons = Enum.GetValues(typeof(Icons)).Cast<Icons>().Select(i => new SelectListItem
+                        {
+                            Text = i.ToString(),
+                            Value = i.ToString()
+                        }).ToList();
+
+                        ViewBag.Profiles = GetProfilesToSelect(new Profiles());
+
+                        ViewBag.NumberOfWorkers = WorkerRepository.Instance.GetCountFromFirm(CurrentFirm.Id);
+
+                        ViewBag.Types = GetWorkerTypesToSelect(0);
+
+                        ViewBag.Sponsors = GetSponsorsToSelect();
+                        ViewBag.Episodes = GetEpisodesToSelect();
+
+                        ViewBag.SubTeams = JsonConvert.SerializeObject(new List<string>());
                         return View("Index", implantation);
                     }
                     else
@@ -224,16 +244,10 @@ namespace Vlast.Gamific.Web.Controllers.Management
         /// <returns></returns>
         private List<SelectListItem> GetWorkerTypesToSelect(int selected)
         {
-            if (selected < 0)
-            {
-                selected = 0;
-            }
 
             List<WorkerTypeEntity> profiles = new List<WorkerTypeEntity>();
-
-
             profiles = WorkerTypeRepository.Instance.GetAllFromFirm(CurrentFirm.Id);
-
+          
             var query = from c in profiles
                         select new SelectListItem
                         {
@@ -244,6 +258,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
 
             return query.ToList();
         }
+
         /// <summary>
         /// Cria a lista de seleção dos responsaveis
         /// </summary>

@@ -358,7 +358,7 @@ namespace Vlast.Gamific.Web.Controllers.Management
         public FileContentResult DownloadPlanGoal(string episodeId)
         {
 
-            List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId).List.metric;
+            List<MetricEngineDTO> metrics = MetricEngineService.Instance.GetByGameId(CurrentFirm.ExternalId,0,100).List.metric;
 
             var workbook = new Workbook();
 

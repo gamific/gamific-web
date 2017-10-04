@@ -259,19 +259,7 @@
                                                      <div class="form-group">
                                                          @Html.LabelFor(model => model.Worker.WorkerTypeId, "Função*:", new { @class = "control-label" })
                                                          @Html.DropDownListFor(model => model.Worker.WorkerTypeId, (IEnumerable<SelectListItem>)ViewBag.Types, "Informe a função", new { @class = "form-control", @tabindex = "6" })
-                                                        <!-- <select class="form-control" name="Worker_WorkerTypeId" id="Worker_WorkerTypeId" tabindex="6">
-                                                             @*foreach (SelectListItem Type in ViewBag.Types)
-                                                             {
-                                                                 if (Type.Value == ViewBag.TypeId && ViewBag.TypeId != null)
-                                                                 {
-                                                                     <option value="@Type.Value" selected="selected">@Type.Text</option>
-                                                                 }
-                                                                 else
-                                                                 {
-                                                                     <option value="@Type.Value">@Type.Text</option>
-                                                                 }
-                                                             }*@
-                                                         </select>-->
+                                                         
                                                          @Html.ValidationMessageFor(model => model.Worker.WorkerTypeId, "O campo Função é obrigatório.", new { @class = "text-danger" })
                                                      </div>
                                                  </div>
